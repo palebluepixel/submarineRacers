@@ -1,5 +1,8 @@
 #include "stdio.h"
 
+#ifndef ERROR_HXX
+#define ERROR_HXX
+
 #define KYEL  "\x1B[33m"
 #define KRED  "\x1B[31m"
 #define KNRM  "\x1B[0m"
@@ -17,3 +20,5 @@
 	fprintf(stderr, __VA_ARGS__); \
 	fprintf(stderr,KNRM"\n"); \
 }
+
+#endif

@@ -1,8 +1,8 @@
 #include "world.hxx"
 
 #include <iostream>
-
-#include "../error/error.hxx"
+#include <SFML/Graphics.hpp>
+#include <error/error.hxx>
 
 // #include "world.hxx"
 
@@ -14,8 +14,9 @@ int main(){
     shape.setFillColor(sf::Color::Green);
 
     sf::Font font;
+    
     if (!font.loadFromFile("../assets/fonts/LiberationSans-Regular.ttf")){
-        ERR("unable to load font");
+        ERR("unable to load font.\n");
     }
 
     sf::Text text;

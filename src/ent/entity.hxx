@@ -2,7 +2,7 @@
 #define _ENTITY_HXX_
 
 
-#include "../../lib/glm/glm/glm.hpp"
+#include "glm/glm.hpp"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
