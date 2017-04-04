@@ -15,7 +15,7 @@ class BillboardMesh : public Mesh{
 	
 }
 class HeightmapMesh : public Mesh{
-		
+	
 };
 class QuadricMesh : public Mesh{
 	
@@ -62,9 +62,7 @@ namespace Space{
 		double r;
 	}
 	class PhysicsEngine{
-		void test_collision(Collidable *a, Collidable *b){
-
-		}
+		void test_collision(Collidable *a, Collidable *b);
 	}
 }
 #endif

@@ -13,14 +13,16 @@ SRCS = $(wildcard $(SRC_DIR)/*/*.cxx)
 INCLUDES = $(wildcard $(SRC_DIR)/*/*.hxx)
 OBJS = $(notdir $(SRCS:.cxx=.o))
 
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+
 $(TARGET): $(OBJS) .depend
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $(TARGET) $(LIBS)
 
 world.o:
-	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/world/world.cxx $(SRC_DIR)/world/world.hxx
+	$(CXX) -c $(LIBS) $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/world/world.cxx $(SRC_DIR)/world/world.hxx
 
 main.o:
-	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/world/main.cxx
+	$(CXX) -c $(LIBS) $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/world/main.cxx
 
 
 # include-file dependency information
