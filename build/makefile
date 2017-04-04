@@ -12,15 +12,19 @@ CPPFLAGS = -I/usr/local/include
 SRCS = $(wildcard $(SRC_DIR)/*/*.cxx)
 INCLUDES = $(wildcard $(SRC_DIR)/*/*.hxx)
 OBJS = $(notdir $(SRCS:.cxx=.o))
+LDFLAGS = -L$(BUILD_DIR)/../lib
 
 $(TARGET): $(OBJS) .depend
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS) $(LIBS)
 
 world.o:
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/world/world.cxx $(SRC_DIR)/world/world.hxx
 
 main.o:
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/world/main.cxx
+
+entity.o:
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/ent/entity.cxx $(SRC_DIR)/ent/entity.hxx $(LDFLAGS)
 
 
 # include-file dependency information

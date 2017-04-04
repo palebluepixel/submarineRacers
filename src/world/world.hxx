@@ -19,80 +19,80 @@ calls physics calculations, and calls render functions.
 
 
 enum WorldState {
-	TITLE = STATE_ENUM_START,
-	LISTEN, //server only, waiting for user connections or LOADLEVEL events	
-	CONNECTING, //client only, waiting for WEARECONNECTED
-	MENU1,
-	MENU2, //more if needed
-	LOADING_LEVEL,
-	RACE_START,
-	RACE_RUNNING,
-	RACE_FINISH,
-	PAUSED
+    TITLE = STATE_ENUM_START,
+    LISTEN, //server only, waiting for user connections or LOADLEVEL events    
+    CONNECTING, //client only, waiting for WEARECONNECTED
+    MENU1,
+    MENU2, //more if needed
+    LOADING_LEVEL,
+    RACE_START,
+    RACE_RUNNING,
+    RACE_FINISH,
+    PAUSED
 };
 
 //events that can modify the world state
 enum EventType {
-	STARTCLIENT = 0,
-	STARTSERVER,
-	WEARECONNECTED, //our client got a message from the server that we're in
-	ADVANCEMENU,
-	BACKMENU, //moves between menus if multiple
-	LOADLEVEL,
-	PAUSE,
-	EXIT, //returns to menu1
-	USERDISCONNECT,
-	USERFINISH
+    STARTCLIENT = 0,
+    STARTSERVER,
+    WEARECONNECTED, //our client got a message from the server that we're in
+    ADVANCEMENU,
+    BACKMENU, //moves between menus if multiple
+    LOADLEVEL,
+    PAUSE,
+    EXIT, //returns to menu1
+    USERDISCONNECT,
+    USERFINISH
 };
 
 class World {
 
 public:
-	World(); //constructor
-	~World(); //destructor
+    World(); //constructor
+    ~World(); //destructor
 
-	//dispacth function for event handlers
-	int handleEvent(EventType t);
+    //dispacth function for event handlers
+    int handleEvent(EventType t);
 
-	// This is what gets called by the while loop in main.
-	// Checks if enough time has passed for any ruinning clocks, e.g.
-	// physics tics, AI tics, render frame tics...
-	// then calls those handlers. Also handles gamestate and playerstate updates
-	// based on time, e.g. race timer running down or status conditions ending
-	int handleTimerTic(float t, float dt);
+    // This is what gets called by the while loop in main.
+    // Checks if enough time has passed for any ruinning clocks, e.g.
+    // physics tics, AI tics, render frame tics...
+    // then calls those handlers. Also handles gamestate and playerstate updates
+    // based on time, e.g. race timer running down or status conditions ending
+    int handleTimerTic(float t, float dt);
 
 private:
-	WorldState state;
+    WorldState state;
 
-	//event handlers
-	int handleEventSTARTCLIENT();
-	int handleEventSTARTSERVER();
-	int handleEventWEARECONNECTED();
-	int handleEventADVANCEMENU();
-	int handleEventBACKMENU();
-	int handleEventLOADLEVEL();
-	int handleEventPAUSE();
-	int handleEventEXIT();
-	int handleEventUSERDISCONNECT();
-	int handleEventUSERFINISH();
+    //event handlers
+    int handleEventSTARTCLIENT();
+    int handleEventSTARTSERVER();
+    int handleEventWEARECONNECTED();
+    int handleEventADVANCEMENU();
+    int handleEventBACKMENU();
+    int handleEventLOADLEVEL();
+    int handleEventPAUSE();
+    int handleEventEXIT();
+    int handleEventUSERDISCONNECT();
+    int handleEventUSERFINISH();
 
-	/* Uncomment stuff as it is implemented */
+    /* Uncomment stuff as it is implemented */
 
-	//Levels
-	//Level * activeLevel;
-	//GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
-	int loadLevel();
+    //Levels
+    //Level * activeLevel;
+    //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
+    int loadLevel();
 
-	//Players
-	//Player ** players;
+    //Players
+    //Player ** players;
 
-	//subs
-	//Submarine ** subs;
-	// A sub object has a player or AI associated with it
+    //subs
+    //Submarine ** subs;
+    // A sub object has a player or AI associated with it
 
 
-	//reset
-	void fatalError();
+    //reset
+    void fatalError();
 
 };
 
