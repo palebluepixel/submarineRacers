@@ -14,9 +14,10 @@ INCLUDES = $(wildcard $(SRC_DIR)/*/*.hxx)
 OBJS = $(notdir $(SRCS:.cxx=.o))
 
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS = -L$(BUILD_DIR)/../lib
 
 $(TARGET): $(OBJS) .depend
-	$(CXX) $(OBJS) $(CXXFLAGS) -o $(TARGET) $(LIBS)
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $(TARGET) $(LDFLAGS) $(LIBS)
 
 world.o:
 	$(CXX) -c $(LIBS) $(CPPFLAGS) $(CXXFLAGS) $(SRC_DIR)/world/world.cxx $(SRC_DIR)/world/world.hxx

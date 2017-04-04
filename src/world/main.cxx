@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include "world.hxx"
 
 #include <iostream>
 
