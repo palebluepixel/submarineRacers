@@ -3,11 +3,13 @@
 
 
 #include "glm/glm.hpp"
+#include <physics/physics.hxx>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 using namespace glm;
+using namespace Space;
 
 
 //not sure if we want this here
@@ -70,6 +72,7 @@ protected:
     EntityType type;
 
     //Bounding volume, not sure how we are representing it
+    Volume *volume;
 
     float tick_interval;
 
