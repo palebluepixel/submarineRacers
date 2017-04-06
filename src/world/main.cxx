@@ -1,4 +1,5 @@
-#include <glad/glad.h>
+// #include <glad/glad.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <linmath.h>
 #include <stdlib.h>
@@ -59,7 +60,21 @@ int main(void)
     }
     glfwSetKeyCallback(window, key_callback);
     glfwMakeContextCurrent(window);
-    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
+      fprintf(stderr, "Initializing glew\n");
+
+      // ignore this error. glewInit throws an error; something to do with core profiles...
+      // todo: add explanation for why this error is ignored.
+
+      glewExperimental = GL_TRUE;
+      GLenum glerr = glewInit();
+      glGetError();    
+      
+      if (glerr != GLEW_OK){
+        fprintf(stderr, "GLEW init failed: %d\n\n", glerr);
+        exit(1);
+      }
+
     glfwSwapInterval(1);
     // NOTE: OpenGL error checks have been omitted for brevity
     glGenBuffers(1, &vertex_buffer);

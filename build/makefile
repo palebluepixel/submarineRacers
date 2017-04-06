@@ -19,7 +19,7 @@ INCLUDES = $(wildcard $(SRC_DIR)/*/*.hxx)
 OBJS = $(notdir $(SRCS:.cxx=.o))
 
 RPATH = -Wl,-rpath,$(SDL)/build -Wl,-rpath,$(GLEW)/lib -Wl,-rpath,$(GLFW)/src
-LIBS = -lGL -lGLU -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi
+LIBS = -lGLEW -lglfw3 -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl
 LDFLAGS = -L$(BUILD_DIR)/../lib -L$(GLEW)/lib -L$(GLFW)/src
 IPATH = -I../src -I../lib/glm -I$(GLEW)/include -I$(GLFW)/include -I$(BUILD_DIR)/../lib
 
