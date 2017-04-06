@@ -2,7 +2,7 @@
 #define _ENTITY_HXX_
 
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <physics/physics.hxx>
 #include <stdlib.h>
 #include <string.h>
