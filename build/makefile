@@ -7,6 +7,7 @@ SRC_DIR = $(BUILD_DIR)/../src
 
 SDL = $(BUILD_DIR)/../lib/SDL2-2.0.5
 GLEW = $(BUILD_DIR)/../lib/glew-2.0.0
+GLFW = $(BUILD_DIR)/../lib/glfw
 SDL_CONFIG = 
 
 CXX = g++ -std=c++11
@@ -17,10 +18,10 @@ SRCS = $(wildcard $(SRC_DIR)/*/*.cxx)
 INCLUDES = $(wildcard $(SRC_DIR)/*/*.hxx)
 OBJS = $(notdir $(SRCS:.cxx=.o))
 
-RPATH = -Wl,-rpath,$(SDL)/build -Wl,-rpath,$(GLEW)/lib
-LIBS = -lSDL2 -L/usr/local/lib -Wl,-rpath,/usr/local/lib -Wl,--enable-new-dtags -pthread -lSDL2 -ldl -lsndio -lGL -lGLU -lGLEW
-LDFLAGS = -L$(BUILD_DIR)/../lib -L$(SDL)/build -L$(GLEW)/lib
-IPATH = -I../src -I../lib/glm -I$(SDL)/include -I$(GLEW)/include
+RPATH = -Wl,-rpath,$(SDL)/build -Wl,-rpath,$(GLEW)/lib -Wl,-rpath,$(GLFW)/src
+LIBS = -lGL -lGLU -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi
+LDFLAGS = -L$(BUILD_DIR)/../lib -L$(GLEW)/lib -L$(GLFW)/src
+IPATH = -I../src -I../lib/glm -I$(GLEW)/include -I$(GLFW)/include
 
 $(TARGET): $(OBJS) .depend
 	$(CXX) $(OBJS) $(CXXFLAGS) $(IPATH) -o $(TARGET) $(LDFLAGS) $(RPATH) $(LIBS)
