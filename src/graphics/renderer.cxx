@@ -1,12 +1,13 @@
 
 #include "renderer.hxx"
+#include <stdio.h>
 
 /***** virtual class Renderer member functions *****/
 
 Renderer::Renderer (Shader *sh)
     : _shader(sh)
 { 
-
+      printf("%d\n", _shader->ID());
       projectionLoc = _shader->getUniformLocation("projection");
       modelViewLoc = _shader->getUniformLocation ("modelView");
       colorLoc = _shader->getUniformLocation("color");

@@ -22,6 +22,24 @@ static const struct
     {   0.f,  0.6f, 0.f, 0.f, 1.f }
 };
 
+static vec3 cubeVertices[8]= {vec3(-1.0f,  -1.0f,  1.0f), //0
+                   vec3 (-1.0f,  1.0f,  1.0f), //1
+                   vec3 ( 1.0f,  1.0f,  1.0f), //2
+                   vec3( 1.0f,  -1.0f,  1.0f), //3
+                   vec3 (-1.0f,  -1.0f, -1.0f), //4
+                   vec3 (-1.0f,  1.0f, -1.0f), //5
+                   vec3 ( 1.0f,  1.0f, -1.0f), //6
+                   vec3 ( 1.0f,  -1.0f, -1.0f)}; //7 
+/* the indices that allow us to create the cube. */ 
+static const uint32_t cubeIndices[36] = {
+    0,2,1,  0,3,2,
+    4,3,0,  4,7,3,
+    4,1,5,  4,0,1,
+    3,6,2,  3,7,6,
+    1,6,5,  1,2,6,
+    7,5,6,  7,4,5
+  }; 
+
 static void error_callback(int error, const char* description){
     fprintf(stderr, "Error: %s\n", description);
     Error::error(std::string(description),0);
@@ -53,14 +71,14 @@ int main(void){
 
     // Remove these lines...
     GLuint vertex_buffer;
-    GLint mvp_location, vpos_location, vcol_location;
+    GLint proj_location, mod_location, position_location, color_location;
 
     // Initialize GLFW
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
         Error::error("glfwInit failed",1);
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
     if (!window){
@@ -92,27 +110,54 @@ int main(void){
 
     // set up shaders.
 
-    Shader shader;
-    shader.addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/simple.vert"));
-    shader.addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/simple.frag"));
-    shader.build();
+    Shader *shader = new Shader();
+    shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/shader.vert"));
+    shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/shader.frag"));
+    shader->build();
+    //printf("%d\n", shader->ID());
 
-    mvp_location = glGetUniformLocation(!shader, "MVP");
-    vpos_location = glGetAttribLocation(!shader, "vPos");
-    vcol_location = glGetAttribLocation(!shader, "vCol");
+    proj_location = glGetUniformLocation(shader->ID(), "projection");
+    mod_location =  glGetUniformLocation(shader->ID(), "modelView");
+    color_location = glGetUniformLocation(shader->ID(), "color");
+    position_location = glGetAttribLocation(shader->ID(), "position");
+    //mvp_location = glGetUniformLocation(shader->ID(), "projection");
+    printf("%d\n", proj_location);
+    printf("%d\n", mod_location);
+    printf("%d\n", position_location);
+    printf("%d\n", color_location);
+    //vpos_location = glGetAttribLocation(shader->ID(), "vPos");
+    //vcol_location = glGetAttribLocation(shader->ID(), "vCol");
     
-    glEnableVertexAttribArray(vpos_location);
-    glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
+    glEnableVertexAttribArray(position_location);
+    //glEnableVertexAttribArray(vpos_location);
+    glVertexAttribPointer(position_location, 3, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 5, (void*) 0);
-    glEnableVertexAttribArray(vcol_location);
-    glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 5, (void*) (sizeof(float) * 2));
+    //glEnableVertexAttribArray(color_location);
+    //glVertexAttribPointer(color_location, 3, GL_FLOAT, GL_FALSE,
+    //                      sizeof(float) * 5, (void*) (sizeof(float) * 2));
 
     //initalize camera
     Camera *camera = new Camera();
     camera->init(vec3(0,0,2),vec3(0,0,0),vec3(0,1,0));
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
+
+
+
+
+
+
+
+
+    //Mesh *test = new Mesh(GL_TRIANGLES);
+    //test->LoadVertices(8, cubeVertices);
+    //test->LoadIndices(36,cubeIndices);
+    //test->color = vec4(0.1f, 0.9f, 0.5f, 1.0f);
+
+    //Renderer *r = new FlatShadingRenderer(shader);
+    
+
+
 
     while (!glfwWindowShouldClose(window)){
         int width, height;
@@ -131,11 +176,23 @@ int main(void){
         // Our ModelViewProjection : multiplication of our 3 matrices
         glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
-        shader.use();
+        shader->use();
         //glUniformMatrix4fv(mvp_location, 1, GL_FALSE, value_ptr(mvp));
-        setUniform(mvp_location, mvp);
+        setUniform(proj_location, Projection);
+        setUniform(mod_location, View*Model);
+        setUniform(color_location, vec4(1.0f, 0.5f, 0.3f, 1.0f));
         //shader.setUniformByName("MVP", mvp);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        /* This will go in view->render */
+        /* clear the screen */
+        //glClearColor (0.0f, 0.0f, 0.0f, 1.0f);    // clear the surface
+        //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        /* Enable the renderer */ 
+        //r->Enable (Projection);
+        /* HINT: Draw the objects in the scene */
+        //r->Render(mvp,test);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

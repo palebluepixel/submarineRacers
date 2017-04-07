@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include "shader.hxx"
 
 using namespace glm;
@@ -10,18 +11,23 @@ Shader::Shader(){
 }
 
 int Shader::addShader(GLenum type, const GLchar *code){
-	GLuint shader = glCreateShader(type);
+    //printf("%s\n",code);
+
+    GLuint shader = glCreateShader(type);
 	glShaderSource(shader, 1, &code, NULL);
     glCompileShader(shader);
-	glCompileShader(shader);
+    glCompileShader(shader);
+
+
 	shaders.push_back(shader);
 	return shader;
 }
 void Shader::build(){
-	for (GLuint s : shaders){
+    for (GLuint s : shaders){
 		glAttachShader(prog,s);
 	}
     glLinkProgram(prog);
+
     built = 1;
 }
 bool Shader::isBuilt(){
