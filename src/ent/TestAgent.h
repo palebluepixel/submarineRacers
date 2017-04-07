@@ -1,6 +1,6 @@
 #include <iostream>
 
-using namespace std;
+//using namespace std;
 
 class Agent {};
 
@@ -9,6 +9,7 @@ public:
     int x;
 
    TestAgent() {
+        x=0;
    }
 };
 

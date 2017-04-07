@@ -9,14 +9,23 @@ The controller can call the commands provided by the actuator to control it's st
 state. The actuator will then translate these commands to control the agent directly.
 */
 
-// Agent_Type is the type of the agent that this Controller is controlling
-class TestController : Controller<TestAgent> {
-    TestController() {
-    }
+class TestController : public Controller<TestAgent> {
+public:
+	int fee;
+
+	TestController(TestAgent *agent, int other)
+	: Controller<TestAgent>(agent) {
+		fee = other;
+	}
+
 
 };
 
 int main() {  
-    TestController dc;  
-    int x = 3;  
+	TestAgent *ag = new TestAgent;
+    TestController dc(ag, 3);  
+    
+    dc.actuator->doSteering();
+    std::cout << dc.agent->x;
+    std::cout << dc.fee;
 };
