@@ -1,6 +1,7 @@
 // #include <glad/glad.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext.hpp>
 //#include <linmath.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,6 +11,7 @@
 #include <error/error.hxx>
 #include <util/file.hxx>
 #include <graphics/shader.hxx>
+#include <graphics/camera.hxx>
 
 static const struct
 {
@@ -52,7 +54,7 @@ GLFWwindow* window;
 int main(void){
 
     // Remove these lines...
-    GLuint vertex_buffer, vertex_shader, fragment_shader, program;
+    GLuint vertex_buffer;
     GLint mvp_location, vpos_location, vcol_location;
 
     // Initialize GLFW
@@ -108,30 +110,26 @@ int main(void){
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 5, (void*) (sizeof(float) * 2));
 
+    //initalize camera
+    Camera *camera = new Camera();
+    camera->init(vec3(0,0,2),vec3(0,0,0),vec3(0,1,0));
+    camera->setFOV(90.0);
+    camera->setNearFar(0.1, 100.0);
+
     while (!glfwWindowShouldClose(window)){
-        float ratio;
         int width, height;
 
         glfwGetFramebufferSize(window, &width, &height);
-        ratio = width / (float) height;
+        camera->setViewport(width, height);
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-        glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
-          
-        // Or, for an ortho camera :
-        //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
-          
-        // Camera matrix
-        glm::mat4 View = glm::lookAt(
-            glm::vec3(0,0,2), // Camera is at (4,3,3), in World Space
-            glm::vec3(0,0,0), // and looks at the origin
-            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-            );
+        mat4 Projection = camera->projTransform();
+        mat4 View = camera->viewTransform();
           
         // Model matrix : an identity matrix (model will be at the origin)
         glm::mat4 Model = glm::mat4();
+        
         // Our ModelViewProjection : multiplication of our 3 matrices
         glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
