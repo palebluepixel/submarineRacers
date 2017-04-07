@@ -4,6 +4,12 @@
 #include <linmath.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string>
+#include <iostream>
+
+#include <error/error.hxx>
+#include <util/file.hxx>
+#include <graphics/shader.hxx>
 
 static const struct
 {
@@ -15,92 +21,76 @@ static const struct
     {  0.6f, -0.4f, 0.f, 1.f, 0.f },
     {   0.f,  0.6f, 0.f, 0.f, 1.f }
 };
-static const char* vertex_shader_text =
-"uniform mat4 MVP;\n"
-"attribute vec3 vCol;\n"
-"attribute vec2 vPos;\n"
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-"    color = vCol;\n"
-"}\n";
-static const char* fragment_shader_text =
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    gl_FragColor = vec4(color, 1.0);\n"
-"}\n";
-static void error_callback(int error, const char* description)
-{
+
+static void error_callback(int error, const char* description){
     fprintf(stderr, "Error: %s\n", description);
+    Error::error(std::string(description),0);
 }
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
+GLFWwindow* window;
 
-int main(void)
-{
-    GLFWwindow* window;
+int main(void){
+
+    // Remove these lines...
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location, vcol_location;
+
+    // Initialize GLFW
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
-        exit(EXIT_FAILURE);
+        Error::error("glfwInit failed",1);
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
-    if (!window)
-    {
+    if (!window){
+        Error::error("glfwCreateWindow failed",1);
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
+
     glfwSetKeyCallback(window, key_callback);
     glfwMakeContextCurrent(window);
 
-      fprintf(stderr, "Initializing glew\n");
-
-      // ignore this error. glewInit throws an error; something to do with core profiles...
-      // todo: add explanation for why this error is ignored.
-
-      glewExperimental = GL_TRUE;
-      GLenum glerr = glewInit();
-      glGetError();    
-      
-      if (glerr != GLEW_OK){
-        fprintf(stderr, "GLEW init failed: %d\n\n", glerr);
-        exit(1);
-      }
+    // initialize GLEW
+    glewExperimental = GL_TRUE;
+    GLenum glerr = glewInit();
+    glGetError();    
+    if (glerr != GLEW_OK){
+        Error::error("GLEW init failed"+glerr, 1);
+    }
 
     glfwSwapInterval(1);
-    // NOTE: OpenGL error checks have been omitted for brevity
+
+    // OpenGL array stuff (TODO: error checks)
+
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
-    glCompileShader(vertex_shader);
-    fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
-    glCompileShader(fragment_shader);
-    program = glCreateProgram();
-    glAttachShader(program, vertex_shader);
-    glAttachShader(program, fragment_shader);
-    glLinkProgram(program);
-    mvp_location = glGetUniformLocation(program, "MVP");
-    vpos_location = glGetAttribLocation(program, "vPos");
-    vcol_location = glGetAttribLocation(program, "vCol");
+
+    // set up shaders.
+
+    Shader shader;
+    shader.addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/simple.vert"));
+    shader.addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/simple.frag"));
+    shader.build();
+
+    mvp_location = glGetUniformLocation(!shader, "MVP");
+    vpos_location = glGetAttribLocation(!shader, "vPos");
+    vcol_location = glGetAttribLocation(!shader, "vCol");
+    
     glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 5, (void*) 0);
     glEnableVertexAttribArray(vcol_location);
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 5, (void*) (sizeof(float) * 2));
-    while (!glfwWindowShouldClose(window))
-    {
+
+    while (!glfwWindowShouldClose(window)){
         float ratio;
         int width, height;
         mat4x4 m, p, mvp;
@@ -112,7 +102,7 @@ int main(void)
         mat4x4_rotate_Z(m, m, (float) glfwGetTime());
         mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
         mat4x4_mul(mvp, p, m);
-        glUseProgram(program);
+        shader.use();
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glfwSwapBuffers(window);
