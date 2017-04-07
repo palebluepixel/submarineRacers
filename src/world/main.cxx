@@ -26,12 +26,28 @@ static void error_callback(int error, const char* description){
     fprintf(stderr, "Error: %s\n", description);
     Error::error(std::string(description),0);
 }
+
+int keyboard[350];
+int mouse[8];
+double mousepos[2];
+
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    keyboard[key] = action;
+}
+static void mouse_callback(GLFWwindow* window, int button, int action, int mods){
+    mouse[button] = action;
+}
+static void cursorpos_callback(GLFWwindow* window, double xpos, double ypos){
+    // xpos and ypos are in pixels (not sure why they're doubles).
+    mousepos[0] = xpos;
+    mousepos[1] = ypos;
 }
 
 GLFWwindow* window;
+
+
 
 int main(void){
 
@@ -54,6 +70,8 @@ int main(void){
     }
 
     glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_callback);
+    glfwSetCursorPosCallback(window, cursorpos_callback);
     glfwMakeContextCurrent(window);
 
     // initialize GLEW
@@ -82,7 +100,7 @@ int main(void){
     mvp_location = glGetUniformLocation(!shader, "MVP");
     vpos_location = glGetAttribLocation(!shader, "vPos");
     vcol_location = glGetAttribLocation(!shader, "vCol");
-    
+
     glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 5, (void*) 0);
