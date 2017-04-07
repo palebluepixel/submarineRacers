@@ -1,7 +1,7 @@
 // #include <glad/glad.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <linmath.h>
+//#include <linmath.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
@@ -100,7 +100,7 @@ int main(void){
     mvp_location = glGetUniformLocation(!shader, "MVP");
     vpos_location = glGetAttribLocation(!shader, "vPos");
     vcol_location = glGetAttribLocation(!shader, "vCol");
-
+    
     glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(float) * 5, (void*) 0);
@@ -111,17 +111,34 @@ int main(void){
     while (!glfwWindowShouldClose(window)){
         float ratio;
         int width, height;
-        mat4x4 m, p, mvp;
+
         glfwGetFramebufferSize(window, &width, &height);
         ratio = width / (float) height;
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
-        mat4x4_identity(m);
-        mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-        mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-        mat4x4_mul(mvp, p, m);
+
+        // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+        glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
+          
+        // Or, for an ortho camera :
+        //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
+          
+        // Camera matrix
+        glm::mat4 View = glm::lookAt(
+            glm::vec3(0,0,2), // Camera is at (4,3,3), in World Space
+            glm::vec3(0,0,0), // and looks at the origin
+            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+            );
+          
+        // Model matrix : an identity matrix (model will be at the origin)
+        glm::mat4 Model = glm::mat4();
+        // Our ModelViewProjection : multiplication of our 3 matrices
+        glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
+
         shader.use();
-        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
+        //glUniformMatrix4fv(mvp_location, 1, GL_FALSE, value_ptr(mvp));
+        setUniform(mvp_location, mvp);
+        //shader.setUniformByName("MVP", mvp);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glfwSwapBuffers(window);
         glfwPollEvents();
