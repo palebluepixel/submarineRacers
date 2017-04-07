@@ -1,3 +1,7 @@
+#ifndef _SHADER_HXX_
+#define _SHADER_HXX_
+
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <vector>
 #include <glm/glm.hpp>
@@ -28,7 +32,7 @@ public:
 
 
 	//set variable by name
-	void setUniformByName (const char *name, int const &v); 
+	/*void setUniformByName (const char *name, int const &v); 
 	void setUniformByName (const char *name, int const &v1, int const &v2);
 	void setUniformByName (const char* name, int const &v1, int const &v2, int const &v3);
 	void setUniformByName (const char* name, int const &v1, int const &v2, int const &v3, int const &v4);
@@ -49,9 +53,12 @@ public:
 	void setAttributeByName (const char* name, float const &v);
 	void setAttributeByName (const char* name, vec2 const &v);
 	void setAttributeByName (const char* name, vec3 const &v);
-	void setAttributeByName (const char* name, vec4 const &v);
+	void setAttributeByName (const char* name, vec4 const &v);*/
 
 
 
 
 };
+
+
+#endif // _SHADER_HXX_

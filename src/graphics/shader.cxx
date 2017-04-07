@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <iostream>
 #include "shader.hxx"
 
@@ -85,7 +84,7 @@ GLint Shader::getUniformLocation (const char *name)
     See setUniform and setAttrbiute from shader.inl if you want to use
     the GLint index location instead of the variable name. */
 
-void Shader::setUniformByName (const char *name, int const &v) 
+/*void Shader::setUniformByName (const char *name, int const &v) 
 { glUniform1i (this->getUniformLocation(name), v); }
 
 void Shader::setUniformByName (const char *name, int const &v1, int const &v2)
@@ -128,11 +127,11 @@ void Shader::setUniformByName (const char* name, mat3 const &v)
 { glUniformMatrix3fv (this->getUniformLocation(name), 1, GL_FALSE, value_ptr(v)); }
 
 void Shader::setUniformByName (const char* name, mat4 const &v)
-{ glUniformMatrix4fv (this->getUniformLocation(name), 1, GL_FALSE, value_ptr(v)); }
+{ glUniformMatrix4fv (this->getUniformLocation(name), 1, GL_FALSE, value_ptr(v)); }*/
 
 /***** functions to Shader::set individual attribute variables *****/
 
-void Shader::setAttributeByName (const char* name, int const &v)
+/*void Shader::setAttributeByName (const char* name, int const &v)
 { glVertexAttribI1i (this->getUniformLocation(name), v); }
 
 void Shader::setAttributeByName (const char* name, unsigned int const &v)
@@ -148,4 +147,4 @@ void Shader::setAttributeByName (const char* name, vec3 const &v)
 { glVertexAttrib3fv (this->getUniformLocation(name), value_ptr(v)); }
 
 void Shader::setAttributeByName (const char* name, vec4 const &v)
-{ glVertexAttrib4fv (this->getUniformLocation(name), value_ptr(v)); }
+{ glVertexAttrib4fv (this->getUniformLocation(name), value_ptr(v)); }*/

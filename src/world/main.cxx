@@ -1,8 +1,5 @@
-// #include <glad/glad.h>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+
 #include <glm/ext.hpp>
-//#include <linmath.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
@@ -12,6 +9,7 @@
 #include <util/file.hxx>
 #include <graphics/shader.hxx>
 #include <graphics/camera.hxx>
+#include <graphics/renderer.hxx>
 
 static const struct
 {
@@ -129,7 +127,7 @@ int main(void){
           
         // Model matrix : an identity matrix (model will be at the origin)
         glm::mat4 Model = glm::mat4();
-        
+
         // Our ModelViewProjection : multiplication of our 3 matrices
         glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
