@@ -10,6 +10,7 @@
 #include <graphics/shader.hxx>
 #include <graphics/camera.hxx>
 #include <graphics/renderer.hxx>
+#include <graphics/view.hxx>
 
 static const struct
 {
@@ -69,10 +70,6 @@ GLFWwindow* window;
 
 int main(void){
 
-    // Remove these lines...
-    GLuint vertex_buffer, index_buffer, vao;
-    GLint proj_location, mod_location, position_location, color_location;
-
     // Initialize GLFW
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
@@ -103,107 +100,50 @@ int main(void){
     glfwSwapInterval(1);
 
     // set up shaders.
-
     Shader *shader = new Shader();
     shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/shader.vert"));
     shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/shader.frag"));
     shader->build();
-    //printf("%d\n", shader->ID());
-
-    proj_location = glGetUniformLocation(shader->ID(), "projection");
-    mod_location =  glGetUniformLocation(shader->ID(), "modelView");
-    color_location = glGetUniformLocation(shader->ID(), "color");
-    position_location = glGetAttribLocation(shader->ID(), "position");
-    printf("%d\n", position_location);
-
-    // OpenGL array stuff (TODO: error checks)
-
-    /*glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(position_location);
-    glVertexAttribPointer(position_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(cubeVertices[0]), (void*) 0);
-
-    glGenBuffers (1, &index_buffer);
-    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-    glBufferData (GL_ELEMENT_ARRAY_BUFFER, 36*sizeof(uint32_t), cubeIndices, GL_STATIC_DRAW); //might be STATIC_DRAW
-    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
-    glEnableVertexAttribArray(position_location);*/
-
 
     //initalize camera
     Camera *camera = new Camera();
-    camera->init(vec3(6,9,10),vec3(0,0,0),vec3(0,1,0));
+    camera->init(vec3(6,9,4.20),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
-
-
-
-
-
-
-
+    //create an example mesh
     Mesh *test = new Mesh(GL_TRIANGLES);
     test->LoadVertices(8, cubeVertices);
     test->LoadIndices(36, cubeIndices);
     test->color = vec4(0.1f, 0.9f, 0.5f, 1.0f);
 
     Renderer *r = new FlatShadingRenderer(shader);
-    
-
 
 
     while (!glfwWindowShouldClose(window)){
+        //window setup
         int width, height;
-
         glfwGetFramebufferSize(window, &width, &height);
-        camera->setViewport(width, height);
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        mat4 Projection = camera->projTransform();
+        // calculate matricies to transform us from object space to view space
+        mat4 Projection = camera->projTransform((float) width / (float) height);
         mat4 View = camera->viewTransform();
-          
-        // Model matrix : an identity matrix (model will be at the origin)
-        glm::mat4 Model = glm::mat4();
 
-        // Our ModelViewProjection : multiplication of our 3 matrices
-        glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
-
+        //setup
         shader->use();
-        //glUniformMatrix4fv(mvp_location, 1, GL_FALSE, value_ptr(mvp));
-        //setUniform(proj_location, Projection);
-        //setUniform(mod_location, View*Model);
-        //setUniform(color_location, vec4(1.0f, 0.5f, 0.3f, 1.0f));
-        //std::cout << "model view: " << glm::to_string(View*Model) << "\n"
-        //    << "projection: " << glm::to_string(Projection) << "\n";
-        //shader.setUniformByName("MVP", mvp);
-        //glDrawArrays(GL_LINES, 0, 36);
-        //printf("%d\n", vao);
-        //glBindVertexArray(vao);
-        //glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-        //glDrawElements(GL_LINES, 36, GL_UNSIGNED_INT, 0);
-
-        /* This will go in view->render */
-        /* clear the screen */
-        //glClearColor (0.0f, 0.0f, 0.0f, 1.0f);    // clear the surface
-        //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        /* Enable the renderer */ 
         r->Enable (Projection);
-        /* HINT: Draw the objects in the scene */
-        r->Render(View,test);
 
-        test->Draw();
+        //render an object
+        r->Render(View,test);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+
+
     glfwDestroyWindow(window);
     glfwTerminate();
     exit(EXIT_SUCCESS);
