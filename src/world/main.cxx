@@ -70,7 +70,7 @@ GLFWwindow* window;
 int main(void){
 
     // Remove these lines...
-    GLuint vertex_buffer;
+    GLuint vertex_buffer, index_buffer, vao;
     GLint proj_location, mod_location, position_location, color_location;
 
     // Initialize GLFW
@@ -90,7 +90,7 @@ int main(void){
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent (window);
 
     // initialize GLEW
     glewExperimental = GL_TRUE;
@@ -101,12 +101,6 @@ int main(void){
     }
 
     glfwSwapInterval(1);
-
-    // OpenGL array stuff (TODO: error checks)
-
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // set up shaders.
 
@@ -120,25 +114,30 @@ int main(void){
     mod_location =  glGetUniformLocation(shader->ID(), "modelView");
     color_location = glGetUniformLocation(shader->ID(), "color");
     position_location = glGetAttribLocation(shader->ID(), "position");
-    //mvp_location = glGetUniformLocation(shader->ID(), "projection");
-    printf("%d\n", proj_location);
-    printf("%d\n", mod_location);
     printf("%d\n", position_location);
-    printf("%d\n", color_location);
-    //vpos_location = glGetAttribLocation(shader->ID(), "vPos");
-    //vcol_location = glGetAttribLocation(shader->ID(), "vCol");
-    
+
+    // OpenGL array stuff (TODO: error checks)
+
+    /*glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vertex_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(position_location);
-    //glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(position_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 5, (void*) 0);
-    //glEnableVertexAttribArray(color_location);
-    //glVertexAttribPointer(color_location, 3, GL_FLOAT, GL_FALSE,
-    //                      sizeof(float) * 5, (void*) (sizeof(float) * 2));
+                          sizeof(cubeVertices[0]), (void*) 0);
+
+    glGenBuffers (1, &index_buffer);
+    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+    glBufferData (GL_ELEMENT_ARRAY_BUFFER, 36*sizeof(uint32_t), cubeIndices, GL_STATIC_DRAW); //might be STATIC_DRAW
+    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
+    glEnableVertexAttribArray(position_location);*/
+
 
     //initalize camera
     Camera *camera = new Camera();
-    camera->init(vec3(0,0,2),vec3(0,0,0),vec3(0,1,0));
+    camera->init(vec3(6,9,10),vec3(0,0,0),vec3(0,1,0));
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
@@ -149,12 +148,12 @@ int main(void){
 
 
 
-    //Mesh *test = new Mesh(GL_TRIANGLES);
-    //test->LoadVertices(8, cubeVertices);
-    //test->LoadIndices(36,cubeIndices);
-    //test->color = vec4(0.1f, 0.9f, 0.5f, 1.0f);
+    Mesh *test = new Mesh(GL_TRIANGLES);
+    test->LoadVertices(8, cubeVertices);
+    test->LoadIndices(36, cubeIndices);
+    test->color = vec4(0.1f, 0.9f, 0.5f, 1.0f);
 
-    //Renderer *r = new FlatShadingRenderer(shader);
+    Renderer *r = new FlatShadingRenderer(shader);
     
 
 
@@ -178,20 +177,29 @@ int main(void){
 
         shader->use();
         //glUniformMatrix4fv(mvp_location, 1, GL_FALSE, value_ptr(mvp));
-        setUniform(proj_location, Projection);
-        setUniform(mod_location, View*Model);
-        setUniform(color_location, vec4(1.0f, 0.5f, 0.3f, 1.0f));
+        //setUniform(proj_location, Projection);
+        //setUniform(mod_location, View*Model);
+        //setUniform(color_location, vec4(1.0f, 0.5f, 0.3f, 1.0f));
+        //std::cout << "model view: " << glm::to_string(View*Model) << "\n"
+        //    << "projection: " << glm::to_string(Projection) << "\n";
         //shader.setUniformByName("MVP", mvp);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glDrawArrays(GL_LINES, 0, 36);
+        //printf("%d\n", vao);
+        //glBindVertexArray(vao);
+        //glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+        //glDrawElements(GL_LINES, 36, GL_UNSIGNED_INT, 0);
 
         /* This will go in view->render */
         /* clear the screen */
         //glClearColor (0.0f, 0.0f, 0.0f, 1.0f);    // clear the surface
         //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         /* Enable the renderer */ 
-        //r->Enable (Projection);
+        r->Enable (Projection);
         /* HINT: Draw the objects in the scene */
-        //r->Render(mvp,test);
+        r->Render(View,test);
+
+        test->Draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -200,3 +208,22 @@ int main(void){
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
+
+
+
+
+
+
+
+/*
+projection: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
+model view: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, 9.819819, 10.000000))
+color: vec4(0.100000, 0.900000, 0.500000, 1.000000)
+*/
+
+
+/* 
+projection: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
+model view: mat4x4((1.000000, 0.000000, 0.000000, 0.000000), (0.000000, 1.000000, 0.000000, 0.000000), (0.000000, 0.000000, 1.000000, 0.000000), (0.000000, 0.000000, -10.000000, 1.000000))
+
+*/
