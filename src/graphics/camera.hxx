@@ -13,13 +13,6 @@
 
 using namespace glm;
 
- //container strcut for light information
-struct Sunlight {
-  vec3 lightDir;
-  vec3 lightInten;
-  vec3 lightAmb;
-};
-
 class Camera {
   public:
 
@@ -40,10 +33,11 @@ class Camera {
     float near () const { return this->_nearZ; }
   //! the distance to the far plane of the view frustum
     float far () const { return this->_farZ; }
-  //! the aspect ratio of the viewport (height/width)
-    float aspect () const { return this->_aspect; }
   //! the horizontal field-of-view of the view frustum
     float fov () const { return degrees(2.0 * this->_halfFOV); }
+
+    inline void setNear(float near)     { this->_nearZ = near; }
+    inline void setFar(float far)       { this->_farZ = far; }
 
     void setUp(vec3 const &up);
 
@@ -58,7 +52,7 @@ class Camera {
     mat4 ModelViewMatrix () const;
 
   //! the projection transform for the camera
-    mat4 projTransform () const;
+    mat4 projTransform (float aspect) const;
 
   //! update the camera for the aspect ratio of the given viewport.  This operation changes
   //! the aspect ratio, but not the field of view.
@@ -132,7 +126,6 @@ class Camera {
     vec3    _up;        //! camera up vector
     float       _nearZ;     //!< distance to the near plane
     float       _farZ;      //!< distance to the far plane
-    float       _aspect;    //! the aspect ratio of the viewport (height / width)
     float       _halfFOV;   //!< horizontal field of view / 2 (in radians)
     mutable float   _errorFactor;   //!< viewport width/(2 * tan(_halfFOV)); set to -1 when invalid
     int         _wid;       //!< the width of the viewport

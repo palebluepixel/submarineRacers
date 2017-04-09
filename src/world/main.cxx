@@ -10,6 +10,7 @@
 #include <graphics/shader.hxx>
 #include <graphics/camera.hxx>
 #include <graphics/renderer.hxx>
+#include <graphics/view.hxx>
 
 static const struct
 {
@@ -21,6 +22,24 @@ static const struct
     {  0.6f, -0.4f, 0.f, 1.f, 0.f },
     {   0.f,  0.6f, 0.f, 0.f, 1.f }
 };
+
+static vec3 cubeVertices[8]= {vec3(-1.0f,  -1.0f,  1.0f), //0
+                   vec3 (-1.0f,  1.0f,  1.0f), //1
+                   vec3 ( 1.0f,  1.0f,  1.0f), //2
+                   vec3( 1.0f,  -1.0f,  1.0f), //3
+                   vec3 (-1.0f,  -1.0f, -1.0f), //4
+                   vec3 (-1.0f,  1.0f, -1.0f), //5
+                   vec3 ( 1.0f,  1.0f, -1.0f), //6
+                   vec3 ( 1.0f,  -1.0f, -1.0f)}; //7 
+/* the indices that allow us to create the cube. */ 
+static const uint32_t cubeIndices[36] = {
+    0,2,1,  0,3,2,
+    4,3,0,  4,7,3,
+    4,1,5,  4,0,1,
+    3,6,2,  3,7,6,
+    1,6,5,  1,2,6,
+    7,5,6,  7,4,5
+  }; 
 
 static void error_callback(int error, const char* description){
     fprintf(stderr, "Error: %s\n", description);
@@ -51,16 +70,12 @@ GLFWwindow* window;
 
 int main(void){
 
-    // Remove these lines...
-    GLuint vertex_buffer;
-    GLint mvp_location, vpos_location, vcol_location;
-
     // Initialize GLFW
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
         Error::error("glfwInit failed",1);
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
     if (!window){
@@ -72,7 +87,7 @@ int main(void){
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent (window);
 
     // initialize GLEW
     glewExperimental = GL_TRUE;
@@ -84,62 +99,71 @@ int main(void){
 
     glfwSwapInterval(1);
 
-    // OpenGL array stuff (TODO: error checks)
-
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     // set up shaders.
-
-    Shader shader;
-    shader.addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/simple.vert"));
-    shader.addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/simple.frag"));
-    shader.build();
-
-    mvp_location = glGetUniformLocation(!shader, "MVP");
-    vpos_location = glGetAttribLocation(!shader, "vPos");
-    vcol_location = glGetAttribLocation(!shader, "vCol");
-    
-    glEnableVertexAttribArray(vpos_location);
-    glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 5, (void*) 0);
-    glEnableVertexAttribArray(vcol_location);
-    glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 5, (void*) (sizeof(float) * 2));
+    Shader *shader = new Shader();
+    shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/shader.vert"));
+    shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/shader.frag"));
+    shader->build();
 
     //initalize camera
     Camera *camera = new Camera();
-    camera->init(vec3(0,0,2),vec3(0,0,0),vec3(0,1,0));
+    camera->init(vec3(6,9,4.20),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
-    while (!glfwWindowShouldClose(window)){
-        int width, height;
+    //create an example mesh
+    Mesh *test = new Mesh(GL_TRIANGLES);
+    test->LoadVertices(8, cubeVertices);
+    test->LoadIndices(36, cubeIndices);
+    test->color = vec4(0.1f, 0.9f, 0.5f, 1.0f);
 
+    Renderer *r = new FlatShadingRenderer(shader);
+
+
+    while (!glfwWindowShouldClose(window)){
+        //window setup
+        int width, height;
         glfwGetFramebufferSize(window, &width, &height);
-        camera->setViewport(width, height);
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        mat4 Projection = camera->projTransform();
+        // calculate matricies to transform us from object space to view space
+        mat4 Projection = camera->projTransform((float) width / (float) height);
         mat4 View = camera->viewTransform();
-          
-        // Model matrix : an identity matrix (model will be at the origin)
-        glm::mat4 Model = glm::mat4();
 
-        // Our ModelViewProjection : multiplication of our 3 matrices
-        glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
+        //setup
+        shader->use();
+        r->Enable (Projection);
 
-        shader.use();
-        //glUniformMatrix4fv(mvp_location, 1, GL_FALSE, value_ptr(mvp));
-        setUniform(mvp_location, mvp);
-        //shader.setUniformByName("MVP", mvp);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //render an object
+        r->Render(View,test);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+
+
     glfwDestroyWindow(window);
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
+
+
+
+
+
+
+
+/*
+projection: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
+model view: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, 9.819819, 10.000000))
+color: vec4(0.100000, 0.900000, 0.500000, 1.000000)
+*/
+
+
+/* 
+projection: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
+model view: mat4x4((1.000000, 0.000000, 0.000000, 0.000000), (0.000000, 1.000000, 0.000000, 0.000000), (0.000000, 0.000000, 1.000000, 0.000000), (0.000000, 0.000000, -10.000000, 1.000000))
+
+*/

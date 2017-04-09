@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <graphics/renderer.hxx>
 
 #define ALL_GOOD 0
 #define STATE_ENUM_START ALL_GOOD + 1
@@ -78,17 +79,18 @@ private:
 
     /* Uncomment stuff as it is implemented */
 
-    //Levels
-    //Level * activeLevel;
-    //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
+    //View: rendering information, camera, skybox, ground, sun, etc
+    //View *view;
+    Renderer **renderers;
+
+    //ActiveLevel: all entities in the world, world boundaries, etc
+    //ActiveLevel * activeLevel;
+        //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
+        //Submarine ** subs;
     int loadLevel();
 
     //Players
     //Player ** players;
-
-    //subs
-    //Submarine ** subs;
-    // A sub object has a player or AI associated with it
 
 
     //reset
