@@ -135,7 +135,7 @@ int main(void){
     view->setFOV(90);
     view->setNear(0.1);
     view->setFar(100.0);
-    view->setSunlight(vec3(0, -1, 0), vec3(0.8, 0.8, 0.8), vec3(0.2, 0.2, 0.2));
+    view->setSunlight(vec3(0, 1, 0), vec3(0.8, 0.8, 0.8), vec3(0.2, 0.2, 0.2));
 
     //create an example mesh
     //Mesh *test = new Mesh(GL_TRIANGLES);
