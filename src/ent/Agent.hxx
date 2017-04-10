@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //!_ENTITY_HXX_
+#endif

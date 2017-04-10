@@ -81,6 +81,7 @@ protected:
     bool drawable;
 };
 
+//TODO remove this
 #include "Agent.hxx"
 
 #endif //!_ENTITY_HXX_

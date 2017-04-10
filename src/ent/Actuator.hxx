@@ -13,9 +13,21 @@ the agent's update tick, and updates it according to it's steering state.
 
 #include "Agent.hxx"
 
+template <typename Agent_Type>
+class Actuator;
 
 template<typename Agent_Type>
-struct SteeringState {};
+struct SteeringState {
+    friend class Actuator<Agent_Type>;
+
+public:
+    SteeringState() {
+        reset();
+    }
+
+private:
+    virtual void reset() {}
+};
 
  
 template <typename Agent_Type>
@@ -26,36 +38,11 @@ public:
 
     // abstract function providing interface framework.
     void doSteering();
-    //Should the agent pass itself into this instead?
    
 protected:
-    Agent_Type *agent;    // See comment under doSteering
-    SteeringState<Agent_Type> steeringState;
+    Agent_Type *agent;
+    SteeringState<Agent_Type> state;
 };
-
-
-
-
-
-/*template <>
-class Actuator <TestAgent> {
-public:
-    Actuator(TestAgent *agent) {
-
-        this->agent = agent;
-        //steeringState = new SteeringState<Agent_Type>();
-    }
-
-    // pure virtual function providing interface framework.
-    void doSteering() {
-        agent->x = 5;
-    }
-    //Should the agent pass itself into this instead?
-   
-protected:
-    TestAgent *agent;    // See comment under doSteering
-    //SteeringState<TestAgent> steeringState;
-};*/
 
 
 #endif
