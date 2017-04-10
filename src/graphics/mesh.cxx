@@ -4,6 +4,7 @@
  * should match these values.
  */
 const GLint CoordAttrLoc = 0;   //!< location of vertex coordinates attribute
+const GLint NormAttrLoc = 1;
 
 //! create a MeshInfo object by initializing its buffer Ids.  The buffer data is
 //! loaded separately.
@@ -37,12 +38,25 @@ void Mesh::LoadIndices (int n, const uint32_t *indices)
     glEnableVertexAttribArray(CoordAttrLoc);
 }
 
-void Mesh::Draw ()
+//! initalize the vertex array for the normals
+void Mesh::LoadNormals (int nVerts, vec3 *norms){
+  glBindVertexArray (this->vaoId);
+  glGenBuffers (1, &this->nbufId);
+  glBindBuffer (GL_ARRAY_BUFFER, this->nbufId);
+  glBufferData (GL_ARRAY_BUFFER, nVerts*sizeof(vec3), norms, GL_STATIC_DRAW);
+  glNormalPointer(GL_FLOAT, sizeof(float)*3, 0);//(const GLvoid *)(sizeof(float) * 3));
+  glEnableVertexAttribArray(NormAttrLoc);
+}
+
+void Mesh::Draw (bool forceWireframe)
 {
     glBindVertexArray(this->vaoId);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbufId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibufId);
 
-    glDrawElements (this->prim, this->nIndicies, GL_UNSIGNED_INT, 0);
+    if (! forceWireframe)
+        glDrawElements (this->prim, this->nIndicies, GL_UNSIGNED_INT, 0);
+    else
+        glDrawElements(GL_LINES, this->nIndicies, GL_UNSIGNED_INT, 0);
 
 }

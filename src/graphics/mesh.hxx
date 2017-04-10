@@ -13,8 +13,9 @@ struct Mesh {
 
 
     GLuint vaoId;
-    GLuint vbufId;
-    GLuint ibufId;
+    GLuint vbufId; //vertices
+    GLuint ibufId; //indices
+    GLuint nbufId; //normals
     GLenum prim;
     int nIndicies;
 
@@ -28,8 +29,11 @@ struct Mesh {
   //! initialize the element array for the mesh
     void LoadIndices (int n, const uint32_t *indices);
 
+  //! initalize the vertex array for the normals
+    void LoadNormals (int nVerts, vec3 *norms);
+
   //! draw the mesh using a glDrawElements call
-    void Draw ();
+    void Draw (bool forceWireframe);
 
 };
 

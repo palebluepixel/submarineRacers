@@ -1,3 +1,5 @@
+#define SHOWWIREFRAME true
+
 
 #include "renderer.hxx"
 #include <stdio.h>
@@ -9,25 +11,19 @@
 Renderer::Renderer (Shader *sh)
     : _shader(sh)
 { 
-      projectionLoc = _shader->getUniformLocation("projection");
-      modelViewLoc = _shader->getUniformLocation ("modelView");
-      colorLoc = _shader->getUniformLocation("color");
+  //positionLoc = glGetAttribLocation(_shader->ID(), "aPosition");
+  projectionLoc = _shader->getUniformLocation("projection");
+  modelViewLoc = _shader->getUniformLocation ("modelView");
+  colorLoc = _shader->getUniformLocation("color");
 }
 
 Renderer::~Renderer ()
 { }
 
-void Renderer::Render (mat4 const &modelViewMat, Mesh *mesh)
+void Renderer::Enable ()
 {
-
-  //std::cout << "model view: " << glm::to_string(modelViewMat) << "\ncolor: " << glm::to_string(mesh->color) << "\n";
-
-    setUniform(modelViewLoc, modelViewMat);
-    setUniform(colorLoc, mesh->color);
-    mesh->Draw();
-
+  _shader->use();
 }
-
 
 
 
@@ -40,9 +36,66 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
-void FlatShadingRenderer::Enable (mat4 const &projectionMat)
+void FlatShadingRenderer::Render (View *view, Mesh *mesh)
 {
-  _shader->use();
-  //std::cout << "projection: " << glm::to_string(projectionMat) << "\n";
-  setUniform(projectionLoc,projectionMat);
+
+  //std::cout << "model view: " << glm::to_string(modelViewMat) << "\ncolor: " << glm::to_string(mesh->color) << "\n";
+
+  mat4 projectionMat = view->projectionMatrix();
+  mat4 modelMat = mat4(); //identity matrix, will eventually be gameEntity translation matrix? 
+  mat4 viewMat = view->viewMatrix();
+
+  //std::cout << "view matrix: " << glm::to_string(viewMat * modelMat) << "\n";
+  //std::cout << "projection matrix: " << glm::to_string(projectionMat) << "\n";
+
+  setUniform(modelViewLoc, viewMat * modelMat);
+  setUniform(projectionLoc, projectionMat);
+  setUniform(colorLoc, mesh->color);
+  mesh->Draw(false);
+
+  //also show wireframe for debugging
+  if(SHOWWIREFRAME){
+    setUniform(colorLoc, vec4(1,1,1,1));
+    mesh->Draw(true);
+  }
+
+}
+
+
+
+/*==================== class SunlightShadingRenderer member functions======================*/
+
+SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
+    : Renderer (sh)
+{ 
+  lightDirLoc = _shader->getUniformLocation("lightDir");
+  lightIntenLoc = _shader->getUniformLocation("lightInten");
+  lightAmbLoc = _shader->getUniformLocation("lightAmb");
+}
+
+SunlightShadingRenderer::~SunlightShadingRenderer()
+{ }
+
+void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
+{
+  mat4 projectionMat = view->projectionMatrix();
+  mat4 modelMat = mat4();
+  mat4 viewMat = view->viewMatrix();
+
+  Sunlight sun = view->getSunlight();
+  setUniform(lightDirLoc,   sun.lightDir);
+  setUniform(lightIntenLoc, sun.lightInten);
+  setUniform(lightAmbLoc,   sun.lightAmb);
+
+  setUniform(modelViewLoc, viewMat * modelMat);
+  setUniform(projectionLoc, projectionMat);
+  setUniform(colorLoc, mesh->color);
+  mesh->Draw(false);
+
+  //also show wireframe for debugging
+  if(SHOWWIREFRAME){
+    setUniform(colorLoc, vec4(1,1,1,1));
+    mesh->Draw(true);
+  }
+
 }

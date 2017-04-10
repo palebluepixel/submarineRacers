@@ -10,28 +10,46 @@
 #include <graphics/shader.hxx>
 #include <graphics/camera.hxx>
 #include <graphics/renderer.hxx>
-#include <graphics/view.hxx>
+#include <graphics/cube.hxx>
 
-static const struct
-{
-    float x, y;
-    float r, g, b;
-} vertices[3] =
-{
-    { -0.6f, -0.4f, 1.f, 0.f, 0.f },
-    {  0.6f, -0.4f, 0.f, 1.f, 0.f },
-    {   0.f,  0.6f, 0.f, 0.f, 1.f }
-};
+/*static vec3 cubeVertices[24]= {
+    vec3(-1.0f,  -1.0f,  1.0f), // 0 - 0
+    vec3(-1.0f,  -1.0f,  1.0f),
+    vec3(-1.0f,  -1.0f,  1.0f),
 
-static vec3 cubeVertices[8]= {vec3(-1.0f,  -1.0f,  1.0f), //0
-                   vec3 (-1.0f,  1.0f,  1.0f), //1
-                   vec3 ( 1.0f,  1.0f,  1.0f), //2
-                   vec3( 1.0f,  -1.0f,  1.0f), //3
-                   vec3 (-1.0f,  -1.0f, -1.0f), //4
-                   vec3 (-1.0f,  1.0f, -1.0f), //5
-                   vec3 ( 1.0f,  1.0f, -1.0f), //6
-                   vec3 ( 1.0f,  -1.0f, -1.0f)}; //7 
-/* the indices that allow us to create the cube. */ 
+    vec3 (-1.0f,  1.0f,  1.0f), // 1 - 3
+    vec3 (-1.0f,  1.0f,  1.0f),
+    vec3 (-1.0f,  1.0f,  1.0f),
+
+    vec3 ( 1.0f,  1.0f,  1.0f), // 2 - 6
+    vec3 ( 1.0f,  1.0f,  1.0f),
+    vec3 ( 1.0f,  1.0f,  1.0f),
+
+    vec3( 1.0f,  -1.0f,  1.0f), // 3 - 9
+    vec3( 1.0f,  -1.0f,  1.0f),
+    vec3( 1.0f,  -1.0f,  1.0f),
+
+    vec3 (-1.0f,  -1.0f, -1.0f), // 4 - 12 
+    vec3 (-1.0f,  -1.0f, -1.0f),
+    vec3 (-1.0f,  -1.0f, -1.0f),
+
+    vec3 (-1.0f,  1.0f, -1.0f), // 5 - 15
+    vec3 (-1.0f,  1.0f, -1.0f),
+    vec3 (-1.0f,  1.0f, -1.0f),
+
+    vec3 ( 1.0f,  1.0f, -1.0f), // 6 - 18
+    vec3 ( 1.0f,  1.0f, -1.0f),
+    vec3 ( 1.0f,  1.0f, -1.0f),
+
+    vec3 ( 1.0f,  -1.0f, -1.0f), // 7 - 21
+    vec3 ( 1.0f,  -1.0f, -1.0f),
+    vec3 ( 1.0f,  -1.0f, -1.0f),
+}; //7 
+
+static vec3 cubeNormals[24] = {
+
+}
+
 static const uint32_t cubeIndices[36] = {
     0,2,1,  0,3,2,
     4,3,0,  4,7,3,
@@ -39,7 +57,7 @@ static const uint32_t cubeIndices[36] = {
     3,6,2,  3,7,6,
     1,6,5,  1,2,6,
     7,5,6,  7,4,5
-  }; 
+  }; */
 
 static void error_callback(int error, const char* description){
     fprintf(stderr, "Error: %s\n", description);
@@ -101,8 +119,8 @@ int main(void){
 
     // set up shaders.
     Shader *shader = new Shader();
-    shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/shader.vert"));
-    shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/shader.frag"));
+    shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/lightshader.vert"));
+    shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/lightshader.frag"));
     shader->build();
 
     //initalize camera
@@ -111,13 +129,24 @@ int main(void){
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
-    //create an example mesh
-    Mesh *test = new Mesh(GL_TRIANGLES);
-    test->LoadVertices(8, cubeVertices);
-    test->LoadIndices(36, cubeIndices);
-    test->color = vec4(0.1f, 0.9f, 0.5f, 1.0f);
+    //create view
+    View *view = new View(window);
+    view->addCamera(camera);
+    view->setFOV(90);
+    view->setNear(0.1);
+    view->setFar(100.0);
+    view->setSunlight(vec3(0, -1, 0), vec3(0.8, 0.8, 0.8), vec3(0.2, 0.2, 0.2));
 
-    Renderer *r = new FlatShadingRenderer(shader);
+    //create an example mesh
+    //Mesh *test = new Mesh(GL_TRIANGLES);
+    //test->LoadVertices(8, cubeVertices);
+    //test->LoadIndices(36, cubeIndices);
+    //test->color = vec4(0.1f, 0.9f, 0.5f, 1.0f);
+
+    Cube *testcube = new Cube();
+
+    //Renderer *r = new FlatShadingRenderer(shader);
+    Renderer *r = new SunlightShadingRenderer(shader);
 
 
     while (!glfwWindowShouldClose(window)){
@@ -128,15 +157,23 @@ int main(void){
         glClear(GL_COLOR_BUFFER_BIT);
 
         // calculate matricies to transform us from object space to view space
-        mat4 Projection = camera->projTransform((float) width / (float) height);
-        mat4 View = camera->viewTransform();
-
+        /*mat4 p = camera->projTransform((float) width / (float) height);
+        mat4 v = camera->viewTransform();
+        std::cout << "correct view matrix: " << glm::to_string(v) << "\n";
+        std::cout << "correct projection matrix: " << glm::to_string(p) << "\n";
+        std::cout << "\n\n real aspect: " << (float) width << " " << (float) height << " "  << (float) width / (float) height;
+        std::cout << "\n fake aspect: " << view->getWid() << " " << view->getHt() << " " << (float)view->getAspect() << "\n";
+        */
         //setup
-        shader->use();
-        r->Enable (Projection);
+        //shader->use();
+        r->Enable ();
 
         //render an object
-        r->Render(View,test);
+        //r->Render(view,test);
+        int i;
+        for(i=0; i<6; i++)
+            r->Render(view, testcube->meshes[i]);
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -166,4 +203,14 @@ color: vec4(0.100000, 0.900000, 0.500000, 1.000000)
 projection: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
 model view: mat4x4((1.000000, 0.000000, 0.000000, 0.000000), (0.000000, 1.000000, 0.000000, 0.000000), (0.000000, 0.000000, 1.000000, 0.000000), (0.000000, 0.000000, -10.000000, 1.000000))
 
+*/
+/*
+projection matrix: mat4x4((2.414213, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
+view matrix: mat4x4((0.573462, -0.635422, 0.517088, 0.000000), (0.000000, 0.631186, 0.775632, 0.000000), (-0.819232, -0.444795, 0.361961, 0.000000), (0.000000, -0.000000, -11.603448, 1.000000))
+
+
+correct view matrix: mat4x4((0.573462, -0.635422, 0.517088, 0.000000), (0.000000, 0.631186, 0.775632, 0.000000), (-0.819232, -0.444795, 0.361961, 0.000000), (-0.000000, -0.000000, -11.603448, 1.000000))
+correct projection matrix: mat4x4((1.810660, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
+view matrix: mat4x4((0.573462, -0.635422, 0.517088, 0.000000), (0.000000, 0.631186, 0.775632, 0.000000), (-0.819232, -0.444795, 0.361961, 0.000000), (0.000000, -0.000000, -11.603448, 1.000000))
+projection matrix: mat4x4((2.414213, 0.000000, 0.000000, 0.000000), (0.000000, 2.414213, 0.000000, 0.000000), (0.000000, 0.000000, -1.002002, -1.000000), (0.000000, 0.000000, -0.200200, 0.000000))
 */

@@ -7,11 +7,13 @@ View::View(GLFWwindow *win)
     glfwGetFramebufferSize(win, &width, &height);
     this->ht = height;
     this->wid = width;
-    this->updateAspect();
+    this->aspect = (float) wid / (float) height;
 
     this->nCameras = 0;
     this->maxCameras = NCAMS;
     this->cameras = new Camera*[this->maxCameras];
+
+    this->sunlight = Sunlight();
 }
 
 View::~View(){}
