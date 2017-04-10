@@ -51,19 +51,10 @@ mat4 Camera::ModelViewMatrix () const
 }
 
 // the projection transform for the camera
-mat4 Camera::projTransform () const
+mat4 Camera::projTransform (float aspect) const
 {
     //printf("%f, %f, %f, %f\n", this->_halfFOV, this->_aspect, this->_nearZ, this->_farZ);
-    return perspective(this->_halfFOV, this->_aspect, this->_nearZ, this->_farZ);
-}
-
-// update the camera for the aspect ratio of the given viewport.  This operations will change
-// the aspect ratio, but not the field of view.
-void Camera::setViewport (int wid, int ht)
-{
-    this->_errorFactor = -1.0f;  // mark the error factor as invalid
-    this->_aspect = float(wid) / float(ht);
-    this->_wid = wid;
+    return perspective(this->_halfFOV, aspect, this->_nearZ, this->_farZ);
 }
 
 // set the horizontal field of view in degrees
