@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <graphics/renderer.hxx>
 
 #define ALL_GOOD 0
@@ -62,6 +64,12 @@ public:
     // based on time, e.g. race timer running down or status conditions ending
     int handleTimerTic(float t, float dt);
 
+    //View: rendering information, camera, skybox, ground, sun, etc
+    View *view;
+    Renderer **renderers;
+
+    GLFWwindow *window;
+
 private:
     WorldState state;
 
@@ -79,10 +87,6 @@ private:
 
     /* Uncomment stuff as it is implemented */
 
-    //View: rendering information, camera, skybox, ground, sun, etc
-    //View *view;
-    Renderer **renderers;
-
     //ActiveLevel: all entities in the world, world boundaries, etc
     //ActiveLevel * activeLevel;
         //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
@@ -95,6 +99,7 @@ private:
 
     //reset
     void fatalError();
+    void quit();   
 
 };
 

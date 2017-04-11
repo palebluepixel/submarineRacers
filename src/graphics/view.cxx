@@ -1,4 +1,6 @@
 #include "view.hxx"
+#include <stdio.h>
+#include <stdlib.h>
 
 View::View(GLFWwindow *win)
 {

@@ -11,6 +11,8 @@
 #include <graphics/camera.hxx>
 #include <graphics/renderer.hxx>
 #include <graphics/cube.hxx>
+#include <world/world.hxx>
+#include <userinput/callbacks.hxx>
 
 int keyboard[350];
 int mouse[8];
@@ -35,7 +37,6 @@ static void cursorpos_callback(GLFWwindow* window, double xpos, double ypos){
 }
 
 
-
 GLFWwindow *initalizeGLFW()
 {
     glfwSetErrorCallback(error_callback);
@@ -54,6 +55,7 @@ GLFWwindow *initalizeGLFW()
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
+    glfwSetKeyCallback (window, KeyCallback);
     glfwMakeContextCurrent (window);
 
     // initialize GLEW
@@ -72,7 +74,14 @@ GLFWwindow *initalizeGLFW()
 
 int main(void){
 
+    World * world = new World();
+
     GLFWwindow *window = initalizeGLFW();
+    world->window = window;
+
+    //associate the window with our world struct so window callbacks
+    //can easily find the world state using glfwGetWindowUserPointer(window)
+    glfwSetWindowUserPointer(window, world);
 
     // set up shaders.
     Shader *shader = new Shader();
@@ -91,6 +100,7 @@ int main(void){
 
     //create view
     View *view = new View(window);
+    world->view = view;
     view->addCamera(camera);
     view->setFOV(90);
     view->setNear(0.1);
