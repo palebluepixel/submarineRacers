@@ -16,6 +16,7 @@ View::View(GLFWwindow *win)
     this->cameras = new Camera*[this->maxCameras];
 
     this->sunlight = Sunlight();
+    this->fog = Fog();
 }
 
 View::~View(){}

@@ -73,6 +73,11 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
   lightDirLoc = _shader->getUniformLocation("lightDir");
   lightIntenLoc = _shader->getUniformLocation("lightInten");
   lightAmbLoc = _shader->getUniformLocation("lightAmb");
+
+  fogOnLoc = _shader->getUniformLocation("fogOn");
+  fogColorLoc = _shader->getUniformLocation("fogColor");
+  fogDensityLoc = _shader->getUniformLocation("fogDensity");
+  fogStartLoc = _shader->getUniformLocation("fogStart");
 }
 
 SunlightShadingRenderer::~SunlightShadingRenderer()
@@ -88,9 +93,31 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(lightIntenLoc, sun.lightInten);
   setUniform(lightAmbLoc,   sun.lightAmb);
 
+  Fog fog = view->getFog();
+  setUniform(fogOnLoc, fog.fogOn);
+  setUniform(fogColorLoc, fog.fogColor);
+  setUniform(fogDensityLoc, fog.fogDensity);
+  setUniform(fogStartLoc, fog.fogStart);
+
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh->color);
   mesh->draw();
 
 }
+
+
+
+
+
+/*==================== class UnderwaterRenderer member functions======================*/
+
+UnderwaterRenderer::UnderwaterRenderer (Shader *sh)
+    : SunlightShadingRenderer(sh)
+{ }
+
+UnderwaterRenderer::~UnderwaterRenderer()
+{ }
+
+void UnderwaterRenderer::Render(View *view, Mesh *mesh)
+{ }

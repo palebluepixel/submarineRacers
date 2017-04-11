@@ -60,6 +60,19 @@ class SunlightShadingRenderer : public Renderer {
     GLint lightDirLoc;
     GLint lightIntenLoc;
     GLint lightAmbLoc;
+    GLint fogOnLoc;
+    GLint fogColorLoc;
+    GLint fogDensityLoc;
+    GLint fogStartLoc;
+};
+
+class UnderwaterRenderer : public SunlightShadingRenderer {
+  public:
+    UnderwaterRenderer(Shader *sh);
+    ~UnderwaterRenderer();
+
+    void Render(View *view, Mesh *mesh);
+
 };
 
 #endif // !_RENDER_HXX_

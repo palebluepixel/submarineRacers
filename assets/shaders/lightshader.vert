@@ -8,9 +8,13 @@ in vec3 position;
 in vec3 normal;
 
 varying vec3 fragmentNormal; 
+varying float distToCam;
 
 void main (void)
 {
-    gl_Position =  projection * modelView * model * vec4(position,1.0);
+    vec4 position = projection * modelView * model * vec4(position,1.0);
     fragmentNormal = normal;
+
+    distToCam = -position.z;
+    gl_Position = position;
 }

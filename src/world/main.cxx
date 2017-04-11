@@ -108,6 +108,7 @@ int main(void){
     view->setNear(0.1);
     view->setFar(100.0);
     view->setSunlight(vec3(0, 0.3, 0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
+    view->setFog(1, vec3(0, 0.3, 0.5), 0.05f, 5.0);
 
     //create test object
     Cube *testcube = new Cube(vec3(-1,2,0), mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
@@ -118,6 +119,7 @@ int main(void){
         //window setup
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
+        glClearColor(0, 0.3, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         r->Enable ();
