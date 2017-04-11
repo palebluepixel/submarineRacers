@@ -1,7 +1,8 @@
 #ifndef _RENDER_HXX_
 #define _RENDER_HXX_
 
-#include "mesh.hxx"
+#include "view.hxx"
+#include <ent/Entity.hxx>
 #include "shader.hxx"
 
 using namespace glm;
@@ -13,33 +14,52 @@ class Renderer {
 
   //! enable the renderer
   //! \param projectMat the projection matrix for the current camera state
-    virtual void Enable (mat4 const &projectionMat) = 0;
+    void Enable ();
 
   //! render a mesh using this renderer
   //! \param modelViewMat the model-view matrix for the mesh and camera
   //! \param mesh the mesh to be rendered
-    void Render (mat4 const &modelViewMat, Mesh *mesh);
+    void Render (View *view, Entity *entity);
+    virtual void Render (View *view, Mesh *mesh) = 0;
+
 
     virtual ~Renderer ();
 
   protected:
     Shader  *_shader; //!< the shader program
 
+    GLint positionLoc;
     GLint projectionLoc;
     GLint modelViewLoc;
     GLint colorLoc;
+    GLint modelLoc;
 
     
     Renderer (Shader *sh);
 
 };
+
+
 class FlatShadingRenderer : public Renderer {
   public:
     FlatShadingRenderer (Shader *sh);
-    virtual ~FlatShadingRenderer ();
+    ~FlatShadingRenderer ();
 
-    void Enable (mat4 const &projectionMat);
+    void Render (View *view, Mesh *mesh);
+};
 
+
+class SunlightShadingRenderer : public Renderer {
+  public:
+    SunlightShadingRenderer(Shader *sh);
+    ~SunlightShadingRenderer();
+
+    void Render (View *view, Mesh *mesh);
+
+  protected:
+    GLint lightDirLoc;
+    GLint lightIntenLoc;
+    GLint lightAmbLoc;
 };
 
 #endif // !_RENDER_HXX_

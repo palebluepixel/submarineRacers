@@ -4,6 +4,7 @@
  * should match these values.
  */
 const GLint CoordAttrLoc = 0;   //!< location of vertex coordinates attribute
+const GLint NormAttrLoc = 1;
 
 //! create a MeshInfo object by initializing its buffer Ids.  The buffer data is
 //! loaded separately.
@@ -15,7 +16,7 @@ Mesh::Mesh(GLenum p)
 }
 
 //! initialize the vertex data buffers for the mesh
-void Mesh::LoadVertices (int nVerts, const vec3 *verts)
+void Mesh::loadVertices (int nVerts, const vec3 *verts)
 {
     glBindVertexArray(this->vaoId);
     glGenBuffers(1, &this->vbufId);
@@ -26,7 +27,7 @@ void Mesh::LoadVertices (int nVerts, const vec3 *verts)
 }
 
 //! initialize the element array for the mesh
-void Mesh::LoadIndices (int n, const uint32_t *indices)
+void Mesh::loadIndices (int n, const uint32_t *indices)
 {
     this->nIndicies = n; 
     glBindVertexArray (this->vaoId);
@@ -37,7 +38,17 @@ void Mesh::LoadIndices (int n, const uint32_t *indices)
     glEnableVertexAttribArray(CoordAttrLoc);
 }
 
-void Mesh::Draw ()
+//! initalize the vertex array for the normals
+void Mesh::loadNormals (int nVerts, vec3 *norms){
+  glBindVertexArray (this->vaoId);
+  glGenBuffers (1, &this->nbufId);
+  glBindBuffer (GL_ARRAY_BUFFER, this->nbufId);
+  glBufferData (GL_ARRAY_BUFFER, nVerts*sizeof(vec3), norms, GL_STATIC_DRAW);
+  glVertexAttribPointer(NormAttrLoc, 3, GL_FLOAT, GL_FALSE, sizeof(vec3), ((GLvoid*) 0));
+  glEnableVertexAttribArray(NormAttrLoc);
+}
+
+void Mesh::draw ()
 {
     glBindVertexArray(this->vaoId);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbufId);

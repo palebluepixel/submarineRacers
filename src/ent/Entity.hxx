@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <graphics/mesh.hxx>
 
 using namespace glm;
 using namespace Space;
@@ -36,33 +37,42 @@ class Entity {
 
 public:
 
-    Entity(vec2 initial_position, mat3 initial_orientation, int id, char*name, 
+    Entity(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
     ~Entity();
 
-    vec2 setPosition(vec2 pos);
+    vec3 setPosition(vec3 pos);
     mat3 setOrientation(mat3 ori);
     EntityType setEntityType(EntityType type);
     int setID(int id);
     char* setName(char* name);
 
     //overwrite client data with server
-    virtual int overwrite(vec2 pos, mat3 ori);
+    virtual int overwrite(vec3 pos, mat3 ori);
     //creates server message describing current pos and ori
     virtual int prepare_message_segment();
 
     //physics tick behavior
-    virtual int on_tick();
+    virtual int onTick();
 
     EntityStatus status;
     //change object's status to spawned and place it in its intial position
     virtual EntityStatus spawn();
 
+    //return the model matrix to translate and rotate this object in world-space
+    mat4 modelMatrix();
+
+
+    //Render all meshes to screen
+    void drawEntity();
+
+    inline int getNMeshes() { return this->nMeshes; }
+    Mesh ** meshes;
 
 protected:
 
-    vec2 position;
-    vec2 initial_position;
+    vec3 position;
+    vec3 initial_position;
 
     mat3 orientation;    
     mat3 initial_orientation;
@@ -76,7 +86,15 @@ protected:
 
     float tick_interval;
 
+    bool collidable;
+    bool movable;
+    bool drawable;
+
+    //allow objects to be composed of multiple meshes
+    int nMeshes;
 };
 
+//TODO remove this
+#include "Agent.hxx"
 
 #endif //!_ENTITY_HXX_

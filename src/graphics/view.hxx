@@ -13,6 +13,7 @@
     * etc
 */
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "camera.hxx"
 
@@ -56,10 +57,19 @@ public:
 
     inline int   getWid()               { return this->wid; }
     inline int   getHt()                { return this->ht; }
-    inline int   getAspect()            { return this->aspect; }
+    inline float getAspect()            { return this->aspect; }
 
     inline mat4  projectionMatrix()     { return this->activeCamera()->projTransform(this->getAspect()); }
     inline mat4  viewMatrix()           { return this->activeCamera()->ModelViewMatrix(); }
+
+
+    //sunlight
+    inline Sunlight getSunlight()       { return this->sunlight; }
+    inline void     setSunlight(vec3 lightDir, vec3 lightInten, vec3 lightAmb) 
+                    {this->sunlight.lightDir = lightDir; this->sunlight.lightInten = lightInten; 
+                        this->sunlight.lightAmb = lightAmb;}
+
+
 
 private:    
     GLFWwindow *win;
@@ -72,11 +82,11 @@ private:
     int wid, ht; //window dimensions
     float aspect;
 
-    inline void updateAspect() {this->aspect = ht>0 ? (float) wid / (float) ht : -1.0f; }
+    inline void updateAspect() {this->aspect = (ht!=0.0f ? (float) wid / (float) ht : -6.9f); }
 
     // Uncomment as they are implemented
     // Skybox * currentSky;
-    // Sunlight * currentSun;
+    Sunlight sunlight;
     // Ground * currentGround;
     // view frustum
     // float fog;

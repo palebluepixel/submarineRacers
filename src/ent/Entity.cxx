@@ -1,8 +1,8 @@
-#include "entity.hxx"
+#include "Entity.hxx"
 
 using namespace glm;
 
-Entity::Entity(vec2 initial_position, mat3 initial_orientation, int id, char*name, 
+Entity::Entity(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
     EntityType type, EntityStatus status, float tick_interval)
 {
     this->initial_position = initial_position;
@@ -15,6 +15,9 @@ Entity::Entity(vec2 initial_position, mat3 initial_orientation, int id, char*nam
 
     this->position = this->initial_position;
     this->orientation = this->initial_orientation;
+
+    this->nMeshes = 0;
+    this->meshes = NULL;
 }
 
 Entity::~Entity()
@@ -23,9 +26,9 @@ Entity::~Entity()
 }
 
 
-vec2 Entity::Entity::setPosition(vec2 pos)
+vec3 Entity::Entity::setPosition(vec3 pos)
 {
-    vec2 old = this->position;
+    vec3 old = this->position;
     this->position = pos;
     return old;
 }
@@ -60,7 +63,7 @@ char* Entity::setName(char* name)
 }
 
 //overwrite client data with server
-int Entity::overwrite(vec2 pos, mat3 ori)
+int Entity::overwrite(vec3 pos, mat3 ori)
 {
     this->setPosition(pos);
     this->setOrientation(ori);
@@ -75,7 +78,7 @@ int Entity::prepare_message_segment()
 }
 
 //physics tick behavior
-int Entity::on_tick()
+int Entity::onTick()
 {
     return 0;
 }
@@ -87,4 +90,22 @@ EntityStatus Entity::spawn()
     EntityStatus old = this->status;
     this->status = SPAWNED;
     return old;
+}
+
+mat4 Entity::modelMatrix()
+{
+    //TODO: rotation
+    mat4 model = mat4();
+    model[3][0] += this->position[0];
+    model[3][1] += this->position[1];
+    model[3][2] += this->position[2];
+    return model;
+}
+
+
+void Entity::drawEntity()
+{
+    int i;
+    for(i=0; i<this->nMeshes; i++)
+        meshes[i]->draw();
 }
