@@ -1,5 +1,4 @@
-#define SHOWWIREFRAME true
-
+#define SHOWWIREFRAME false
 
 #include "renderer.hxx"
 #include <stdio.h>
@@ -23,6 +22,8 @@ Renderer::~Renderer ()
 void Renderer::Enable ()
 {
   _shader->use();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glEnable (GL_DEPTH_TEST);
 }
 
 
@@ -94,7 +95,7 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
 
   //also show wireframe for debugging
   if(SHOWWIREFRAME){
-    setUniform(colorLoc, vec4(1,1,1,1));
+    //setUniform(colorLoc, vec4(1,1,1,1));
     mesh->Draw(true);
   }
 

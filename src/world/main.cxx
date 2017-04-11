@@ -135,7 +135,7 @@ int main(void){
     view->setFOV(90);
     view->setNear(0.1);
     view->setFar(100.0);
-    view->setSunlight(vec3(0, 1, 0), vec3(0.8, 0.8, 0.8), vec3(0.2, 0.2, 0.2));
+    view->setSunlight(vec3(0, 0.3, 0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
 
     //create an example mesh
     //Mesh *test = new Mesh(GL_TRIANGLES);
@@ -154,7 +154,7 @@ int main(void){
         int width, height;
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // calculate matricies to transform us from object space to view space
         /*mat4 p = camera->projTransform((float) width / (float) height);

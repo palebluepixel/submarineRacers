@@ -21,7 +21,7 @@ void Mesh::LoadVertices (int nVerts, const vec3 *verts)
     glBindVertexArray(this->vaoId);
     glGenBuffers(1, &this->vbufId);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbufId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vec3)*nVerts, verts, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vec3)*nVerts, verts, GL_STATIC_DRAW);
     glVertexAttribPointer(CoordAttrLoc, 3, GL_FLOAT, GL_FALSE, sizeof(verts[0]), (GLvoid *)0);
     glEnableVertexAttribArray(CoordAttrLoc);
 }
@@ -33,7 +33,7 @@ void Mesh::LoadIndices (int n, const uint32_t *indices)
     glBindVertexArray (this->vaoId);
     glGenBuffers (1, &this->ibufId);
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, this->ibufId);
-    glBufferData (GL_ELEMENT_ARRAY_BUFFER, n*sizeof(uint32_t), indices, GL_STREAM_DRAW); //might be STATIC_DRAW
+    glBufferData (GL_ELEMENT_ARRAY_BUFFER, n*sizeof(uint32_t), indices, GL_STATIC_DRAW); //might be STATIC_DRAW
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
     glEnableVertexAttribArray(CoordAttrLoc);
 }
@@ -43,8 +43,8 @@ void Mesh::LoadNormals (int nVerts, vec3 *norms){
   glBindVertexArray (this->vaoId);
   glGenBuffers (1, &this->nbufId);
   glBindBuffer (GL_ARRAY_BUFFER, this->nbufId);
-  glBufferData (GL_ARRAY_BUFFER, nVerts*sizeof(vec3), norms, GL_STREAM_DRAW);
-  glNormalPointer(GL_FLOAT, sizeof(float)*3, 0);//(const GLvoid *)(sizeof(float) * 3));
+  glBufferData (GL_ARRAY_BUFFER, nVerts*sizeof(vec3), norms, GL_STATIC_DRAW);
+  glVertexAttribPointer(NormAttrLoc, 3, GL_FLOAT, GL_FALSE, sizeof(vec3), ((GLvoid*) 0));
   glEnableVertexAttribArray(NormAttrLoc);
 }
 
