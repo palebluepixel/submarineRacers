@@ -32,6 +32,7 @@ class Renderer {
     GLint projectionLoc;
     GLint modelViewLoc;
     GLint colorLoc;
+    GLint modelLoc;
 
     
     Renderer (Shader *sh);

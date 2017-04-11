@@ -11,7 +11,7 @@ protected:
     //TODO destructors for this, actuator, and controller
 
 public:
-    Agent(vec2 initial_position, mat3 initial_orientation, int id, char*name, 
+    Agent(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
 
     int onTick();

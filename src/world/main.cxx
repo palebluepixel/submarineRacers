@@ -95,7 +95,8 @@ int main(void){
 
     //initalize camera
     Camera *camera = new Camera();
-    camera->init(vec3(6,9,4.20),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
+    //position, look-at point, up-vector
+    camera->init(vec3(6,9,4.20),vec3(-1,2,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
@@ -109,7 +110,7 @@ int main(void){
     view->setSunlight(vec3(0, 0.3, 0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
 
     //create test object
-    Cube *testcube = new Cube(vec2(0,0), mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
+    Cube *testcube = new Cube(vec3(-1,2,0), mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
 
     int width, height;
 

@@ -37,18 +37,18 @@ class Entity {
 
 public:
 
-    Entity(vec2 initial_position, mat3 initial_orientation, int id, char*name, 
+    Entity(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
     ~Entity();
 
-    vec2 setPosition(vec2 pos);
+    vec3 setPosition(vec3 pos);
     mat3 setOrientation(mat3 ori);
     EntityType setEntityType(EntityType type);
     int setID(int id);
     char* setName(char* name);
 
     //overwrite client data with server
-    virtual int overwrite(vec2 pos, mat3 ori);
+    virtual int overwrite(vec3 pos, mat3 ori);
     //creates server message describing current pos and ori
     virtual int prepare_message_segment();
 
@@ -59,6 +59,9 @@ public:
     //change object's status to spawned and place it in its intial position
     virtual EntityStatus spawn();
 
+    //return the model matrix to translate and rotate this object in world-space
+    mat4 modelMatrix();
+
 
     //Render all meshes to screen
     void drawEntity();
@@ -68,8 +71,8 @@ public:
 
 protected:
 
-    vec2 position;
-    vec2 initial_position;
+    vec3 position;
+    vec3 initial_position;
 
     mat3 orientation;    
     mat3 initial_orientation;

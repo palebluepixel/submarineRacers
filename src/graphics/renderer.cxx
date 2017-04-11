@@ -12,6 +12,7 @@ Renderer::Renderer (Shader *sh)
   projectionLoc = _shader->getUniformLocation("projection");
   modelViewLoc = _shader->getUniformLocation ("modelView");
   colorLoc = _shader->getUniformLocation("color");
+  modelLoc = _shader->getUniformLocation("model");
 }
 
 Renderer::~Renderer ()
@@ -26,6 +27,9 @@ void Renderer::Enable ()
 
 void Renderer::Render(View *view, Entity *entity)
 {
+  //std::cout << to_string(entity->modelMatrix());
+  setUniform(modelLoc, entity->modelMatrix());
+
   int i;
   int n = entity->getNMeshes();
   for (i=0; i<n; i++)
@@ -47,13 +51,12 @@ void FlatShadingRenderer::Render (View *view, Mesh *mesh)
   //std::cout << "model view: " << glm::to_string(modelViewMat) << "\ncolor: " << glm::to_string(mesh->color) << "\n";
 
   mat4 projectionMat = view->projectionMatrix();
-  mat4 modelMat = mat4(); //identity matrix, will eventually be gameEntity translation matrix? 
   mat4 viewMat = view->viewMatrix();
 
   //std::cout << "view matrix: " << glm::to_string(viewMat * modelMat) << "\n";
   //std::cout << "projection matrix: " << glm::to_string(projectionMat) << "\n";
 
-  setUniform(modelViewLoc, viewMat * modelMat);
+  setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh->color);
   mesh->draw();
@@ -78,7 +81,6 @@ SunlightShadingRenderer::~SunlightShadingRenderer()
 void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
 {
   mat4 projectionMat = view->projectionMatrix();
-  mat4 modelMat = mat4();
   mat4 viewMat = view->viewMatrix();
 
   Sunlight sun = view->getSunlight();
@@ -86,7 +88,7 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(lightIntenLoc, sun.lightInten);
   setUniform(lightAmbLoc,   sun.lightAmb);
 
-  setUniform(modelViewLoc, viewMat * modelMat);
+  setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh->color);
   mesh->draw();
