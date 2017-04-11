@@ -2,7 +2,7 @@
 #define _RENDER_HXX_
 
 #include "view.hxx"
-#include "mesh.hxx"
+#include <ent/Entity.hxx>
 #include "shader.hxx"
 
 using namespace glm;
@@ -19,6 +19,7 @@ class Renderer {
   //! render a mesh using this renderer
   //! \param modelViewMat the model-view matrix for the mesh and camera
   //! \param mesh the mesh to be rendered
+    void Render (View *view, Entity *entity);
     virtual void Render (View *view, Mesh *mesh) = 0;
 
 
@@ -43,7 +44,7 @@ class FlatShadingRenderer : public Renderer {
     FlatShadingRenderer (Shader *sh);
     ~FlatShadingRenderer ();
 
-    void Render (View* view, Mesh *mesh);
+    void Render (View *view, Mesh *mesh);
 };
 
 

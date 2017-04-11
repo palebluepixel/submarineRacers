@@ -27,16 +27,16 @@ struct Mesh {
     Mesh (GLenum p);
 
   //! initialize the vertex data buffers for the mesh
-    void LoadVertices (int nVerts, const vec3 *verts);
+    void loadVertices (int nVerts, const vec3 *verts);
 
   //! initialize the element array for the mesh
-    void LoadIndices (int n, const uint32_t *indices);
+    void loadIndices (int n, const uint32_t *indices);
 
   //! initalize the vertex array for the normals
-    void LoadNormals (int nVerts, vec3 *norms);
+    void loadNormals (int nVerts, vec3 *norms);
 
   //! draw the mesh using a glDrawElements call
-    void Draw (bool forceWireframe);
+    void draw ();
 
 };
 

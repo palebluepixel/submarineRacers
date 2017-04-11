@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <graphics/mesh.hxx>
 
 using namespace glm;
 using namespace Space;
@@ -59,6 +60,12 @@ public:
     virtual EntityStatus spawn();
 
 
+    //Render all meshes to screen
+    void drawEntity();
+
+    inline int getNMeshes() { return this->nMeshes; }
+    Mesh ** meshes;
+
 protected:
 
     vec2 position;
@@ -79,6 +86,9 @@ protected:
     bool collidable;
     bool movable;
     bool drawable;
+
+    //allow objects to be composed of multiple meshes
+    int nMeshes;
 };
 
 //TODO remove this

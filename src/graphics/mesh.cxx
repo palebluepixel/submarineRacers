@@ -16,7 +16,7 @@ Mesh::Mesh(GLenum p)
 }
 
 //! initialize the vertex data buffers for the mesh
-void Mesh::LoadVertices (int nVerts, const vec3 *verts)
+void Mesh::loadVertices (int nVerts, const vec3 *verts)
 {
     glBindVertexArray(this->vaoId);
     glGenBuffers(1, &this->vbufId);
@@ -27,7 +27,7 @@ void Mesh::LoadVertices (int nVerts, const vec3 *verts)
 }
 
 //! initialize the element array for the mesh
-void Mesh::LoadIndices (int n, const uint32_t *indices)
+void Mesh::loadIndices (int n, const uint32_t *indices)
 {
     this->nIndicies = n; 
     glBindVertexArray (this->vaoId);
@@ -39,7 +39,7 @@ void Mesh::LoadIndices (int n, const uint32_t *indices)
 }
 
 //! initalize the vertex array for the normals
-void Mesh::LoadNormals (int nVerts, vec3 *norms){
+void Mesh::loadNormals (int nVerts, vec3 *norms){
   glBindVertexArray (this->vaoId);
   glGenBuffers (1, &this->nbufId);
   glBindBuffer (GL_ARRAY_BUFFER, this->nbufId);
@@ -48,15 +48,12 @@ void Mesh::LoadNormals (int nVerts, vec3 *norms){
   glEnableVertexAttribArray(NormAttrLoc);
 }
 
-void Mesh::Draw (bool forceWireframe)
+void Mesh::draw ()
 {
     glBindVertexArray(this->vaoId);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbufId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibufId);
 
-    if (! forceWireframe)
-        glDrawElements (this->prim, this->nIndicies, GL_UNSIGNED_INT, 0);
-    else
-        glDrawElements(GL_LINES, this->nIndicies, GL_UNSIGNED_INT, 0);
+    glDrawElements (this->prim, this->nIndicies, GL_UNSIGNED_INT, 0);
 
 }

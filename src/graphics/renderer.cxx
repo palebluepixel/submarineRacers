@@ -1,5 +1,3 @@
-#define SHOWWIREFRAME false
-
 #include "renderer.hxx"
 #include <stdio.h>
 #include <iostream>
@@ -26,7 +24,13 @@ void Renderer::Enable ()
   glEnable (GL_DEPTH_TEST);
 }
 
-
+void Renderer::Render(View *view, Entity *entity)
+{
+  int i;
+  int n = entity->getNMeshes();
+  for (i=0; i<n; i++)
+    this->Render(view, entity->meshes[i]);
+}
 
 /*==================== class FlatShadingRenderer member functions======================*/
 
@@ -52,13 +56,7 @@ void FlatShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(modelViewLoc, viewMat * modelMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh->color);
-  mesh->Draw(false);
-
-  //also show wireframe for debugging
-  if(SHOWWIREFRAME){
-    setUniform(colorLoc, vec4(1,1,1,1));
-    mesh->Draw(true);
-  }
+  mesh->draw();
 
 }
 
@@ -91,12 +89,6 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(modelViewLoc, viewMat * modelMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh->color);
-  mesh->Draw(false);
-
-  //also show wireframe for debugging
-  if(SHOWWIREFRAME){
-    //setUniform(colorLoc, vec4(1,1,1,1));
-    mesh->Draw(true);
-  }
+  mesh->draw();
 
 }

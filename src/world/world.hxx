@@ -70,6 +70,10 @@ public:
 
     GLFWwindow *window;
 
+    //reset
+    void fatalError();
+    void quit();  
+
 private:
     WorldState state;
 
@@ -94,12 +98,7 @@ private:
     int loadLevel();
 
     //Players
-    //Player ** players;
-
-
-    //reset
-    void fatalError();
-    void quit();   
+    //Player ** players; 
 
 };
 

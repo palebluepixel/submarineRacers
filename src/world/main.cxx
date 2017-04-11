@@ -10,7 +10,8 @@
 #include <graphics/shader.hxx>
 #include <graphics/camera.hxx>
 #include <graphics/renderer.hxx>
-#include <graphics/cube.hxx>
+#include <ent/Entity.hxx>
+#include <ent/cube.hxx>
 #include <world/world.hxx>
 #include <userinput/callbacks.hxx>
 
@@ -108,7 +109,7 @@ int main(void){
     view->setSunlight(vec3(0, 0.3, 0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
 
     //create test object
-    Cube *testcube = new Cube();
+    Cube *testcube = new Cube(vec2(0,0), mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
 
     int width, height;
 
@@ -120,11 +121,7 @@ int main(void){
 
         r->Enable ();
 
-        //render an object
-        int i;
-        for(i=0; i<6; i++)
-            r->Render(view, testcube->meshes[i]);
-
+        r->Render(view, testcube);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -15,6 +15,9 @@ Entity::Entity(vec2 initial_position, mat3 initial_orientation, int id, char*nam
 
     this->position = this->initial_position;
     this->orientation = this->initial_orientation;
+
+    this->nMeshes = 0;
+    this->meshes = NULL;
 }
 
 Entity::~Entity()
@@ -87,4 +90,12 @@ EntityStatus Entity::spawn()
     EntityStatus old = this->status;
     this->status = SPAWNED;
     return old;
+}
+
+
+void Entity::drawEntity()
+{
+    int i;
+    for(i=0; i<this->nMeshes; i++)
+        meshes[i]->draw();
 }

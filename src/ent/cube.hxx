@@ -1,7 +1,7 @@
 #ifndef _CUBE_HXX_
 #define _CUBE_HXX_
 
-#include <graphics/mesh.hxx>
+#include <ent/Entity.hxx>
 
 using namespace glm;
 
@@ -25,13 +25,15 @@ typedef struct Wall {
 } Wall; 
 
 
-class Cube {
+class Cube : public Entity {
 
 public:
-    Mesh* meshes[6];
 
-    Cube();
+    Cube(vec2 initial_position, mat3 initial_orientation, int id, char*name, 
+    EntityType type, EntityStatus status, float tick_interval);
     ~Cube();
+
+    void initalizeMeshes();
 
 private:
     /* The vertices for the triangle */ 
