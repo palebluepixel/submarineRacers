@@ -96,9 +96,11 @@ int main(void){
     //initalize camera
     Camera *camera = new Camera();
     //position, look-at point, up-vector
-    camera->init(vec3(6,9,4.20),vec3(-1,2,0),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(6,9,4.20),vec3(-1,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
+
+    vec3 oceanColor = vec3(64,141,167) / 256.0;
 
     //create view
     View *view = new View(window);
@@ -108,10 +110,15 @@ int main(void){
     view->setNear(0.1);
     view->setFar(100.0);
     view->setSunlight(vec3(0, 0.3, 0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
-    view->setFog(1, vec3(0, 0.3, 0.5), 0.05f, 5.0);
+    view->setFog(1, oceanColor, 0.05f, 5.0);
 
     //create test object
-    Cube *testcube = new Cube(vec3(-1,2,0), mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
+    vec3 cubePos[] = {vec3(-1,2,0), vec3(-5, -15, -2)}; 
+    int ncubes = 2, i;
+    Cube * cubes[ncubes];
+    for(i=0; i<ncubes; i++){
+        cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
+    }
 
     int width, height;
 
@@ -119,12 +126,13 @@ int main(void){
         //window setup
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
-        glClearColor(0, 0.3, 0.5, 1.0);
+        glClearColor(oceanColor[0], oceanColor[1], oceanColor[2], 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         r->Enable ();
 
-        r->Render(view, testcube);
+        for(i=0; i<ncubes; i++)
+            r->Render(view, cubes[i]);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
