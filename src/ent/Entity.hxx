@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <graphics/mesh.hxx>
+#include <graphics/texture.hxx>
 
 using namespace glm;
 using namespace Space;

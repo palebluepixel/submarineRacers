@@ -78,6 +78,9 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
   fogColorLoc = _shader->getUniformLocation("fogColor");
   fogDensityLoc = _shader->getUniformLocation("fogDensity");
   fogStartLoc = _shader->getUniformLocation("fogStart");
+
+  shouldTextureLoc = _shader->getUniformLocation("shouldTexture");
+  texSamplerLoc = _shader->getUniformLocation("texSampler");
 }
 
 SunlightShadingRenderer::~SunlightShadingRenderer()
@@ -98,6 +101,13 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(fogColorLoc, fog.fogColor);
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
+
+  setUniform(shouldTextureLoc, mesh->shouldTexture);
+  texture2d *tex = mesh->tex;
+  tex->Bind();
+  tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+  tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  setUniform(texSamplerLoc, 0);
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);

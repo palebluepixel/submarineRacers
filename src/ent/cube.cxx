@@ -7,12 +7,27 @@ Cube::Cube(vec3 initial_position, mat3 initial_orientation, int id, char*name,
     this->nMeshes = 6;
     this->meshes = NULL;
 
-    this->initalizeMeshes();
+    this->initalize();
 }
 
 Cube::~Cube()
 { }
 
+void Cube::initalize()
+{
+    this->initalizeTextures("/home/amsadowski/submarineRacers/assets/textures/cubetex.png");
+    this->initalizeMeshes();
+}
+
+//call this before initalizing meshes
+void Cube::initalizeTextures(const char* texfile)
+{
+    //load texture
+    image2d * image = new image2d(texfile, true);
+    texture2d * cubetex = new texture2d(GL_TEXTURE_2D, image);
+    this->tex = cubetex;
+    this->img = image;
+}
 
 void Cube::initalizeMeshes()
 {
@@ -30,13 +45,13 @@ void Cube::initalizeMeshes()
         vec3 normvec[4] = {curwall.norm, curwall.norm, curwall.norm, curwall.norm};
         meshes[i]->loadNormals(4, normvec);
 
-        //meshes[i]->LoadTexCoords(4, curwall.texCoords);
+        meshes[i]->LoadTexCoords(4, curwall.texCoords);
 
         meshes[i]->loadVertices(4, curwall.corners);
 
         const uint32_t indices[4] = {3, 2, 1, 0};
         meshes[i]->loadIndices(4, indices);
 
-        //meshes[i]->texture = texture;
+        meshes[i]->tex = this->tex;
     }
 }

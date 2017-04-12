@@ -60,10 +60,14 @@ class SunlightShadingRenderer : public Renderer {
     GLint lightDirLoc;
     GLint lightIntenLoc;
     GLint lightAmbLoc;
+
     GLint fogOnLoc;
     GLint fogColorLoc;
     GLint fogDensityLoc;
     GLint fogStartLoc;
+
+    GLint shouldTextureLoc;
+    GLint texSamplerLoc;
 };
 
 class UnderwaterRenderer : public SunlightShadingRenderer {

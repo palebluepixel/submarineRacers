@@ -9,6 +9,7 @@ SDL = $(BUILD_DIR)/../lib/SDL2-2.0.5
 GLEW = $(BUILD_DIR)/../lib/glew-2.0.0
 GLFW = $(BUILD_DIR)/../lib/glfw
 PNG = $(BUILD_DIR)/../lib/png
+PNG2 = $(BUILD_DIR)/../lib/libpng-1.6.29
 SDL_CONFIG = 
 
 CXX = g++ -std=c++11
@@ -19,9 +20,9 @@ SRCS = $(wildcard $(SRC_DIR)/*/*.cxx)
 INCLUDES = $(wildcard $(SRC_DIR)/*/*.hxx)
 OBJS = $(notdir $(SRCS:.cxx=.o))
 
-RPATH = -Wl,-rpath,$(SDL)/build -Wl,-rpath,$(GLEW)/lib -Wl,-rpath,$(GLFW)/src
+RPATH = -Wl,-rpath,$(SDL)/build -Wl,-rpath,$(GLEW)/lib -Wl,-rpath,$(GLFW)/src -Wl,-rpath,$(PNG)/lib
 LIBS = -lGLEW -lglfw3 -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl -lpng
-LDFLAGS = -L$(BUILD_DIR)/../lib -L$(GLEW)/lib -L$(GLFW)/src
+LDFLAGS = -L$(BUILD_DIR)/../lib -L$(GLEW)/lib -L$(GLFW)/src -L$(PNG)/lib
 IPATH = -I../src -I../lib/glm -I$(GLEW)/include -I$(GLFW)/include -I$(BUILD_DIR)/../lib -I$(PNG)/include
 
 $(TARGET): $(OBJS) .depend

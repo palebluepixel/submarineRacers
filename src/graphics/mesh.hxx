@@ -8,6 +8,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include <stdio.h>
 #include <iostream>
+#include <graphics/texture.hxx>
 
 using namespace glm;
 
@@ -19,8 +20,14 @@ struct Mesh {
     GLuint vbufId; //vertices
     GLuint ibufId; //indices
     GLuint nbufId; //normals
+    GLuint tbufId; //texcoords
     GLenum prim;
     int nIndicies;
+    int nTexCoords;
+
+    int shouldTexture;
+
+    texture2d *tex;
 
     vec4 color; //R,G,B,Alpha
 
@@ -31,6 +38,9 @@ struct Mesh {
 
   //! initialize the element array for the mesh
     void loadIndices (int n, const uint32_t *indices);
+
+  //! initialize the texture-coordinate data buffer for the mesh
+    void LoadTexCoords (int nCoords, vec2 *tcoords);
 
   //! initalize the vertex array for the normals
     void loadNormals (int nVerts, vec3 *norms);

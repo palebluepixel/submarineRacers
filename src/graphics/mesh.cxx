@@ -5,12 +5,14 @@
  */
 const GLint CoordAttrLoc = 0;   //!< location of vertex coordinates attribute
 const GLint NormAttrLoc = 1;
+const GLint TexCoordAttrLoc = 2;
 
 //! create a MeshInfo object by initializing its buffer Ids.  The buffer data is
 //! loaded separately.
 Mesh::Mesh(GLenum p)
 : vbufId(0), ibufId(0), prim(p), nIndicies(0), color(0)
 {
+    this->shouldTexture = 1;
     glGenVertexArrays(1, &vaoId);
 
 }
@@ -36,6 +38,16 @@ void Mesh::loadIndices (int n, const uint32_t *indices)
     glBufferData (GL_ELEMENT_ARRAY_BUFFER, n*sizeof(uint32_t), indices, GL_STATIC_DRAW); //might be STATIC_DRAW
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
     glEnableVertexAttribArray(CoordAttrLoc);
+}
+
+void Mesh::LoadTexCoords (int nCoords, vec2 *tcoords){
+  this->nTexCoords = nCoords;
+  glBindVertexArray (this->vaoId);
+  glGenBuffers (1, &this->tbufId);
+  glBindBuffer (GL_ARRAY_BUFFER, this->tbufId);
+  glBufferData (GL_ARRAY_BUFFER, nCoords*sizeof(vec2), tcoords, GL_STATIC_DRAW);
+  glVertexAttribPointer(TexCoordAttrLoc, 2, GL_FLOAT, GL_FALSE, sizeof(tcoords[0]), (GLvoid *)0);
+  glEnableVertexAttribArray(TexCoordAttrLoc);
 }
 
 //! initalize the vertex array for the normals
