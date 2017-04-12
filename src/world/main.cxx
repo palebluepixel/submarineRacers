@@ -90,8 +90,6 @@ int main(void){
     shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/lightshader.vert"));
     shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/lightshader.frag"));
     shader->build();
-    GLint norms = glGetAttribLocation(shader->ID(), "normal");
-    printf("%d\n", norms);
 
     //create renderer for the given shader
     Renderer *r = new SunlightShadingRenderer(shader);  

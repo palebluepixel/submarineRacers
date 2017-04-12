@@ -33,15 +33,12 @@ public:
     EntityType type, EntityStatus status, float tick_interval);
     ~Cube();
 
-    void initalize();
+    void initalizeVisualData();
 
-private:
+protected:
 
     void initalizeTextures(const char* texfile);
     void initalizeMeshes();
-
-    image2d *img;
-    texture2d *tex;
 
     /* The vertices for the triangle */ 
     /*! the five visible walls of the box */  

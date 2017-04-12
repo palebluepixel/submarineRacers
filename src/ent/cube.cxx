@@ -7,13 +7,13 @@ Cube::Cube(vec3 initial_position, mat3 initial_orientation, int id, char*name,
     this->nMeshes = 6;
     this->meshes = NULL;
 
-    this->initalize();
+    this->initalizeVisualData();
 }
 
 Cube::~Cube()
 { }
 
-void Cube::initalize()
+void Cube::initalizeVisualData()
 {
     this->initalizeTextures("/home/amsadowski/submarineRacers/assets/textures/cubetex.png");
     this->initalizeMeshes();

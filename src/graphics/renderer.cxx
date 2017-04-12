@@ -32,8 +32,13 @@ void Renderer::Render(View *view, Entity *entity)
 
   int i;
   int n = entity->getNMeshes();
-  for (i=0; i<n; i++)
-    this->Render(view, entity->meshes[i]);
+  Mesh ** meshes = entity->getMeshes();
+  if(meshes == NULL)
+    return;
+  for (i=0; i<n; i++){
+    if(meshes[i] != NULL)
+      this->Render(view, meshes[i]);
+  }
 }
 
 /*==================== class FlatShadingRenderer member functions======================*/
