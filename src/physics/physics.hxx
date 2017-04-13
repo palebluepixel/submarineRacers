@@ -24,9 +24,9 @@ namespace Space{
      *
      */
     class Volume{
-
+    protected:
         Pos pos;    // where is this object in space?
-
+    public:
         virtual inline const char *type() =0;
         /**
          *  returns shortest distance between this volume
@@ -54,20 +54,19 @@ namespace Space{
         virtual bool collision(Volume *other) =0;
     };
     class CylinderVolume : public Volume{
-        inline const char *type(){ return "cylinder"; }
         CylinderVolume(vec3 p1, vec3 p2);
+        const char *type();
         vec3 p1,p2;
     };
     class SphereVolume : public Volume{
-        inline const char *type(){ return "sphere"; }
-        SphereVolume(vec3 pp, vec3 rad);
-        vec3 p;
+        SphereVolume(vec3 pp, double rad);
+        const char *type();
+        double distance(Volume *other);
         double r;
     };
     class HeightmapVolume : public Volume{
-        inline const char *type(){ return "heightmap"; }
         HeightmapVolume(vec3 pp, int width, int height);
-        vec3 p;
+        const char *type();
         int width;
         int height;
     };

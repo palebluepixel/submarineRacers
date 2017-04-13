@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <graphics/renderer.hxx>
 
 #define ALL_GOOD 0
 #define STATE_ENUM_START ALL_GOOD + 1
@@ -61,6 +64,16 @@ public:
     // based on time, e.g. race timer running down or status conditions ending
     int handleTimerTic(float t, float dt);
 
+    //View: rendering information, camera, skybox, ground, sun, etc
+    View *view;
+    Renderer **renderers;
+
+    GLFWwindow *window;
+
+    //reset
+    void fatalError();
+    void quit();  
+
 private:
     WorldState state;
 
@@ -78,21 +91,14 @@ private:
 
     /* Uncomment stuff as it is implemented */
 
-    //Levels
-    //Level * activeLevel;
-    //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
+    //ActiveLevel: all entities in the world, world boundaries, etc
+    //ActiveLevel * activeLevel;
+        //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
+        //Submarine ** subs;
     int loadLevel();
 
     //Players
-    //Player ** players;
-
-    //subs
-    //Submarine ** subs;
-    // A sub object has a player or AI associated with it
-
-
-    //reset
-    void fatalError();
+    //Player ** players; 
 
 };
 

@@ -1,4 +1,7 @@
 #include "stdio.h"
+#include <string>
+#include <list>
+#include <functional>
 
 #ifndef ERROR_HXX
 #define ERROR_HXX
@@ -20,5 +23,24 @@
 	fprintf(stderr, __VA_ARGS__); \
 	fprintf(stderr,KNRM"\n"); \
 }
+
+namespace Error{
+	class err{
+	public:
+		err(std::string mdesc, int mfatality);
+		std::string desc;
+		int fatality;
+	};
+
+	extern int kill_fatality;
+	extern std::function<int(void)> exit_func;
+	extern std::list<err> error_log;
+
+	extern void error(err e);
+	extern void error(std::string mdesc, int mfatality);
+	extern void print_errors();
+	extern void setKillFunc(std::function<int(void)> func);
+};
+
 
 #endif

@@ -1,0 +1,168 @@
+World:
+Enum state:
+* Title
+* Waiting for connections (server), connecting (client)
+* Paused
+* Menu1, menu2
+* Loading level
+* Race_start
+* Race_running
+* Race_finish
+View *  //contains information for graphics rendering
+Renderer * 
+Level * //contains info on all game entities currently existent in the world 
+
+
+Object Hierarchy:
+GameEntity:
+Position 
+Name/ID
+on_tick() + tick_interval
+Bounding volume
+orientation
+Const char * type
+overwrite() // on client side
+get_info() //on server side, makes messages to send to client
+spawn()
+kill()
+bool drawable
+// Data only useful for Drawable entities:
+* Mesh
+* Textures
+* render()
+bool collidable
+// Data only useful for Collidable entities:
+* on_collide()
+bool moveable // boolean flag
+// Data only useful for Moveable entities:
+* Velocity
+* Acceleration
+* Drag
+* max_velocity
+* max_acceleration
+* Movement_handlers // set of functions
+
+
+Agent: // subclass of GameEntity
+Actuator  //AI or player controller
+//in update, call actuator.doSteering()
+
+
+Submarine: // subclass of Agent
+Health / hull strength
+State:
+* Alive
+* Dead
+* Disabled (etc)
+* Respawning
+Air
+Weapons
+Turn speed
+Rise / descend speed
+Type
+
+
+
+
+
+
+
+
+Controlling Objects (AI and User Input):
+Actuator-objects associations
+
+
+Handlers:
+* Input
+* Collision
+* Tick
+   * Physics
+   * Render 
+
+
+LoadLevel()
+
+
+List of AI handlers (with tick rates) (these AI objects will have references to actuators
+
+
+Actuator:
+SteeringState
+doSteering()        // Does steering based on SteeringState
+//AI controls Actuator, Agent gets updates from Actuator
+Functions that affect steering state (turn(), accelerate(), etc)
+
+
+Controller:
+Actuator
+//Controls the Actuator
+//e.g. AI and Input map should implement this
+
+
+
+
+Player: (client side)
+Wins
+Name
+Selected Sub
+Control Scheme Mapping
+
+
+Levels:
+GameEntity[]
+Sunlight
+Heightmap
+Color palette
+Visual effects
+Skybox
+
+
+
+
+Rendering Info:
+
+
+View:
+Camera *currentCamera
+Sunlight info
+projectionMatrix(), etc
+Eventually may contain other things like skybox and color palette which are taken from the Level class when the level is loaded. 
+
+
+Renderer:
+Sets uniform values
+render(View *view, Entity *entity) //draws all meshes in the entity to the screen
+
+
+Mesh:
+Contains references to VAO and VBO objects
+Color
+Texture coords
+Texture image
+Normals
+Vertex positions
+draw()
+
+
+In the Main loop, the renderer calls render on every game entity which should be drawn (after checking if its a drawable, frustum culling, etc), which calls the draw() function for each mesh in the entity. 
+
+
+
+
+
+
+
+
+Gameplay:
+
+
+Initial Screen: Choose between Server/Client mode with simple GUI.
+If server: begin server.
+If client: Screen to find server (IP address/port)
+If successful connection: Character select in lobby with simple UI.
+* Game begins when all players signal READY to server.
+
+
+Game
+* Players choose a particular type of nautical vehicle (submarine, sandwich, Michael Phelps, etc.), each of which has its own stats (acceleration, turn radius, arsenal, stamina, etc.)
+* Submarines move along a single

@@ -1,0 +1,10 @@
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/install.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/list_install_components.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/rebuild_cache.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/edit_cache.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/SDL2main.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/SDL2-static.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/install/local.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/install/strip.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/SDL2.dir
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/uninstall.dir

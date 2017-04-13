@@ -1,0 +1,717 @@
+Performing C SOURCE FILE Test HAVE_GCC_PREFERRED_STACK_BOUNDARY failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_63aab/fast"
+/usr/bin/make -f CMakeFiles/cmTC_63aab.dir/build.make CMakeFiles/cmTC_63aab.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_63aab.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_GCC_PREFERRED_STACK_BOUNDARY -mpreferred-stack-boundary=2   -o CMakeFiles/cmTC_63aab.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:1:0: error: -mpreferred-stack-boundary=2 is not between 4 and 12
+ int x = 0; int main(int argc, char **argv) {}
+ ^
+CMakeFiles/cmTC_63aab.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_63aab.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_63aab.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_63aab/fast' failed
+make: *** [cmTC_63aab/fast] Error 2
+
+Source file was:
+int x = 0; int main(int argc, char **argv) {}
+Performing C SOURCE FILE Test HAVE_ALTIVEC_H_HDR failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4f13a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4f13a.dir/build.make CMakeFiles/cmTC_4f13a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4f13a.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_ALTIVEC_H_HDR -maltivec   -o CMakeFiles/cmTC_4f13a.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option ‘-maltivec’
+CMakeFiles/cmTC_4f13a.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4f13a.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_4f13a.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4f13a/fast' failed
+make: *** [cmTC_4f13a/fast] Error 2
+
+Source file was:
+
+          #include <altivec.h>
+          vector unsigned int vzero() {
+              return vec_splat_u32(0);
+          }
+          int main(int argc, char **argv) { }
+Performing C SOURCE FILE Test HAVE_ALTIVEC failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_99b98/fast"
+/usr/bin/make -f CMakeFiles/cmTC_99b98.dir/build.make CMakeFiles/cmTC_99b98.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_99b98.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_ALTIVEC -maltivec   -o CMakeFiles/cmTC_99b98.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option ‘-maltivec’
+CMakeFiles/cmTC_99b98.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_99b98.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_99b98.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_99b98/fast' failed
+make: *** [cmTC_99b98/fast] Error 2
+
+Source file was:
+
+          vector unsigned int vzero() {
+              return vec_splat_u32(0);
+          }
+          int main(int argc, char **argv) { }
+Determining if the function strlcpy exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_18db0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_18db0.dir/build.make CMakeFiles/cmTC_18db0.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_18db0.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strlcpy   -o CMakeFiles/cmTC_18db0.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_18db0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_18db0.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strlcpy    CMakeFiles/cmTC_18db0.dir/CheckFunctionExists.c.o  -o cmTC_18db0 -rdynamic 
+CMakeFiles/cmTC_18db0.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `strlcpy'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_18db0.dir/build.make:97: recipe for target 'cmTC_18db0' failed
+make[1]: *** [cmTC_18db0] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_18db0/fast' failed
+make: *** [cmTC_18db0/fast] Error 2
+
+
+Determining if the function strlcat exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1e5d7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1e5d7.dir/build.make CMakeFiles/cmTC_1e5d7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1e5d7.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strlcat   -o CMakeFiles/cmTC_1e5d7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1e5d7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1e5d7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strlcat    CMakeFiles/cmTC_1e5d7.dir/CheckFunctionExists.c.o  -o cmTC_1e5d7 -rdynamic 
+CMakeFiles/cmTC_1e5d7.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `strlcat'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_1e5d7.dir/build.make:97: recipe for target 'cmTC_1e5d7' failed
+make[1]: *** [cmTC_1e5d7] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_1e5d7/fast' failed
+make: *** [cmTC_1e5d7/fast] Error 2
+
+
+Determining if the function _strrev exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0aad7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0aad7.dir/build.make CMakeFiles/cmTC_0aad7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0aad7.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_strrev   -o CMakeFiles/cmTC_0aad7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0aad7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0aad7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_strrev    CMakeFiles/cmTC_0aad7.dir/CheckFunctionExists.c.o  -o cmTC_0aad7 -rdynamic 
+CMakeFiles/cmTC_0aad7.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_strrev'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_0aad7.dir/build.make:97: recipe for target 'cmTC_0aad7' failed
+make[1]: *** [cmTC_0aad7] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_0aad7/fast' failed
+make: *** [cmTC_0aad7/fast] Error 2
+
+
+Determining if the function _strupr exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f587d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f587d.dir/build.make CMakeFiles/cmTC_f587d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f587d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_strupr   -o CMakeFiles/cmTC_f587d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f587d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f587d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_strupr    CMakeFiles/cmTC_f587d.dir/CheckFunctionExists.c.o  -o cmTC_f587d -rdynamic 
+CMakeFiles/cmTC_f587d.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_strupr'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_f587d.dir/build.make:97: recipe for target 'cmTC_f587d' failed
+make[1]: *** [cmTC_f587d] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_f587d/fast' failed
+make: *** [cmTC_f587d/fast] Error 2
+
+
+Determining if the function _strlwr exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_322fe/fast"
+/usr/bin/make -f CMakeFiles/cmTC_322fe.dir/build.make CMakeFiles/cmTC_322fe.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_322fe.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_strlwr   -o CMakeFiles/cmTC_322fe.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_322fe
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_322fe.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_strlwr    CMakeFiles/cmTC_322fe.dir/CheckFunctionExists.c.o  -o cmTC_322fe -rdynamic 
+CMakeFiles/cmTC_322fe.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_strlwr'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_322fe.dir/build.make:97: recipe for target 'cmTC_322fe' failed
+make[1]: *** [cmTC_322fe] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_322fe/fast' failed
+make: *** [cmTC_322fe/fast] Error 2
+
+
+Determining if the function itoa exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bd561/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bd561.dir/build.make CMakeFiles/cmTC_bd561.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bd561.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=itoa   -o CMakeFiles/cmTC_bd561.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_bd561
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bd561.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=itoa    CMakeFiles/cmTC_bd561.dir/CheckFunctionExists.c.o  -o cmTC_bd561 -rdynamic 
+CMakeFiles/cmTC_bd561.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `itoa'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_bd561.dir/build.make:97: recipe for target 'cmTC_bd561' failed
+make[1]: *** [cmTC_bd561] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_bd561/fast' failed
+make: *** [cmTC_bd561/fast] Error 2
+
+
+Determining if the function _ltoa exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_baa66/fast"
+/usr/bin/make -f CMakeFiles/cmTC_baa66.dir/build.make CMakeFiles/cmTC_baa66.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_baa66.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_ltoa   -o CMakeFiles/cmTC_baa66.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_baa66
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_baa66.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_ltoa    CMakeFiles/cmTC_baa66.dir/CheckFunctionExists.c.o  -o cmTC_baa66 -rdynamic 
+CMakeFiles/cmTC_baa66.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_ltoa'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_baa66.dir/build.make:97: recipe for target 'cmTC_baa66' failed
+make[1]: *** [cmTC_baa66] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_baa66/fast' failed
+make: *** [cmTC_baa66/fast] Error 2
+
+
+Determining if the function _uitoa exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_04161/fast"
+/usr/bin/make -f CMakeFiles/cmTC_04161.dir/build.make CMakeFiles/cmTC_04161.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_04161.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_uitoa   -o CMakeFiles/cmTC_04161.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_04161
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04161.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_uitoa    CMakeFiles/cmTC_04161.dir/CheckFunctionExists.c.o  -o cmTC_04161 -rdynamic 
+CMakeFiles/cmTC_04161.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_uitoa'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_04161.dir/build.make:97: recipe for target 'cmTC_04161' failed
+make[1]: *** [cmTC_04161] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_04161/fast' failed
+make: *** [cmTC_04161/fast] Error 2
+
+
+Determining if the function _ultoa exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e12d9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e12d9.dir/build.make CMakeFiles/cmTC_e12d9.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e12d9.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_ultoa   -o CMakeFiles/cmTC_e12d9.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e12d9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e12d9.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_ultoa    CMakeFiles/cmTC_e12d9.dir/CheckFunctionExists.c.o  -o cmTC_e12d9 -rdynamic 
+CMakeFiles/cmTC_e12d9.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_ultoa'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_e12d9.dir/build.make:97: recipe for target 'cmTC_e12d9' failed
+make[1]: *** [cmTC_e12d9] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_e12d9/fast' failed
+make: *** [cmTC_e12d9/fast] Error 2
+
+
+Determining if the function _i64toa exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1beac/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1beac.dir/build.make CMakeFiles/cmTC_1beac.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1beac.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_i64toa   -o CMakeFiles/cmTC_1beac.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1beac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1beac.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_i64toa    CMakeFiles/cmTC_1beac.dir/CheckFunctionExists.c.o  -o cmTC_1beac -rdynamic 
+CMakeFiles/cmTC_1beac.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_i64toa'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_1beac.dir/build.make:97: recipe for target 'cmTC_1beac' failed
+make[1]: *** [cmTC_1beac] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_1beac/fast' failed
+make: *** [cmTC_1beac/fast] Error 2
+
+
+Determining if the function _ui64toa exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_af2f0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_af2f0.dir/build.make CMakeFiles/cmTC_af2f0.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_af2f0.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_ui64toa   -o CMakeFiles/cmTC_af2f0.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_af2f0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_af2f0.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_ui64toa    CMakeFiles/cmTC_af2f0.dir/CheckFunctionExists.c.o  -o cmTC_af2f0 -rdynamic 
+CMakeFiles/cmTC_af2f0.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_ui64toa'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_af2f0.dir/build.make:97: recipe for target 'cmTC_af2f0' failed
+make[1]: *** [cmTC_af2f0] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_af2f0/fast' failed
+make: *** [cmTC_af2f0/fast] Error 2
+
+
+Determining if the function _stricmp exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6ed4c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6ed4c.dir/build.make CMakeFiles/cmTC_6ed4c.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6ed4c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_stricmp   -o CMakeFiles/cmTC_6ed4c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6ed4c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6ed4c.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_stricmp    CMakeFiles/cmTC_6ed4c.dir/CheckFunctionExists.c.o  -o cmTC_6ed4c -rdynamic 
+CMakeFiles/cmTC_6ed4c.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_stricmp'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_6ed4c.dir/build.make:97: recipe for target 'cmTC_6ed4c' failed
+make[1]: *** [cmTC_6ed4c] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_6ed4c/fast' failed
+make: *** [cmTC_6ed4c/fast] Error 2
+
+
+Determining if the function _strnicmp exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b2b1d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b2b1d.dir/build.make CMakeFiles/cmTC_b2b1d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b2b1d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=_strnicmp   -o CMakeFiles/cmTC_b2b1d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b2b1d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b2b1d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=_strnicmp    CMakeFiles/cmTC_b2b1d.dir/CheckFunctionExists.c.o  -o cmTC_b2b1d -rdynamic 
+CMakeFiles/cmTC_b2b1d.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `_strnicmp'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b2b1d.dir/build.make:97: recipe for target 'cmTC_b2b1d' failed
+make[1]: *** [cmTC_b2b1d] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b2b1d/fast' failed
+make: *** [cmTC_b2b1d/fast] Error 2
+
+
+Determining if the function sysctlbyname exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ff39b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ff39b.dir/build.make CMakeFiles/cmTC_ff39b.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ff39b.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=sysctlbyname   -o CMakeFiles/cmTC_ff39b.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_ff39b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ff39b.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=sysctlbyname    CMakeFiles/cmTC_ff39b.dir/CheckFunctionExists.c.o  -o cmTC_ff39b -rdynamic 
+CMakeFiles/cmTC_ff39b.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `sysctlbyname'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ff39b.dir/build.make:97: recipe for target 'cmTC_ff39b' failed
+make[1]: *** [cmTC_ff39b] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ff39b/fast' failed
+make: *** [cmTC_ff39b/fast] Error 2
+
+
+Determining if the function iconv_open exists in the iconv failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cc825/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cc825.dir/build.make CMakeFiles/cmTC_cc825.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cc825.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=iconv_open   -o CMakeFiles/cmTC_cc825.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_cc825
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cc825.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=iconv_open    CMakeFiles/cmTC_cc825.dir/CheckFunctionExists.c.o  -o cmTC_cc825 -rdynamic -liconv 
+/usr/bin/ld: cannot find -liconv
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_cc825.dir/build.make:97: recipe for target 'cmTC_cc825' failed
+make[1]: *** [cmTC_cc825] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_cc825/fast' failed
+make: *** [cmTC_cc825/fast] Error 2
+
+
+Determining if the function alloca exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7e6c4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7e6c4.dir/build.make CMakeFiles/cmTC_7e6c4.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7e6c4.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=alloca   -o CMakeFiles/cmTC_7e6c4.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘alloca’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_7e6c4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7e6c4.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=alloca    CMakeFiles/cmTC_7e6c4.dir/CheckFunctionExists.c.o  -o cmTC_7e6c4 -rdynamic 
+CMakeFiles/cmTC_7e6c4.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `alloca'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_7e6c4.dir/build.make:97: recipe for target 'cmTC_7e6c4' failed
+make[1]: *** [cmTC_7e6c4] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_7e6c4/fast' failed
+make: *** [cmTC_7e6c4/fast] Error 2
+
+
+Determining if the function dlopen exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d8e61/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d8e61.dir/build.make CMakeFiles/cmTC_d8e61.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d8e61.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=dlopen   -o CMakeFiles/cmTC_d8e61.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d8e61
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d8e61.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=dlopen    CMakeFiles/cmTC_d8e61.dir/CheckFunctionExists.c.o  -o cmTC_d8e61 -rdynamic 
+CMakeFiles/cmTC_d8e61.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `dlopen'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_d8e61.dir/build.make:97: recipe for target 'cmTC_d8e61' failed
+make[1]: *** [cmTC_d8e61] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_d8e61/fast' failed
+make: *** [cmTC_d8e61/fast] Error 2
+
+
+Determining if the include file audio/audiolib.h exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_10ac3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_10ac3.dir/build.make CMakeFiles/cmTC_10ac3.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_10ac3.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_10ac3.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:28: fatal error: audio/audiolib.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_10ac3.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_10ac3.dir/CheckIncludeFile.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_10ac3.dir/CheckIncludeFile.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_10ac3/fast' failed
+make: *** [cmTC_10ac3/fast] Error 2
+
+
+Performing C SOURCE FILE Test HAVE_VIDEO_RPI failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ced81/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ced81.dir/build.make CMakeFiles/cmTC_ced81.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ced81.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_VIDEO_RPI  -I/opt/vc/include/interface/vmcs_host/linux/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include  -L/opt/vc/lib   -o CMakeFiles/cmTC_ced81.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:2:30: fatal error: bcm_host.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_ced81.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_ced81.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_ced81.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ced81/fast' failed
+make: *** [cmTC_ced81/fast] Error 2
+
+Source file was:
+
+        #include <bcm_host.h>
+        int main(int argc, char **argv) {}
+Performing C SOURCE FILE Test HAVE_VIDEO_OPENGLES_V1 failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4f915/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4f915.dir/build.make CMakeFiles/cmTC_4f915.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4f915.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_VIDEO_OPENGLES_V1   -o CMakeFiles/cmTC_4f915.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:2:27: fatal error: GLES/gl.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_4f915.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4f915.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_4f915.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4f915/fast' failed
+make: *** [cmTC_4f915/fast] Error 2
+
+Source file was:
+
+      #include <GLES/gl.h>
+      #include <GLES/glext.h>
+      int main (int argc, char** argv) {}
+Performing C SOURCE FILE Test HAVE_VIDEO_VIVANTE_VDK failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b287e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b287e.dir/build.make CMakeFiles/cmTC_b287e.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b287e.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_VIDEO_VIVANTE_VDK   -o CMakeFiles/cmTC_b287e.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:2:28: fatal error: gc_vdk.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_b287e.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_b287e.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_b287e.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b287e/fast' failed
+make: *** [cmTC_b287e/fast] Error 2
+
+Source file was:
+
+        #include <gc_vdk.h>
+        int main(int argc, char** argv) {}
+Performing C SOURCE FILE Test HAVE_VIDEO_VIVANTE_EGL_FB failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d2fe6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d2fe6.dir/build.make CMakeFiles/cmTC_d2fe6.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d2fe6.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_VIDEO_VIVANTE_EGL_FB   -o CMakeFiles/cmTC_d2fe6.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:4:36: fatal error: EGL/eglvivante.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_d2fe6.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_d2fe6.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_d2fe6.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_d2fe6/fast' failed
+make: *** [cmTC_d2fe6/fast] Error 2
+
+Source file was:
+
+        #define LINUX
+        #define EGL_API_FB
+        #include <EGL/eglvivante.h>
+        int main(int argc, char** argv) {}
+Determining if the include file fcitx/frontend.h exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_627cd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_627cd.dir/build.make CMakeFiles/cmTC_627cd.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_627cd.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_627cd.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:28: fatal error: fcitx/frontend.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_627cd.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_627cd.dir/CheckIncludeFile.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_627cd.dir/CheckIncludeFile.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_627cd/fast' failed
+make: *** [cmTC_627cd/fast] Error 2
+
+
+Performing C SOURCE FILE Test HAVE_INPUT_TSLIB failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6611c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6611c.dir/build.make CMakeFiles/cmTC_6611c.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6611c.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_INPUT_TSLIB   -o CMakeFiles/cmTC_6611c.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:2:27: fatal error: tslib.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_6611c.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_6611c.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_6611c.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_6611c/fast' failed
+make: *** [cmTC_6611c/fast] Error 2
+
+Source file was:
+
+        #include "tslib.h"
+        int main(int argc, char** argv) { }
+Determining if the function hid_init exists in the usbhid failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0a0f8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0a0f8.dir/build.make CMakeFiles/cmTC_0a0f8.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0a0f8.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=hid_init   -o CMakeFiles/cmTC_0a0f8.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0a0f8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a0f8.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=hid_init    CMakeFiles/cmTC_0a0f8.dir/CheckFunctionExists.c.o  -o cmTC_0a0f8 -rdynamic -lusbhid 
+/usr/bin/ld: cannot find -lusbhid
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_0a0f8.dir/build.make:97: recipe for target 'cmTC_0a0f8' failed
+make[1]: *** [cmTC_0a0f8] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_0a0f8/fast' failed
+make: *** [cmTC_0a0f8/fast] Error 2
+
+
+Determining if the include file usb.h exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8d55e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8d55e.dir/build.make CMakeFiles/cmTC_8d55e.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8d55e.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_8d55e.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:17: fatal error: usb.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_8d55e.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_8d55e.dir/CheckIncludeFile.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_8d55e.dir/CheckIncludeFile.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_8d55e/fast' failed
+make: *** [cmTC_8d55e/fast] Error 2
+
+
+Determining if the include file libusb.h exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0de83/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0de83.dir/build.make CMakeFiles/cmTC_0de83.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0de83.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_0de83.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:20: fatal error: libusb.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_0de83.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_0de83.dir/CheckIncludeFile.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_0de83.dir/CheckIncludeFile.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_0de83/fast' failed
+make: *** [cmTC_0de83/fast] Error 2
+
+
+Determining if the function hid_init exists in the usb failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_16a22/fast"
+/usr/bin/make -f CMakeFiles/cmTC_16a22.dir/build.make CMakeFiles/cmTC_16a22.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_16a22.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=hid_init   -o CMakeFiles/cmTC_16a22.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_16a22
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16a22.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=hid_init    CMakeFiles/cmTC_16a22.dir/CheckFunctionExists.c.o  -o cmTC_16a22 -rdynamic -lusb 
+/usr/bin/ld: cannot find -lusb
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_16a22.dir/build.make:97: recipe for target 'cmTC_16a22' failed
+make[1]: *** [cmTC_16a22] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_16a22/fast' failed
+make: *** [cmTC_16a22/fast] Error 2
+
+
+Performing C SOURCE FILE Test HAVE_USBHID failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b3489/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b3489.dir/build.make CMakeFiles/cmTC_b3489.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b3489.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_USBHID   -o CMakeFiles/cmTC_b3489.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:10:34: fatal error: dev/usb/usb.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_b3489.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_b3489.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_b3489.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b3489/fast' failed
+make: *** [cmTC_b3489/fast] Error 2
+
+Source file was:
+
+       #include <sys/types.h>
+        #if defined(HAVE_USB_H)
+        #include <usb.h>
+        #endif
+        #ifdef __DragonFly__
+        # include <bus/usb/usb.h>
+        # include <bus/usb/usbhid.h>
+        #else
+        # include <dev/usb/usb.h>
+        # include <dev/usb/usbhid.h>
+        #endif
+        #if defined(HAVE_USBHID_H)
+        #include <usbhid.h>
+        #elif defined(HAVE_LIBUSB_H)
+        #include <libusb.h>
+        #elif defined(HAVE_LIBUSBHID_H)
+        #include <libusbhid.h>
+        #endif
+        int main(int argc, char **argv) {
+          struct report_desc *repdesc;
+          struct usb_ctl_report *repbuf;
+          hid_kind_t hidkind;
+          return 0;
+        }
+Performing C SOURCE FILE Test HAVE_PTHREAD_NP_H failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_43155/fast"
+/usr/bin/make -f CMakeFiles/cmTC_43155.dir/build.make CMakeFiles/cmTC_43155.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_43155.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_PTHREAD_NP_H   -D_REENTRANT -pthread   -o CMakeFiles/cmTC_43155.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:3:34: fatal error: pthread_np.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_43155.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_43155.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_43155.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_43155/fast' failed
+make: *** [cmTC_43155/fast] Error 2
+
+Source file was:
+
+          #include <pthread.h>
+          #include <pthread_np.h>
+          int main(int argc, char** argv) { return 0; }
+Determining if the function pthread_set_name_np exists failed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7ad12/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7ad12.dir/build.make CMakeFiles/cmTC_7ad12.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7ad12.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=pthread_set_name_np   -D_REENTRANT -pthread   -o CMakeFiles/cmTC_7ad12.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_7ad12
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7ad12.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=pthread_set_name_np   -D_REENTRANT -pthread    CMakeFiles/cmTC_7ad12.dir/CheckFunctionExists.c.o  -o cmTC_7ad12 -rdynamic 
+CMakeFiles/cmTC_7ad12.dir/CheckFunctionExists.c.o: In function `main':
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:14: undefined reference to `pthread_set_name_np'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_7ad12.dir/build.make:97: recipe for target 'cmTC_7ad12' failed
+make[1]: *** [cmTC_7ad12] Error 1
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_7ad12/fast' failed
+make: *** [cmTC_7ad12/fast] Error 2
+
+

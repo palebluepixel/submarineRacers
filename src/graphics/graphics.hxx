@@ -1,4 +1,5 @@
-#ifdef I_DONT_WANT_MY_CODE_TO_COMPILE
+#ifdef GRAPHICS_HXX
+#define GRAPHICS_HXX
 
 class Mesh{	
 	// camera passed for LOD optimizations

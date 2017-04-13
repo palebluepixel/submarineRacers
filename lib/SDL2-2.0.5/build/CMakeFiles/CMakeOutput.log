@@ -1,0 +1,2271 @@
+The system is: Linux - 4.4.6-3-surface - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/cc 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/3.5.1/CompilerIdC/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_06620/fast"
+/usr/bin/make -f CMakeFiles/cmTC_06620.dir/build.make CMakeFiles/cmTC_06620.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_06620.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_06620.dir/testCCompiler.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_06620
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_06620.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_06620.dir/testCCompiler.c.o  -o cmTC_06620 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_45274/fast"
+/usr/bin/make -f CMakeFiles/cmTC_45274.dir/build.make CMakeFiles/cmTC_45274.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_45274
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45274.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o  -o cmTC_45274 -rdynamic  
+Using built-in specs.
+COLLECT_GCC=/usr/bin/cc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) 
+COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_45274' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNdls8f.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_45274 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_45274/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_45274.dir/build.make CMakeFiles/cmTC_45274.dir/build]
+  ignore line: [make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_45274]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45274.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o  -o cmTC_45274 -rdynamic  ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_45274' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNdls8f.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_45274 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccNdls8f.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [--sysroot=/] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_45274] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib]
+    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [-L/lib/../lib] ==> dir [/lib/../lib]
+    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
+    arg [CMakeFiles/cmTC_45274.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtend.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5] ==> [/usr/lib/gcc/x86_64-linux-gnu/5]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/lib/../lib] ==> [/lib]
+  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> [/usr/lib]
+  implicit libs: [c]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/5;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_12422/fast"
+/usr/bin/make -f CMakeFiles/cmTC_12422.dir/build.make CMakeFiles/cmTC_12422.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_12422.dir/feature_tests.c.o
+/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_12422.dir/feature_tests.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_12422
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_12422.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_12422.dir/feature_tests.c.o  -o cmTC_12422 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_601a4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_601a4.dir/build.make CMakeFiles/cmTC_601a4.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_601a4.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_601a4.dir/feature_tests.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_601a4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_601a4.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_601a4.dir/feature_tests.c.o  -o cmTC_601a4 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8ff53/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8ff53.dir/build.make CMakeFiles/cmTC_8ff53.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8ff53.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_8ff53.dir/feature_tests.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_8ff53
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8ff53.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_8ff53.dir/feature_tests.c.o  -o cmTC_8ff53 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros
+Performing C SOURCE FILE Test HAVE_GCC_WALL succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6b46c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6b46c.dir/build.make CMakeFiles/cmTC_6b46c.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6b46c.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_GCC_WALL   -Wall -o CMakeFiles/cmTC_6b46c.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_6b46c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b46c.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_GCC_WALL    CMakeFiles/cmTC_6b46c.dir/src.c.o  -o cmTC_6b46c -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_WDECLARATION_AFTER_STATEMENT succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a3196/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a3196.dir/build.make CMakeFiles/cmTC_a3196.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a3196.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_GCC_WDECLARATION_AFTER_STATEMENT   -Wdeclaration-after-statement -o CMakeFiles/cmTC_a3196.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_a3196
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a3196.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_GCC_WDECLARATION_AFTER_STATEMENT    CMakeFiles/cmTC_a3196.dir/src.c.o  -o cmTC_a3196 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_WERROR_DECLARATION_AFTER_STATEMENT succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f31e7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f31e7.dir/build.make CMakeFiles/cmTC_f31e7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f31e7.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_GCC_WERROR_DECLARATION_AFTER_STATEMENT   -Werror=declaration-after-statement -o CMakeFiles/cmTC_f31e7.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_f31e7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f31e7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_GCC_WERROR_DECLARATION_AFTER_STATEMENT    CMakeFiles/cmTC_f31e7.dir/src.c.o  -o cmTC_f31e7 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_ATOMICS succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_89f05/fast"
+/usr/bin/make -f CMakeFiles/cmTC_89f05.dir/build.make CMakeFiles/cmTC_89f05.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_89f05.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_GCC_ATOMICS   -o CMakeFiles/cmTC_89f05.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_89f05
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_89f05.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_GCC_ATOMICS    CMakeFiles/cmTC_89f05.dir/src.c.o  -o cmTC_89f05 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(int argc, char **argv) {
+        int a;
+        void *x, *y, *z;
+        __sync_lock_test_and_set(&a, 4);
+        __sync_lock_test_and_set(&x, y);
+        __sync_fetch_and_add(&a, 1);
+        __sync_bool_compare_and_swap(&a, 5, 10);
+        __sync_bool_compare_and_swap(&x, y, z); }
+Performing C SOURCE FILE Test HAVE_GCC_FVISIBILITY succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c4286/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c4286.dir/build.make CMakeFiles/cmTC_c4286.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c4286.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_GCC_FVISIBILITY -fvisibility=hidden -Werror   -o CMakeFiles/cmTC_c4286.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_c4286
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c4286.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_GCC_FVISIBILITY -fvisibility=hidden -Werror    CMakeFiles/cmTC_c4286.dir/src.c.o  -o cmTC_c4286 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+      #if !defined(__GNUC__) || __GNUC__ < 4
+      #error SDL only uses visibility attributes in GCC 4 or newer
+      #endif
+      int main(int argc, char **argv) {}
+Performing C SOURCE FILE Test HAVE_GCC_WSHADOW succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8a139/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8a139.dir/build.make CMakeFiles/cmTC_8a139.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8a139.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_GCC_WSHADOW   -Wshadow -o CMakeFiles/cmTC_8a139.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_8a139
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8a139.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_GCC_WSHADOW    CMakeFiles/cmTC_8a139.dir/src.c.o  -o cmTC_8a139 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_NO_UNDEFINED succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_23051/fast"
+/usr/bin/make -f CMakeFiles/cmTC_23051.dir/build.make CMakeFiles/cmTC_23051.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_23051.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_NO_UNDEFINED -Wl,--no-undefined   -o CMakeFiles/cmTC_23051.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_23051
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_23051.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_NO_UNDEFINED -Wl,--no-undefined    CMakeFiles/cmTC_23051.dir/src.c.o  -o cmTC_23051 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_MMX succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_15c4f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_15c4f.dir/build.make CMakeFiles/cmTC_15c4f.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_15c4f.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_MMX -mmmx   -o CMakeFiles/cmTC_15c4f.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_15c4f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_15c4f.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_MMX -mmmx    CMakeFiles/cmTC_15c4f.dir/src.c.o  -o cmTC_15c4f -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+          #ifdef __MINGW32__
+          #include <_mingw.h>
+          #ifdef __MINGW64_VERSION_MAJOR
+          #include <intrin.h>
+          #else
+          #include <mmintrin.h>
+          #endif
+          #else
+          #include <mmintrin.h>
+          #endif
+          #ifndef __MMX__
+          #error Assembler CPP flag not enabled
+          #endif
+          int main(int argc, char **argv) { }
+Performing C SOURCE FILE Test HAVE_3DNOW succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c92ec/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c92ec.dir/build.make CMakeFiles/cmTC_c92ec.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c92ec.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_3DNOW -m3dnow   -o CMakeFiles/cmTC_c92ec.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_c92ec
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c92ec.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_3DNOW -m3dnow    CMakeFiles/cmTC_c92ec.dir/src.c.o  -o cmTC_c92ec -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+          #include <mm3dnow.h>
+          #ifndef __3dNOW__
+          #error Assembler CPP flag not enabled
+          #endif
+          int main(int argc, char **argv) {
+            void *p = 0;
+            _m_prefetch(p);
+          }
+Performing C SOURCE FILE Test HAVE_SSE succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dacc7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_dacc7.dir/build.make CMakeFiles/cmTC_dacc7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dacc7.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_SSE -msse   -o CMakeFiles/cmTC_dacc7.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dacc7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dacc7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_SSE -msse    CMakeFiles/cmTC_dacc7.dir/src.c.o  -o cmTC_dacc7 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+          #ifdef __MINGW32__
+          #include <_mingw.h>
+          #ifdef __MINGW64_VERSION_MAJOR
+          #include <intrin.h>
+          #else
+          #include <xmmintrin.h>
+          #endif
+          #else
+          #include <xmmintrin.h>
+          #endif
+          #ifndef __SSE__
+          #error Assembler CPP flag not enabled
+          #endif
+          int main(int argc, char **argv) { }
+Performing C SOURCE FILE Test HAVE_SSE2 succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dcef2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_dcef2.dir/build.make CMakeFiles/cmTC_dcef2.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dcef2.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_SSE2 -msse2   -o CMakeFiles/cmTC_dcef2.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dcef2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dcef2.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_SSE2 -msse2    CMakeFiles/cmTC_dcef2.dir/src.c.o  -o cmTC_dcef2 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+          #ifdef __MINGW32__
+          #include <_mingw.h>
+          #ifdef __MINGW64_VERSION_MAJOR
+          #include <intrin.h>
+          #else
+          #include <emmintrin.h>
+          #endif
+          #else
+          #include <emmintrin.h>
+          #endif
+          #ifndef __SSE2__
+          #error Assembler CPP flag not enabled
+          #endif
+          int main(int argc, char **argv) { }
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_61438/fast"
+/usr/bin/make -f CMakeFiles/cmTC_61438.dir/build.make CMakeFiles/cmTC_61438.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_61438.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_61438.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_61438
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_61438.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_61438.dir/CheckIncludeFile.c.o  -o cmTC_61438 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stdio.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_553bd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_553bd.dir/build.make CMakeFiles/cmTC_553bd.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_553bd.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_553bd.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_553bd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_553bd.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_553bd.dir/CheckIncludeFile.c.o  -o cmTC_553bd -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stdlib.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fb13f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fb13f.dir/build.make CMakeFiles/cmTC_fb13f.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fb13f.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_fb13f.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_fb13f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fb13f.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_fb13f.dir/CheckIncludeFile.c.o  -o cmTC_fb13f -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stddef.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f6aa7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f6aa7.dir/build.make CMakeFiles/cmTC_f6aa7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f6aa7.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_f6aa7.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_f6aa7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f6aa7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_f6aa7.dir/CheckIncludeFile.c.o  -o cmTC_f6aa7 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stdarg.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_50873/fast"
+/usr/bin/make -f CMakeFiles/cmTC_50873.dir/build.make CMakeFiles/cmTC_50873.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_50873.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_50873.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_50873
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50873.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_50873.dir/CheckIncludeFile.c.o  -o cmTC_50873 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file malloc.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9701f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9701f.dir/build.make CMakeFiles/cmTC_9701f.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9701f.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_9701f.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_9701f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9701f.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_9701f.dir/CheckIncludeFile.c.o  -o cmTC_9701f -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file memory.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_65ef2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_65ef2.dir/build.make CMakeFiles/cmTC_65ef2.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_65ef2.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_65ef2.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_65ef2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_65ef2.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_65ef2.dir/CheckIncludeFile.c.o  -o cmTC_65ef2 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file string.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_987c7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_987c7.dir/build.make CMakeFiles/cmTC_987c7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_987c7.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_987c7.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_987c7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_987c7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_987c7.dir/CheckIncludeFile.c.o  -o cmTC_987c7 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file strings.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f4cab/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f4cab.dir/build.make CMakeFiles/cmTC_f4cab.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f4cab.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_f4cab.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_f4cab
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f4cab.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_f4cab.dir/CheckIncludeFile.c.o  -o cmTC_f4cab -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file inttypes.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fb06a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fb06a.dir/build.make CMakeFiles/cmTC_fb06a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fb06a.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_fb06a.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_fb06a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fb06a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_fb06a.dir/CheckIncludeFile.c.o  -o cmTC_fb06a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_41333/fast"
+/usr/bin/make -f CMakeFiles/cmTC_41333.dir/build.make CMakeFiles/cmTC_41333.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_41333.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_41333.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_41333
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41333.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_41333.dir/CheckIncludeFile.c.o  -o cmTC_41333 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file ctype.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bec4a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bec4a.dir/build.make CMakeFiles/cmTC_bec4a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bec4a.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_bec4a.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_bec4a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bec4a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_bec4a.dir/CheckIncludeFile.c.o  -o cmTC_bec4a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file math.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_27bd2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_27bd2.dir/build.make CMakeFiles/cmTC_27bd2.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_27bd2.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_27bd2.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_27bd2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_27bd2.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_27bd2.dir/CheckIncludeFile.c.o  -o cmTC_27bd2 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file iconv.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_158a5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_158a5.dir/build.make CMakeFiles/cmTC_158a5.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_158a5.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_158a5.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_158a5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_158a5.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_158a5.dir/CheckIncludeFile.c.o  -o cmTC_158a5 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file signal.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0b557/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0b557.dir/build.make CMakeFiles/cmTC_0b557.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0b557.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_0b557.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_0b557
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0b557.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_0b557.dir/CheckIncludeFile.c.o  -o cmTC_0b557 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if files dlfcn.h;stdint.h;stddef.h;inttypes.h;stdlib.h;strings.h;string.h;float.h exist passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cbcb4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cbcb4.dir/build.make CMakeFiles/cmTC_cbcb4.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cbcb4.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_cbcb4.dir/CheckIncludeFiles.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_cbcb4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cbcb4.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_cbcb4.dir/CheckIncludeFiles.c.o  -o cmTC_cbcb4 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining size of size_t passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0423d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0423d.dir/build.make CMakeFiles/cmTC_0423d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0423d.dir/SIZEOF_SIZE_T.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_0423d.dir/SIZEOF_SIZE_T.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CheckTypeSize/SIZEOF_SIZE_T.c
+Linking C executable cmTC_0423d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0423d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_0423d.dir/SIZEOF_SIZE_T.c.o  -o cmTC_0423d -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the M_PI exist passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bde92/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bde92.dir/build.make CMakeFiles/cmTC_bde92.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bde92.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_bde92.dir/CheckSymbolExists.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_bde92
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bde92.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_bde92.dir/CheckSymbolExists.c.o  -o cmTC_bde92 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+File /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef M_PI
+  return ((int*)(&M_PI))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Performing C SOURCE FILE Test HAVE_MPROTECT succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_81646/fast"
+/usr/bin/make -f CMakeFiles/cmTC_81646.dir/build.make CMakeFiles/cmTC_81646.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_81646.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_MPROTECT   -o CMakeFiles/cmTC_81646.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_81646
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_81646.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_MPROTECT    CMakeFiles/cmTC_81646.dir/src.c.o  -o cmTC_81646 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+#include <sys/types.h>
+                             #include <sys/mman.h>
+                             int main() { }
+Determining if the function strtod exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_629a1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_629a1.dir/build.make CMakeFiles/cmTC_629a1.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_629a1.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strtod   -o CMakeFiles/cmTC_629a1.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_629a1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_629a1.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strtod    CMakeFiles/cmTC_629a1.dir/CheckFunctionExists.c.o  -o cmTC_629a1 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function malloc exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_97a02/fast"
+/usr/bin/make -f CMakeFiles/cmTC_97a02.dir/build.make CMakeFiles/cmTC_97a02.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_97a02.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=malloc   -o CMakeFiles/cmTC_97a02.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘malloc’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_97a02
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_97a02.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=malloc    CMakeFiles/cmTC_97a02.dir/CheckFunctionExists.c.o  -o cmTC_97a02 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function calloc exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ecab7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ecab7.dir/build.make CMakeFiles/cmTC_ecab7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ecab7.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=calloc   -o CMakeFiles/cmTC_ecab7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘calloc’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_ecab7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ecab7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=calloc    CMakeFiles/cmTC_ecab7.dir/CheckFunctionExists.c.o  -o cmTC_ecab7 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function realloc exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7628a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7628a.dir/build.make CMakeFiles/cmTC_7628a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7628a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=realloc   -o CMakeFiles/cmTC_7628a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘realloc’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_7628a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7628a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=realloc    CMakeFiles/cmTC_7628a.dir/CheckFunctionExists.c.o  -o cmTC_7628a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function free exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c99c6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c99c6.dir/build.make CMakeFiles/cmTC_c99c6.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c99c6.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=free   -o CMakeFiles/cmTC_c99c6.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘free’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_c99c6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c99c6.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=free    CMakeFiles/cmTC_c99c6.dir/CheckFunctionExists.c.o  -o cmTC_c99c6 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function getenv exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_818c7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_818c7.dir/build.make CMakeFiles/cmTC_818c7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_818c7.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=getenv   -o CMakeFiles/cmTC_818c7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_818c7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_818c7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=getenv    CMakeFiles/cmTC_818c7.dir/CheckFunctionExists.c.o  -o cmTC_818c7 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function setenv exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9f20d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9f20d.dir/build.make CMakeFiles/cmTC_9f20d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9f20d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=setenv   -o CMakeFiles/cmTC_9f20d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_9f20d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f20d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=setenv    CMakeFiles/cmTC_9f20d.dir/CheckFunctionExists.c.o  -o cmTC_9f20d -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function putenv exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_46764/fast"
+/usr/bin/make -f CMakeFiles/cmTC_46764.dir/build.make CMakeFiles/cmTC_46764.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_46764.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=putenv   -o CMakeFiles/cmTC_46764.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_46764
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_46764.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=putenv    CMakeFiles/cmTC_46764.dir/CheckFunctionExists.c.o  -o cmTC_46764 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function unsetenv exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_77f17/fast"
+/usr/bin/make -f CMakeFiles/cmTC_77f17.dir/build.make CMakeFiles/cmTC_77f17.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_77f17.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=unsetenv   -o CMakeFiles/cmTC_77f17.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_77f17
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_77f17.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=unsetenv    CMakeFiles/cmTC_77f17.dir/CheckFunctionExists.c.o  -o cmTC_77f17 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function qsort exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5b237/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5b237.dir/build.make CMakeFiles/cmTC_5b237.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5b237.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=qsort   -o CMakeFiles/cmTC_5b237.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_5b237
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5b237.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=qsort    CMakeFiles/cmTC_5b237.dir/CheckFunctionExists.c.o  -o cmTC_5b237 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function abs exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dfd7c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_dfd7c.dir/build.make CMakeFiles/cmTC_dfd7c.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dfd7c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=abs   -o CMakeFiles/cmTC_dfd7c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘abs’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_dfd7c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dfd7c.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=abs    CMakeFiles/cmTC_dfd7c.dir/CheckFunctionExists.c.o  -o cmTC_dfd7c -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function bcopy exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_06e1a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_06e1a.dir/build.make CMakeFiles/cmTC_06e1a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_06e1a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=bcopy   -o CMakeFiles/cmTC_06e1a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘bcopy’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_06e1a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_06e1a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=bcopy    CMakeFiles/cmTC_06e1a.dir/CheckFunctionExists.c.o  -o cmTC_06e1a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function memset exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_16950/fast"
+/usr/bin/make -f CMakeFiles/cmTC_16950.dir/build.make CMakeFiles/cmTC_16950.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_16950.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=memset   -o CMakeFiles/cmTC_16950.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘memset’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_16950
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16950.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=memset    CMakeFiles/cmTC_16950.dir/CheckFunctionExists.c.o  -o cmTC_16950 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function memcpy exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7c04a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7c04a.dir/build.make CMakeFiles/cmTC_7c04a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7c04a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=memcpy   -o CMakeFiles/cmTC_7c04a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘memcpy’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_7c04a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c04a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=memcpy    CMakeFiles/cmTC_7c04a.dir/CheckFunctionExists.c.o  -o cmTC_7c04a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function memmove exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0279a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0279a.dir/build.make CMakeFiles/cmTC_0279a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0279a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=memmove   -o CMakeFiles/cmTC_0279a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘memmove’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_0279a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0279a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=memmove    CMakeFiles/cmTC_0279a.dir/CheckFunctionExists.c.o  -o cmTC_0279a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function memcmp exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f7bdc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f7bdc.dir/build.make CMakeFiles/cmTC_f7bdc.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f7bdc.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=memcmp   -o CMakeFiles/cmTC_f7bdc.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘memcmp’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_f7bdc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f7bdc.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=memcmp    CMakeFiles/cmTC_f7bdc.dir/CheckFunctionExists.c.o  -o cmTC_f7bdc -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strlen exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_44eee/fast"
+/usr/bin/make -f CMakeFiles/cmTC_44eee.dir/build.make CMakeFiles/cmTC_44eee.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_44eee.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strlen   -o CMakeFiles/cmTC_44eee.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strlen’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_44eee
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_44eee.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strlen    CMakeFiles/cmTC_44eee.dir/CheckFunctionExists.c.o  -o cmTC_44eee -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strdup exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_88a9f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_88a9f.dir/build.make CMakeFiles/cmTC_88a9f.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_88a9f.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strdup   -o CMakeFiles/cmTC_88a9f.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strdup’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_88a9f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_88a9f.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strdup    CMakeFiles/cmTC_88a9f.dir/CheckFunctionExists.c.o  -o cmTC_88a9f -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strchr exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9c537/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9c537.dir/build.make CMakeFiles/cmTC_9c537.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9c537.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strchr   -o CMakeFiles/cmTC_9c537.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strchr’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_9c537
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9c537.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strchr    CMakeFiles/cmTC_9c537.dir/CheckFunctionExists.c.o  -o cmTC_9c537 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strrchr exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_306f9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_306f9.dir/build.make CMakeFiles/cmTC_306f9.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_306f9.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strrchr   -o CMakeFiles/cmTC_306f9.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strrchr’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_306f9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_306f9.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strrchr    CMakeFiles/cmTC_306f9.dir/CheckFunctionExists.c.o  -o cmTC_306f9 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strstr exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f72c6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f72c6.dir/build.make CMakeFiles/cmTC_f72c6.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f72c6.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strstr   -o CMakeFiles/cmTC_f72c6.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strstr’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_f72c6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f72c6.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strstr    CMakeFiles/cmTC_f72c6.dir/CheckFunctionExists.c.o  -o cmTC_f72c6 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strtol exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7c28d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7c28d.dir/build.make CMakeFiles/cmTC_7c28d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7c28d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strtol   -o CMakeFiles/cmTC_7c28d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_7c28d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c28d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strtol    CMakeFiles/cmTC_7c28d.dir/CheckFunctionExists.c.o  -o cmTC_7c28d -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strtoul exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_71bb5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_71bb5.dir/build.make CMakeFiles/cmTC_71bb5.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_71bb5.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strtoul   -o CMakeFiles/cmTC_71bb5.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_71bb5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_71bb5.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strtoul    CMakeFiles/cmTC_71bb5.dir/CheckFunctionExists.c.o  -o cmTC_71bb5 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strtoll exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1d64a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1d64a.dir/build.make CMakeFiles/cmTC_1d64a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1d64a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strtoll   -o CMakeFiles/cmTC_1d64a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1d64a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d64a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strtoll    CMakeFiles/cmTC_1d64a.dir/CheckFunctionExists.c.o  -o cmTC_1d64a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strtoull exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a5804/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a5804.dir/build.make CMakeFiles/cmTC_a5804.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a5804.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strtoull   -o CMakeFiles/cmTC_a5804.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_a5804
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a5804.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strtoull    CMakeFiles/cmTC_a5804.dir/CheckFunctionExists.c.o  -o cmTC_a5804 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function atoi exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_26f79/fast"
+/usr/bin/make -f CMakeFiles/cmTC_26f79.dir/build.make CMakeFiles/cmTC_26f79.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_26f79.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=atoi   -o CMakeFiles/cmTC_26f79.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_26f79
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_26f79.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=atoi    CMakeFiles/cmTC_26f79.dir/CheckFunctionExists.c.o  -o cmTC_26f79 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function atof exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_10ef6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_10ef6.dir/build.make CMakeFiles/cmTC_10ef6.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_10ef6.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=atof   -o CMakeFiles/cmTC_10ef6.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_10ef6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_10ef6.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=atof    CMakeFiles/cmTC_10ef6.dir/CheckFunctionExists.c.o  -o cmTC_10ef6 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strcmp exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5fdb3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5fdb3.dir/build.make CMakeFiles/cmTC_5fdb3.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5fdb3.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strcmp   -o CMakeFiles/cmTC_5fdb3.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strcmp’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_5fdb3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5fdb3.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strcmp    CMakeFiles/cmTC_5fdb3.dir/CheckFunctionExists.c.o  -o cmTC_5fdb3 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strncmp exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fa208/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fa208.dir/build.make CMakeFiles/cmTC_fa208.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fa208.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strncmp   -o CMakeFiles/cmTC_fa208.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strncmp’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_fa208
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fa208.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strncmp    CMakeFiles/cmTC_fa208.dir/CheckFunctionExists.c.o  -o cmTC_fa208 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strcasecmp exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ba95d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ba95d.dir/build.make CMakeFiles/cmTC_ba95d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ba95d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strcasecmp   -o CMakeFiles/cmTC_ba95d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strcasecmp’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_ba95d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ba95d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strcasecmp    CMakeFiles/cmTC_ba95d.dir/CheckFunctionExists.c.o  -o cmTC_ba95d -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strncasecmp exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_caf49/fast"
+/usr/bin/make -f CMakeFiles/cmTC_caf49.dir/build.make CMakeFiles/cmTC_caf49.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_caf49.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=strncasecmp   -o CMakeFiles/cmTC_caf49.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘strncasecmp’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_caf49
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_caf49.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=strncasecmp    CMakeFiles/cmTC_caf49.dir/CheckFunctionExists.c.o  -o cmTC_caf49 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function vsscanf exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a5343/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a5343.dir/build.make CMakeFiles/cmTC_a5343.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a5343.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=vsscanf   -o CMakeFiles/cmTC_a5343.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘vsscanf’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_a5343
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a5343.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=vsscanf    CMakeFiles/cmTC_a5343.dir/CheckFunctionExists.c.o  -o cmTC_a5343 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function vsnprintf exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4597d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4597d.dir/build.make CMakeFiles/cmTC_4597d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4597d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=vsnprintf   -o CMakeFiles/cmTC_4597d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘vsnprintf’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_4597d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4597d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=vsnprintf    CMakeFiles/cmTC_4597d.dir/CheckFunctionExists.c.o  -o cmTC_4597d -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function fseeko exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_34051/fast"
+/usr/bin/make -f CMakeFiles/cmTC_34051.dir/build.make CMakeFiles/cmTC_34051.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_34051.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=fseeko   -o CMakeFiles/cmTC_34051.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_34051
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_34051.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=fseeko    CMakeFiles/cmTC_34051.dir/CheckFunctionExists.c.o  -o cmTC_34051 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function fseeko64 exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_75946/fast"
+/usr/bin/make -f CMakeFiles/cmTC_75946.dir/build.make CMakeFiles/cmTC_75946.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_75946.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=fseeko64   -o CMakeFiles/cmTC_75946.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_75946
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_75946.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=fseeko64    CMakeFiles/cmTC_75946.dir/CheckFunctionExists.c.o  -o cmTC_75946 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sigaction exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_87333/fast"
+/usr/bin/make -f CMakeFiles/cmTC_87333.dir/build.make CMakeFiles/cmTC_87333.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_87333.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=sigaction   -o CMakeFiles/cmTC_87333.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_87333
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_87333.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=sigaction    CMakeFiles/cmTC_87333.dir/CheckFunctionExists.c.o  -o cmTC_87333 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function setjmp exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_86432/fast"
+/usr/bin/make -f CMakeFiles/cmTC_86432.dir/build.make CMakeFiles/cmTC_86432.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_86432.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=setjmp   -o CMakeFiles/cmTC_86432.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_86432
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_86432.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=setjmp    CMakeFiles/cmTC_86432.dir/CheckFunctionExists.c.o  -o cmTC_86432 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function nanosleep exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6d7cb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6d7cb.dir/build.make CMakeFiles/cmTC_6d7cb.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6d7cb.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=nanosleep   -o CMakeFiles/cmTC_6d7cb.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6d7cb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d7cb.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=nanosleep    CMakeFiles/cmTC_6d7cb.dir/CheckFunctionExists.c.o  -o cmTC_6d7cb -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sysconf exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_adc2f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_adc2f.dir/build.make CMakeFiles/cmTC_adc2f.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_adc2f.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=sysconf   -o CMakeFiles/cmTC_adc2f.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_adc2f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_adc2f.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=sysconf    CMakeFiles/cmTC_adc2f.dir/CheckFunctionExists.c.o  -o cmTC_adc2f -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pow exists in the m passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fb465/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fb465.dir/build.make CMakeFiles/cmTC_fb465.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fb465.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=pow   -o CMakeFiles/cmTC_fb465.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘pow’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_fb465
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fb465.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=pow    CMakeFiles/cmTC_fb465.dir/CheckFunctionExists.c.o  -o cmTC_fb465 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function atan exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9f709/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9f709.dir/build.make CMakeFiles/cmTC_9f709.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9f709.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=atan   -o CMakeFiles/cmTC_9f709.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘atan’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_9f709
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f709.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=atan    CMakeFiles/cmTC_9f709.dir/CheckFunctionExists.c.o  -o cmTC_9f709 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function atan2 exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b7083/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b7083.dir/build.make CMakeFiles/cmTC_b7083.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b7083.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=atan2   -o CMakeFiles/cmTC_b7083.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘atan2’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_b7083
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b7083.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=atan2    CMakeFiles/cmTC_b7083.dir/CheckFunctionExists.c.o  -o cmTC_b7083 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function ceil exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_168bc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_168bc.dir/build.make CMakeFiles/cmTC_168bc.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_168bc.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=ceil   -o CMakeFiles/cmTC_168bc.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘ceil’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_168bc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_168bc.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=ceil    CMakeFiles/cmTC_168bc.dir/CheckFunctionExists.c.o  -o cmTC_168bc -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function copysign exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d39b1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d39b1.dir/build.make CMakeFiles/cmTC_d39b1.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d39b1.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=copysign   -o CMakeFiles/cmTC_d39b1.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘copysign’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_d39b1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d39b1.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=copysign    CMakeFiles/cmTC_d39b1.dir/CheckFunctionExists.c.o  -o cmTC_d39b1 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function cos exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b945a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b945a.dir/build.make CMakeFiles/cmTC_b945a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b945a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=cos   -o CMakeFiles/cmTC_b945a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘cos’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_b945a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b945a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=cos    CMakeFiles/cmTC_b945a.dir/CheckFunctionExists.c.o  -o cmTC_b945a -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function cosf exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e6d3d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e6d3d.dir/build.make CMakeFiles/cmTC_e6d3d.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e6d3d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=cosf   -o CMakeFiles/cmTC_e6d3d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘cosf’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_e6d3d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e6d3d.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=cosf    CMakeFiles/cmTC_e6d3d.dir/CheckFunctionExists.c.o  -o cmTC_e6d3d -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function fabs exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_26e72/fast"
+/usr/bin/make -f CMakeFiles/cmTC_26e72.dir/build.make CMakeFiles/cmTC_26e72.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_26e72.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=fabs   -o CMakeFiles/cmTC_26e72.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘fabs’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_26e72
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_26e72.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=fabs    CMakeFiles/cmTC_26e72.dir/CheckFunctionExists.c.o  -o cmTC_26e72 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function floor exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6d266/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6d266.dir/build.make CMakeFiles/cmTC_6d266.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6d266.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=floor   -o CMakeFiles/cmTC_6d266.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘floor’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_6d266
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d266.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=floor    CMakeFiles/cmTC_6d266.dir/CheckFunctionExists.c.o  -o cmTC_6d266 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function log exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_98aa1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_98aa1.dir/build.make CMakeFiles/cmTC_98aa1.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_98aa1.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=log   -o CMakeFiles/cmTC_98aa1.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘log’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_98aa1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_98aa1.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=log    CMakeFiles/cmTC_98aa1.dir/CheckFunctionExists.c.o  -o cmTC_98aa1 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pow exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_02aba/fast"
+/usr/bin/make -f CMakeFiles/cmTC_02aba.dir/build.make CMakeFiles/cmTC_02aba.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_02aba.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=pow   -o CMakeFiles/cmTC_02aba.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘pow’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_02aba
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_02aba.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=pow    CMakeFiles/cmTC_02aba.dir/CheckFunctionExists.c.o  -o cmTC_02aba -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function scalbn exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8a401/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8a401.dir/build.make CMakeFiles/cmTC_8a401.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8a401.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=scalbn   -o CMakeFiles/cmTC_8a401.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘scalbn’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_8a401
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8a401.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=scalbn    CMakeFiles/cmTC_8a401.dir/CheckFunctionExists.c.o  -o cmTC_8a401 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sin exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1f736/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1f736.dir/build.make CMakeFiles/cmTC_1f736.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1f736.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=sin   -o CMakeFiles/cmTC_1f736.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sin’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_1f736
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f736.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=sin    CMakeFiles/cmTC_1f736.dir/CheckFunctionExists.c.o  -o cmTC_1f736 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sinf exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_95bdc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_95bdc.dir/build.make CMakeFiles/cmTC_95bdc.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_95bdc.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=sinf   -o CMakeFiles/cmTC_95bdc.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sinf’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_95bdc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_95bdc.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=sinf    CMakeFiles/cmTC_95bdc.dir/CheckFunctionExists.c.o  -o cmTC_95bdc -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sqrt exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_947f6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_947f6.dir/build.make CMakeFiles/cmTC_947f6.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_947f6.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=sqrt   -o CMakeFiles/cmTC_947f6.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sqrt’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_947f6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_947f6.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=sqrt    CMakeFiles/cmTC_947f6.dir/CheckFunctionExists.c.o  -o cmTC_947f6 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sqrtf exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_271f4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_271f4.dir/build.make CMakeFiles/cmTC_271f4.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_271f4.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=sqrtf   -o CMakeFiles/cmTC_271f4.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sqrtf’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_271f4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_271f4.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=sqrtf    CMakeFiles/cmTC_271f4.dir/CheckFunctionExists.c.o  -o cmTC_271f4 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function tan exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8401b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8401b.dir/build.make CMakeFiles/cmTC_8401b.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8401b.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=tan   -o CMakeFiles/cmTC_8401b.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘tan’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_8401b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8401b.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=tan    CMakeFiles/cmTC_8401b.dir/CheckFunctionExists.c.o  -o cmTC_8401b -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function tanf exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7e737/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7e737.dir/build.make CMakeFiles/cmTC_7e737.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7e737.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=tanf   -o CMakeFiles/cmTC_7e737.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘tanf’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_7e737
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7e737.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=tanf    CMakeFiles/cmTC_7e737.dir/CheckFunctionExists.c.o  -o cmTC_7e737 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function acos exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ef77e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ef77e.dir/build.make CMakeFiles/cmTC_ef77e.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ef77e.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=acos   -o CMakeFiles/cmTC_ef77e.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘acos’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_ef77e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ef77e.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=acos    CMakeFiles/cmTC_ef77e.dir/CheckFunctionExists.c.o  -o cmTC_ef77e -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function asin exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_99401/fast"
+/usr/bin/make -f CMakeFiles/cmTC_99401.dir/build.make CMakeFiles/cmTC_99401.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_99401.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=asin   -o CMakeFiles/cmTC_99401.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘asin’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_99401
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_99401.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=asin    CMakeFiles/cmTC_99401.dir/CheckFunctionExists.c.o  -o cmTC_99401 -rdynamic -lm 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file alloca.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ed9d8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ed9d8.dir/build.make CMakeFiles/cmTC_ed9d8.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ed9d8.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_ed9d8.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_ed9d8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ed9d8.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_ed9d8.dir/CheckIncludeFile.c.o  -o cmTC_ed9d8 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test HAVE_SA_SIGACTION succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_308c2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_308c2.dir/build.make CMakeFiles/cmTC_308c2.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_308c2.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_SA_SIGACTION   -o CMakeFiles/cmTC_308c2.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_308c2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_308c2.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_SA_SIGACTION    CMakeFiles/cmTC_308c2.dir/src.c.o  -o cmTC_308c2 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+#include <signal.h>
+
+int main()
+{
+   (void)sizeof(((struct sigaction *)0)->sa_sigaction);
+   return 0;
+}
+
+Determining if the function dlopen exists in the dl passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3ecf0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3ecf0.dir/build.make CMakeFiles/cmTC_3ecf0.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3ecf0.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=dlopen   -o CMakeFiles/cmTC_3ecf0.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_3ecf0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3ecf0.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=dlopen    CMakeFiles/cmTC_3ecf0.dir/CheckFunctionExists.c.o  -o cmTC_3ecf0 -rdynamic -ldl 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test OSS_FOUND succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d24e0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d24e0.dir/build.make CMakeFiles/cmTC_d24e0.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d24e0.dir/src.c.o
+/usr/bin/cc    -g -O3 -DOSS_FOUND   -o CMakeFiles/cmTC_d24e0.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_d24e0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d24e0.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DOSS_FOUND    CMakeFiles/cmTC_d24e0.dir/src.c.o  -o cmTC_d24e0 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+        #include <sys/soundcard.h>
+        int main() { int arg = SNDCTL_DSP_SETFRAGMENT; }
+Determining if the include file alsa/asoundlib.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1cc6b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1cc6b.dir/build.make CMakeFiles/cmTC_1cc6b.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1cc6b.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_1cc6b.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_1cc6b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1cc6b.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_1cc6b.dir/CheckIncludeFile.c.o  -o cmTC_1cc6b -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function snd_pcm_recover exists in the asound passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d05b9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d05b9.dir/build.make CMakeFiles/cmTC_d05b9.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d05b9.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=snd_pcm_recover   -o CMakeFiles/cmTC_d05b9.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d05b9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d05b9.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=snd_pcm_recover    CMakeFiles/cmTC_d05b9.dir/CheckFunctionExists.c.o  -o cmTC_d05b9 -rdynamic -lasound 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file sndio.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_77de0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_77de0.dir/build.make CMakeFiles/cmTC_77de0.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_77de0.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_77de0.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_77de0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_77de0.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_77de0.dir/CheckIncludeFile.c.o  -o cmTC_77de0 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file X11/Xcursor/Xcursor.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_442ad/fast"
+/usr/bin/make -f CMakeFiles/cmTC_442ad.dir/build.make CMakeFiles/cmTC_442ad.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_442ad.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_442ad.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_442ad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_442ad.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_442ad.dir/CheckIncludeFile.c.o  -o cmTC_442ad -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file X11/extensions/Xinerama.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_93597/fast"
+/usr/bin/make -f CMakeFiles/cmTC_93597.dir/build.make CMakeFiles/cmTC_93597.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_93597.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_93597.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_93597
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_93597.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_93597.dir/CheckIncludeFile.c.o  -o cmTC_93597 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file X11/extensions/XInput2.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5918b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5918b.dir/build.make CMakeFiles/cmTC_5918b.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5918b.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_5918b.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_5918b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5918b.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_5918b.dir/CheckIncludeFile.c.o  -o cmTC_5918b -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file X11/extensions/Xrandr.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e6476/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e6476.dir/build.make CMakeFiles/cmTC_e6476.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e6476.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_e6476.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_e6476
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e6476.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_e6476.dir/CheckIncludeFile.c.o  -o cmTC_e6476 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file X11/extensions/Xrender.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2242a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2242a.dir/build.make CMakeFiles/cmTC_2242a.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2242a.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_2242a.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_2242a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2242a.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_2242a.dir/CheckIncludeFile.c.o  -o cmTC_2242a -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file X11/extensions/scrnsaver.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f3034/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f3034.dir/build.make CMakeFiles/cmTC_f3034.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f3034.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_f3034.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_f3034
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f3034.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_f3034.dir/CheckIncludeFile.c.o  -o cmTC_f3034 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file X11/extensions/shape.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_64532/fast"
+/usr/bin/make -f CMakeFiles/cmTC_64532.dir/build.make CMakeFiles/cmTC_64532.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_64532.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_64532.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_64532
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_64532.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_64532.dir/CheckIncludeFile.c.o  -o cmTC_64532 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if files X11/Xlib.h;X11/extensions/xf86vmode.h exist passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_21ffb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_21ffb.dir/build.make CMakeFiles/cmTC_21ffb.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_21ffb.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_21ffb.dir/CheckIncludeFiles.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_21ffb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_21ffb.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_21ffb.dir/CheckIncludeFiles.c.o  -o cmTC_21ffb -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if files X11/Xlib.h;X11/Xproto.h;X11/extensions/Xext.h exist passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_64802/fast"
+/usr/bin/make -f CMakeFiles/cmTC_64802.dir/build.make CMakeFiles/cmTC_64802.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_64802.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_64802.dir/CheckIncludeFiles.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_64802
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_64802.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_64802.dir/CheckIncludeFiles.c.o  -o cmTC_64802 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the function shmat exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_44d52/fast"
+/usr/bin/make -f CMakeFiles/cmTC_44d52.dir/build.make CMakeFiles/cmTC_44d52.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_44d52.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=shmat   -o CMakeFiles/cmTC_44d52.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_44d52
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_44d52.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=shmat    CMakeFiles/cmTC_44d52.dir/CheckFunctionExists.c.o  -o cmTC_44d52 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test HAVE_CONST_XEXT_ADDDISPLAY succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fdbe8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fdbe8.dir/build.make CMakeFiles/cmTC_fdbe8.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fdbe8.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_CONST_XEXT_ADDDISPLAY   -o CMakeFiles/cmTC_fdbe8.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_fdbe8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fdbe8.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_CONST_XEXT_ADDDISPLAY    CMakeFiles/cmTC_fdbe8.dir/src.c.o  -o cmTC_fdbe8 -rdynamic /usr/lib/x86_64-linux-gnu/libX11.so /usr/lib/x86_64-linux-gnu/libX11.so 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+          #include <X11/Xlib.h>
+          #include <X11/Xproto.h>
+          #include <X11/extensions/Xext.h>
+          #include <X11/extensions/extutil.h>
+          extern XExtDisplayInfo* XextAddDisplay(XExtensionInfo* a,Display* b,_Xconst char* c,XExtensionHooks* d,int e,XPointer f);
+          int main(int argc, char **argv) {}
+Performing C SOURCE FILE Test HAVE_XGENERICEVENT succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5efd7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5efd7.dir/build.make CMakeFiles/cmTC_5efd7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5efd7.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_XGENERICEVENT   -o CMakeFiles/cmTC_5efd7.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_5efd7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5efd7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_XGENERICEVENT    CMakeFiles/cmTC_5efd7.dir/src.c.o  -o cmTC_5efd7 -rdynamic /usr/lib/x86_64-linux-gnu/libX11.so /usr/lib/x86_64-linux-gnu/libX11.so 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+          #include <X11/Xlib.h>
+          int main(int argc, char **argv) {
+            Display *display;
+            XEvent event;
+            XGenericEventCookie *cookie = &event.xcookie;
+            XNextEvent(display, &event);
+            XGetEventData(display, cookie);
+            XFreeEventData(display, cookie); }
+Determining if the function XkbKeycodeToKeysym exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7a8d7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7a8d7.dir/build.make CMakeFiles/cmTC_7a8d7.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7a8d7.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=XkbKeycodeToKeysym   -o CMakeFiles/cmTC_7a8d7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_7a8d7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7a8d7.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=XkbKeycodeToKeysym    CMakeFiles/cmTC_7a8d7.dir/CheckFunctionExists.c.o  -o cmTC_7a8d7 -rdynamic /usr/lib/x86_64-linux-gnu/libX11.so /usr/lib/x86_64-linux-gnu/libX11.so 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test HAVE_XINPUT2_MULTITOUCH succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_befac/fast"
+/usr/bin/make -f CMakeFiles/cmTC_befac.dir/build.make CMakeFiles/cmTC_befac.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_befac.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_XINPUT2_MULTITOUCH   -o CMakeFiles/cmTC_befac.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_befac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_befac.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_XINPUT2_MULTITOUCH    CMakeFiles/cmTC_befac.dir/src.c.o  -o cmTC_befac -rdynamic /usr/lib/x86_64-linux-gnu/libX11.so /usr/lib/x86_64-linux-gnu/libX11.so 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+            #include <X11/Xlib.h>
+            #include <X11/Xproto.h>
+            #include <X11/extensions/XInput2.h>
+            int event_type = XI_TouchBegin;
+            XITouchClassInfo *t;
+            Status XIAllowTouchEvents(Display *a,int b,unsigned int c,Window d,int f)
+            {
+              return (Status)0;
+            }
+            int main(int argc, char **argv) {}
+Performing C SOURCE FILE Test HAVE_VIDEO_OPENGL succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_921f0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_921f0.dir/build.make CMakeFiles/cmTC_921f0.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_921f0.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_VIDEO_OPENGL   -o CMakeFiles/cmTC_921f0.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_921f0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_921f0.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_VIDEO_OPENGL    CMakeFiles/cmTC_921f0.dir/src.c.o  -o cmTC_921f0 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+        #include <GL/gl.h>
+        #include <GL/glx.h>
+        int main(int argc, char** argv) {}
+Performing C SOURCE FILE Test HAVE_VIDEO_OPENGL_EGL succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fef99/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fef99.dir/build.make CMakeFiles/cmTC_fef99.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fef99.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_VIDEO_OPENGL_EGL   -o CMakeFiles/cmTC_fef99.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_fef99
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fef99.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_VIDEO_OPENGL_EGL    CMakeFiles/cmTC_fef99.dir/src.c.o  -o cmTC_fef99 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+        #define EGL_API_FB
+        #include <EGL/egl.h>
+        int main (int argc, char** argv) {}
+Performing C SOURCE FILE Test HAVE_VIDEO_OPENGLES_V2 succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dbc6f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_dbc6f.dir/build.make CMakeFiles/cmTC_dbc6f.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dbc6f.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_VIDEO_OPENGLES_V2   -o CMakeFiles/cmTC_dbc6f.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_dbc6f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dbc6f.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_VIDEO_OPENGLES_V2    CMakeFiles/cmTC_dbc6f.dir/src.c.o  -o cmTC_dbc6f -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+      #include <GLES2/gl2.h>
+      #include <GLES2/gl2ext.h>
+      int main (int argc, char** argv) {}
+Performing C SOURCE FILE Test HAVE_INPUT_EVENTS succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ff669/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ff669.dir/build.make CMakeFiles/cmTC_ff669.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ff669.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_INPUT_EVENTS   -o CMakeFiles/cmTC_ff669.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_ff669
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ff669.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_INPUT_EVENTS    CMakeFiles/cmTC_ff669.dir/src.c.o  -o cmTC_ff669 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+        #include <linux/input.h>
+        #ifndef EVIOCGNAME
+        #error EVIOCGNAME() ioctl not available
+        #endif
+        int main(int argc, char** argv) {}
+Performing C SOURCE FILE Test HAVE_INPUT_KD succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_54adc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_54adc.dir/build.make CMakeFiles/cmTC_54adc.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_54adc.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_INPUT_KD   -o CMakeFiles/cmTC_54adc.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c:9:13: warning: implicit declaration of function ‘ioctl’ [-Wimplicit-function-declaration]
+             ioctl(0, KDGKBENT, &kbe);
+             ^
+Linking C executable cmTC_54adc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_54adc.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_INPUT_KD    CMakeFiles/cmTC_54adc.dir/src.c.o  -o cmTC_54adc -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+        #include <linux/kd.h>
+        #include <linux/keyboard.h>
+
+        int main(int argc, char **argv) 
+        {
+            struct kbentry kbe;
+            kbe.kb_table = KG_CTRL;
+            ioctl(0, KDGKBENT, &kbe);
+        }
+Determining if the include file libudev.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_09a42/fast"
+/usr/bin/make -f CMakeFiles/cmTC_09a42.dir/build.make CMakeFiles/cmTC_09a42.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_09a42.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3    -o CMakeFiles/cmTC_09a42.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_09a42
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_09a42.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3     CMakeFiles/cmTC_09a42.dir/CheckIncludeFile.c.o  -o cmTC_09a42 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test HAVE_PTHREADS succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_478a8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_478a8.dir/build.make CMakeFiles/cmTC_478a8.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_478a8.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_PTHREADS   -D_REENTRANT -pthread   -o CMakeFiles/cmTC_478a8.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_478a8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_478a8.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_PTHREADS   -D_REENTRANT -pthread    CMakeFiles/cmTC_478a8.dir/src.c.o  -o cmTC_478a8 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Return value: 1
+Source file was:
+
+        #include <pthread.h>
+        int main(int argc, char** argv) {
+          pthread_attr_t type;
+          pthread_attr_init(&type);
+          return 0;
+        }
+Performing C SOURCE FILE Test HAVE_RECURSIVE_MUTEXES succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3a71c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3a71c.dir/build.make CMakeFiles/cmTC_3a71c.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3a71c.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_RECURSIVE_MUTEXES   -D_REENTRANT -pthread   -o CMakeFiles/cmTC_3a71c.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_3a71c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3a71c.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_RECURSIVE_MUTEXES   -D_REENTRANT -pthread    CMakeFiles/cmTC_3a71c.dir/src.c.o  -o cmTC_3a71c -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+        #include <pthread.h>
+        int main(int argc, char **argv) {
+          pthread_mutexattr_t attr;
+          pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+          return 0;
+        }
+Performing C SOURCE FILE Test HAVE_PTHREADS_SEM succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_29a06/fast"
+/usr/bin/make -f CMakeFiles/cmTC_29a06.dir/build.make CMakeFiles/cmTC_29a06.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_29a06.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_PTHREADS_SEM   -D_REENTRANT -pthread   -o CMakeFiles/cmTC_29a06.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_29a06
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_29a06.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_PTHREADS_SEM   -D_REENTRANT -pthread    CMakeFiles/cmTC_29a06.dir/src.c.o  -o cmTC_29a06 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+#include <pthread.h>
+                                 #include <semaphore.h>
+                                 int main(int argc, char **argv) { return 0; }
+Performing C SOURCE FILE Test HAVE_SEM_TIMEDWAIT succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_03c16/fast"
+/usr/bin/make -f CMakeFiles/cmTC_03c16.dir/build.make CMakeFiles/cmTC_03c16.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_03c16.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_SEM_TIMEDWAIT   -D_REENTRANT -pthread   -o CMakeFiles/cmTC_03c16.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_03c16
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_03c16.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_SEM_TIMEDWAIT   -D_REENTRANT -pthread    CMakeFiles/cmTC_03c16.dir/src.c.o  -o cmTC_03c16 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+              #include <pthread.h>
+              #include <semaphore.h>
+              int main(int argc, char **argv) {
+                  sem_timedwait(NULL, NULL);
+                  return 0;
+              }
+Determining if the function pthread_setname_np exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b1319/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b1319.dir/build.make CMakeFiles/cmTC_b1319.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b1319.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -g -O3 -DCHECK_FUNCTION_EXISTS=pthread_setname_np   -D_REENTRANT -pthread   -o CMakeFiles/cmTC_b1319.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b1319
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b1319.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DCHECK_FUNCTION_EXISTS=pthread_setname_np   -D_REENTRANT -pthread    CMakeFiles/cmTC_b1319.dir/CheckFunctionExists.c.o  -o cmTC_b1319 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file linux/version.h exists passed with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fe9ae/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fe9ae.dir/build.make CMakeFiles/cmTC_fe9ae.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fe9ae.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -g -O3     -o CMakeFiles/cmTC_fe9ae.dir/CheckIncludeFile.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_fe9ae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe9ae.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3      CMakeFiles/cmTC_fe9ae.dir/CheckIncludeFile.c.o  -o cmTC_fe9ae -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test HAVE_ENABLE_NEW_DTAGS succeeded with the following output:
+Change Dir: /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_22838/fast"
+/usr/bin/make -f CMakeFiles/cmTC_22838.dir/build.make CMakeFiles/cmTC_22838.dir/build
+make[1]: Entering directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_22838.dir/src.c.o
+/usr/bin/cc    -g -O3 -DHAVE_LINUX_VERSION_H -DHAVE_ENABLE_NEW_DTAGS -Wl,--enable-new-dtags   -o CMakeFiles/cmTC_22838.dir/src.c.o   -c /home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_22838
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_22838.dir/link.txt --verbose=1
+/usr/bin/cc  -g -O3 -DHAVE_LINUX_VERSION_H -DHAVE_ENABLE_NEW_DTAGS -Wl,--enable-new-dtags    CMakeFiles/cmTC_22838.dir/src.c.o  -o cmTC_22838 -rdynamic 
+make[1]: Leaving directory '/home/ashwin/repo/submarines/lib/SDL2-2.0.5/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }

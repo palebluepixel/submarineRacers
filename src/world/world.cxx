@@ -6,6 +6,11 @@ World::World() {this->state=TITLE;}
 World::~World(){};
 
 
+void World::quit()
+{
+    glfwSetWindowShouldClose (this->window, true);
+}
+
 // Eventually this can perform a hard reset to a crash or title screen
 void World::fatalError(){exit(-1);}
 
