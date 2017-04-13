@@ -43,19 +43,17 @@ static void cursorpos_callback(GLFWwindow* window, double xpos, double ypos){
 }
 
 
-GLFWwindow *initalizeGLFW()
-{
+GLFWwindow *initializeGLFW(){
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
         Error::error("glfwInit failed",1);
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(640, 480, "Submarines!", NULL, NULL);
     if (!window){
-        Error::error("glfwCreateWindow failed",1);
         glfwTerminate();
-        exit(EXIT_FAILURE);
+        Error::error("glfwCreateWindow failed",1);
     }
 
     glfwSetKeyCallback(window, key_callback);
@@ -72,11 +70,19 @@ GLFWwindow *initalizeGLFW()
         Error::error("GLEW init failed"+glerr, 1);
     }
 
-    for(int i=0;i<350;++i)keyboard[i]=0;
-
     glfwSwapInterval(1);
 
     return window;
+}
+void init(){
+    world = new World();
+    world->window = initializeGLFW();
+
+    //associate the window with our world struct so window callbacks
+    //can easily find the world state using glfwGetWindowUserPointer(window)
+    glfwSetWindowUserPointer(window, world);
+
+    for(int i=0;i<350;++i)keyboard[i]=0;
 }
 
 // there is only one world per instance of our program.
@@ -116,12 +122,7 @@ int main(void){
 
     world = new World();
 
-    GLFWwindow *window = initalizeGLFW();
-    world->window = window;
-
-    //associate the window with our world struct so window callbacks
-    //can easily find the world state using glfwGetWindowUserPointer(window)
-    glfwSetWindowUserPointer(window, world);
+    init();
 
     // set up shaders.
     Shader *shader = new Shader();
@@ -134,6 +135,7 @@ int main(void){
 
     //initalize camera
     Camera *camera = new Camera();
+    
     //position, look-at point, up-vector
     camera->init(vec3(4,0,0),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
