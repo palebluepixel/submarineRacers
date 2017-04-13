@@ -43,6 +43,9 @@ static void cursorpos_callback(GLFWwindow* window, double xpos, double ypos){
 }
 
 
+// there is only one world per instance of our program.
+World* world;
+
 GLFWwindow *initializeGLFW(){
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
@@ -80,13 +83,11 @@ void init(){
 
     //associate the window with our world struct so window callbacks
     //can easily find the world state using glfwGetWindowUserPointer(window)
-    glfwSetWindowUserPointer(window, world);
+    glfwSetWindowUserPointer(world->window, world);
 
     for(int i=0;i<350;++i)keyboard[i]=0;
 }
 
-// there is only one world per instance of our program.
-World* world;
 
 void update(double elapsed){
     using namespace std;
@@ -144,7 +145,7 @@ int main(void){
     vec3 oceanColor = vec3(64,141,167) / 256.0;
 
     //create view
-    View *view = new View(window);
+    View *view = new View(world->window);
     world->view = view;
     view->addCamera(camera);
     view->setFOV(90);
@@ -170,7 +171,7 @@ int main(void){
     duration<double, std::milli> time_span;
     double elapsed;
 
-    while (!glfwWindowShouldClose(window)){
+    while (!glfwWindowShouldClose(world->window)){
 
         // timing across update operations.
         time_curr = high_resolution_clock::now();
@@ -180,7 +181,7 @@ int main(void){
 
         time_prev = time_curr;
         //window setup
-        glfwGetFramebufferSize(window, &width, &height);
+        glfwGetFramebufferSize(world->window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
         glClearColor(oceanColor[0], oceanColor[1], oceanColor[2], 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -190,13 +191,13 @@ int main(void){
         for(i=0; i<ncubes; i++)
             r->Render(view, cubes[i]);
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(world->window);
         glfwPollEvents();
     }
 
 
 
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(world->window);
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
