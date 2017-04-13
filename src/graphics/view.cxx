@@ -17,6 +17,7 @@ View::View(GLFWwindow *win)
 
     this->sunlight = Sunlight();
     this->fog = Fog();
+    this->oc = OceanColoring();
 }
 
 View::~View(){}

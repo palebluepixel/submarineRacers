@@ -136,3 +136,56 @@ UnderwaterRenderer::~UnderwaterRenderer()
 
 void UnderwaterRenderer::Render(View *view, Mesh *mesh)
 { }
+
+
+
+
+
+
+/*==================== class SkyboxRenderer member functions======================*/
+
+SkyboxRenderer::SkyboxRenderer (Shader *sh)
+    : Renderer (sh)
+{ 
+  fogOnLoc = _shader->getUniformLocation("fogOn");
+  fogColorLoc = _shader->getUniformLocation("fogColor");
+
+  shouldTextureLoc = _shader->getUniformLocation("shouldTexture");
+  texSamplerLoc = _shader->getUniformLocation("texSampler");
+
+  xDimLoc = _shader->getUniformLocation("xDim");
+  yDimLoc = _shader->getUniformLocation("yDim");
+  zDimLoc = _shader->getUniformLocation("zDim");
+  camPosLoc = _shader->getUniformLocation("camPos");
+}
+
+SkyboxRenderer::~SkyboxRenderer()
+{ }
+
+void SkyboxRenderer::Render (View *view, Mesh *mesh)
+{
+  mat4 projectionMat = view->projectionMatrix();
+  mat4 viewMat = view->viewMatrix();
+
+  Fog fog = view->getFog();
+  setUniform(fogOnLoc, fog.fogOn);
+  setUniform(fogColorLoc, fog.fogColor);
+
+  setUniform(shouldTextureLoc, mesh->shouldTexture);
+  texture2d *tex = mesh->tex;
+  tex->Bind();
+  tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+  tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  setUniform(texSamplerLoc, 0);
+
+  setUniform(camPosLoc, view->activeCamera()->position());
+  setUniform(xDimLoc, view->getWid());
+  setUniform(yDimLoc, view->getHt());
+  setUniform(zDimLoc, view->getWid());
+
+  setUniform(modelViewLoc, viewMat);
+  setUniform(projectionLoc, projectionMat);
+  setUniform(colorLoc, mesh->color);
+  mesh->draw();
+
+}

@@ -18,6 +18,15 @@ void Camera::init(vec3 pos, vec3 dir, vec3 up)
     this->_up = up;
 }
 
+mat4 Camera::modelMatrix()
+{
+    mat4 model = mat4();
+    model[3][0] += this->_pos[0];
+    model[3][1] += this->_pos[1];
+    model[3][2] += this->_pos[2];
+    return model;
+}
+
 // translate a point to the coordinate system that has the camera as the origin, but is
 // oriented and scaled the same as the world coordinates.
 vec3 Camera::translate (vec3 const &p) const

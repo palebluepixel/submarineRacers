@@ -35,6 +35,19 @@ struct Fog {
     float fogStart;
 };
 
+struct OceanColoring {
+    int oceanColoringOn;
+    vec3 oceanTopBrightness;
+    vec3 oceanBottomBrightness;
+    vec3 oceanNearColor;
+    vec3 oceanFarColor;
+    float oceanDensity;
+    float surfaceDepth; //everything above this is max bright
+    float floorDepth; //everything below this is max dark
+    float nearDist; //everything beyond this is max near color
+    float farDist; //everything beyond this is max far color
+};
+
 
 class View {
 
@@ -82,6 +95,18 @@ public:
                 {this->fog.fogOn = fogOn; this->fog.fogColor = fogColor;
                     this->fog.fogDensity = fogDensity; this->fog.fogStart = fogStart;}
 
+    //ocean colors
+    inline OceanColoring getColoring()   { return this->oc; }
+    inline void setColoring(int coloringOn, vec3 topb, vec3 botb, vec3 nearc, vec3 farc,
+                            float dens, float tdepth, float bdepth, float ndist, float fdist)
+                {this->oc.oceanColoringOn = coloringOn; this->oc.oceanTopBrightness = topb;
+                    this->oc.oceanBottomBrightness = botb; this->oc.oceanNearColor = nearc;
+                    this->oc.oceanFarColor = farc; this->oc.oceanDensity = dens;
+                    this->oc.surfaceDepth = tdepth; this->oc.floorDepth = bdepth;
+                    this->oc.nearDist = ndist; this->oc.farDist = fdist;}
+
+
+
 private:    
     GLFWwindow *win;
 
@@ -101,6 +126,7 @@ private:
     // Ground * currentGround;
     // view frustum
     Fog fog;
+    OceanColoring oc;
 };
 
 #endif

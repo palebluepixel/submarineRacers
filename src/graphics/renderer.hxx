@@ -79,4 +79,25 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
 
 };
 
+class SkyboxRenderer : public Renderer {
+  public:
+    SkyboxRenderer(Shader *sh);
+    ~SkyboxRenderer();
+
+    void Render(View *view, Mesh *mesh);
+
+  protected:
+    GLint fogOnLoc;
+    GLint fogColorLoc;
+    GLint fogDensityLoc;
+
+    GLint shouldTextureLoc;
+    GLint texSamplerLoc;
+
+    GLint xDimLoc;
+    GLint yDimLoc;
+    GLint zDimLoc;
+    GLint camPosLoc; 
+};
+
 #endif // !_RENDER_HXX_
