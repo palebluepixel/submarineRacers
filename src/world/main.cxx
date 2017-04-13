@@ -103,7 +103,7 @@ int main(void){
     //initalize camera
     Camera *camera = new Camera();
     //position, look-at point, up-vector
-    camera->init(vec3(6,9,4.20),vec3(-1,-1,-2),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(0,0,0),vec3(-1,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 

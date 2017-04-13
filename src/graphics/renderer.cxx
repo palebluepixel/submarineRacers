@@ -149,7 +149,6 @@ SkyboxRenderer::SkyboxRenderer (Shader *sh)
 { 
   fogOnLoc = _shader->getUniformLocation("fogOn");
   fogColorLoc = _shader->getUniformLocation("fogColor");
-  fogDensityLoc = _shader->getUniformLocation("fogDensity");
 
   shouldTextureLoc = _shader->getUniformLocation("shouldTexture");
   texSamplerLoc = _shader->getUniformLocation("texSampler");
@@ -171,7 +170,6 @@ void SkyboxRenderer::Render (View *view, Mesh *mesh)
   Fog fog = view->getFog();
   setUniform(fogOnLoc, fog.fogOn);
   setUniform(fogColorLoc, fog.fogColor);
-  setUniform(fogDensityLoc, fog.fogDensity);
 
   setUniform(shouldTextureLoc, mesh->shouldTexture);
   texture2d *tex = mesh->tex;

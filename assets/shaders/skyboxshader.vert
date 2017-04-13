@@ -15,6 +15,7 @@ uniform float zDim;
 uniform vec3 camPos;
 
 varying vec3 fragmentTexCoord;
+varying vec4 spaceCoords;
 
 
 void main (void)
@@ -26,5 +27,6 @@ void main (void)
     vec4 pos = projection * modelView * model * vec4(stretchedPosition,1.0);
     fragmentTexCoord = (position + vec3(1.0,1.0,1.0))/2.0;
 
+    spaceCoords = vec4(position,1.0);
     gl_Position = pos;
 }
