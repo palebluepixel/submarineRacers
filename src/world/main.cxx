@@ -5,6 +5,10 @@
 #include <string>
 #include <iostream>
 
+#include <ctime>
+#include <ratio>
+#include <chrono>
+
 #include <error/error.hxx>
 #include <util/file.hxx>
 #include <graphics/shader.hxx>
@@ -57,7 +61,7 @@ GLFWwindow *initalizeGLFW()
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
-    glfwSetKeyCallback (window, KeyCallback);
+    // glfwSetKeyCallback (window, KeyCallback);
     glfwMakeContextCurrent (window);
 
     // initialize GLEW
@@ -68,15 +72,49 @@ GLFWwindow *initalizeGLFW()
         Error::error("GLEW init failed"+glerr, 1);
     }
 
+    for(int i=0;i<350;++i)keyboard[i]=0;
+
     glfwSwapInterval(1);
 
     return window;
 }
 
+// there is only one world per instance of our program.
+World* world;
+
+void update(double elapsed){
+    using namespace std;
+    // std::cout << elapsed << std::endl;
+
+    View *view = world->view;    
+    Camera *cam = view->activeCamera(); 
+
+    double rSpeed = 2.0 * elapsed;
+    double tSpeed = 10.0 * elapsed;
+
+    if(keyboard[GLFW_KEY_UP])          cam->rotateCamUpDown(-rSpeed);
+    if(keyboard[GLFW_KEY_DOWN])        cam->rotateCamUpDown(rSpeed);
+    if(keyboard[GLFW_KEY_LEFT])        cam->rotateCamLeftRight(rSpeed);
+    if(keyboard[GLFW_KEY_RIGHT])       cam->rotateCamLeftRight(-rSpeed);
+    // if(keyboard[GLFW_KEY_Q])          cam->rotateCamRoll(rSpeed);
+    // if(keyboard[GLFW_KEY_E])          cam->rotateCamRoll(-rSpeed);
+    
+    // cout << keyboard[GLFW_KEY_UP] <<" , " << keyboard[GLFW_KEY_DOWN] << endl;
+
+    if(keyboard[GLFW_KEY_W])           cam->translateCamViewAxis(tSpeed);
+    if(keyboard[GLFW_KEY_S])           cam->translateCamViewAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_A])           cam->translateCamStrafeAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_D])           cam->translateCamStrafeAxis(tSpeed);
+    if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
+    if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
+
+    if(keyboard[GLFW_KEY_ESCAPE])       world->quit();
+
+}
 
 int main(void){
 
-    World * world = new World();
+    world = new World();
 
     GLFWwindow *window = initalizeGLFW();
     world->window = window;
@@ -97,7 +135,7 @@ int main(void){
     //initalize camera
     Camera *camera = new Camera();
     //position, look-at point, up-vector
-    camera->init(vec3(6,9,4.20),vec3(-1,0,0),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(-1,0,0),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
@@ -123,7 +161,22 @@ int main(void){
 
     int width, height;
 
+    // for timing
+    using namespace std::chrono;
+    high_resolution_clock::time_point time_prev = high_resolution_clock::now();
+    high_resolution_clock::time_point time_curr;
+    duration<double, std::milli> time_span;
+    double elapsed;
+
     while (!glfwWindowShouldClose(window)){
+
+        // timing across update operations.
+        time_curr = high_resolution_clock::now();
+        time_span = time_curr - time_prev;
+        elapsed   = time_span.count() / 1000.0;
+        update(elapsed);
+
+        time_prev = time_curr;
         //window setup
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
