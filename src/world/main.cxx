@@ -91,13 +91,19 @@ int main(void){
     shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/lightshader.frag"));
     shader->build();
 
+    Shader *skyboxShader = new Shader();
+    skyboxShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/skyboxshader.vert"));
+    skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
+    skyboxShader->build();
+
     //create renderer for the given shader
     Renderer *r = new SunlightShadingRenderer(shader);  
+    Renderer *rsky = new SkyboxRenderer(skyboxShader);
 
     //initalize camera
     Camera *camera = new Camera();
     //position, look-at point, up-vector
-    camera->init(vec3(6,9,4.20),vec3(-1,0,0),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(6,9,4.20),vec3(-1,-1,-2),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
@@ -109,17 +115,20 @@ int main(void){
     view->addCamera(camera);
     view->setFOV(90);
     view->setNear(0.1);
-    view->setFar(100.0);
+    view->setFar(200.0);
     view->setSunlight(vec3(0, 0.3, 0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
     view->setFog(1, oceanColor, 0.05f, 5.0);
 
     //create test object
-    vec3 cubePos[] = {vec3(-1,2,0), vec3(-5, -15, -2)}; 
+    vec3 cubePos[] = {vec3(-1,-5,-10), vec3(-5, -15, -5)}; 
     int ncubes = 2, i;
     Cube * cubes[ncubes];
     for(i=0; i<ncubes; i++){
         cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
     }
+
+    //create skybox
+    Cube *skybox = new Cube(vec3(0,0,0), mat3(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f);
 
     int width, height;
 
@@ -127,8 +136,12 @@ int main(void){
         //window setup
         glfwGetFramebufferSize(window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
-        glClearColor(oceanColor[0], oceanColor[1], oceanColor[2], 1.0);
+        //glClearColor(oceanColor[0], oceanColor[1], oceanColor[2], 1.0);
+        glClearColor(1.0, 0.5, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        rsky->Enable();
+        rsky->Render(view, skybox);
 
         r->Enable ();
 

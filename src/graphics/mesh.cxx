@@ -12,7 +12,7 @@ const GLint TexCoordAttrLoc = 2;
 Mesh::Mesh(GLenum p)
 : vbufId(0), ibufId(0), prim(p), nIndicies(0), color(0)
 {
-    this->shouldTexture = 1;
+    this->shouldTexture = 0;
     glGenVertexArrays(1, &vaoId);
 
 }

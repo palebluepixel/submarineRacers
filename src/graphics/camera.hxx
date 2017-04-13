@@ -41,6 +41,9 @@ class Camera {
 
     void setUp(vec3 const &up);
 
+  // returns a translation matrix for the given camera position
+    mat4 modelMatrix();
+
   //! translate a point to the coordinate system that has the camera as the origin, but is
   //! oriented and scaled the same as the world coordinates.
     vec3 translate (vec3 const &p) const;
