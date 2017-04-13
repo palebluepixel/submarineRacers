@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <graphics/mesh.hxx>
+#include <graphics/texture.hxx>
 
 using namespace glm;
 using namespace Space;
@@ -67,7 +68,8 @@ public:
     void drawEntity();
 
     inline int getNMeshes() { return this->nMeshes; }
-    Mesh ** meshes;
+    inline Mesh ** getMeshes() {return this->nMeshes>0 ? this->meshes : NULL;}
+    virtual void initalizeVisualData() = 0; //load meshes and textures
 
 protected:
 
@@ -92,6 +94,12 @@ protected:
 
     //allow objects to be composed of multiple meshes
     int nMeshes;
+    Mesh ** meshes;
+    virtual void initalizeMeshes()=0;
+
+    texture2d *tex;
+    image2d *img;
+    virtual void initalizeTextures(const char* texfile)=0;
 };
 
 //TODO remove this

@@ -32,8 +32,13 @@ void Renderer::Render(View *view, Entity *entity)
 
   int i;
   int n = entity->getNMeshes();
-  for (i=0; i<n; i++)
-    this->Render(view, entity->meshes[i]);
+  Mesh ** meshes = entity->getMeshes();
+  if(meshes == NULL)
+    return;
+  for (i=0; i<n; i++){
+    if(meshes[i] != NULL)
+      this->Render(view, meshes[i]);
+  }
 }
 
 /*==================== class FlatShadingRenderer member functions======================*/
@@ -73,6 +78,14 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
   lightDirLoc = _shader->getUniformLocation("lightDir");
   lightIntenLoc = _shader->getUniformLocation("lightInten");
   lightAmbLoc = _shader->getUniformLocation("lightAmb");
+
+  fogOnLoc = _shader->getUniformLocation("fogOn");
+  fogColorLoc = _shader->getUniformLocation("fogColor");
+  fogDensityLoc = _shader->getUniformLocation("fogDensity");
+  fogStartLoc = _shader->getUniformLocation("fogStart");
+
+  shouldTextureLoc = _shader->getUniformLocation("shouldTexture");
+  texSamplerLoc = _shader->getUniformLocation("texSampler");
 }
 
 SunlightShadingRenderer::~SunlightShadingRenderer()
@@ -88,9 +101,38 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(lightIntenLoc, sun.lightInten);
   setUniform(lightAmbLoc,   sun.lightAmb);
 
+  Fog fog = view->getFog();
+  setUniform(fogOnLoc, fog.fogOn);
+  setUniform(fogColorLoc, fog.fogColor);
+  setUniform(fogDensityLoc, fog.fogDensity);
+  setUniform(fogStartLoc, fog.fogStart);
+
+  setUniform(shouldTextureLoc, mesh->shouldTexture);
+  texture2d *tex = mesh->tex;
+  tex->Bind();
+  tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+  tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  setUniform(texSamplerLoc, 0);
+
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh->color);
   mesh->draw();
 
 }
+
+
+
+
+
+/*==================== class UnderwaterRenderer member functions======================*/
+
+UnderwaterRenderer::UnderwaterRenderer (Shader *sh)
+    : SunlightShadingRenderer(sh)
+{ }
+
+UnderwaterRenderer::~UnderwaterRenderer()
+{ }
+
+void UnderwaterRenderer::Render(View *view, Mesh *mesh)
+{ }

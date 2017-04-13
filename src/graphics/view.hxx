@@ -28,6 +28,13 @@ struct Sunlight {
   vec3 lightAmb;
 };
 
+struct Fog {
+    int fogOn; //0=no, 1=yes
+    vec3 fogColor;
+    float fogDensity;
+    float fogStart;
+};
+
 
 class View {
 
@@ -69,7 +76,11 @@ public:
                     {this->sunlight.lightDir = lightDir; this->sunlight.lightInten = lightInten; 
                         this->sunlight.lightAmb = lightAmb;}
 
-
+    //fog
+    inline Fog  getFog()                 { return this->fog; }
+    inline void setFog(int fogOn, vec3 fogColor, float fogDensity, float fogStart)
+                {this->fog.fogOn = fogOn; this->fog.fogColor = fogColor;
+                    this->fog.fogDensity = fogDensity; this->fog.fogStart = fogStart;}
 
 private:    
     GLFWwindow *win;
@@ -89,7 +100,7 @@ private:
     Sunlight sunlight;
     // Ground * currentGround;
     // view frustum
-    // float fog;
+    Fog fog;
 };
 
 #endif
