@@ -9,5 +9,8 @@ rm -f CMakeCache.txt
 cmake .
 make
 
-
+cd ../libpng-1.6.29
+rm -f CMakeCache.txt
+cmake .
+make
 

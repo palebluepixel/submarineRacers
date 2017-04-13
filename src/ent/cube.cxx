@@ -15,7 +15,7 @@ Cube::~Cube()
 
 void Cube::initalizeVisualData()
 {
-    this->initalizeTextures("/home/amsadowski/submarineRacers/assets/textures/cubetex.png");
+    this->initalizeTextures("../assets/textures/cubetex.png");
     this->initalizeMeshes();
 }
 
