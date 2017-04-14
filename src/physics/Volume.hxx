@@ -2,7 +2,7 @@
 #define PHYSICS_HXX
 
 #include <glm/glm.hpp>
-#include <vector.h>
+#include <vector>
 
 namespace Space{
     using namespace glm;
@@ -53,6 +53,8 @@ namespace Space{
          *  test collision between objects
          */
         virtual bool collision(Volume *other) =0;
+
+        virtual bool containsPoint(vec3 pt) =0;
     };
 
     class CylinderVolume : public Volume{

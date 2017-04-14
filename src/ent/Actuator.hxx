@@ -9,39 +9,32 @@ the agent's update tick, and updates it according to it's steering state.
 #ifndef _ACTUATOR_HXX_
 #define _ACTUATOR_HXX_
 
-#include <type_traits>
-
 #include "Agent.hxx"
 
-template <typename Agent_Type>
 class Actuator;
 
-template<typename Agent_Type>
 struct SteeringState {
-    friend class Actuator<Agent_Type>;
+    friend class Actuator;
 
 public:
-    SteeringState() {
-        reset();
-    }
+    SteeringState();
 
-private:
-    virtual void reset() {}
+protected:
+    virtual void reset() =0;
 };
 
  
-template <typename Agent_Type>
 class Actuator {
 
 public:
-    Actuator(Agent_Type *agent);
+    Actuator(Agent *agent);
 
     // abstract function providing interface framework.
-    void doSteering();
+    virtual void doSteering() =0;
    
 protected:
-    Agent_Type *agent;
-    SteeringState<Agent_Type> state;
+    Agent *agent;
+    virtual SteeringState state;
 };
 
 

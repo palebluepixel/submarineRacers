@@ -82,8 +82,30 @@ int Entity::prepare_message_segment()
 }
 
 //physics tick behavior
-int Entity::onTick()
+int Entity::onTick(float dt)
 {
+    //TODO fix all pseudocode
+    //Collision checks already done
+
+    // Calculate physics forces
+    vec3 drag = velocity * norm(velocity) * (-dragCoef);
+    applyForce(drag);
+    //Do we want some sort of bouyancy to restrict objects to underwater?
+
+    // Apply Forces
+    vec3 acceleration = forces / mass;
+
+    position += (velocity + acceleration * dt/2) * dt;
+    velocity += acceleration * dt;
+
+    // Apply Rotations
+    // somethin like this angular_velocity += torques
+    //TODO see if this works? Almost definitely doesn't :(
+    orientation = angular_velocity * dt * orientation;
+
+    // Reset
+    //forces = (0,0,0);
+    //torques = 0;
     return 0;
 }
 
@@ -112,4 +134,8 @@ void Entity::drawEntity()
     int i;
     for(i=0; i<this->nMeshes; i++)
         meshes[i]->draw();
+}
+
+void Entity::applyForce(vec3 force) {
+    forces += force;
 }

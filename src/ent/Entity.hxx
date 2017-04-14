@@ -54,7 +54,7 @@ public:
     virtual int prepare_message_segment();
 
     //physics tick behavior
-    virtual int onTick();
+    virtual int onTick(float dt);
 
     EntityStatus status;
     //change object's status to spawned and place it in its intial position
@@ -71,6 +71,9 @@ public:
     inline Mesh ** getMeshes() {return this->nMeshes>0 ? this->meshes : NULL;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
+    void applyForce(vec3 force);
+    //TODO applyTorque
+
 protected:
 
     vec3 position;
@@ -82,6 +85,9 @@ protected:
     mat3 initial_orientation;
 
     mat3 angular_velocity;
+
+    float mass;
+    float dragCoef; //
 
     int id;
     char* name;
@@ -105,8 +111,9 @@ protected:
     image2d *img;
     virtual void initalizeTextures(const char* texfile)=0;
 
-    list<vec3> forces;
-    list<vec3> torques;
+    //per tick quantities
+    vec3 forces;    // Sum of all forces on this object
+    //vec3 torques; //What should torques be? Do we even want torques // Sum of all torques on this object
 };
 
 //TODO remove this
