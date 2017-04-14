@@ -16,6 +16,10 @@ Entity::Entity(vec3 initial_position, mat3 initial_orientation, int id, char*nam
     this->position = this->initial_position;
     this->orientation = this->initial_orientation;
 
+    this->velocity = 0;//TODO
+    //this->angular_velocity
+//TODO do I need to initialize empty lists?
+
     this->nMeshes = 0;
     this->meshes = NULL;
 }

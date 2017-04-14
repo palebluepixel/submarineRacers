@@ -76,8 +76,12 @@ protected:
     vec3 position;
     vec3 initial_position;
 
+    vec3 velocity;
+
     mat3 orientation;    
     mat3 initial_orientation;
+
+    mat3 angular_velocity;
 
     int id;
     char* name;
@@ -100,6 +104,9 @@ protected:
     texture2d *tex;
     image2d *img;
     virtual void initalizeTextures(const char* texfile)=0;
+
+    list<vec3> forces;
+    list<vec3> torques;
 };
 
 //TODO remove this
