@@ -3,7 +3,7 @@
 
 
 #include <glm/glm.hpp>
-#include <physics/physics.hxx>
+#include <physics/Volume.hxx>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

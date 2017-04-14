@@ -2,6 +2,7 @@
 #define PHYSICS_HXX
 
 #include <glm/glm.hpp>
+#include <vector.h>
 
 namespace Space{
     using namespace glm;
@@ -53,25 +54,30 @@ namespace Space{
          */
         virtual bool collision(Volume *other) =0;
     };
+
     class CylinderVolume : public Volume{
         CylinderVolume(vec3 p1, vec3 p2);
         const char *type();
         vec3 p1,p2;
     };
+
     class SphereVolume : public Volume{
         SphereVolume(vec3 pp, double rad);
         const char *type();
         double distance(Volume *other);
         double r;
     };
+
     class HeightmapVolume : public Volume{
         HeightmapVolume(vec3 pp, int width, int height);
         const char *type();
         int width;
         int height;
     };
-    class PhysicsEngine{
-        // void test_collision(Collidable *a, Collidable *b);
+
+    class UnionVolume : public Volume{
+        UnionVolume(std::vector<Volume> volumes);
+        std::vector<Volume> volumes;
     };
 }
 
