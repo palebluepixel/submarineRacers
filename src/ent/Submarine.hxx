@@ -10,6 +10,32 @@ public:
 
 };
 
+
+
+struct SubmarineSteeringState : public SteeringState {
+    friend class SubmarineActuator;
+
+private:
+    float rotationChange;
+    float depthChange;
+    float acceleration;
+    bool fireWeapon;
+
+    void reset();
+};
+
+
+
+class SubmarineActuator : public Actuator {
+public:
+    SubmarineActuator(Submarine *agent);
+
+    void doSteering();
+   
+protected:
+    Submarine *agent;
+    SubmarineSteeringState state;
+};
+
+
 #endif
-
-
