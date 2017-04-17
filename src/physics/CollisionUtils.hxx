@@ -1,6 +1,8 @@
 #ifndef _COLLISION_UTILS_HXX_
 #define _COLLISION_UTILS_HXX_
 
+#include <glm/glm.hpp>
+
 using namespace glm;
 
 struct Segment {

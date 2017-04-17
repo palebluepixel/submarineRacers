@@ -16,9 +16,10 @@ Entity::Entity(vec3 initial_position, mat3 initial_orientation, int id, char*nam
     this->position = this->initial_position;
     this->orientation = this->initial_orientation;
 
-    this->velocity = 0;//TODO
+    this->velocity = glm::vec3(0, 0, 0);
     //this->angular_velocity
-//TODO do I need to initialize empty lists?
+    this->forces = glm::vec3(0, 0, 0);
+    //this.>torques
 
     this->nMeshes = 0;
     this->meshes = NULL;
@@ -88,24 +89,24 @@ int Entity::onTick(float dt)
     //Collision checks already done
 
     // Calculate physics forces
-    vec3 drag = velocity * norm(velocity) * (-dragCoef);
+    vec3 drag = velocity * length(velocity) * (-dragCoef);
     applyForce(drag);
     //Do we want some sort of bouyancy to restrict objects to underwater?
 
     // Apply Forces
     vec3 acceleration = forces / mass;
 
-    position += (velocity + acceleration * dt/2) * dt;
+    position += (velocity + acceleration * (dt/2)) * dt;
     velocity += acceleration * dt;
 
     // Apply Rotations
     // somethin like this angular_velocity += torques
     //TODO see if this works? Almost definitely doesn't :(
-    orientation = angular_velocity * dt * orientation;
+    //orientation = angular_velocity * dt * orientation;
 
     // Reset
-    //forces = (0,0,0);
-    //torques = 0;
+    forces = glm::vec3(0, 0, 0);
+    //torques.zero();
     return 0;
 }
 
