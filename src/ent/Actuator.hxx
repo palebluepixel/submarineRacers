@@ -12,12 +12,10 @@ the agent's update tick, and updates it according to it's steering state.
 #include "Agent.hxx"
 
 class Actuator;
+class Agent;
 
 struct SteeringState {
     friend class Actuator;
-
-public:
-    SteeringState();
 
 protected:
     virtual void reset() =0;
@@ -30,11 +28,11 @@ public:
     Actuator(Agent *agent);
 
     // abstract function providing interface framework.
-    virtual void doSteering() =0;
+    virtual void doSteering(float dt) =0;
    
 protected:
     Agent *agent;
-    virtual SteeringState state;
+    SteeringState *state;
 };
 
 
