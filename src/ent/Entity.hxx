@@ -48,6 +48,8 @@ public:
     int setID(int id);
     char* setName(char* name);
 
+    inline vec3 getPosition() { return this->position; }
+
     //overwrite client data with server
     virtual int overwrite(vec3 pos, mat3 ori);
     //creates server message describing current pos and ori

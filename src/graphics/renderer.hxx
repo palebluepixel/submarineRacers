@@ -78,8 +78,6 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
     void Render(View *view, Mesh *mesh);
 
   protected:
-    GLint camPosLoc;
-    
     GLint oceanColoringOnLoc;
     GLint oceanTopBrightnessLoc;
     GLint oceanBottomBrightnessLoc;

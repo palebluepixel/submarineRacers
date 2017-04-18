@@ -41,7 +41,7 @@ void main(){
         colorLight = color;
     }
 
-    colorLight = vec4((lightAmb + 0.5) + max(0, dot(-lightDir, norm)) * lightInten,1.0) * colorLight;
+    vec4 sunlightMod = vec4((lightAmb + 0.5) + max(0, dot(-lightDir, norm)) * lightInten,1.0);
 
     if(fogOn != 0 && -distToCam > fogStart){
         float ffog = exp2(-1.442695 * fogDensity * fogDensity * distToCam * distToCam);
@@ -51,22 +51,25 @@ void main(){
 
     if(oceanColoringOn!=0) {
 
-        vec3 finalColor = oceanFarColor;
+        vec3 bright = vec3(1.0,1.0,1.0);
 
         if(depth > surfaceDepth) {
-            finalColor = oceanTopBrightness * finalColor;
+            bright = oceanTopBrightness * bright;
         } else if(depth < floorDepth) {
-            finalColor = oceanBottomBrightness * finalColor;
+            bright = oceanBottomBrightness *  bright;
         } else {
             vec3 ratio = (oceanTopBrightness - oceanBottomBrightness) / (surfaceDepth - floorDepth);
             ratio = oceanBottomBrightness + (depth - floorDepth) * ratio;
-            finalColor = ratio * finalColor;
+            bright = ratio * bright;
         }
 
         float ffogOcean = exp2(-1.442695 * oceanDensity * oceanDensity * distToCam * distToCam);
-        vec3 fogOcean = (1.0 - ffogOcean) * finalColor;
+        vec3 fogOcean = (1.0 - ffogOcean) * oceanFarColor;
         colorLight = ffogOcean * colorLight + vec4(fogOcean, 1.0);
+        colorLight = colorLight * vec4(bright,1.0);
     }
 
+
+    colorLight = colorLight * sunlightMod;
     gl_FragColor = colorLight;
 }

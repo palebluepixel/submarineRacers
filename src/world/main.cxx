@@ -148,7 +148,7 @@ int main(void){
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
-    vec3 oceanColor = vec3(64,141,167) / 256.0;
+    vec3 oceanColor = vec3(0,70,95) / 256.0;
 
     //create view
     View *view = new View(world->window);
@@ -157,14 +157,15 @@ int main(void){
     view->setFOV(90);
     view->setNear(0.1);
     view->setFar(200.0);
-    view->setSunlight(vec3(0, 0.3, -0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
+    view->setSunlight(vec3(-0.3, 1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
     view->setFog(0, oceanColor, 0.05f, 5.0);
-    view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanColor, oceanColor-vec3(0,0.2,0),
-        0.05f, 5.0f, -5.0f, 1.0f, 10.0f);
+    view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanColor, oceanColor,
+        0.03f, -5.0f, -15.0f, 1.0f, 10.0f);
 
     //create test object
-    vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5)}; 
-    int ncubes = 3, i;
+    vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
+        vec3(5, -40, 5)}; 
+    int ncubes = 6, i;
     Cube * cubes[ncubes];
     for(i=0; i<ncubes; i++){
         cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
@@ -191,6 +192,11 @@ int main(void){
         update(elapsed);
 
         time_prev = time_curr;
+
+        //quick hack-in of a cube movement animation
+        vec3 pos = cubes[0]->getPosition();
+        cubes[0]->setPosition(pos + vec3(0,0.03,0));
+
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size

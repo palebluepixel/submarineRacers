@@ -130,8 +130,6 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
 UnderwaterRenderer::UnderwaterRenderer (Shader *sh)
     : SunlightShadingRenderer(sh)
 { 
-  camPosLoc = _shader->getUniformLocation("camPos");
-  
   oceanColoringOnLoc = _shader->getUniformLocation("oceanColoringOn");
   oceanTopBrightnessLoc = _shader->getUniformLocation("oceanTopBrightness");
   oceanBottomBrightnessLoc = _shader->getUniformLocation("oceanBottomBrightness");
@@ -181,8 +179,6 @@ void UnderwaterRenderer::Render(View *view, Mesh *mesh)
   tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
   tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
   setUniform(texSamplerLoc, 0);
-
-  setUniform(camPosLoc, view->activeCamera()->position());
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
