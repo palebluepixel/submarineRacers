@@ -77,6 +77,20 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
 
     void Render(View *view, Mesh *mesh);
 
+  protected:
+    GLint camPosLoc;
+    
+    GLint oceanColoringOnLoc;
+    GLint oceanTopBrightnessLoc;
+    GLint oceanBottomBrightnessLoc;
+    GLint oceanNearColorLoc;
+    GLint oceanFarColorLoc;
+    GLint oceanDensityLoc;
+    GLint surfaceDepthLoc;
+    GLint floorDepthLoc;
+    GLint nearDistLoc;
+    GLint farDistLoc;
+
 };
 
 class SkyboxRenderer : public Renderer {

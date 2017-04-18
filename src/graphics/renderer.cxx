@@ -129,7 +129,20 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
 
 UnderwaterRenderer::UnderwaterRenderer (Shader *sh)
     : SunlightShadingRenderer(sh)
-{ }
+{ 
+  camPosLoc = _shader->getUniformLocation("camPos");
+  
+  oceanColoringOnLoc = _shader->getUniformLocation("oceanColoringOn");
+  oceanTopBrightnessLoc = _shader->getUniformLocation("oceanTopBrightness");
+  oceanBottomBrightnessLoc = _shader->getUniformLocation("oceanBottomBrightness");
+  //oceanNearColorLoc = _shader->getUniformLocation("oceanNearColor");
+  oceanFarColorLoc = _shader->getUniformLocation("oceanFarColor");
+  oceanDensityLoc = _shader->getUniformLocation("oceanDensity");
+  surfaceDepthLoc = _shader->getUniformLocation("surfaceDepth");
+  floorDepthLoc = _shader->getUniformLocation("floorDepth");
+  //nearDistLoc = _shader->getUniformLocation("nearDist");
+  //farDistLoc = _shader->getUniformLocation("farDistLoc");
+}
 
 UnderwaterRenderer::~UnderwaterRenderer()
 { }
@@ -150,12 +163,26 @@ void UnderwaterRenderer::Render(View *view, Mesh *mesh)
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
 
+  OceanColoring oc = view->getColoring();
+  setUniform(oceanColoringOnLoc, oc.oceanColoringOn);
+  setUniform(oceanTopBrightnessLoc, oc.oceanTopBrightness);
+  setUniform(oceanBottomBrightnessLoc, oc.oceanBottomBrightness);
+  //setUniform(oceanNearColorLoc, oc.oceanNearColor);
+  setUniform(oceanFarColorLoc, oc.oceanFarColor);
+  setUniform(oceanDensityLoc, oc.oceanDensity);
+  setUniform(surfaceDepthLoc, oc.surfaceDepth);
+  setUniform(floorDepthLoc, oc.floorDepth);
+  //setUniform(nearDistLoc, oc.nearDist);
+  //setUniform(farDistLoc, oc.farDist);
+
   setUniform(shouldTextureLoc, mesh->shouldTexture);
   texture2d *tex = mesh->tex;
   tex->Bind();
   tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
   tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
   setUniform(texSamplerLoc, 0);
+
+  setUniform(camPosLoc, view->activeCamera()->position());
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
@@ -194,6 +221,7 @@ void SkyboxRenderer::Render (View *view, Mesh *mesh)
   setUniform(oceanFarColorLoc, oc.oceanFarColor);
 
   setUniform(camPosLoc, view->activeCamera()->position());
+
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh->color);

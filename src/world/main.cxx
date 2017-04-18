@@ -158,7 +158,7 @@ int main(void){
     view->setNear(0.1);
     view->setFar(200.0);
     view->setSunlight(vec3(0, 0.3, -0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
-    view->setFog(1, oceanColor, 0.05f, 5.0);
+    view->setFog(0, oceanColor, 0.05f, 5.0);
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanColor, oceanColor-vec3(0,0.2,0),
         0.05f, 5.0f, -5.0f, 1.0f, 10.0f);
 
