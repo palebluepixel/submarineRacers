@@ -87,17 +87,13 @@ class SkyboxRenderer : public Renderer {
     void Render(View *view, Mesh *mesh);
 
   protected:
-    GLint fogOnLoc;
-    GLint fogColorLoc;
-    GLint fogDensityLoc;
-
-    GLint shouldTextureLoc;
-    GLint texSamplerLoc;
-
-    GLint xDimLoc;
-    GLint yDimLoc;
-    GLint zDimLoc;
     GLint camPosLoc; 
+
+    GLint oceanTopBrightnessLoc;
+    GLint oceanBottomBrightnessLoc;
+    GLint oceanFarColorLoc;
+    //GLint surfaceDepth;  //everything above this is max bright
+    //GLint floorDepth;    //everything below this is max dark
 };
 
 #endif // !_RENDER_HXX_

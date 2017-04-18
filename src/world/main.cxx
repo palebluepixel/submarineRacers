@@ -137,14 +137,14 @@ int main(void){
     skyboxShader->build();
 
     //create renderer for the given shader
-    Renderer *r = new SunlightShadingRenderer(shader);  
+    Renderer *r = new UnderwaterRenderer(shader);  
     Renderer *rsky = new SkyboxRenderer(skyboxShader);
 
     //initalize camera
     Camera *camera = new Camera();
     
     //position, look-at point, up-vector
-    camera->init(vec3(-2,0,-2),vec3(1,-1,1),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(-2,0,-2),vec3(3,0,3),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
@@ -159,6 +159,8 @@ int main(void){
     view->setFar(200.0);
     view->setSunlight(vec3(0, 0.3, -0.9), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
     view->setFog(1, oceanColor, 0.05f, 5.0);
+    view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanColor, oceanColor-vec3(0,0.2,0),
+        0.05f, 5.0f, -5.0f, 1.0f, 10.0f);
 
     //create test object
     vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5)}; 
