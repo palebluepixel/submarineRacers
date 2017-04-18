@@ -81,13 +81,11 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
     GLint oceanColoringOnLoc;
     GLint oceanTopBrightnessLoc;
     GLint oceanBottomBrightnessLoc;
-    GLint oceanNearColorLoc;
-    GLint oceanFarColorLoc;
+    GLint oceanTopColorLoc;
+    GLint oceanBottomColorLoc;
     GLint oceanDensityLoc;
     GLint surfaceDepthLoc;
     GLint floorDepthLoc;
-    GLint nearDistLoc;
-    GLint farDistLoc;
 
 };
 
@@ -103,7 +101,7 @@ class SkyboxRenderer : public Renderer {
 
     GLint oceanTopBrightnessLoc;
     GLint oceanBottomBrightnessLoc;
-    GLint oceanFarColorLoc;
+    GLint oceanBottomColorLoc;
     //GLint surfaceDepth;  //everything above this is max bright
     //GLint floorDepth;    //everything below this is max dark
 };

@@ -146,9 +146,10 @@ int main(void){
     //position, look-at point, up-vector
     camera->init(vec3(-2,0,-2),vec3(3,0,3),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
-    camera->setNearFar(0.1, 100.0);
+    camera->setNearFar(0.1, 1000.0);
 
     vec3 oceanColor = vec3(0,70,95) / 256.0;
+    vec3 oceanBrightColor = vec3(141,241,245) / 256.0;
 
     //create view
     View *view = new View(world->window);
@@ -159,20 +160,21 @@ int main(void){
     view->setFar(200.0);
     view->setSunlight(vec3(-0.3, 1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
     view->setFog(0, oceanColor, 0.05f, 5.0);
-    view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanColor, oceanColor,
-        0.03f, -5.0f, -15.0f, 1.0f, 10.0f);
+    view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
+        0.03f, -5.0f, -30.0f);
 
     //create test object
     vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
         vec3(5, -40, 5)}; 
+    vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
     Cube * cubes[ncubes];
     for(i=0; i<ncubes; i++){
-        cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
+        cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i]);
     }
 
     //create skybox
-    Cube *skybox = new Cube(vec3(0,0,0), mat3(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f);
+    Cube *skybox = new Cube(vec3(0,0,0), mat3(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1));
 
     int width, height;
 

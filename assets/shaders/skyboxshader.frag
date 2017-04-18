@@ -4,14 +4,14 @@ uniform vec4 color;
 
 uniform vec3 oceanTopBrightness;
 uniform vec3 oceanBottomBrightness;
-uniform vec3 oceanFarColor;
+uniform vec3 oceanBottomColor;
 //uniform float surfaceDepth;  //everything above this is max bright
 //uniform float floorDepth;    //everything below this is max dark
 
 varying vec4 spaceCoords;
 
 void main(){
-    vec3 finalColor = oceanFarColor; 
+    vec3 finalColor = oceanBottomColor; 
     float darkCoord = -0.5; //screen coord below which everything should be dark
     float lightCoord = 0.5;
 

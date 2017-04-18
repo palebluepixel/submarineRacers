@@ -14,13 +14,11 @@ uniform float fogStart;
 uniform int oceanColoringOn;
 uniform vec3 oceanTopBrightness;
 uniform vec3 oceanBottomBrightness;
-//uniform vec3 oceanNearColor;
-uniform vec3 oceanFarColor;
+uniform vec3 oceanTopColor;
+uniform vec3 oceanBottomColor;
 uniform float oceanDensity;
 uniform float surfaceDepth; //everything above this is max bright
 uniform float floorDepth; //everything below this is max dark
-//uniform float nearDist; //everything beyond this is max near color
-//uniform float farDist; //everything beyond this is max far color
 
 uniform int shouldTexture;
 uniform sampler2D texSampler;
@@ -49,23 +47,33 @@ void main(){
         colorLight = ffog * colorLight + vec4(fog, 1.0);
     }
 
+    //linearly interpolate between top and bottom values
     if(oceanColoringOn!=0) {
 
+        //base weights
         vec3 bright = vec3(1.0,1.0,1.0);
+        vec3 col = vec3(1.0,1.0,1.0);
 
         if(depth > surfaceDepth) {
             bright = oceanTopBrightness * bright;
+            col = oceanTopColor * col;
         } else if(depth < floorDepth) {
             bright = oceanBottomBrightness *  bright;
+            col = oceanBottomColor * col;
         } else {
-            vec3 ratio = (oceanTopBrightness - oceanBottomBrightness) / (surfaceDepth - floorDepth);
-            ratio = oceanBottomBrightness + (depth - floorDepth) * ratio;
-            bright = ratio * bright;
+            float ratio = (depth-floorDepth) / (surfaceDepth - floorDepth);
+            bright = ratio * (oceanTopBrightness - oceanBottomBrightness) + oceanBottomBrightness;
+            col = ratio * (oceanTopColor - oceanBottomColor) + oceanBottomColor;
         }
 
         float ffogOcean = exp2(-1.442695 * oceanDensity * oceanDensity * distToCam * distToCam);
-        vec3 fogOcean = (1.0 - ffogOcean) * oceanFarColor;
-        colorLight = ffogOcean * colorLight + vec4(fogOcean, 1.0);
+        vec3 fogOcean = (1.0 - ffogOcean) * col;
+        vec4 colorOcean = ffogOcean * vec4(1.0,1.0,1.0,1.0) + vec4(fogOcean, 1.0);
+
+        //blend ocean color with cube color
+        float blendWeightFog = 1.0;
+        colorLight = blendWeightFog*colorOcean*colorLight + (1.0-blendWeightFog)*colorLight;
+
         colorLight = colorLight * vec4(bright,1.0);
     }
 
