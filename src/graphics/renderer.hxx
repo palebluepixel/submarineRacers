@@ -12,8 +12,8 @@ using namespace glm;
 class Renderer {
   public:
 
-  //! enable the renderer
-  //! \param projectMat the projection matrix for the current camera state
+    /* Prepare the shader for this renderer for use, and set openGL global
+    state information */
     void Enable ();
 
   //! render a mesh using this renderer

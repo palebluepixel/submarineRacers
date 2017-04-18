@@ -17,8 +17,8 @@ uniform vec3 oceanBottomBrightness;
 uniform vec3 oceanTopColor;
 uniform vec3 oceanBottomColor;
 uniform float oceanDensity;
-uniform float surfaceDepth; //everything above this is max bright
-uniform float floorDepth; //everything below this is max dark
+uniform float surfaceDepth;
+uniform float floorDepth;
 
 uniform int shouldTexture;
 uniform sampler2D texSampler;
@@ -29,31 +29,44 @@ varying float distToCam;
 varying float depth;
 
 void main(){
+    // Make sure its normalized
     vec3 norm = normalize(fragmentNormal);
 
+
+    // colorLight will hold the color of this fragment as we apply various
+    // visual effects
     vec4 colorLight = vec4(0.0,0.0,0.0,0.0);
 
+
+    // Texture
     if(shouldTexture!=0){
         colorLight = texture(texSampler, fragmentTexCoord);
     } else {
         colorLight = color;
     }
 
-    vec4 sunlightMod = vec4((lightAmb + 0.5) + max(0, dot(-lightDir, norm)) * lightInten,1.0);
 
+    // Diffuse and Directed Sunlight Lighting
+    vec4 sunlightMod = vec4((lightAmb + 0.5) + max(0, dot(-lightDir, norm)) * lightInten,1.0);
+    // (note that we aply this light at the very end of the shader program)
+
+
+    // Fog
     if(fogOn != 0 && -distToCam > fogStart){
         float ffog = exp2(-1.442695 * fogDensity * fogDensity * distToCam * distToCam);
         vec3 fog = (1.0 - ffog) * fogColor;
         colorLight = ffog * colorLight + vec4(fog, 1.0);
     }
 
-    //linearly interpolate between top and bottom values
+
+    // Ocean Colors
     if(oceanColoringOn!=0) {
 
-        //base weights
-        vec3 bright = vec3(1.0,1.0,1.0);
-        vec3 col = vec3(1.0,1.0,1.0);
+        // base weights
+        vec3 bright = vec3(1.0,1.0,1.0); //container for final brightness based on depth
+        vec3 col = vec3(1.0,1.0,1.0); //container for final color based on depth
 
+        // linearly interpolate between top and bottom values
         if(depth > surfaceDepth) {
             bright = oceanTopBrightness * bright;
             col = oceanTopColor * col;
@@ -66,11 +79,12 @@ void main(){
             col = ratio * (oceanTopColor - oceanBottomColor) + oceanBottomColor;
         }
 
+        // do fog calculation
         float ffogOcean = exp2(-1.442695 * oceanDensity * oceanDensity * distToCam * distToCam);
         vec3 fogOcean = (1.0 - ffogOcean) * col;
         vec4 colorOcean = ffogOcean * vec4(1.0,1.0,1.0,1.0) + vec4(fogOcean, 1.0);
 
-        //blend ocean color with cube color
+        //blend ocean color with mesh color from texture / base color
         float blendWeightFog = 1.0;
         colorLight = blendWeightFog*colorOcean*colorLight + (1.0-blendWeightFog)*colorLight;
 
@@ -78,6 +92,8 @@ void main(){
     }
 
 
-    colorLight = colorLight * sunlightMod;
+    colorLight = colorLight * sunlightMod; // apply sun and diffuse
+
+    // Out
     gl_FragColor = colorLight;
 }

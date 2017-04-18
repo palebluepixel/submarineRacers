@@ -8,7 +8,6 @@
 Renderer::Renderer (Shader *sh)
     : _shader(sh)
 { 
-  //positionLoc = glGetAttribLocation(_shader->ID(), "aPosition");
   projectionLoc = _shader->getUniformLocation("projection");
   modelViewLoc = _shader->getUniformLocation ("modelView");
   colorLoc = _shader->getUniformLocation("color");
@@ -18,6 +17,8 @@ Renderer::Renderer (Shader *sh)
 Renderer::~Renderer ()
 { }
 
+/* Prepare the shader for this renderer for use, and set openGL global
+state information */
 void Renderer::Enable ()
 {
   _shader->use();
@@ -25,9 +26,9 @@ void Renderer::Enable ()
   glEnable (GL_DEPTH_TEST);
 }
 
+/* Given an entity, render each of its meshes */
 void Renderer::Render(View *view, Entity *entity)
 {
-  //std::cout << to_string(entity->modelMatrix());
   setUniform(modelLoc, entity->modelMatrix());
 
   int i;
@@ -53,13 +54,8 @@ FlatShadingRenderer::~FlatShadingRenderer ()
 void FlatShadingRenderer::Render (View *view, Mesh *mesh)
 {
 
-  //std::cout << "model view: " << glm::to_string(modelViewMat) << "\ncolor: " << glm::to_string(mesh->color) << "\n";
-
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
-
-  //std::cout << "view matrix: " << glm::to_string(viewMat * modelMat) << "\n";
-  //std::cout << "projection matrix: " << glm::to_string(projectionMat) << "\n";
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);

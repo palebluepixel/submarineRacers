@@ -163,7 +163,7 @@ int main(void){
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
         0.03f, -5.0f, -30.0f);
 
-    //create test object
+    //create test objects
     vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
@@ -197,7 +197,7 @@ int main(void){
 
         //quick hack-in of a cube movement animation
         vec3 pos = cubes[0]->getPosition();
-        cubes[0]->setPosition(pos + vec3(0,0.03,0));
+        cubes[0]->setPosition(pos - vec3(0,0.03,0));
 
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
