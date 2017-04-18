@@ -144,7 +144,7 @@ int main(void){
     Camera *camera = new Camera();
     
     //position, look-at point, up-vector
-    camera->init(vec3(4,0,0),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(-2,0,-2),vec3(1,-1,1),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 100.0);
 
@@ -161,8 +161,8 @@ int main(void){
     view->setFog(1, oceanColor, 0.05f, 5.0);
 
     //create test object
-    vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5)}; 
-    int ncubes = 2, i;
+    vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5)}; 
+    int ncubes = 3, i;
     Cube * cubes[ncubes];
     for(i=0; i<ncubes; i++){
         cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
