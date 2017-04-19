@@ -6,7 +6,7 @@ NetworkManager::NetworkManager() {
 }
 
 void NetworkManager::recieveMessage(char* message, int len) {
-    struct CommandHeader *command = (struct CommandHeader *)(current);
+    /*struct CommandHeader *command = (struct CommandHeader *)(current);
 
     for(char *current = message; current - message < len; current += sizeof(CommandHeader) + ntohs(command->len)) {
 
@@ -18,11 +18,11 @@ void NetworkManager::recieveMessage(char* message, int len) {
         processCommand(ntohs(command->code), ntohs(command->len), current + sizeof(CommandHeader));
     }
 
-    free(message);
+    free(message);*/
 }
 
-void NetworkManager::processCommand(short code, short len, char[] message) {
-    //TODO switch to map
+void NetworkManager::processCommand(short code, short len, char* message) {
+    /*//TODO switch to map
     switch(code) {
         case CODE_PING:
             pingCommand(len, message);
@@ -32,11 +32,11 @@ void NetworkManager::processCommand(short code, short len, char[] message) {
             break;
         default:
             break;
-    }
+    }*/
 }
 
-void NetworkManager::pingCommand() {
-    sendCommand(CODE_PONG, 0, NULL);
+void NetworkManager::pingCommand(short len, char* message) {
+    //sendCommand(CODE_PONG, 0, NULL);
 }
 
 //TODO make NetworkManager, subclass this and client

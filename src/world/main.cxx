@@ -19,6 +19,10 @@
 #include <world/world.hxx>
 #include <userinput/callbacks.hxx>
 #include <graphics/texture.hxx>
+#include <network/Server.hxx>
+#include <network/Client.hxx>
+
+#define PORT 8008
 
 int keyboard[350];
 int mouse[8];
@@ -115,15 +119,32 @@ void update(double elapsed){
     if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
     if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
 
-    if(keyboard[GLFW_KEY_ESCAPE])       world->quit();
+    if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
+    if(keyboard[GLFW_KEY_Q])           world->quit();
 
 }
 
-int main(void){
+int main(int argc, char*argv[]){
 
     world = new World();
 
     init();
+
+    //set up server or client: eventually we will make command line flags more advanced
+    //First arg is "s" for server or "c" for client
+    //Second arg is server hostname is we are a client
+    int isServer = (argv[1][0] == 's');
+    Server *server;
+    Client *client;
+    if(isServer){
+        server = new Server(PORT);
+        printf("Port: %d\n", server->getPort());
+        server->initListeningSocket();
+    } else {
+        client = new Client(PORT, argv[2]);
+        printf("Hostname: %s, Port: %d\n", client->getHost(), client->getPort());
+        client->connectServer();
+    }
 
     // set up shaders.
     Shader *shader = new Shader();
@@ -194,6 +215,11 @@ int main(void){
         update(elapsed);
 
         time_prev = time_curr;
+
+        //Server stuff
+        if(isServer){
+            server->checkConnection();
+        }
 
         //quick hack-in of a cube movement animation
         vec3 pos = cubes[0]->getPosition();

@@ -3,8 +3,8 @@
 
 /* The manager for a single client. Stored by the server. */
 
-#include <Submarine.hxx>
-#include <Actuator.hxx>
+#include <ent/Submarine.hxx>
+#include <ent/Actuator.hxx>
 #include "NetworkManager.hxx"
 
 class ServerNetworkManager : public NetworkManager {
@@ -24,12 +24,7 @@ protected:
 	Actuator<Submarine> *actuator;
 	Submarine *sub;
 
-	void controllerStateCommand(short len, char[] message);
-};
-
-struct CommandHeader {
-	short code;
-	short len;
+	void controllerStateCommand(short len, char* message);
 };
 
 #endif

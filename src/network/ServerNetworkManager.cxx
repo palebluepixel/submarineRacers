@@ -10,13 +10,13 @@ ServerNetworkManager::ServerNetworkManager(int id, int socketAddr)
 void ServerNetworkManager::bindToSub(Submarine *sub)
 {
     this->sub = sub;
-    this->actuator = sub->Actuator();
+    //this->actuator = sub->getActuator();
 }
 
 void sendWorldDeltas(/*TODO: args?*/) {
     //TODO
 }
 
-void ServerNetworkManager::controllerStateCommand() {
+void ServerNetworkManager::controllerStateCommand(short len, char* message) {
     //TODO
 }

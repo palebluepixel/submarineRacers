@@ -15,7 +15,7 @@ public:
         EntityType type, EntityStatus status, float tick_interval);
 
     int onTick();
-};
+}; 
 
 
 #endif

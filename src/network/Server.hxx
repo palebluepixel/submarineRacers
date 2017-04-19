@@ -9,6 +9,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/select.h>
+#include <sys/time.h>
 
 using namespace std;
 
@@ -21,7 +25,7 @@ public:
     void initListeningSocket();
 
     /* Check for a user connection. If we found one, we will add it to our
-    list of clients. This function should be called in a lopp. */
+    list of clients. This function should be called in a loop. */
     void checkConnection();
 
     /* Send a message to the first client with ID id. Returns the number
@@ -31,10 +35,14 @@ public:
     /* Sends a message to all clients.*/
     void broadcast(short len, char *msg);
 
+    inline int getPort() { return this->port; }
+
 private:
     short port;
     struct sockaddr_in serverAddr;
     int listeningSocket;
+
+    char hostname[100];
 
     vector<ServerNetworkManager*> clients;
 
