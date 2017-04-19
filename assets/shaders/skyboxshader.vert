@@ -12,7 +12,7 @@ varying vec4 spaceCoords;
 
 void main (void)
 {
-    vec3 stretchedPosition = position*100 + camPos;
+    vec3 stretchedPosition = position*500 + camPos;
 
     vec4 pos = projection * modelView * model * vec4(stretchedPosition,1.0);
 
