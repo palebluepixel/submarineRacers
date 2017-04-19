@@ -1,10 +1,16 @@
 #include "ServerNetworkManager.hxx"
 
 
-ServerNetworkManager::ServerNetworkManager(Submarine *player/*other args*/)
+ServerNetworkManager::ServerNetworkManager(int id, int socketAddr)
         : NetworkManager(/*other args*/) {
-    sub = player;
-    actuator = player->getActuator();
+    this->id = id;
+    this->socketAddr = socketAddr;
+}
+
+void ServerNetworkManager::bindToSub(Submarine *sub)
+{
+    this->sub = sub;
+    this->actuator = sub->Actuator();
 }
 
 void sendWorldDeltas(/*TODO: args?*/) {

@@ -1,6 +1,8 @@
 #ifndef _NETWORK_MANAGER_HXX_
 #define _NETWORK_MANAGER_HXX_
 
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "CommandCodes.hxx"
 
 class NetworkManager {
