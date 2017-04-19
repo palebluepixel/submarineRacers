@@ -2,32 +2,31 @@
 
 uniform vec4 color;
 
-uniform int fogOn;
-uniform vec3 fogColor;
+uniform vec3 oceanTopBrightness;
+uniform vec3 oceanBottomBrightness;
+uniform vec3 oceanBottomColor;
+//uniform float surfaceDepth; 
+//uniform float floorDepth;  
 
-uniform int shouldTexture;
-uniform sampler2D texSampler;
-
-varying vec3 fragmentTexCoord;
 varying vec4 spaceCoords;
 
 void main(){
-    vec2 texSide = fragmentTexCoord.xy;
+    vec3 finalColor = oceanBottomColor; 
+    float darkCoord = -0.5; //screen coord below which everything should be dark
+    float lightCoord = 0.5;
 
-    vec4 colorLight = vec4(0.0,0.0,0.0,0.0);
-
-    if(shouldTexture!=0){
-        colorLight = texture(texSampler, texSide);
+    // Linearly interpolate between top and bottom values
+    if(spaceCoords.y > lightCoord) {
+        finalColor = oceanTopBrightness * finalColor;
+    } else if(spaceCoords.y < darkCoord) {
+        finalColor = oceanBottomBrightness * finalColor;
     } else {
-        colorLight = color;
+        vec3 ratio = (oceanTopBrightness - oceanBottomBrightness) / (lightCoord - darkCoord);
+        ratio = oceanBottomBrightness + (spaceCoords.y - darkCoord) * ratio;
+        finalColor = ratio * finalColor;
     }
 
+    vec4 fc = vec4(finalColor, 1.0);
 
-    if(fogOn != 0){
-        colorLight = vec4(fogColor, 1.0);
-    }
-
-    colorLight = colorLight - colorLight + spaceCoords; 
-
-    gl_FragColor = colorLight;
+    gl_FragColor = fc + color - color;
 }

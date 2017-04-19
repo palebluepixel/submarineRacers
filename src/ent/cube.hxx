@@ -30,12 +30,14 @@ class Cube : public Entity {
 public:
 
     Cube(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
-    EntityType type, EntityStatus status, float tick_interval);
+    EntityType type, EntityStatus status, float tick_interval, vec3 color);
     ~Cube();
 
     void initalizeVisualData();
 
 protected:
+
+    vec3 color;
 
     void initalizeTextures(const char* texfile);
     void initalizeMeshes();

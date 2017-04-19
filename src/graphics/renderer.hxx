@@ -12,8 +12,8 @@ using namespace glm;
 class Renderer {
   public:
 
-  //! enable the renderer
-  //! \param projectMat the projection matrix for the current camera state
+    /* Prepare the shader for this renderer for use, and set openGL global
+    state information */
     void Enable ();
 
   //! render a mesh using this renderer
@@ -77,6 +77,16 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
 
     void Render(View *view, Mesh *mesh);
 
+  protected:
+    GLint oceanColoringOnLoc;
+    GLint oceanTopBrightnessLoc;
+    GLint oceanBottomBrightnessLoc;
+    GLint oceanTopColorLoc;
+    GLint oceanBottomColorLoc;
+    GLint oceanDensityLoc;
+    GLint surfaceDepthLoc;
+    GLint floorDepthLoc;
+
 };
 
 class SkyboxRenderer : public Renderer {
@@ -87,17 +97,13 @@ class SkyboxRenderer : public Renderer {
     void Render(View *view, Mesh *mesh);
 
   protected:
-    GLint fogOnLoc;
-    GLint fogColorLoc;
-    GLint fogDensityLoc;
-
-    GLint shouldTextureLoc;
-    GLint texSamplerLoc;
-
-    GLint xDimLoc;
-    GLint yDimLoc;
-    GLint zDimLoc;
     GLint camPosLoc; 
+
+    GLint oceanTopBrightnessLoc;
+    GLint oceanBottomBrightnessLoc;
+    GLint oceanBottomColorLoc;
+    //GLint surfaceDepth;  //everything above this is max bright
+    //GLint floorDepth;    //everything below this is max dark
 };
 
 #endif // !_RENDER_HXX_

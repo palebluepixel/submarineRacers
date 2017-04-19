@@ -1,11 +1,13 @@
 #include "cube.hxx"
 
 Cube::Cube(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
-    EntityType type, EntityStatus status, float tick_interval)
+    EntityType type, EntityStatus status, float tick_interval, vec3 color)
 : Entity(initial_position, initial_orientation, id, name, type, status, tick_interval)
 {
     this->nMeshes = 6;
     this->meshes = NULL;
+
+    this->color = color;
 
     this->initalizeVisualData();
 }
@@ -39,7 +41,7 @@ void Cube::initalizeMeshes()
         meshes[i] = new Mesh(GL_TRIANGLE_FAN);
         curwall = wallsguys[i];
 
-        meshes[i]->color = curwall.color;
+        meshes[i]->color = vec4(this->color,1.0);
 
         //create an array of size nverts with the same normal
         vec3 normvec[4] = {curwall.norm, curwall.norm, curwall.norm, curwall.norm};
