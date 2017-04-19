@@ -1,10 +1,9 @@
 #include "ServerNetworkManager.hxx"
 
 
-ServerNetworkManager::ServerNetworkManager(int id, int socketAddr)
+ServerNetworkManager::ServerNetworkManager(int id)
         : NetworkManager(/*other args*/) {
     this->id = id;
-    this->socketAddr = socketAddr;
 }
 
 void ServerNetworkManager::bindToSub(Submarine *sub)

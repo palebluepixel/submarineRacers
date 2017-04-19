@@ -2,14 +2,6 @@
 #define _CLIENT_HXX_
 
 #include <network/NetworkManager.hxx>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <string.h>
 
 /* Wrapper class for network manager. Stores information about the server
@@ -35,11 +27,8 @@ private:
     short port;
     char*hostname;
 
-    int serverSocket;
-
     struct hostent * serverInfo;
-    struct sockaddr_in serverAddr;
-
+    NetworkManager nm;
 
 };
 

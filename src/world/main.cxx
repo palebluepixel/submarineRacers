@@ -217,9 +217,9 @@ int main(int argc, char*argv[]){
         time_prev = time_curr;
 
         //Server stuff
-        if(isServer){
+        /*if(isServer){
             server->checkConnection();
-        }
+        } TCP */
 
         //quick hack-in of a cube movement animation
         vec3 pos = cubes[0]->getPosition();

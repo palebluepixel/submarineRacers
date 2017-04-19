@@ -9,17 +9,16 @@
 
 class ServerNetworkManager : public NetworkManager {
 public:
-	ServerNetworkManager(int id, int socketAddr);
+	ServerNetworkManager(int id);
 	void sendWorldDeltas(/*TODO: args?*/);
 
     void bindToSub(Submarine *sub);
 
-    inline int getSocket() { return this->socketAddr; }
     inline int getID() { return this->id; }
 
 protected:
-    int socketAddr;
     int id;
+
 
 	Actuator<Submarine> *actuator;
 	Submarine *sub;

@@ -24,7 +24,7 @@ void Server::initListeningSocket()
     const int yes=1;
 
     /*create listening socket */
-    this->listeningSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    this->listeningSocket = socket(PF_INET, SOCK_DGRAM, 0);
     if(listeningSocket < 0)
     {
         printf("%s\n", "Could not open socket");
@@ -48,12 +48,12 @@ void Server::initListeningSocket()
     printf("Bound listening socket\n");
 
     /* listen on the listeningSocket */
-    if(listen(this->listeningSocket, 5) == -1)
+    /*if(listen(this->listeningSocket, 5) == -1)
     {
         perror("Socket listen() failed");
         close(this->listeningSocket);
         exit(-1);
-    }
+    } TCP */
 
     gethostname(this->hostname, 100);
 
@@ -65,9 +65,10 @@ void Server::initListeningSocket()
 list of clients. This function should be called in a loop. Nonblocking.*/
 void Server::checkConnection()
 {
-    //check if we have a connection waiting
-    //fd_set tmp; FD_ZERO(&tmp); FD_SET(this->listeningSocket, &tmp);
-    //if (select(1, &tmp, NULL, NULL, &TIMEWAIT) == -1)
+    /*//check if we have a connection waiting
+    fd_set tmp; FD_ZERO(&tmp); FD_SET(this->listeningSocket, &tmp);
+    if (select(NULL, &tmp, NULL, NULL, &TIMEWAIT)<=0)
+        return;
     //    printf("%s\n", "Error in select()");
     //if(!FD_ISSET(this->listeningSocket, &tmp)) 
     //    return;
@@ -91,7 +92,7 @@ void Server::checkConnection()
 
     this->addClient(handlingSocket);
 
-    free(clientAddr);
+    free(clientAddr); TCP */
 }
 
 /* Send a message to the first client with ID id. Returns the number
@@ -111,11 +112,13 @@ void Server::broadcast(short len, char *msg)
 /* Adds a client with the given socketAddr to the list*/
 void Server::addClient(int socketAddr)
 {
-    ServerNetworkManager *client = new ServerNetworkManager(this->getNextID(), socketAddr);
+    ServerNetworkManager *client = new ServerNetworkManager(this->getNextID());
+    client->setTargetSocket(socketAddr);
+    //have to set targetAddr only if we go to UDP
 
     this->clients.push_back(client);
 
-    printf("Added new client with ID %d, and address %d\n", client->getID(), client->getSocket());
+    printf("Added new client with ID %d, and address %d\n", client->getID(), client->getTargetSocket());
 }
 
 /* Returns an ID that has not been taken yet. */
