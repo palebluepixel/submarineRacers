@@ -99,10 +99,17 @@ void update(double elapsed){
     double rSpeed = 2.0 * elapsed;
     double tSpeed = 10.0 * elapsed;
 
-    if(keyboard[GLFW_KEY_UP])          cam->rotateCamUpDown(-rSpeed);
-    if(keyboard[GLFW_KEY_DOWN])        cam->rotateCamUpDown(rSpeed);
-    if(keyboard[GLFW_KEY_LEFT])        cam->rotateCamLeftRight(rSpeed);
-    if(keyboard[GLFW_KEY_RIGHT])       cam->rotateCamLeftRight(-rSpeed);
+    // if(keyboard[GLFW_KEY_UP])          cam->rotateCamUpDown(-rSpeed);
+    // if(keyboard[GLFW_KEY_DOWN])        cam->rotateCamUpDown(rSpeed);
+    // if(keyboard[GLFW_KEY_LEFT])        cam->rotateCamLeftRight(rSpeed);
+    // if(keyboard[GLFW_KEY_RIGHT])       cam->rotateCamLeftRight(-rSpeed);
+
+
+    if(keyboard[GLFW_KEY_UP])          cam->addYPR(glm::vec3(0, rSpeed,0));
+    if(keyboard[GLFW_KEY_DOWN])        cam->addYPR(glm::vec3(0, -rSpeed,0));
+    if(keyboard[GLFW_KEY_LEFT])        cam->addYPR(glm::vec3(rSpeed, 0,0));
+    if(keyboard[GLFW_KEY_RIGHT])       cam->addYPR(glm::vec3(-rSpeed, 0,0));
+
     // if(keyboard[GLFW_KEY_Q])          cam->rotateCamRoll(rSpeed);
     // if(keyboard[GLFW_KEY_E])          cam->rotateCamRoll(-rSpeed);
     
@@ -170,11 +177,11 @@ int main(void){
     int ncubes = 6, i;
     Cube * cubes[ncubes];
     for(i=0; i<ncubes; i++){
-        cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i]);
+        cubes[i] = new Cube(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i]);
     }
 
     //create skybox
-    Cube *skybox = new Cube(vec3(0,0,0), mat3(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1));
+    Cube *skybox = new Cube(vec3(0,0,0), quaternion(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1));
 
     int width, height;
 
@@ -211,8 +218,10 @@ int main(void){
 
         r->Enable ();
 
-        for(i=0; i<ncubes; i++)
+        for(i=0; i<ncubes; i++){
             r->Render(view, cubes[i]);
+            cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f/64.f,vec3(0,1.f,0));
+        }
 
         glfwSwapBuffers(world->window);
         glfwPollEvents();

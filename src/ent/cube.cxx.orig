@@ -1,7 +1,12 @@
 #include "cube.hxx"
 
-Cube::Cube(vec3 initial_position, quaternion initial_orientation, int id, char*name, 
+<<<<<<< HEAD
+Cube::Cube(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color)
+=======
+Cube::Cube(vec3 initial_position, quaternion initial_orientation, int id, char*name, 
+    EntityType type, EntityStatus status, float tick_interval)
+>>>>>>> physics
 : Entity(initial_position, initial_orientation, id, name, type, status, tick_interval)
 {
     this->nMeshes = 6;

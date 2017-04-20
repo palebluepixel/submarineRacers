@@ -102,6 +102,9 @@ class Camera {
 
     void rotateZ(float theta);
 
+    void setYPR(float yaw, float pitch, float roll);
+    void addYPR(vec3 del_ypr);
+
 
     //=====translate camera and look at point=====/
 
@@ -123,6 +126,8 @@ class Camera {
     float screenError (float dist, float err) const;
 
      vec3 _dir;   //!< the current direction that the camera is pointing towards
+     vec3 ypr;
+     bool ypr_control;
 
   private:
     vec3    _pos;       //!< position is double precision to allow large world

@@ -46,14 +46,23 @@ public:
 
     EntityStatus status;
 
+<<<<<<< HEAD
+    inline vec3 getPosition() { return this->position; }
+
+    //overwrite client data with server
+    virtual int overwrite(vec3 pos, mat3 ori);
+    //creates server message describing current pos and ori
+    virtual int prepare_message_segment();
+=======
 public:
     char*        setName(char* name);
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
+>>>>>>> physics
 
     vec3         setPosition(vec3 pos);
-    vec3         getPosition();
-    quaternion   setOrientation(quaternion ori);
+    quaternion setOrientation(quaternion ori);
+
 
     /**     networking:     **/
     virtual int overwrite(vec3 pos, quaternion ori);    //overwrite client data with server

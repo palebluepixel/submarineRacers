@@ -29,8 +29,13 @@ class Cube : public Entity {
 
 public:
 
-    Cube(vec3 initial_position, quaternion initial_orientation, int id, char*name, 
+<<<<<<< HEAD
+    Cube(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color);
+=======
+    Cube(vec3 initial_position, quaternion initial_orientation, int id, char*name, 
+    EntityType type, EntityStatus status, float tick_interval);
+>>>>>>> physics
     ~Cube();
 
     void initalizeVisualData();

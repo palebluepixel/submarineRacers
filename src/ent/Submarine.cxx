@@ -9,50 +9,27 @@ Submarine::Submarine(vec3 initial_position, mat3 initial_orientation, int id, ch
 }
 
 
-
-template<>
-struct SteeringState <Submarine> {
-    friend class Actuator<Submarine>;
-
-private:
-    float rotationChange;
-    float depthChange;
-    float acceleration;
-    bool fireWeapon;
-
-    void reset() {
-        rotationChange = 0;
-        depthChange = 0;
-        acceleration = 0;
-        fireWeapon = false;
-    }
-};
+void SubmarineSteeringState::reset() {
+    rotationChange = 0;
+    depthChange = 0;
+    acceleration = 0;
+    fireWeapon = false;
+}
 
 
+SubmarineActuator::SubmarineActuator(Submarine *agent) : Actuator(agent) {}
 
-template <>
-class Actuator <Submarine> {
-public:
-    Actuator(Submarine *agent) {
-        this->agent = agent;
+void SubmarineActuator::doSteering() {
+    //agent.rotation += state.rotationChange;
+    //Not sure what this will be called in the physics engine
+    //agent.AddAcceleration(state.acceleration * agent.rotation);
+
+    //Again, not sure
+    //changeDepth(state.depth);
+
+    if(state.fireWeapon) {
+        //spawn(agent.weapon.missileType);
     }
 
-    void doSteering() {
-        //agent.rotation += state.rotationChange;
-        //Not sure what this will be called in the physics engine
-        //agent.AddAcceleration(state.acceleration * agent.rotation);
-
-        //Again, not sure
-        //changeDepth(state.depth);
-
-        if(state.fireWeapon) {
-            //spawn(agent.weapon.missileType);
-        }
-
-        state.reset();
-    }
-   
-protected:
-    Submarine *agent;
-    SteeringState<Submarine> state;
-};
+    state.reset();
+}
