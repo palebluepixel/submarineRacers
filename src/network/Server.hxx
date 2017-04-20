@@ -21,6 +21,8 @@ public:
     Server(short port);
     ~Server();
 
+
+
     /* Returns the file descriptor for a new socket configured to listen for
     UDP datagrams on the given port. The returned socket will be bound using
     bind(). */
@@ -29,9 +31,7 @@ public:
     /* Prepare our listening socket to listen for connections. */
     void initListeningSocket();
 
-    /* Check for a user connection. If we found one, we will add it to our
-    list of clients. This function should be called in a loop. */
-    void checkConnection();
+
 
     /* Reads any incoming messages and then parses them. 
     Will process a maximum of mmax messages (used to control how much time
@@ -46,12 +46,15 @@ public:
     to the source client. */
     int readWire();
 
+
+
     /* Send a message to the first client with ID id. Returns the number
     of bytes sent.*/
     int messageClient(int id, short len, char*msg);
 
     /* Sends a message to all clients.*/
     void broadcast(short len, char *msg);
+
 
     inline int getPort() { return this->port; }
 
@@ -75,6 +78,8 @@ private:
     /* Adds a client with the given socketAddr to the list*/
     void addClient(struct sockaddr_in clientAddr);
 
+    /* Generate a unique ID. Call this when creating a new ServerNetworkManager
+    for a client. */
     int getNextID();
 };
 
