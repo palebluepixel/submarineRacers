@@ -26,9 +26,13 @@ class NetworkManager {
 public:
 	NetworkManager(/*other args*/);
     
-    /* Checks if any messages have come in through this socket recently,
-    and copies them into the recv buffer if so */
-    void readWire();
+    /* Reads any incoming messages into the recv buffer, then parses them. 
+    Will process a maximum of mmax messages (used to control how much time
+    we spend doing network stuff per tick, anything leftover will be done
+    next tick). Processes messages until none remain if mmax == 0 (there
+    is a risk of this continuing infinitely if we always recieve a new 
+    message before we finish processing the old one. */
+    void handleNetworkTick(uint32_t mmax);
 
     /* Parses the recv buffer to check for complete messages. 
         * If it finds a complete message, it returns COMPLETEMESSAGE, copies the 
@@ -51,6 +55,11 @@ public:
     inline int getTargetSocket() { return this->targetSocket; }
 
 protected:
+    /* Checks if any messages have come in through this socket recently,
+    and copies them into the recv buffer if so. Returns the number of
+    bytes read, and <0 on an error. */
+    int readWire();
+
 	//TODO do maps for dispatch table
 
 	void sendCommand(short code, short len, char* message);
