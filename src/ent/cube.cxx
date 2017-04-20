@@ -1,6 +1,6 @@
 #include "cube.hxx"
 
-Cube::Cube(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
+Cube::Cube(vec3 initial_position, quaternion initial_orientation, int id, char*name, 
     EntityType type, EntityStatus status, float tick_interval)
 : Entity(initial_position, initial_orientation, id, name, type, status, tick_interval)
 {

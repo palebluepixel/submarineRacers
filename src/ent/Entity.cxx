@@ -2,7 +2,7 @@
 
 using namespace glm;
 
-Entity::Entity(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
+Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, int id, char*name, 
     EntityType type, EntityStatus status, float tick_interval)
 {
     this->initial_position = initial_position;
@@ -39,9 +39,9 @@ vec3 Entity::Entity::setPosition(vec3 pos)
 }
 
 
-mat3 Entity::setOrientation(mat3 ori)
+tquat<float> Entity::setOrientation(tquat<float> ori)
 {
-    mat3 old = this->orientation;
+    tquat<float> old = this->orientation;
     this->orientation = ori;
     return old;
 }
@@ -68,7 +68,7 @@ char* Entity::setName(char* name)
 }
 
 //overwrite client data with server
-int Entity::overwrite(vec3 pos, mat3 ori)
+int Entity::overwrite(vec3 pos, tquat<float> ori)
 {
     this->setPosition(pos);
     this->setOrientation(ori);
@@ -77,14 +77,12 @@ int Entity::overwrite(vec3 pos, mat3 ori)
 }
 
 //creates server message describing current pos and ori
-int Entity::prepare_message_segment()
-{
+int Entity::prepare_message_segment(){
     return 0;
 }
 
 //physics tick behavior
-int Entity::onTick(float dt)
-{
+int Entity::onTick(float dt){
     //TODO fix all pseudocode
     //Collision checks already done
 
@@ -111,27 +109,36 @@ int Entity::onTick(float dt)
 }
 
 //change object's status to spawned and place it in its intial position
-EntityStatus Entity::spawn()
-{
+EntityStatus Entity::spawn(){
     this->overwrite(this->initial_position, this->initial_orientation);
     EntityStatus old = this->status;
     this->status = SPAWNED;
     return old;
 }
 
-mat4 Entity::modelMatrix()
-{
-    //TODO: rotation
-    mat4 model = mat4();
+mat4 Entity::modelMatrix(){
+    // orientation = glm::rotate(orientation,3.14f/16.f,vec3(1.f,1.f,1.f));
+    // printf("quat: %f,%f,%f,%f\n",orientation[0],orientation[1],orientation[2],orientation[3]);
+    mat4 model = mat4_cast(orientation);
     model[3][0] += this->position[0];
     model[3][1] += this->position[1];
     model[3][2] += this->position[2];
+    model[3][3] = 1.0;
+
+    // for(int i=0;i<4;i++){
+    //     printf("%f,%f,%f,%f\n",model[0][0],model[0][1],model[0][2],model[0][3]);
+    // }
+    // printf("\n");
+    //TODO: rotation
+
+    // model[0][3] = 0;
+    // model[1][3] = 0;
+    // model[2][3] = 0;
     return model;
 }
 
 
-void Entity::drawEntity()
-{
+void Entity::drawEntity(){
     int i;
     for(i=0; i<this->nMeshes; i++)
         meshes[i]->draw();

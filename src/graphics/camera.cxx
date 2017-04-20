@@ -106,18 +106,21 @@ void Camera::move (vec3 const &pos, vec3 const &at, vec3 const &up)
 // change the direction of the camera
 void Camera::look (vec3 const &dir)
 {
+    ypr_control = false;
     this->_dir = dir;
 }
 
 // change the direction of the camera
 void Camera::look (vec3 const &dir, vec3 const &up)
 {
+    ypr_control = false;
     this->_dir = dir;
     this->_up = up;
 }
 
 void Camera::setUp(vec3 const &up)
 {
+    ypr_control = false;
     this->_up = normalize(up);
 }
 
@@ -139,8 +142,8 @@ vec3 Camera::getLookVec(){
 }
 
 //rotate camera around an arbitrary axis
-void Camera::rotateCam(float theta, vec3 axis)
-{
+void Camera::rotateCam(float theta, vec3 axis){
+    ypr_control = false;
     //translate lookat point to be relative to a camera at the origin
     vec3 camlook = this->getLookVec();
 
@@ -162,13 +165,30 @@ void Camera::rotateCam(float theta, vec3 axis)
     //printf("new dir %f %f %f\n", newdir[0], newdir[1], newdir[2]);
 }
 
-void Camera::rotateCamUpDown(float theta)
-{
+void Camera::setYPR(float yaw, float pitch, float roll){
+    ypr_control = true;
+    static float max_pitch = 0.99f*3.141592653f/2.f;
+    static float min_pitch = -0.99f*3.141592653f/2.f;
+    // todo: include roll.
+    // todo: allow looking straight up.
+    if(pitch > max_pitch) pitch = max_pitch;
+    if(pitch < min_pitch) pitch = min_pitch;
+    vec3 lookAt(cos(pitch)*sin(yaw), sin(pitch), cos(pitch)*cos(yaw));
+    this->_dir = this->_pos+lookAt;
+    this->_up = vec3(0,1,0);
+    ypr=vec3(yaw,pitch,roll);
+}
+void Camera::addYPR(vec3 del_ypr){
+    ypr_control = true;
+    vec3 nypr = ypr+del_ypr;
+    this->setYPR(nypr.x,nypr.y,nypr.z);
+}
+
+void Camera::rotateCamUpDown(float theta){
     this->rotateCam(theta, cross(this->up(), this->getLookVec()));
 }
 
-void Camera::rotateCamLeftRight(float theta)
-{
+void Camera::rotateCamLeftRight(float theta){
     this->rotateCam(theta, this->up());
 }
 
@@ -196,19 +216,16 @@ void Camera::rotateZ(float theta)
 //=====translate camera and look at point=====/
 
 //translate cam along arbitrary axis, without rotating view at all
-void Camera::translateCam(vec3 offset)
-{
+void Camera::translateCam(vec3 offset){
     this->_pos = this->_pos + offset;
     this->_dir = this->_dir + offset;
 }
 
-void Camera::moveZAxis(float dis)
-{
+void Camera::moveZAxis(float dis){
     this->translateCam(vec3(0.0, 0.0, (double)dis));
 }
 
-void Camera::translateCamViewAxis(float dis)
-{
+void Camera::translateCamViewAxis(float dis){
     vec3 axis = this->getLookVec();
     this->translateCam(dis * axis);
 }

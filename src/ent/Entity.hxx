@@ -3,6 +3,7 @@
 
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <physics/Volume.hxx>
 #include <stdlib.h>
 #include <string.h>
@@ -33,58 +34,58 @@ enum EntityStatus {
     DESTROYED
 };
 
+typedef glm::tquat<float> quaternion;
 
 class Entity {
 
 public:
 
-    Entity(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
+    Entity(vec3 initial_position, quaternion initial_orientation, int id, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
     ~Entity();
 
-    vec3 setPosition(vec3 pos);
-    mat3 setOrientation(mat3 ori);
-    EntityType setEntityType(EntityType type);
-    int setID(int id);
-    char* setName(char* name);
-
-    //overwrite client data with server
-    virtual int overwrite(vec3 pos, mat3 ori);
-    //creates server message describing current pos and ori
-    virtual int prepare_message_segment();
-
-    //physics tick behavior
-    virtual int onTick(float dt);
-
     EntityStatus status;
-    //change object's status to spawned and place it in its intial position
-    virtual EntityStatus spawn();
 
-    //return the model matrix to translate and rotate this object in world-space
-    mat4 modelMatrix();
+public:
+    char*        setName(char* name);
+    int          setID(int id);
+    EntityType   setEntityType(EntityType type);
+
+    vec3         setPosition(vec3 pos);
+    quaternion setOrientation(quaternion ori);
 
 
-    //Render all meshes to screen
-    void drawEntity();
+    /**     networking:     **/
+    virtual int overwrite(vec3 pos, quaternion ori);    //overwrite client data with server
+    virtual int prepare_message_segment();                //creates server message describing current pos and ori
+    
+    /**     physics:        **/
+    virtual int onTick(float dt);
+    void applyForce(vec3 force);
+    void applyTorque(quaternion torque);
+
+    /**     game state:     **/
+    virtual EntityStatus spawn();     // set status to spawned, place in intial position
+
+    /**     graphics:       **/
+    mat4 modelMatrix();           // return transform matrix TO world space.
+    void drawEntity();            // render meshes to screen
 
     inline int getNMeshes() { return this->nMeshes; }
     inline Mesh ** getMeshes() {return this->nMeshes>0 ? this->meshes : NULL;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
-    void applyForce(vec3 force);
-    //TODO applyTorque
-
 protected:
-
+public:
     vec3 position;
-    vec3 initial_position;
+    vec3 initial_position;      // we should remove this field.
 
     vec3 velocity;
 
-    mat3 orientation;    
-    mat3 initial_orientation;
+    quaternion orientation;    
+    quaternion initial_orientation;
 
-    mat3 angular_velocity;
+    quaternion angular_velocity;
 
     float mass;
     float dragCoef; //
