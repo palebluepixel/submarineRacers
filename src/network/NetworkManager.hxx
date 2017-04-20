@@ -25,26 +25,6 @@ typedef enum {
 class NetworkManager {
 public:
 	NetworkManager(/*other args*/);
-    
-    /* Reads any incoming messages into the recv buffer, then parses them. 
-    Will process a maximum of mmax messages (used to control how much time
-    we spend doing network stuff per tick, anything leftover will be done
-    next tick). Processes messages until none remain if mmax == 0 (there
-    is a risk of this continuing infinitely if we always recieve a new 
-    message before we finish processing the old one. */
-    void handleNetworkTick(uint32_t mmax);
-
-    /* Parses the recv buffer to check for complete messages. 
-        * If it finds a complete message, it returns COMPLETEMESSAGE, copies the 
-        message into msgDst, and removes the message from the buffer. msgDst must
-        be large enough to contain an entire complete message, that is, be
-        MAX_MESSAGE_LENGTH+1 bytes.
-        * If it finds an incomplete message, it returns PARTIALMESSAGE.
-        * If the buffer contains no complete or partial messages, returns EMPTY.
-    The caller should follow up a call to parseRecvBuffer with another call to recv,
-    and, if recv returned a positive number of bytes, another call to parseRecvBuffer.
-    */
-    recvBufferStatus parseRecvBuffer(char *msgDst); 
 
 	void recieveMessage(char* message, int len);
     void sendMessage(char* message, int len);
@@ -53,13 +33,9 @@ public:
     inline void setTargetAddr(struct sockaddr_in sa) { this->targetAddr = sa; }
 
     inline int getTargetSocket() { return this->targetSocket; }
+    inline struct sockaddr_in getTargetAddr() { return this->targetAddr; }
 
 protected:
-    /* Checks if any messages have come in through this socket recently,
-    and copies them into the recv buffer if so. Returns the number of
-    bytes read, and <0 on an error. */
-    int readWire();
-
 	//TODO do maps for dispatch table
 
 	void sendCommand(short code, short len, char* message);
@@ -72,29 +48,6 @@ protected:
 
     /* The address info struct of the other endpoint */
     struct sockaddr_in targetAddr;
-
-    /* 
-    A buffer that we use to hold messages as we are parsing them. A single
-    call to read MAX_MESSAGE_LENGTH bytes may return:
-        * an entire message
-        * a partial message
-        * an entire packet followed by part of the next message
-        * part of the first message followed by part of the next message
-    Because
-        1) different messages have different lengths or variable lengths and
-        thus a read of MAX_MESSAGE_LENGTH will likely return more than one message
-        2) calls to recv return an unpredictable number of bytes for 
-        ~~kernal reasons~~
-
-    Therefore, we read into a temporary buffer for parsing. Whenever the buffer
-    contains a complete contigous message, we remove it from the buffer and
-    send it to the message parser. The buffer is implemented as a circular buffer
-    with capacity to hold two complete messages. 
-
-    Calls to recv data into the buffer must be careful to not read more bytes than
-    the buffer has in its remaining capacity. 
-    */
-    circular_buffer_t recvBuff;
 
 };
 

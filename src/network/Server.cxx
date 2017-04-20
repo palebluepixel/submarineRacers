@@ -47,7 +47,10 @@ int Server::createNewUDPSocket(short port)
 }
 
 
-/* Prepare our listening socket to listen for connections. */
+/* Prepare our listening socket. This is the socket we use for all communication
+with clients. In UDP, we distinguish between the source and destination of
+traffic using IP addresses, whereas in TCP we would have had one socket per
+connection. */
 void Server::initListeningSocket()
 {
     this->listeningSocket = createNewUDPSocket(this->port);
@@ -71,36 +74,19 @@ void Server::broadcast(short len, char *msg)
 
 }
 
-/* 
-Once a client messages us on our listening socket, we will create a new socket which
-is dedicated just to communication with that client. This way we can avoid conflicts
-between data being recieved from multiple clients at the same time. 
-
-formConnection() first checks if the server already has a ServerNetworkManager object
-to handle this client address, and if so resends the "connected" message to that client
-but does not other work. If this address does not have a connection, we:
-1. find an unused port on which we can communicate exclusively with this client
-2. create and bind a new socket which we will use to communicate with this client
-3. create a new ServerNetworkManager for this client and add it to the map
-4. send a "connected" message to the client informing them of the port for their
-   communication socket.
-*/
-void Server::formConnection(struct sockaddr_in *client)
+/* addClient() first checks if the server already has a ServerNetworkManager object
+to handle this client address. If this address does not have a connection, we create 
+a new ServerNetworkManager object for this client and add it to the list. */
+void Server::addClient(struct sockaddr_in clientAddr) 
 {
+    //TODO: if exists, dont add
 
-}
-
-
-/* Adds a client with the given socketAddr to the list*/
-void Server::addClient(int socketAddr) 
-{
     ServerNetworkManager *client = new ServerNetworkManager(this->getNextID());
-    client->setTargetSocket(socketAddr);
-    //have to set targetAddr only if we go to UDP
+    client->setTargetAddr(clientAddr);
 
-    this->clients.push_back(client);
+    this->clients.insert(make_pair(clientAddr, client));
 
-    printf("Added new client with ID %d, and address %d\n", client->getID(), client->getTargetSocket());
+    printf("Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
 }
 
 /* Returns an ID that has not been taken yet. */
@@ -108,12 +94,4 @@ int Server::getNextID()
 {
     static int ID = -1;
     return ++ID;
-}
-
-/* Return the next unbound port. We assume that all ports greater than the one of our listening
-socket is unused. We could obviously make this more sophisticated later. */
-int server::getNextPort()
-{
-    static short p = PORT;
-    return ++port;
 }
