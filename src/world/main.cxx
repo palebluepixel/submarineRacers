@@ -216,11 +216,6 @@ int main(int argc, char*argv[]){
 
         time_prev = time_curr;
 
-        //Server stuff
-        /*if(isServer){
-            server->checkConnection();
-        } TCP */
-
         //quick hack-in of a cube movement animation
         vec3 pos = cubes[0]->getPosition();
         cubes[0]->setPosition(pos - vec3(0,0.03,0));

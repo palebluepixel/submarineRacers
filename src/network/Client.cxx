@@ -19,7 +19,7 @@ void Client::connectServer()
     struct hostent *serverInfo;
 
     /* Create a socket to talk to the server */
-    serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    serverSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if(serverSocket < 0) {
         printf("%s\n", "Could not open socket");
         exit(-1);
@@ -39,12 +39,6 @@ void Client::connectServer()
     memcpy((char *) &serverAddr.sin_addr.s_addr, 
         serverInfo->h_addr_list[0], serverInfo->h_length);
     serverAddr.sin_port = htons(this->port);
-
-    /* Connect */
-    /*if (connect(serverSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr)) < 0) {
-        printf("Could not connect to %s at port %d\n", this->hostname, this->port);
-        exit(-1);
-    } TCP */
 
     /* Copy over into to network manager */
     this->nm.setTargetSocket(serverSocket);

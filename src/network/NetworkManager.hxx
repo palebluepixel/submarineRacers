@@ -16,6 +16,11 @@
 class NetworkManager {
 public:
 	NetworkManager(/*other args*/);
+    
+    /* Checks if any messages have come in through this socket recently,
+    and copies them into the circular buffer */
+    void readWire();
+
 	void recieveMessage(char* message, int len);
     void sendMessage(char* message, int len);
 

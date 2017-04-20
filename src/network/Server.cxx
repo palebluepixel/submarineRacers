@@ -1,14 +1,9 @@
 #include "Server.hxx"
 
-timeval TIMEWAIT;
-
 Server::Server(short port) 
 {
     memset(&this->serverAddr, 0, sizeof(struct sockaddr_in));
     this->port = port;
-
-    TIMEWAIT.tv_sec = 0;
-    TIMEWAIT.tv_usec = 3000;
 
 }
 
@@ -36,6 +31,7 @@ void Server::initListeningSocket()
     this->serverAddr.sin_port = htons(port); //I guess this has to be in network order?
     this->serverAddr.sin_addr.s_addr = INADDR_ANY;
 
+    // Reuse address if it is already bound
     setsockopt(this->listeningSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
     /*bind the listening socket */
@@ -47,52 +43,10 @@ void Server::initListeningSocket()
     }
     printf("Bound listening socket\n");
 
-    /* listen on the listeningSocket */
-    /*if(listen(this->listeningSocket, 5) == -1)
-    {
-        perror("Socket listen() failed");
-        close(this->listeningSocket);
-        exit(-1);
-    } TCP */
-
     gethostname(this->hostname, 100);
 
     printf("Began listening on socket %d. We are %s@%s\n",this->listeningSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
     printf("NOTE: 0.0.0.0 IS FINE, THATS THE WILDCARD ADDRESS IN THIS CASE\n"); 
-}
-
-/* Check for a user connection. If we found one, we will add it to our
-list of clients. This function should be called in a loop. Nonblocking.*/
-void Server::checkConnection()
-{
-    /*//check if we have a connection waiting
-    fd_set tmp; FD_ZERO(&tmp); FD_SET(this->listeningSocket, &tmp);
-    if (select(NULL, &tmp, NULL, NULL, &TIMEWAIT)<=0)
-        return;
-    //    printf("%s\n", "Error in select()");
-    //if(!FD_ISSET(this->listeningSocket, &tmp)) 
-    //    return;
-    //printf("Got Connection!\n");
-
-    // Create an empty clientAddr struct
-    socklen_t sinSize = sizeof(struct sockaddr_in);
-    struct sockaddr_in * clientAddr = (struct sockaddr_in*)malloc(sinSize);
-
-    int handlingSocket;
-
-    // Accept incoming connections
-    if( (handlingSocket = accept(this->listeningSocket, (struct sockaddr *) clientAddr, &sinSize)) == -1) {
-        printf("%s\n", "Socket accept() failed");
-        free(clientAddr);
-        return;
-    }
-
-    // GOT EM
-    printf("Got a new connection: handingSocket # %d\n", handlingSocket);
-
-    this->addClient(handlingSocket);
-
-    free(clientAddr); TCP */
 }
 
 /* Send a message to the first client with ID id. Returns the number
