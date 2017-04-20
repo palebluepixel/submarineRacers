@@ -48,6 +48,8 @@ struct Mesh {
   //! draw the mesh using a glDrawElements call
     void draw ();
 
+    void loadOBJ(char *file);
+
 };
 
 #endif // !_MESH_HXX_

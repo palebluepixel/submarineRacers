@@ -16,6 +16,7 @@
 #include <graphics/renderer.hxx>
 #include <ent/Entity.hxx>
 #include <ent/cube.hxx>
+#include <ent/gadget.hxx>
 #include <world/world.hxx>
 #include <userinput/callbacks.hxx>
 #include <graphics/texture.hxx>
@@ -175,9 +176,10 @@ int main(void){
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
-    Cube * cubes[ncubes];
-    for(i=0; i<ncubes; i++){
-        cubes[i] = new Cube(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i]);
+    Entity * cubes[ncubes];
+    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0]);
+    for(i=1; i<ncubes; i++){
+        cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i]);
     }
 
     //create skybox
