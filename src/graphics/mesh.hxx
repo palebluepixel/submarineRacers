@@ -15,23 +15,36 @@ using namespace glm;
 //! the information needed to render a mesh
 struct Mesh {
 
+    struct {
+      GLuint vaoId;
+      GLuint vbufId; //vertices
+      GLuint ibufId; //indices
+      GLuint nbufId; //normals
+      GLuint tbufId; //texcoords
+      GLenum prim;
+      int nIndicies;
+      int nTexCoords;
 
-    GLuint vaoId;
-    GLuint vbufId; //vertices
-    GLuint ibufId; //indices
-    GLuint nbufId; //normals
-    GLuint tbufId; //texcoords
-    GLenum prim;
-    int nIndicies;
-    int nTexCoords;
+      Mesh *owner;
 
-    int shouldTexture;
+      int polygon_mode;
+      int visible;
 
-    texture2d *tex;
+      int shouldTexture;
 
-    vec4 color; //R,G,B,Alpha
+      texture2d *tex;
+
+      vec4 color; //R,G,B,Alpha
+    }data;
 
     Mesh (GLenum p);
+
+    /**
+     * used to save space in the graphics buffer. construct
+     * a new mesh that uses the same data as copyfrom, but
+     * which has different auxiliary fields, eg. visible, ...
+     */
+    Mesh (const Mesh &copyfrom);
 
   //! initialize the vertex data buffers for the mesh
     void loadVertices (int nVerts, const vec3 *verts);

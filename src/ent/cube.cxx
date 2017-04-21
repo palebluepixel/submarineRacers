@@ -41,7 +41,7 @@ void Cube::initalizeMeshes()
         meshes[i] = new Mesh(GL_TRIANGLE_FAN);
         curwall = wallsguys[i];
 
-        meshes[i]->color = vec4(this->color,1.0);
+        meshes[i]->data.color = vec4(this->color,1.0);
 
         //create an array of size nverts with the same normal
         vec3 normvec[4] = {curwall.norm, curwall.norm, curwall.norm, curwall.norm};
@@ -54,6 +54,6 @@ void Cube::initalizeMeshes()
         const uint32_t indices[4] = {3, 2, 1, 0};
         meshes[i]->loadIndices(4, indices);
 
-        meshes[i]->tex = this->tex;
+        meshes[i]->data.tex = this->tex;
     }
 }

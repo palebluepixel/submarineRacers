@@ -10,20 +10,31 @@ const GLint TexCoordAttrLoc = 2;
 
 //! create a MeshInfo object by initializing its buffer Ids.  The buffer data is
 //! loaded separately.
-Mesh::Mesh(GLenum p)
-: vbufId(0), ibufId(0), prim(p), nIndicies(0), color(0)
-{
-    this->shouldTexture = 0;
-    glGenVertexArrays(1, &vaoId);
+Mesh::Mesh(GLenum p) {
+  data.vbufId=0;
+  data.ibufId=0;
+  data.prim=p;
+  data.nIndicies=0;
+  data.color=vec4 (1,1,1,0.5f);
+  data.shouldTexture = 0;
 
+  data.polygon_mode=GL_FILL;
+  data.visible=1;
+  data.owner = this;
+
+  glGenVertexArrays(1, &data.vaoId);
+}
+
+Mesh::Mesh(const Mesh &copyfrom){
+  data = copyfrom.data;
 }
 
 //! initialize the vertex data buffers for the mesh
 void Mesh::loadVertices (int nVerts, const vec3 *verts)
 {
-    glBindVertexArray(this->vaoId);
-    glGenBuffers(1, &this->vbufId);
-    glBindBuffer(GL_ARRAY_BUFFER, this->vbufId);
+    glBindVertexArray(data.vaoId);
+    glGenBuffers(1, &data.vbufId);
+    glBindBuffer(GL_ARRAY_BUFFER, data.vbufId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vec3)*nVerts, verts, GL_STATIC_DRAW);
     glVertexAttribPointer(CoordAttrLoc, 3, GL_FLOAT, GL_FALSE, sizeof(verts[0]), (GLvoid *)0);
     glEnableVertexAttribArray(CoordAttrLoc);
@@ -32,20 +43,20 @@ void Mesh::loadVertices (int nVerts, const vec3 *verts)
 //! initialize the element array for the mesh
 void Mesh::loadIndices (int n, const uint32_t *indices)
 {
-    this->nIndicies = n; 
-    glBindVertexArray (this->vaoId);
-    glGenBuffers (1, &this->ibufId);
-    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, this->ibufId);
+    data.nIndicies = n; 
+    glBindVertexArray (data.vaoId);
+    glGenBuffers (1, &data.ibufId);
+    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, data.ibufId);
     glBufferData (GL_ELEMENT_ARRAY_BUFFER, n*sizeof(uint32_t), indices, GL_STATIC_DRAW); //might be STATIC_DRAW
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
     glEnableVertexAttribArray(CoordAttrLoc);
 }
 
 void Mesh::LoadTexCoords (int nCoords, vec2 *tcoords){
-  this->nTexCoords = nCoords;
-  glBindVertexArray (this->vaoId);
-  glGenBuffers (1, &this->tbufId);
-  glBindBuffer (GL_ARRAY_BUFFER, this->tbufId);
+  data.nTexCoords = nCoords;
+  glBindVertexArray (data.vaoId);
+  glGenBuffers (1, &data.tbufId);
+  glBindBuffer (GL_ARRAY_BUFFER, data.tbufId);
   glBufferData (GL_ARRAY_BUFFER, nCoords*sizeof(vec2), tcoords, GL_STATIC_DRAW);
   glVertexAttribPointer(TexCoordAttrLoc, 2, GL_FLOAT, GL_FALSE, sizeof(tcoords[0]), (GLvoid *)0);
   glEnableVertexAttribArray(TexCoordAttrLoc);
@@ -53,9 +64,9 @@ void Mesh::LoadTexCoords (int nCoords, vec2 *tcoords){
 
 //! initalize the vertex array for the normals
 void Mesh::loadNormals (int nVerts, vec3 *norms){
-  glBindVertexArray (this->vaoId);
-  glGenBuffers (1, &this->nbufId);
-  glBindBuffer (GL_ARRAY_BUFFER, this->nbufId);
+  glBindVertexArray (data.vaoId);
+  glGenBuffers (1, &data.nbufId);
+  glBindBuffer (GL_ARRAY_BUFFER, data.nbufId);
   glBufferData (GL_ARRAY_BUFFER, nVerts*sizeof(vec3), norms, GL_STATIC_DRAW);
   glVertexAttribPointer(NormAttrLoc, 3, GL_FLOAT, GL_FALSE, sizeof(vec3), ((GLvoid*) 0));
   glEnableVertexAttribArray(NormAttrLoc);
@@ -63,18 +74,18 @@ void Mesh::loadNormals (int nVerts, vec3 *norms){
 
 void Mesh::draw ()
 {
-    glBindVertexArray(this->vaoId);
-    glBindBuffer(GL_ARRAY_BUFFER, this->vbufId);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibufId);
+    glBindVertexArray(data.vaoId);
+    glBindBuffer(GL_ARRAY_BUFFER, data.vbufId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.ibufId);
 
-    glDrawElements (this->prim, this->nIndicies, GL_UNSIGNED_INT, 0);
+    glDrawElements (data.prim, data.nIndicies, GL_UNSIGNED_INT, 0);
 
 }
 
 void Mesh::loadOBJ(char *file){
-  prim = GL_TRIANGLES;
-  shouldTexture = false;  // change.
-  color = vec4(1.f,1.f,1.f,1.f);
+  data.prim = GL_TRIANGLES;
+  data.shouldTexture = false;  // change.
+  data.color = vec4(1.f,1.f,1.f,1.f);
 
   OBJmodel *model = OBJReadOBJ (file);
 

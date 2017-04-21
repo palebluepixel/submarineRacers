@@ -16,7 +16,6 @@
 #include <graphics/renderer.hxx>
 #include <ent/Entity.hxx>
 #include <ent/cube.hxx>
-#include <ent/gadget.hxx>
 #include <world/world.hxx>
 #include <userinput/callbacks.hxx>
 #include <graphics/texture.hxx>
@@ -152,7 +151,11 @@ int main(void){
     Camera *camera = new Camera();
     
     //position, look-at point, up-vector
+<<<<<<< HEAD
     camera->init(vec3(-2,0,-2),vec3(3,0,3),vec3(0,1,0)); //location, looking-at, up
+=======
+    camera->init(vec3(0,0,-4),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
+>>>>>>> physics
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
 
@@ -167,7 +170,7 @@ int main(void){
     view->setNear(0.1);
     view->setFar(1000.0);
     view->setSunlight(vec3(-0.3, 1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
-    view->setFog(1, oceanColor, 0.05f, 5.0);
+    view->setFog(0, oceanColor, 0.05f, 5.0);
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
         0.03f, -5.0f, -30.0f);
 
@@ -176,14 +179,22 @@ int main(void){
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
-    Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
-    for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+    Cube * cubes[ncubes];
+    for(i=0; i<ncubes; i++){
+<<<<<<< HEAD
+        cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i]);
     }
 
     //create skybox
-    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Cube *skybox = new Cube(vec3(0,0,0), mat3(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1));
+=======
+        cubes[i] = new Cube(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
+        
+    }
+
+    //create skybox
+    Cube *skybox = new Cube(vec3(0,0,0), quaternion(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f);
+>>>>>>> physics
 
     int width, height;
 
@@ -205,8 +216,8 @@ int main(void){
         time_prev = time_curr;
 
         //quick hack-in of a cube movement animation
-        // vec3 pos = cubes[0]->getPosition();
-        // cubes[0]->setPosition(pos - vec3(0,0.03,0));
+        vec3 pos = cubes[0]->getPosition();
+        cubes[0]->setPosition(pos - vec3(0,0.03,0));
 
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
@@ -215,13 +226,13 @@ int main(void){
         glClearColor(1.0, 0.5, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        rsky->enable();
-        rsky->render(view, skybox);
+        rsky->Enable();
+        rsky->Render(view, skybox);
 
-        r->enable ();
+        r->Enable ();
 
         for(i=0; i<ncubes; i++){
-            r->render(view, cubes[i]);
+            r->Render(view, cubes[i]);
             cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f/64.f,vec3(0,1.f,0));
         }
 

@@ -1,7 +1,9 @@
+
 #ifndef PHYSICS_HXX
 #define PHYSICS_HXX
 
 #include <glm/glm.hpp>
+#include <graphics/mesh.hxx>
 #include <vector>
 
 namespace Space{
@@ -55,6 +57,8 @@ namespace Space{
         virtual bool collision(Volume *other) =0;
 
         virtual bool containsPoint(vec3 pt) =0;
+
+        virtual Mesh* collisionMesh() = 0;
     };
 
     class CylinderVolume : public Volume{
@@ -64,9 +68,19 @@ namespace Space{
     };
 
     class SphereVolume : public Volume{
+    public:
         SphereVolume(vec3 pp, double rad);
         const char *type();
         double distance(Volume *other);
+
+        vec3 push(Volume *other);
+        vec3 pushAlong(Volume *other, vec3 direction);
+        bool collision(Volume *other);
+        bool containsPoint(vec3 pt);
+
+        Mesh* collisionMesh();
+        static Mesh* mesh;
+    protected:
         double r;
     };
 

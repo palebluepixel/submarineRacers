@@ -19,16 +19,23 @@ Renderer::~Renderer ()
 
 /* Prepare the shader for this renderer for use, and set openGL global
 state information */
-void Renderer::Enable ()
-{
+void Renderer::enable (){
   _shader->use();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glEnable (GL_DEPTH_TEST);
+
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // glEnable(GL_CULL_FACE);
+  // glCullFace(GL_BACK);
+}
+
+void Renderer::render(){
+  // do nothing.
 }
 
 /* Given an entity, render each of its meshes */
-void Renderer::Render(View *view, Entity *entity)
-{
+void Renderer::render(View *view, Entity *entity){
   setUniform(modelLoc, entity->modelMatrix());
 
   int i;
@@ -38,7 +45,7 @@ void Renderer::Render(View *view, Entity *entity)
     return;
   for (i=0; i<n; i++){
     if(meshes[i] != NULL)
-      this->Render(view, meshes[i]);
+      this->render(view, meshes[i]);
   }
 }
 
@@ -51,7 +58,7 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
-void FlatShadingRenderer::Render (View *view, Mesh *mesh)
+void FlatShadingRenderer::render (View *view, Mesh *mesh)
 {
 
   mat4 projectionMat = view->projectionMatrix();
@@ -59,7 +66,7 @@ void FlatShadingRenderer::Render (View *view, Mesh *mesh)
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->color);
+  setUniform(colorLoc, mesh->data.color);
   mesh->draw();
 
 }
@@ -87,7 +94,7 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
 SunlightShadingRenderer::~SunlightShadingRenderer()
 { }
 
-void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
+void SunlightShadingRenderer::render (View *view, Mesh *mesh)
 {
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
@@ -103,8 +110,8 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
 
-  setUniform(shouldTextureLoc, mesh->shouldTexture);
-  texture2d *tex = mesh->tex;
+  setUniform(shouldTextureLoc, mesh->data.shouldTexture);
+  texture2d *tex = mesh->data.tex;
   tex->Bind();
   tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
   tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
@@ -112,7 +119,7 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->color);
+  setUniform(colorLoc, mesh->data.color);
   mesh->draw();
 
 }
@@ -139,8 +146,21 @@ UnderwaterRenderer::UnderwaterRenderer (Shader *sh)
 UnderwaterRenderer::~UnderwaterRenderer()
 { }
 
-void UnderwaterRenderer::Render(View *view, Mesh *mesh)
-{ 
+void UnderwaterRenderer::enable (){
+  _shader->use();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glEnable(GL_DEPTH_TEST);
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+}
+void UnderwaterRenderer::render(View *view, Mesh *mesh){
+
+  if(!mesh->data.visible){
+    return;
+  }
+ 
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -165,8 +185,8 @@ void UnderwaterRenderer::Render(View *view, Mesh *mesh)
   setUniform(surfaceDepthLoc, oc.surfaceDepth);
   setUniform(floorDepthLoc, oc.floorDepth);
 
-  setUniform(shouldTextureLoc, mesh->shouldTexture);
-  texture2d *tex = mesh->tex;
+  setUniform(shouldTextureLoc, mesh->data.shouldTexture);
+  texture2d *tex = mesh->data.tex;
   tex->Bind();
   tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
   tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
@@ -174,7 +194,10 @@ void UnderwaterRenderer::Render(View *view, Mesh *mesh)
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->color);
+  setUniform(colorLoc, mesh->data.color);
+
+  glPolygonMode(GL_FRONT_AND_BACK, mesh->data.polygon_mode);
+
   mesh->draw();
 }
 
@@ -195,11 +218,20 @@ SkyboxRenderer::SkyboxRenderer (Shader *sh)
   oceanBottomColorLoc = _shader->getUniformLocation("oceanBottomColor");
 }
 
-SkyboxRenderer::~SkyboxRenderer()
-{ }
+SkyboxRenderer::~SkyboxRenderer(){}
 
-void SkyboxRenderer::Render (View *view, Mesh *mesh)
-{
+void SkyboxRenderer::enable (){
+  _shader->use();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glDisable(GL_DEPTH_TEST);
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_CULL_FACE);
+  // glCullFace(GL_BACK);
+}
+
+
+void SkyboxRenderer::render (View *view, Mesh *mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -212,7 +244,7 @@ void SkyboxRenderer::Render (View *view, Mesh *mesh)
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->color);
+  setUniform(colorLoc, mesh->data.color);
   mesh->draw();
 
 }
