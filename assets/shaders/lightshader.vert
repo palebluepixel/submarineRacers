@@ -19,7 +19,7 @@ void main (void)
     // Transform vertex from model space to camera space
     vec4 positionModel = model * vec4(position,1.0);
     vec4 positionModelView = projection * modelView * positionModel;
-    fragmentNormal = (modelView * vec4(normal,0.0)).xyz;
+    fragmentNormal = (model * vec4(normal,0.0)).xyz;
     fragmentTexCoord = texCoord;
 
     distToCam = -positionModelView.z;
