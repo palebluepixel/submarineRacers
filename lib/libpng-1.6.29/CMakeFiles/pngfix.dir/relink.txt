@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/pngfix.dir/contrib/tools/pngfix.c.o  -o CMakeFiles/CMakeRelink.dir/pngfix -rdynamic libpng16.so.16.29.0 -lz -lm 

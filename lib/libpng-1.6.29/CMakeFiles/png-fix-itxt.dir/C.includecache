@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/tools/png-fix-itxt.c
+stdio.h
+-
+zlib.h
+-
+
