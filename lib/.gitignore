@@ -16,3 +16,7 @@ glfw/src/glfw_config.h
 glm/.appveyor.yml
 glm/.gitignore
 glm/.travis.yml
+lib/SDL2-2.0.5/build/CMakeFiles/3.7.2/
+lib/glfw/install_manifest.txt
+lib/glm/
+lib/libpng-1.6.29/
