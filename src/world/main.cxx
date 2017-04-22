@@ -177,9 +177,13 @@ int main(void){
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
     Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
+    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/bigmonkey.obj");
+    cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
+    cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
     for(i=1; i<ncubes; i++){
         cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+        cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
+        cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
     }
 
     //create skybox

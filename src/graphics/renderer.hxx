@@ -36,7 +36,7 @@ class Renderer {
     /**
      * render a single mesh
      */
-    virtual void render (View *view, Mesh *mesh) = 0;
+    virtual void render (View *view, TransformedMesh mesh) = 0;
 
 
   protected:
@@ -59,7 +59,7 @@ class FlatShadingRenderer : public Renderer {
     FlatShadingRenderer (Shader *sh);
     ~FlatShadingRenderer ();
 
-    void render (View *view, Mesh *mesh);
+    void render (View *view, TransformedMesh mesh);
 };
 
 
@@ -68,7 +68,7 @@ class SunlightShadingRenderer : public Renderer {
     SunlightShadingRenderer(Shader *sh);
     ~SunlightShadingRenderer();
 
-    void render (View *view, Mesh *mesh);
+    void render (View *view, TransformedMesh mesh);
 
   protected:
     GLint lightDirLoc;
@@ -90,7 +90,7 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
     ~UnderwaterRenderer();
 
     void enable();
-    void render(View *view, Mesh *mesh);
+    void render(View *view, TransformedMesh mesh);
 
   protected:
     GLint oceanColoringOnLoc;
@@ -110,7 +110,7 @@ class SkyboxRenderer : public Renderer {
     ~SkyboxRenderer();
 
     void enable();
-    void render(View *view, Mesh *mesh);
+    void render(View *view, TransformedMesh mesh);
 
   protected:
     GLint camPosLoc; 

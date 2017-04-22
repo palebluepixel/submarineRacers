@@ -3,7 +3,7 @@
 using namespace glm;
 
 Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, int id, char*name, 
-    EntityType type, EntityStatus status, float tick_interval)
+    EntityType type, EntityStatus status, float tick_interval) : meshes()
 {
     this->initial_position = initial_position;
     this->initial_orientation = initial_orientation;
@@ -20,9 +20,6 @@ Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, int id, 
     //this->angular_velocity
     this->forces = glm::vec3(0, 0, 0);
     //this.>torques
-
-    this->nMeshes = 0;
-    this->meshes = NULL;
 }
 
 Entity::~Entity()
@@ -100,11 +97,6 @@ int Entity::onTick(float dt){
     position += (velocity + acceleration * (dt/2)) * dt;
     velocity += acceleration * dt;
 
-    // Apply Rotations
-    // somethin like this angular_velocity += torques
-    //TODO see if this works? Almost definitely doesn't :(
-    //orientation = angular_velocity * dt * orientation;
-
     // Reset
     forces = glm::vec3(0, 0, 0);
     //torques.zero();
@@ -143,8 +135,8 @@ mat4 Entity::modelMatrix(){
 
 void Entity::drawEntity(){
     int i;
-    for(i=0; i<this->nMeshes; i++)
-        meshes[i]->draw();
+    for(tmesh : meshes)
+        tmesh.mesh->draw();
 }
 
 void Entity::applyForce(vec3 force) {

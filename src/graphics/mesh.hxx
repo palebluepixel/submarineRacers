@@ -65,4 +65,10 @@ struct Mesh {
 
 };
 
+struct TransformedMesh{
+  TransformedMesh(Mesh *mesh);
+  Mesh *mesh;
+  mat4 transform;
+};
+
 #endif // !_MESH_HXX_

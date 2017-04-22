@@ -1,3 +1,4 @@
+#include <glm/gtc/matrix_transform.hpp>
 #include "Volume.hxx"
 #include <stdio.h>
 #include <string.h>
@@ -30,8 +31,13 @@ double SphereVolume::distance(Volume *other){
     	return 0;
     }
 }
-Mesh* SphereVolume::collisionMesh(){
-  return SphereVolume::mesh;
+TransformedMesh SphereVolume::collisionMesh(){
+  TransformedMesh tm(mesh);
+  tm.transform = glm::scale(glm::mat4(1),vec3(r,r,r));
+  for(int i=0;i<4;i++){
+    printf("%f,%f,%f,%f\n",tm.transform[i][0],tm.transform[i][1],tm.transform[i][2],tm.transform[i][3]);
+  }
+  return tm;
 }
 
         vec3 SphereVolume::push(Volume *other){}

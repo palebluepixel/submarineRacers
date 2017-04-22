@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
+#include <vector>
 
 using namespace glm;
 using namespace Space;
@@ -71,18 +72,19 @@ public:
     mat4 modelMatrix();           // return transform matrix TO world space.
     void drawEntity();            // render meshes to screen
 
-    inline int getNMeshes() { return this->nMeshes; }
-    inline Mesh ** getMeshes() {return this->nMeshes>0 ? this->meshes : NULL;}
+    inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
-protected:
 public:
+    Volume *volume;
+    quaternion orientation;
+    std::vector<TransformedMesh> meshes;
+protected:
     vec3 position;
     vec3 initial_position;      // we should remove this field.
 
     vec3 velocity;
 
-    quaternion orientation;    
     quaternion initial_orientation;
 
     quaternion angular_velocity;
@@ -94,18 +96,12 @@ public:
     char* name;
     EntityType type;
 
-    //Bounding volume, not sure how we are representing it
-    Volume *volume;
-
     float tick_interval;
 
     bool collidable;
     bool movable;
     bool drawable;
 
-    //allow objects to be composed of multiple meshes
-    int nMeshes;
-    Mesh ** meshes;
     virtual void initalizeMeshes()=0;
 
     texture2d *tex;

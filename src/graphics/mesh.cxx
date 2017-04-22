@@ -22,6 +22,8 @@ Mesh::Mesh(GLenum p) {
   data.visible=1;
   data.owner = this;
 
+  data.tex = 0;
+
   glGenVertexArrays(1, &data.vaoId);
 }
 
@@ -129,4 +131,9 @@ void Mesh::loadOBJ(char *file){
   LoadTexCoords(model->numtriangles*3, texcs);
   loadVertices(model->numtriangles*3, verts);
   loadIndices(model->numtriangles*3, indices);
+}
+
+
+TransformedMesh::TransformedMesh(Mesh *mesh){
+  this->mesh=mesh;
 }

@@ -36,16 +36,13 @@ void Renderer::render(){
 
 /* Given an entity, render each of its meshes */
 void Renderer::render(View *view, Entity *entity){
-  setUniform(modelLoc, entity->modelMatrix());
+  mat4 modelMatrix = entity->modelMatrix();
 
-  int i;
-  int n = entity->getNMeshes();
-  Mesh ** meshes = entity->getMeshes();
-  if(meshes == NULL)
-    return;
-  for (i=0; i<n; i++){
-    if(meshes[i] != NULL)
-      this->render(view, meshes[i]);
+  for (auto mesh : entity->getMeshes()){
+    if(mesh.mesh != NULL){
+      setUniform(modelLoc, modelMatrix * mesh.transform);
+      this->render(view, mesh);
+    }
   }
 }
 
@@ -58,7 +55,7 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
-void FlatShadingRenderer::render (View *view, Mesh *mesh)
+void FlatShadingRenderer::render (View *view, TransformedMesh mesh)
 {
 
   mat4 projectionMat = view->projectionMatrix();
@@ -66,8 +63,8 @@ void FlatShadingRenderer::render (View *view, Mesh *mesh)
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->data.color);
-  mesh->draw();
+  setUniform(colorLoc, mesh.mesh->data.color);
+  mesh.mesh->draw();
 
 }
 
@@ -94,7 +91,7 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
 SunlightShadingRenderer::~SunlightShadingRenderer()
 { }
 
-void SunlightShadingRenderer::render (View *view, Mesh *mesh)
+void SunlightShadingRenderer::render (View *view, TransformedMesh mesh)
 {
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
@@ -110,17 +107,19 @@ void SunlightShadingRenderer::render (View *view, Mesh *mesh)
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
 
-  setUniform(shouldTextureLoc, mesh->data.shouldTexture);
-  texture2d *tex = mesh->data.tex;
-  tex->Bind();
-  tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
-  tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
+  texture2d *tex = mesh.mesh->data.tex;
+  if(tex){
+    tex->Bind();
+    tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  }
   setUniform(texSamplerLoc, 0);
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->data.color);
-  mesh->draw();
+  setUniform(colorLoc, mesh.mesh->data.color);
+  mesh.mesh->draw();
 
 }
 
@@ -155,9 +154,9 @@ void UnderwaterRenderer::enable (){
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 }
-void UnderwaterRenderer::render(View *view, Mesh *mesh){
+void UnderwaterRenderer::render(View *view, TransformedMesh mesh){
 
-  if(!mesh->data.visible){
+  if(!mesh.mesh->data.visible){
     return;
   }
  
@@ -185,20 +184,22 @@ void UnderwaterRenderer::render(View *view, Mesh *mesh){
   setUniform(surfaceDepthLoc, oc.surfaceDepth);
   setUniform(floorDepthLoc, oc.floorDepth);
 
-  setUniform(shouldTextureLoc, mesh->data.shouldTexture);
-  texture2d *tex = mesh->data.tex;
-  tex->Bind();
-  tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
-  tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
+  texture2d *tex = mesh.mesh->data.tex;
+  if(tex){
+    tex->Bind();
+    tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  }
   setUniform(texSamplerLoc, 0);
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->data.color);
+  setUniform(colorLoc, mesh.mesh->data.color);
 
-  glPolygonMode(GL_FRONT_AND_BACK, mesh->data.polygon_mode);
+  glPolygonMode(GL_FRONT_AND_BACK, mesh.mesh->data.polygon_mode);
 
-  mesh->draw();
+  mesh.mesh->draw();
 }
 
 
@@ -231,7 +232,7 @@ void SkyboxRenderer::enable (){
 }
 
 
-void SkyboxRenderer::render (View *view, Mesh *mesh){
+void SkyboxRenderer::render (View *view, TransformedMesh mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -244,7 +245,6 @@ void SkyboxRenderer::render (View *view, Mesh *mesh){
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->data.color);
-  mesh->draw();
-
+  setUniform(colorLoc, mesh.mesh->data.color);
+  mesh.mesh->draw();
 }

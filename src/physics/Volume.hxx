@@ -58,7 +58,7 @@ namespace Space{
 
         virtual bool containsPoint(vec3 pt) =0;
 
-        virtual Mesh* collisionMesh() = 0;
+        virtual TransformedMesh collisionMesh() = 0;
     };
 
     class CylinderVolume : public Volume{
@@ -78,7 +78,7 @@ namespace Space{
         bool collision(Volume *other);
         bool containsPoint(vec3 pt);
 
-        Mesh* collisionMesh();
+        TransformedMesh collisionMesh();
         static Mesh* mesh;
     protected:
         double r;
