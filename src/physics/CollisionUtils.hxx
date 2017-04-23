@@ -6,16 +6,16 @@
 using namespace glm;
 
 struct Segment {
-	vec3 a;
-	vec3 b;
+    vec3 a;
+    vec3 b;
 };
 
 //TODO struct Plane
 
 struct DistanceResult {
-	vec3 a;
-	vec3 b;
-	float distance;
+    vec3 a;
+    vec3 b;
+    float distance;
 };
 
 DistanceResult shortestDistance(vec3 p1, vec3 p2);
