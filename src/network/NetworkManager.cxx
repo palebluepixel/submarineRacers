@@ -6,9 +6,10 @@ NetworkManager::NetworkManager() {
 }
 
 void NetworkManager::recieveMessage(char* message, int len) {
-    /*struct CommandHeader *command = (struct CommandHeader *)(current);
+    char *current = message;
 
-    for(char *current = message; current - message < len; current += sizeof(CommandHeader) + ntohs(command->len)) {
+    while(current - message < len) {
+        struct CommandHeader *command = (struct CommandHeader *)(current);
 
         if(current + sizeof(CommandHeader) + ntohs(command->len) - message >= len) {
             //TODO: error();
@@ -16,27 +17,35 @@ void NetworkManager::recieveMessage(char* message, int len) {
         }
 
         processCommand(ntohs(command->code), ntohs(command->len), current + sizeof(CommandHeader));
+
+        current += sizeof(CommandHeader) + ntohs(command->len);
     }
 
-    free(message);*/
+    //TODO should this free message?
 }
 
-void NetworkManager::processCommand(short code, short len, char* message) {
-    /*//TODO switch to map
-    switch(code) {
-        case CODE_PING:
-            pingCommand(len, message);
-            break;
-        case CODE_CONTROLLER:
-            controllerCommand(len, message);
-            break;
-        default:
-            break;
-    }*/
+/* This is a wrapper for checkDispatch. Subclasses can replace this to
+   checkDispatch with their own table. */
+bool NetworkManager::processCommand(short code, short len, char *message) {
+    return checkDispatch(code, len, message);
 }
 
-void NetworkManager::pingCommand(short len, char* message) {
-    //sendCommand(CODE_PONG, 0, NULL);
+// Actually checks the dispatch table for a code. Returns true if found.
+bool NetworkManager::checkDispatch(short code, short len, char *message) {
+    int dispatch_size = sizeof(table) / sizeof(table[0]);
+    for(int i=0; i<dispatch_size; i++) {
+        if(code == table[i].code) {
+            table[i].func(*this, len, message);
+            return true;
+        }
+    }
+
+    return false;
 }
 
-//TODO make NetworkManager, subclass this and client
+void NetworkManager::pingCommand(COMMAND_PARAMS) {
+    sendCommand(CODE_PONG, 0, nullptr);
+}
+
+void NetworkManager::pongCommand(COMMAND_PARAMS) {}
+void NetworkManager::initCommand(COMMAND_PARAMS) {}

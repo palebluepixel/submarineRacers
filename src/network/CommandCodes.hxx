@@ -14,9 +14,9 @@
 //Client to Server
 #define CODE_CONTROLLER 16
 #define PAUSE 17
-#define MENU_SELECT
+#define MENU_SELECT 18
 
 //Server to Client
-#define CODE_OBJECT_CHANGE
+#define CODE_OBJECT_CHANGE 24
 
 #endif
