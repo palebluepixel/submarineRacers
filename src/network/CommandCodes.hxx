@@ -1,7 +1,7 @@
 #ifndef _COMMAND_CODES_HXX_
 #define _COMMAND_CODES_HXX_
 
-#define MAX_MESSAGE_LENGTH = 512
+#define MAX_MESSAGE_LENGTH 512
 
 #define CODE_PING 0
 #define CODE_PONG 1

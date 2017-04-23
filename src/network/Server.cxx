@@ -55,11 +55,56 @@ void Server::initListeningSocket()
 {
     this->listeningSocket = createNewUDPSocket(this->port);
 
-    gethostname(this->hostname, 100);
+    gethostname(this->hostname, MAX_HOSTNAME_LENGTH);
 
     printf("Began listening on socket %d. We are %s@%s\n", this->listeningSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
     printf("NOTE: 0.0.0.0 IS FINE, THATS THE WILDCARD ADDRESS IN THIS CASE\n"); 
 }
+
+
+/* Reads the least recently recieved message from our listening
+    socket and copies it into the message buffer as a messageContainer. */
+void Server::recieveOneMessage()
+{
+    // Read a packet from the UDP socket
+    uint8_t bytebuf[MAX_MESSAGE_LENGTH+1];
+    struct sockaddr_in msgsrc;
+    socklen_t s = sizeof(sockaddr_in);
+    int bytesRead;
+
+    bytesRead = recvfrom(this->listeningSocket, bytebuf, MAX_MESSAGE_LENGTH,
+        0, (struct sockaddr*)&msgsrc, &s);
+
+    bytebuf[bytesRead] = '\0'; //make it a string
+
+    // Create message struct
+    messageContainer *m = (messageContainer *)malloc(sizeof(messageContainer));
+    m->src = msgsrc;
+    m->msgLen = bytesRead; //I think we dont actually need this
+    m->msg = strdup((char*) &bytebuf); //this is safe because we added a '\0'
+
+    //add to the queue
+    this->queue.addMessage(m);
+
+}
+
+/* Takes one message from the message queue, finds the client who sent it,
+    and calls recieveMessage() from the ServerNetworkManager corresponding
+    to the source client. */
+void Server::readOneMessage()
+{
+
+    messageContainer *m = this->queue.readMessage();
+    ServerNetworkManager *client = this->findClientByAddr(m->src);
+
+    client->recieveMessage(m->msg, m->msgLen);
+
+    free(m->msg);
+    free(m);
+}
+
+
+
 
 /* Send a message to the first client with ID id. Returns the number
 of bytes sent.*/
@@ -87,6 +132,12 @@ void Server::addClient(struct sockaddr_in clientAddr)
     this->clients.insert(make_pair(clientAddr, client));
 
     printf("Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
+}
+
+
+ServerNetworkManager *Server::findClientByAddr(struct sockaddr_in addr)
+{
+    return this->clients[addr];
 }
 
 /* Returns an ID that has not been taken yet. */

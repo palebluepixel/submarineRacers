@@ -16,12 +16,6 @@
 #include "CommandCodes.hxx"
 #include <util/buffer.hxx>
 
-typedef enum {
-    COMPLETEMESSAGE = 0,
-    PARTIALMESSAGE,
-    EMPTY
-} recvBufferStatus;
-
 class NetworkManager {
 public:
 	NetworkManager(/*other args*/);

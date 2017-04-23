@@ -3,6 +3,9 @@
 
 #include <map>
 #include <network/ServerNetworkManager.hxx>
+#include <network/MessageQueue.hxx>
+
+#define MAX_HOSTNAME_LENGTH 100
 
 using namespace std;
 
@@ -41,10 +44,14 @@ public:
     message before we finish processing the old one. */
     void handleNetworkTick(uint32_t mmax);
 
-    /* Takes the frontmost recieved packet, gets the message and the source,
-    and calls recieveMessage() from the ServerNetworkManager corresponding
-    to the source client. */
-    int readWire();
+    /* Reads the least recently recieved message from our listening
+    socket and copies it into the message buffer as a messageContainer. */
+    void recieveOneMessage();
+
+    /* Takes a message from the back of the message queue and 
+    and calls recieveMessage() from the ServerNetworkManager 
+    corresponding to the source client. */
+    void readOneMessage();
 
 
 
@@ -63,7 +70,7 @@ private:
     struct sockaddr_in serverAddr;
     int listeningSocket;
 
-    char hostname[100];
+    char hostname[MAX_HOSTNAME_LENGTH];
 
     /* Client list, stored as a map from client addresses to ServerNetworkManagers,
     which contain info for the client, such as which sub they control, their
@@ -75,8 +82,14 @@ private:
     */
     map<struct sockaddr_in, ServerNetworkManager*, sockaddr_inComparator> clients;
 
+    /* Queue for storing messages. A seperate thread will add messages to this
+    queue, and the main thread will pull messages out and parse them. */
+    MessageQueue queue;
+
     /* Adds a client with the given socketAddr to the list*/
     void addClient(struct sockaddr_in clientAddr);
+
+    ServerNetworkManager *findClientByAddr(struct sockaddr_in addr);
 
     /* Generate a unique ID. Call this when creating a new ServerNetworkManager
     for a client. */
