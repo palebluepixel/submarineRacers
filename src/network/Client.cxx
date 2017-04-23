@@ -47,7 +47,10 @@ void Client::connectServer()
     this->nm->setTargetSocket(serverSocket);
     this->nm->setTargetAddr(serverAddr);
 
-    log(LOGLOW,"Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port));
+    this->commSocket = serverSocket;
+    this->initalizeListeningThread();
+
+    log(LOGLOW,"Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port), serverAddr.sin_port);
     
 }
 

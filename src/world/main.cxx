@@ -224,9 +224,7 @@ int main(int argc, char*argv[]){
         time_prev = time_curr;
 
         //network testing
-        if(isServer) {
-            server->recieveOneMessage(server->getSocket());
-        } else {
+        if(!isServer){
             char *str = "binch";
             client->messageServer(strlen(str), str);
         }

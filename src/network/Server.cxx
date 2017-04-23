@@ -55,11 +55,13 @@ traffic using IP addresses, whereas in TCP we would have had one socket per
 connection. */
 void Server::initListeningSocket()
 {
-    this->listeningSocket = createNewUDPSocket(this->port);
+    this->commSocket = createNewUDPSocket(this->port);
 
     gethostname(this->hostname, MAX_HOSTNAME_LENGTH);
 
-    log(LOGLOW, "Began listening on socket %d. We are %s@%s\n", this->listeningSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
+    this->initalizeListeningThread();
+
+    log(LOGLOW, "Began listening on socket %d. We are %s@%s\n", this->commSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
     log(LOGLOW, "NOTE: 0.0.0.0 IS FINE, THATS THE WILDCARD ADDRESS IN THIS CASE\n"); 
 }
 

@@ -60,12 +60,10 @@ public:
 
 
     inline int getPort() { return this->port; }
-    inline int getSocket() { return this->listeningSocket; }
 
 private:
     short port;
     struct sockaddr_in serverAddr;
-    int listeningSocket;
 
     char hostname[MAX_HOSTNAME_LENGTH];
 

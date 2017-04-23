@@ -42,3 +42,31 @@ void Connectable::sendOneMessage(MessageContainer *msg, int socket, struct socka
 	int bytesSent = sendto(socket, msg->msg, msg->msgLen, 0, target, sizeof(struct sockaddr_in));
 	log(LOGMEDIUM, "Sent %d bytes\n", bytesSent);
 }
+
+/* Creates a new thread which constantly reads the socket and adds
+incoming messages to the message buffer. We can't call this until
+out socket has been set up.  */
+void Connectable::initalizeListeningThread()
+{
+    pthread_create(&this->t, NULL, listeningDeamon, this);
+}
+
+
+
+
+/* A function to be called as the main function of a new thread.
+Constantly checks the socket for incoming messages and reads them
+into the queue to be processed by the main thread. */
+void * listeningDeamon(void *connectable)
+{
+    /* Stack exchange tells me we don't have to lock the socket
+    before reading since concurrent calls to recvfrom and sendto
+    are syncronized by the OS since sockets belong to the process
+    and not the thread. */
+
+    Connectable * c = (Connectable*)connectable;
+
+    while(1){ // forever
+        c->recieveOneMessage(c->getSocket());
+    }
+}

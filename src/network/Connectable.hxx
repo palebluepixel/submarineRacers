@@ -5,6 +5,12 @@
 #include <network/NetworkManager.hxx>
 #include <string.h>
 #include <util/log.hxx>
+#include <pthread.h>
+
+/* A function to be called as the main function of a new thread.
+Constantly checks the socket for incoming messages and reads them
+into the queue to be processed by the main thread. */
+void * listeningDeamon(void *threadid);
 
 /* Encapsulating class for message handling behavior common to both Servers
 and Clients. You should never create a Connectable itself. */
@@ -29,6 +35,7 @@ public:
     /* Sends a message to the given target through the given socket. */
     void sendOneMessage(MessageContainer *msg, int socket, struct sockaddr* target);
 
+    inline int getSocket() { return this->commSocket; } 
 
 protected:
 
@@ -36,6 +43,15 @@ protected:
     queue, and the main thread will pull messages out and parse them. */
     MessageQueue queue;
 
+    /* Thread for listening to socket */
+    pthread_t t;
+
+    /* Creates a new thread which constantly reads the socket and adds
+    incoming messages to the message buffer. */
+    void initalizeListeningThread();
+
+    /* Socket for all client-server communications */
+    int commSocket;
 
 };
 
