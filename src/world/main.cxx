@@ -9,6 +9,7 @@
 #include <ratio>
 #include <chrono>
 
+#include <util/log.hxx>
 #include <error/error.hxx>
 #include <util/file.hxx>
 #include <graphics/shader.hxx>
@@ -23,6 +24,9 @@
 #include <network/Client.hxx>
 
 #define PORT 8008
+
+//defined in util/log.hxx
+int loglevel_GLOBAL;
 
 int keyboard[350];
 int mouse[8];
@@ -126,6 +130,9 @@ void update(double elapsed){
 
 int main(int argc, char*argv[]){
 
+    // Set logging level
+    loglevel_GLOBAL = 4;
+    log(2, "%s%d\n", "this is a test", loglevel_GLOBAL);
     world = new World();
 
     init();
