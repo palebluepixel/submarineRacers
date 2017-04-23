@@ -1,5 +1,15 @@
 #include "MessageQueue.hxx"
 
+MessageContainer::MessageContainer(struct sockaddr_in src, char *msg, int msgLen)
+{
+	this->src = src; this->msg = msg; this->msgLen = msgLen;
+}
+
+MessageContainer::~MessageContainer()
+{
+	free(this->msg);
+}
+
 MessageQueue::MessageQueue()
 {
 	pthread_mutex_init(&this->queueLock, NULL);
@@ -9,7 +19,7 @@ MessageQueue::~MessageQueue()
 {}
 
 /* Add a message to the back of the queue */
-void MessageQueue::addMessage(messageContainer *m)
+void MessageQueue::addMessage(MessageContainer *m)
 {
 	pthread_mutex_lock(&this->queueLock);
 	this->queue.push_back(m);
@@ -17,14 +27,14 @@ void MessageQueue::addMessage(messageContainer *m)
 }
 
 /* removes a message from the front of the queue and returns it */
-messageContainer *MessageQueue::readMessage()
+MessageContainer *MessageQueue::readMessage()
 {
 	pthread_mutex_lock(&this->queueLock);
 	if(this->queue.empty()){
 		pthread_mutex_unlock(&this->queueLock);
 		return NULL;
 	}
-	messageContainer * m = this->queue.back();
+	MessageContainer * m = this->queue.back();
 	this->queue.pop_back();
 	pthread_mutex_unlock(&this->queueLock);
 	return m;

@@ -3,15 +3,28 @@
 
 #include <deque>
 #include <pthread.h>
-#include <network/ServerNetworkManager.hxx>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 using namespace std;
 
-typedef struct messageContainer {
+class MessageContainer {
+public:
+	MessageContainer(struct sockaddr_in src, char *msg, int msgLen);
+	~MessageContainer();
+
 	struct sockaddr_in src;
 	char *msg;
 	int msgLen;
-} messageContainer;
+};
+
+
 
 /* Threadsafe double-ended queue for storing messages. All locking
 is handled inside of the message add and removal fucntions, the caller
@@ -22,15 +35,15 @@ public:
 	~MessageQueue();
 
 	/* Add a message to the back of the queue */
-	void addMessage(messageContainer *m);
+	void addMessage(MessageContainer *m);
 
 	/* removes a message from the front of the queue and returns it */
-	messageContainer *readMessage();
+	MessageContainer *readMessage();
 
 protected:
 	pthread_mutex_t queueLock;
 
-	deque<messageContainer *> queue;
+	deque<MessageContainer *> queue;
 
 };
 

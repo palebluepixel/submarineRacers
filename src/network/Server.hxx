@@ -3,7 +3,7 @@
 
 #include <map>
 #include <network/ServerNetworkManager.hxx>
-#include <network/MessageQueue.hxx>
+#include <network/Connectable.hxx>
 
 #define MAX_HOSTNAME_LENGTH 100
 
@@ -19,9 +19,10 @@ struct sockaddr_inComparator
 };
 
 
-class Server {
+class Server : public Connectable{
 public:
-    Server(short port);
+    Server();
+    Server(short port, const char *);
     ~Server();
 
 
@@ -44,15 +45,10 @@ public:
     message before we finish processing the old one. */
     void handleNetworkTick(uint32_t mmax);
 
-    /* Reads the least recently recieved message from our listening
-    socket and copies it into the message buffer as a messageContainer. */
-    void recieveOneMessage();
-
     /* Takes a message from the back of the message queue and 
     and calls recieveMessage() from the ServerNetworkManager 
     corresponding to the source client. */
     void readOneMessage();
-
 
 
     /* Send a message to the first client with ID id. Returns the number
@@ -81,10 +77,6 @@ private:
     ServerNetworkManager for that address.
     */
     map<struct sockaddr_in, ServerNetworkManager*, sockaddr_inComparator> clients;
-
-    /* Queue for storing messages. A seperate thread will add messages to this
-    queue, and the main thread will pull messages out and parse them. */
-    MessageQueue queue;
 
     /* Adds a client with the given socketAddr to the list*/
     void addClient(struct sockaddr_in clientAddr);

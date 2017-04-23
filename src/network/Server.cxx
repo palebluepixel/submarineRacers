@@ -1,6 +1,8 @@
 #include "Server.hxx"
 
-Server::Server(short port) 
+Server::Server(){}
+
+Server::Server(short port, const char*) 
 {
     memset(&this->serverAddr, 0, sizeof(struct sockaddr_in));
     this->port = port;
@@ -62,31 +64,17 @@ void Server::initListeningSocket()
 }
 
 
-/* Reads the least recently recieved message from our listening
-    socket and copies it into the message buffer as a messageContainer. */
-void Server::recieveOneMessage()
+/* Reads any incoming messages and then parses them. 
+Will process a maximum of mmax messages (used to control how much time
+we spend doing network stuff per tick, anything leftover will be done
+next tick). Processes messages until none remain if mmax == 0 (there
+is a risk of this continuing infinitely if we always recieve a new 
+message before we finish processing the old one. */
+void Server::handleNetworkTick(uint32_t mmax)
 {
-    // Read a packet from the UDP socket
-    uint8_t bytebuf[MAX_MESSAGE_LENGTH+1];
-    struct sockaddr_in msgsrc;
-    socklen_t s = sizeof(sockaddr_in);
-    int bytesRead;
-
-    bytesRead = recvfrom(this->listeningSocket, bytebuf, MAX_MESSAGE_LENGTH,
-        0, (struct sockaddr*)&msgsrc, &s);
-
-    bytebuf[bytesRead] = '\0'; //make it a string
-
-    // Create message struct
-    messageContainer *m = (messageContainer *)malloc(sizeof(messageContainer));
-    m->src = msgsrc;
-    m->msgLen = bytesRead; //I think we dont actually need this
-    m->msg = strdup((char*) &bytebuf); //this is safe because we added a '\0'
-
-    //add to the queue
-    this->queue.addMessage(m);
-
+    
 }
+
 
 /* Takes one message from the message queue, finds the client who sent it,
     and calls recieveMessage() from the ServerNetworkManager corresponding
@@ -94,13 +82,12 @@ void Server::recieveOneMessage()
 void Server::readOneMessage()
 {
 
-    messageContainer *m = this->queue.readMessage();
+    MessageContainer *m = this->queue.readMessage();
     ServerNetworkManager *client = this->findClientByAddr(m->src);
 
     client->recieveMessage(m->msg, m->msgLen);
 
-    free(m->msg);
-    free(m);
+    delete(m);
 }
 
 
@@ -124,7 +111,9 @@ to handle this client address. If this address does not have a connection, we cr
 a new ServerNetworkManager object for this client and add it to the list. */
 void Server::addClient(struct sockaddr_in clientAddr) 
 {
-    //TODO: if exists, dont add
+    // If it exists, don't add
+    if(this->clients.find(clientAddr) == this->clients.end())
+        return;
 
     ServerNetworkManager *client = new ServerNetworkManager(this->getNextID());
     client->setTargetAddr(clientAddr);

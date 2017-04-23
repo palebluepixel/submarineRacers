@@ -14,7 +14,7 @@
 #include <sys/select.h>
 #include <sys/time.h>
 #include "CommandCodes.hxx"
-#include <util/buffer.hxx>
+#include <network/MessageQueue.hxx>
 
 class NetworkManager {
 public:

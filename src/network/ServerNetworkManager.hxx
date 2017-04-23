@@ -5,7 +5,7 @@
 
 #include <ent/Submarine.hxx>
 #include <ent/Actuator.hxx>
-#include "NetworkManager.hxx"
+#include <network/NetworkManager.hxx>
 
 class ServerNetworkManager : public NetworkManager {
 public:
