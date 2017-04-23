@@ -26,7 +26,7 @@ int Server::createNewUDPSocket(short port)
     sock = socket(PF_INET, SOCK_DGRAM, 0);
     if(sock < 0)
     {
-        printf("%s\n", "Could not open socket");
+        log(LOGERROR, "%s\n", "Could not open socket");
         exit(-1);
     }
 
@@ -40,7 +40,7 @@ int Server::createNewUDPSocket(short port)
     /*bind the listening socket */
     if(bind(sock, (struct sockaddr *) &ourAddr, sizeof(ourAddr)) < 0)
     {
-        printf("%s %d\n", "Socket bind() failed", sock);
+        log(LOGERROR, "%s %d\n", "Socket bind() failed", sock);
         close(sock);
         exit(-1);
     }
@@ -59,8 +59,8 @@ void Server::initListeningSocket()
 
     gethostname(this->hostname, MAX_HOSTNAME_LENGTH);
 
-    printf("Began listening on socket %d. We are %s@%s\n", this->listeningSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
-    printf("NOTE: 0.0.0.0 IS FINE, THATS THE WILDCARD ADDRESS IN THIS CASE\n"); 
+    log(LOGLOW, "Began listening on socket %d. We are %s@%s\n", this->listeningSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
+    log(LOGLOW, "NOTE: 0.0.0.0 IS FINE, THATS THE WILDCARD ADDRESS IN THIS CASE\n"); 
 }
 
 
@@ -120,7 +120,7 @@ void Server::addClient(struct sockaddr_in clientAddr)
 
     this->clients.insert(make_pair(clientAddr, client));
 
-    printf("Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
+    log(LOGMEDIUM, "Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
 }
 
 

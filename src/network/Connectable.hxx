@@ -4,6 +4,7 @@
 #include <network/MessageQueue.hxx>
 #include <network/NetworkManager.hxx>
 #include <string.h>
+#include <util/log.hxx>
 
 /* Encapsulating class for message handling behavior common to both Servers
 and Clients. You should never create a Connectable itself. */

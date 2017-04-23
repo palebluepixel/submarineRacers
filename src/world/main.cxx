@@ -131,8 +131,8 @@ void update(double elapsed){
 int main(int argc, char*argv[]){
 
     // Set logging level
-    loglevel_GLOBAL = 4;
-    log(2, "%s%d\n", "this is a test", loglevel_GLOBAL);
+    loglevel_GLOBAL = LOGERROR;
+
     world = new World();
 
     init();

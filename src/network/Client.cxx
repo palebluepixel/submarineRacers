@@ -26,18 +26,16 @@ void Client::connectServer()
     /* Create a socket to talk to the server */
     serverSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if(serverSocket < 0) {
-        printf("%s\n", "Could not open socket");
+        log(LOGERROR, "%s\n", "Could not open socket");
         exit(-1);
     }
-    printf("%s\n", "Created socket");
 
     /* Get server info by hostname */
     serverInfo = gethostbyname(this->hostname);
     if(serverInfo == NULL) {
-        printf("Server with hostname %s did not exist\n",this->hostname);
+        log(LOGERROR, "Server with hostname %s did not exist\n",this->hostname);
         exit(-1);
     }
-    printf("Got server information from hostname\n");
 
     /* Initalize server address info based on info from above*/
     serverAddr.sin_family = serverInfo->h_addrtype;
@@ -49,7 +47,7 @@ void Client::connectServer()
     this->nm->setTargetSocket(serverSocket);
     this->nm->setTargetAddr(serverAddr);
 
-    printf("Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port));
+    log(LOGLOW,"Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port));
     
 }
 
@@ -69,9 +67,8 @@ void Client::handleNetworkTick(uint32_t mmax)
 void Client::messageServer(short len, char *msg)
 {
     struct sockaddr_in serverAddr = this->nm->getTargetAddr();
-    printf("-----Sending to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), serverAddr.sin_port, ntohs(serverAddr.sin_port));
+
     MessageContainer *m = new MessageContainer(serverAddr, msg, len);
     this->sendOneMessage(m, this->nm->getTargetSocket(), 
         (struct sockaddr*)&serverAddr);
-    printf("%d\n", errno);
 }

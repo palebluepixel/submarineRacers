@@ -28,7 +28,7 @@ void Connectable::recieveOneMessage(int socket)
     MessageContainer *m = new MessageContainer(src, strdup((char*) &bytebuf), bytesRead+1);
 
     //add to the queue
-    printf("Recieved the message: %s\n", bytebuf);
+    log(LOGMEDIUM, "Recieved the message: %s\n", bytebuf);
     this->queue.addMessage(m);
 
 }
@@ -37,8 +37,8 @@ void Connectable::recieveOneMessage(int socket)
 /* Sends a message to the given target through the given socket. */
 void Connectable::sendOneMessage(MessageContainer *msg, int socket, struct sockaddr* target)
 {
-	printf("Sending message: %s (length: %d)\nTo: %s on socket %d\n", msg->msg, msg->msgLen,
+	log(LOGMEDIUM, "Sending message: %s (length: %d)\nTo: %s at port on socket %d\n", msg->msg, msg->msgLen,
 		inet_ntoa(((struct sockaddr_in*)target)->sin_addr), socket);
 	int bytesSent = sendto(socket, msg->msg, msg->msgLen, 0, target, sizeof(struct sockaddr_in));
-	printf("Sent %d bytes\n", bytesSent);
+	log(LOGMEDIUM, "Sent %d bytes\n", bytesSent);
 }

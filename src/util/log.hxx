@@ -1,6 +1,13 @@
+#ifndef _LOG_HXX_
+#define _LOG_HXX_
+
 #include <stdarg.h>
 
 #define LOGDEFAULT 0
+#define LOGERROR 4
+#define LOGHIGH 3
+#define LOGMEDIUM 2
+#define LOGLOW 1
 
 /* User must set this to the desired log level. Higher levels indicate
 more printing. */
@@ -14,3 +21,6 @@ Will print at any log level >= priority.
 			if(loglevel_GLOBAL >= priority) { \
 				printf(format, ##args); \
 			} while(0)
+
+
+#endif //!_LOG_HXX_
