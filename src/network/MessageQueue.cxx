@@ -7,7 +7,7 @@ MessageContainer::MessageContainer(struct sockaddr_in src, char *msg, int msgLen
 
 MessageContainer::~MessageContainer()
 {
-	free(this->msg);
+	//free(this->msg);
 }
 
 MessageQueue::MessageQueue()

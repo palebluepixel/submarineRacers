@@ -137,7 +137,7 @@ int main(int argc, char*argv[]){
     Server *server;
     Client *client;
     if(isServer){
-        server = new Server(PORT);
+        server = new Server((short)PORT, NULL);
         printf("Port: %d\n", server->getPort());
         server->initListeningSocket();
     } else {
@@ -215,6 +215,14 @@ int main(int argc, char*argv[]){
         update(elapsed);
 
         time_prev = time_curr;
+
+        //network testing
+        if(isServer) {
+            server->recieveOneMessage(server->getSocket());
+        } else {
+            char *str = "binch";
+            client->messageServer(strlen(str), str);
+        }
 
         //quick hack-in of a cube movement animation
         vec3 pos = cubes[0]->getPosition();

@@ -26,7 +26,7 @@ public:
     void handleNetworkTick(uint32_t mmax);
 
     /* Tell the server what's good */
-    int messageServer(short len, char*msg);
+    void messageServer(short len, char*msg);
 
     inline short getPort() { return this->port; }
     inline char* getHost() { return strdup(this->hostname); }
@@ -36,7 +36,7 @@ private:
     char*hostname;
 
     struct hostent * serverInfo;
-    NetworkManager nm;
+    NetworkManager *nm;
 
 };
 

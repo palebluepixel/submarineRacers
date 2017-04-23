@@ -60,6 +60,7 @@ public:
 
 
     inline int getPort() { return this->port; }
+    inline int getSocket() { return this->listeningSocket; }
 
 private:
     short port;

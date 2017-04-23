@@ -1,4 +1,5 @@
 #include "Client.hxx"
+#include <cerrno>
 
 Client::Client(){}
 
@@ -6,6 +7,8 @@ Client::Client(short port, const char*hostname)
 {
     this->port = port;
     this->hostname = strdup(hostname);
+
+    this->nm = new NetworkManager();
 }
 
 Client::~Client()
@@ -43,11 +46,10 @@ void Client::connectServer()
     serverAddr.sin_port = htons(this->port);
 
     /* Copy over into to network manager */
-    this->nm.setTargetSocket(serverSocket);
-    this->nm.setTargetAddr(serverAddr);
+    this->nm->setTargetSocket(serverSocket);
+    this->nm->setTargetAddr(serverAddr);
 
-
-    printf("Successfully connected to %s at port %d\n", this->hostname, this->port);
+    printf("Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port));
     
 }
 
@@ -61,4 +63,15 @@ message before we finish processing the old one. */
 void Client::handleNetworkTick(uint32_t mmax)
 {
 
+}
+
+
+void Client::messageServer(short len, char *msg)
+{
+    struct sockaddr_in serverAddr = this->nm->getTargetAddr();
+    printf("-----Sending to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), serverAddr.sin_port, ntohs(serverAddr.sin_port));
+    MessageContainer *m = new MessageContainer(serverAddr, msg, len);
+    this->sendOneMessage(m, this->nm->getTargetSocket(), 
+        (struct sockaddr*)&serverAddr);
+    printf("%d\n", errno);
 }
