@@ -50,10 +50,15 @@ public:
     corresponding to the source client. */
     void readOneMessage();
 
+    /* Returns 0 if there is no client associated with the given address in our
+    client list, 1 if a client with this address does exist. */
+    int clientExists(struct sockaddr_in clientAddr);
 
-    /* Send a message to the first client with ID id. Returns the number
-    of bytes sent.*/
-    int messageClient(int id, short len, char*msg);
+    /* Send a message to the client, identified by IP address. */
+    void messageClient(struct sockaddr_in clientAddr, short len, char *msg);
+
+    /* Send a message to the client, identified by their ServerNetworkManager */
+    void messageClient(ServerNetworkManager *nm, short len, char *msg);
 
     /* Sends a message to all clients.*/
     void broadcast(short len, char *msg);
@@ -78,7 +83,7 @@ private:
     map<struct sockaddr_in, ServerNetworkManager*, sockaddr_inComparator> clients;
 
     /* Adds a client with the given socketAddr to the list*/
-    void addClient(struct sockaddr_in clientAddr);
+    ServerNetworkManager *addClient(struct sockaddr_in clientAddr);
 
     ServerNetworkManager *findClientByAddr(struct sockaddr_in addr);
 

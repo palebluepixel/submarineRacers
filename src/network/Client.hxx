@@ -28,6 +28,10 @@ public:
     /* Tell the server what's good */
     void messageServer(short len, char*msg);
 
+    /* Takes one message out of the message queue and sends it to
+    the network manager's process command */
+    void readOneMessage();
+
     inline short getPort() { return this->port; }
     inline char* getHost() { return strdup(this->hostname); }
 

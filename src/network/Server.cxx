@@ -85,7 +85,17 @@ void Server::readOneMessage()
 {
 
     MessageContainer *m = this->queue.readMessage();
-    ServerNetworkManager *client = this->findClientByAddr(m->src);
+    if(m==NULL) // no messages
+        return;
+
+    ServerNetworkManager *client;
+    /* If a client with this address is in our list, we will call
+    it's recieveMessage function. Otherwise, we add it, then call
+    recieveMessage. */
+    if(!clientExists(m->src))
+        client = addClient(m->src);
+    else
+        client = this->findClientByAddr(m->src);
 
     client->recieveMessage(m->msg, m->msgLen);
 
@@ -95,27 +105,51 @@ void Server::readOneMessage()
 
 
 
-/* Send a message to the first client with ID id. Returns the number
-of bytes sent.*/
-int Server::messageClient(int id, short len, char*msg)
+/* Send a message to the client, identified by IP address. */
+void Server::messageClient(struct sockaddr_in clientAddr, short len, char *msg)
 {
-    return 0;
+    MessageContainer *m = new MessageContainer(clientAddr, msg, len);
+    this->sendOneMessage(m, this->getSocket(), 
+        (struct sockaddr*)&clientAddr);
 }
+
+/* Send a message to the client, identified by their ServerNetworkManager */
+void Server::messageClient(ServerNetworkManager *nm, short len, char *msg)
+{
+    this->messageClient(nm->getTargetAddr(), len, msg);
+}
+
 
 /* Sends a message to all clients.*/
 void Server::broadcast(short len, char *msg)
 {
+    /* Loop through the network manager for all clients */
+    /* If we ever made client adding / removing threaded, we would have to
+    lock the client map here */
+    ServerNetworkManager *nm;
+    map<struct sockaddr_in, ServerNetworkManager*, sockaddr_inComparator>::iterator iter;
+    for(iter = this->clients.begin(); iter != this->clients.end(); iter++)
+    {
+        nm = get<1>(*iter); //map returns a (k,v) pair, get<1> return the value
+        this->messageClient(nm, len, msg);
+    }
+}
 
+/* Returns 0 if there is no client associated with the given address in our
+client list, 1 if a client with this address does exist. */
+int Server::clientExists(struct sockaddr_in clientAddr)
+{
+    return this->clients.find(clientAddr) != this->clients.end();
 }
 
 /* addClient() first checks if the server already has a ServerNetworkManager object
 to handle this client address. If this address does not have a connection, we create 
 a new ServerNetworkManager object for this client and add it to the list. */
-void Server::addClient(struct sockaddr_in clientAddr) 
+ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr) 
 {
     // If it exists, don't add
-    if(this->clients.find(clientAddr) == this->clients.end())
-        return;
+    if(clientExists(clientAddr))
+        return this->clients[clientAddr];
 
     ServerNetworkManager *client = new ServerNetworkManager(this->getNextID());
     client->setTargetAddr(clientAddr);
@@ -123,6 +157,8 @@ void Server::addClient(struct sockaddr_in clientAddr)
     this->clients.insert(make_pair(clientAddr, client));
 
     log(LOGMEDIUM, "Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
+
+    return client;
 }
 
 

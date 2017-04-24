@@ -2,12 +2,12 @@
 
 MessageContainer::MessageContainer(struct sockaddr_in src, char *msg, int msgLen)
 {
-	this->src = src; this->msg = msg; this->msgLen = msgLen;
+	this->src = src; this->msg = strdup(msg); this->msgLen = msgLen;
 }
 
 MessageContainer::~MessageContainer()
 {
-	//free(this->msg);
+	free(this->msg);
 }
 
 MessageQueue::MessageQueue()

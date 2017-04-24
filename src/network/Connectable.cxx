@@ -25,10 +25,10 @@ void Connectable::recieveOneMessage(int socket)
     bytebuf[bytesRead] = '\0'; //make it a string
 
     // Create message struct
-    MessageContainer *m = new MessageContainer(src, strdup((char*) &bytebuf), bytesRead+1);
+    MessageContainer *m = new MessageContainer(src, (char*) &bytebuf, bytesRead+1);
 
     //add to the queue
-    log(LOGMEDIUM, "Recieved the message: %s\n", bytebuf);
+    //log(LOGMEDIUM, "Recieved the message: %s\n", bytebuf);
     this->queue.addMessage(m);
 
 }

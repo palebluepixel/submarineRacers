@@ -3,6 +3,7 @@
 
 #define RECV_PARSE_BUFFER_SIZE MAX_MESSAGE_LENGTH*2 + 1
 
+#include <util/log.hxx>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>

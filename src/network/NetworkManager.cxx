@@ -19,6 +19,8 @@ void NetworkManager::recieveMessage(char* message, int len) {
     }
 
     free(message);*/
+
+    log(LOGMEDIUM, "recieved message: %s\n", message);
 }
 
 void NetworkManager::processCommand(short code, short len, char* message) {

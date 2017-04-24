@@ -67,6 +67,19 @@ void Client::handleNetworkTick(uint32_t mmax)
 }
 
 
+/* Takes one message out of the message queue and sends it to
+the network manager's process command */
+void Client::readOneMessage()
+{
+    MessageContainer *m = this->queue.readMessage();
+    if(m==NULL) // no messages
+        return;
+
+    this->nm->recieveMessage(m->msg, m->msgLen);
+
+    delete(m);
+}
+
 void Client::messageServer(short len, char *msg)
 {
     struct sockaddr_in serverAddr = this->nm->getTargetAddr();

@@ -213,6 +213,11 @@ int main(int argc, char*argv[]){
     duration<double, std::milli> time_span;
     double elapsed;
 
+    if(!isServer) {
+        char *str = "binch";
+        client->messageServer(strlen(str), str);
+    }
+
     while (!glfwWindowShouldClose(world->window)){
 
         // timing across update operations.
@@ -224,9 +229,12 @@ int main(int argc, char*argv[]){
         time_prev = time_curr;
 
         //network testing
-        if(!isServer){
-            char *str = "binch";
-            client->messageServer(strlen(str), str);
+        if(isServer){
+            char *str = "hi im a server lol";
+            server->readOneMessage();
+            server->broadcast(strlen(str), str);
+        } else {
+            client->readOneMessage();
         }
 
         //quick hack-in of a cube movement animation
