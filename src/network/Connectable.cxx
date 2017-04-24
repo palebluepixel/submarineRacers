@@ -34,15 +34,6 @@ void Connectable::recieveOneMessage(int socket)
 }
 
 
-/* Sends a message to the given target through the given socket. */
-void Connectable::sendOneMessage(MessageContainer *msg, int socket, struct sockaddr* target)
-{
-	log(LOGMEDIUM, "Sending message: %s (length: %d)\nTo: %s at port on socket %d\n", msg->msg, msg->msgLen,
-		inet_ntoa(((struct sockaddr_in*)target)->sin_addr), socket);
-	int bytesSent = sendto(socket, msg->msg, msg->msgLen, 0, target, sizeof(struct sockaddr_in));
-	log(LOGMEDIUM, "Sent %d bytes\n", bytesSent);
-}
-
 /* Creates a new thread which constantly reads the socket and adds
 incoming messages to the message buffer. We can't call this until
 out socket has been set up.  */

@@ -32,9 +32,6 @@ public:
     socket and copies it into the message buffer as a messageContainer. */
     void recieveOneMessage(int socket);
 
-    /* Sends a message to the given target through the given socket. */
-    void sendOneMessage(MessageContainer *msg, int socket, struct sockaddr* target);
-
     inline int getSocket() { return this->commSocket; } 
 
 protected:

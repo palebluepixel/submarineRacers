@@ -14,15 +14,29 @@
 #include <sys/socket.h>
 #include <sys/select.h>
 #include <sys/time.h>
-#include "CommandCodes.hxx"
 #include <network/MessageQueue.hxx>
+#include <functional>
+
+#include "CommandCodes.hxx"
+
+
+#define COMMAND_PARAMS short len, char *message
+
+class NetworkManager;
+
+typedef struct {
+    const short code;
+    std::function<void(NetworkManager&, COMMAND_PARAMS)> func;
+    //auto func;
+} handler;
+
 
 class NetworkManager {
 public:
 	NetworkManager(/*other args*/);
 
 	void recieveMessage(char* message, int len);
-    void sendMessage(char* message, int len);
+    void sendMessage(char* message, int len); 
 
     inline void setTargetSocket(int fd) { this->targetSocket = fd;}
     inline void setTargetAddr(struct sockaddr_in sa) { this->targetAddr = sa; }
@@ -31,12 +45,17 @@ public:
     inline struct sockaddr_in getTargetAddr() { return this->targetAddr; }
 
 protected:
-	//TODO do maps for dispatch table
+    void pingCommand(COMMAND_PARAMS);
+    void pongCommand(COMMAND_PARAMS);
+    void initCommand(COMMAND_PARAMS);
+    void disconnectCommand(COMMAND_PARAMS);
 
-	void sendCommand(short code, short len, char* message);
+    static handler table[3];
 
-	void processCommand(short code, short len, char* message);
-	void pingCommand(short len, char* message);
+    void sendCommand(short code, short len, char *message);
+
+    bool virtual processCommand(short code, short len, char *message);
+    bool checkDispatch(short code, short len, char *message);
 
     /* The socket fd of the other endpoint of this network manager */
     int targetSocket;
@@ -46,9 +65,10 @@ protected:
 
 };
 
+
 struct CommandHeader {
 	short code;
 	short len;
 };
 
-#endif
+#endif //!_NETWORK_MANAGER_HXX_

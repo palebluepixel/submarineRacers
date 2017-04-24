@@ -82,9 +82,5 @@ void Client::readOneMessage()
 
 void Client::messageServer(short len, char *msg)
 {
-    struct sockaddr_in serverAddr = this->nm->getTargetAddr();
-
-    MessageContainer *m = new MessageContainer(serverAddr, msg, len);
-    this->sendOneMessage(m, this->nm->getTargetSocket(), 
-        (struct sockaddr*)&serverAddr);
+    this->nm->sendMessage(msg, len);
 }

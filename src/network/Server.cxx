@@ -108,15 +108,18 @@ void Server::readOneMessage()
 /* Send a message to the client, identified by IP address. */
 void Server::messageClient(struct sockaddr_in clientAddr, short len, char *msg)
 {
-    MessageContainer *m = new MessageContainer(clientAddr, msg, len);
-    this->sendOneMessage(m, this->getSocket(), 
-        (struct sockaddr*)&clientAddr);
+    if(!clientExists(clientAddr))
+        return;
+    ServerNetworkManager *client = this->findClientByAddr(clientAddr);
+
+    this->messageClient(client, len, msg);
+
 }
 
 /* Send a message to the client, identified by their ServerNetworkManager */
 void Server::messageClient(ServerNetworkManager *nm, short len, char *msg)
 {
-    this->messageClient(nm->getTargetAddr(), len, msg);
+    nm->sendMessage(msg, len);
 }
 
 
@@ -153,6 +156,7 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
 
     ServerNetworkManager *client = new ServerNetworkManager(this->getNextID());
     client->setTargetAddr(clientAddr);
+    client->setTargetSocket(this->commSocket);
 
     this->clients.insert(make_pair(clientAddr, client));
 
