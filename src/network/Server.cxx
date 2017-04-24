@@ -106,7 +106,7 @@ void Server::readOneMessage()
 
 
 /* Send a message to the client, identified by IP address. */
-void Server::messageClient(struct sockaddr_in clientAddr, short len, char *msg)
+void Server::messageClient(struct sockaddr_in clientAddr, short len, uint8_t *msg)
 {
     if(!clientExists(clientAddr))
         return;
@@ -117,14 +117,14 @@ void Server::messageClient(struct sockaddr_in clientAddr, short len, char *msg)
 }
 
 /* Send a message to the client, identified by their ServerNetworkManager */
-void Server::messageClient(ServerNetworkManager *nm, short len, char *msg)
+void Server::messageClient(ServerNetworkManager *nm, short len, uint8_t *msg)
 {
     nm->sendMessage(msg, len);
 }
 
 
 /* Sends a message to all clients.*/
-void Server::broadcast(short len, char *msg)
+void Server::broadcast(short len, uint8_t *msg)
 {
     /* Loop through the network manager for all clients */
     /* If we ever made client adding / removing threaded, we would have to
@@ -161,6 +161,9 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
     this->clients.insert(make_pair(clientAddr, client));
 
     log(LOGMEDIUM, "Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
+
+    uint8_t ar[4] = { '\0', '\0', '\0', '\0' };
+    messageClient(client, 4, ar);
 
     return client;
 }

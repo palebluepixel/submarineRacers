@@ -17,11 +17,11 @@ using namespace std;
 
 class MessageContainer {
 public:
-	MessageContainer(struct sockaddr_in src, char *msg, int msgLen);
+	MessageContainer(struct sockaddr_in src, uint8_t *msg, int msgLen);
 	~MessageContainer();
 
 	struct sockaddr_in src;
-	char *msg;
+	uint8_t *msg;
 	int msgLen;
 };
 

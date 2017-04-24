@@ -1,8 +1,11 @@
 #include "MessageQueue.hxx"
 
-MessageContainer::MessageContainer(struct sockaddr_in src, char *msg, int msgLen)
+MessageContainer::MessageContainer(struct sockaddr_in src, uint8_t *msg, int msgLen)
 {
-	this->src = src; this->msg = strdup(msg); this->msgLen = msgLen;
+	this->src = src;
+	this->msg = (uint8_t*)malloc(msgLen);
+	memcpy(this->msg, msg, msgLen);
+	this->msgLen = msgLen;
 }
 
 MessageContainer::~MessageContainer()

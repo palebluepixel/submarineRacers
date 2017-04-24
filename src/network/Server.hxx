@@ -55,13 +55,13 @@ public:
     int clientExists(struct sockaddr_in clientAddr);
 
     /* Send a message to the client, identified by IP address. */
-    void messageClient(struct sockaddr_in clientAddr, short len, char *msg);
+    void messageClient(struct sockaddr_in clientAddr, short len, uint8_t *msg);
 
     /* Send a message to the client, identified by their ServerNetworkManager */
-    void messageClient(ServerNetworkManager *nm, short len, char *msg);
+    void messageClient(ServerNetworkManager *nm, short len, uint8_t *msg);
 
     /* Sends a message to all clients.*/
-    void broadcast(short len, char *msg);
+    void broadcast(short len, uint8_t *msg);
 
 
     inline int getPort() { return this->port; }

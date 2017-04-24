@@ -20,7 +20,7 @@
 #include "CommandCodes.hxx"
 
 
-#define COMMAND_PARAMS short len, char *message
+#define COMMAND_PARAMS short len, uint8_t *message
 
 class NetworkManager;
 
@@ -35,8 +35,8 @@ class NetworkManager {
 public:
 	NetworkManager(/*other args*/);
 
-	void recieveMessage(char* message, int len);
-    void sendMessage(char* message, int len); 
+	void recieveMessage(uint8_t* message, int len);
+    void sendMessage(uint8_t* message, int len); 
 
     inline void setTargetSocket(int fd) { this->targetSocket = fd;}
     inline void setTargetAddr(struct sockaddr_in sa) { this->targetAddr = sa; }
@@ -52,10 +52,10 @@ protected:
 
     static handler table[3];
 
-    void sendCommand(short code, short len, char *message);
+    void sendCommand(short code, short len, uint8_t *message);
 
-    bool virtual processCommand(short code, short len, char *message);
-    bool checkDispatch(short code, short len, char *message);
+    bool virtual processCommand(short code, short len, uint8_t *message);
+    bool checkDispatch(short code, short len, uint8_t *message);
 
     /* The socket fd of the other endpoint of this network manager */
     int targetSocket;

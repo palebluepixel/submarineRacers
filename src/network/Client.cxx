@@ -80,7 +80,7 @@ void Client::readOneMessage()
     delete(m);
 }
 
-void Client::messageServer(short len, char *msg)
+void Client::messageServer(short len, uint8_t *msg)
 {
     this->nm->sendMessage(msg, len);
 }

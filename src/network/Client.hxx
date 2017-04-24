@@ -26,7 +26,7 @@ public:
     void handleNetworkTick(uint32_t mmax);
 
     /* Tell the server what's good */
-    void messageServer(short len, char*msg);
+    void messageServer(short len, uint8_t*msg);
 
     /* Takes one message out of the message queue and sends it to
     the network manager's process command */

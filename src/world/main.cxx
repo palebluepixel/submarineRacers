@@ -215,7 +215,7 @@ int main(int argc, char*argv[]){
 
     if(!isServer) {
         char *str = "binch";
-        client->messageServer(strlen(str), str);
+        client->messageServer(strlen(str), (uint8_t*)str);
     }
 
     while (!glfwWindowShouldClose(world->window)){
@@ -232,7 +232,7 @@ int main(int argc, char*argv[]){
         if(isServer){
             char *str = "hi im a server lol";
             server->readOneMessage();
-            server->broadcast(strlen(str), str);
+            //server->broadcast(strlen(str), str);
         } else {
             client->readOneMessage();
         }
