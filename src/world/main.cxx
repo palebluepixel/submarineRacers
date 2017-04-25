@@ -62,7 +62,7 @@ GLFWwindow *initializeGLFW(){
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Submarines!", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 960, "Submarines!", NULL, NULL);
     if (!window){
         glfwTerminate();
         Error::error("glfwCreateWindow failed",1);
@@ -180,7 +180,7 @@ int main(int argc, char*argv[]){
     Camera *camera = new Camera();
     
     //position, look-at point, up-vector
-    camera->init(vec3(-2,0,-2),vec3(3,0,3),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
 
@@ -211,7 +211,7 @@ int main(int argc, char*argv[]){
     for(i=1; i<ncubes; i++){
         cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
-        cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
+        //cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
     }
 
     //create skybox
@@ -251,8 +251,8 @@ int main(int argc, char*argv[]){
         }
 
         //quick hack-in of a cube movement animation
-        // vec3 pos = cubes[0]->getPosition();
-        // cubes[0]->setPosition(pos - vec3(0,0.03,0));
+         vec3 pos = cubes[0]->getPosition();
+         cubes[0]->setPosition(pos - vec3(0,0.03,0));
 
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
