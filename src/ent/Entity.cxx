@@ -135,7 +135,7 @@ mat4 Entity::modelMatrix(){
 
 void Entity::drawEntity(){
     int i;
-    for(tmesh : meshes)
+    for(TransformedMesh tmesh : meshes)
         tmesh.mesh->draw();
 }
 
