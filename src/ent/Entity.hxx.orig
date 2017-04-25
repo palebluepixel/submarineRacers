@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
-#include <vector>
 
 using namespace glm;
 using namespace Space;
@@ -47,14 +46,23 @@ public:
 
     EntityStatus status;
 
+<<<<<<< HEAD
+    inline vec3 getPosition() { return this->position; }
+
+    //overwrite client data with server
+    virtual int overwrite(vec3 pos, mat3 ori);
+    //creates server message describing current pos and ori
+    virtual int prepare_message_segment();
+=======
 public:
     char*        setName(char* name);
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
+>>>>>>> physics
 
     vec3         setPosition(vec3 pos);
-    vec3         getPosition();
-    quaternion   setOrientation(quaternion ori);
+    quaternion setOrientation(quaternion ori);
+
 
     /**     networking:     **/
     virtual int overwrite(vec3 pos, quaternion ori);    //overwrite client data with server
@@ -72,19 +80,18 @@ public:
     mat4 modelMatrix();           // return transform matrix TO world space.
     void drawEntity();            // render meshes to screen
 
-    inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
+    inline int getNMeshes() { return this->nMeshes; }
+    inline Mesh ** getMeshes() {return this->nMeshes>0 ? this->meshes : NULL;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
-public:
-    Volume *volume;
-    quaternion orientation;
-    std::vector<TransformedMesh> meshes;
 protected:
+public:
     vec3 position;
     vec3 initial_position;      // we should remove this field.
 
     vec3 velocity;
 
+    quaternion orientation;    
     quaternion initial_orientation;
 
     quaternion angular_velocity;
@@ -96,12 +103,18 @@ protected:
     char* name;
     EntityType type;
 
+    //Bounding volume, not sure how we are representing it
+    Volume *volume;
+
     float tick_interval;
 
     bool collidable;
     bool movable;
     bool drawable;
 
+    //allow objects to be composed of multiple meshes
+    int nMeshes;
+    Mesh ** meshes;
     virtual void initalizeMeshes()=0;
 
     texture2d *tex;

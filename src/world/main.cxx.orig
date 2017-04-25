@@ -9,7 +9,6 @@
 #include <ratio>
 #include <chrono>
 
-#include <util/log.hxx>
 #include <error/error.hxx>
 #include <util/file.hxx>
 #include <graphics/shader.hxx>
@@ -17,17 +16,9 @@
 #include <graphics/renderer.hxx>
 #include <ent/Entity.hxx>
 #include <ent/cube.hxx>
-#include <ent/gadget.hxx>
 #include <world/world.hxx>
 #include <userinput/callbacks.hxx>
 #include <graphics/texture.hxx>
-#include <network/Server.hxx>
-#include <network/Client.hxx>
-
-#define PORT 8008
-
-//defined in util/log.hxx
-int loglevel_GLOBAL;
 
 int keyboard[350];
 int mouse[8];
@@ -131,35 +122,15 @@ void update(double elapsed){
     if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
     if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
 
-    if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
-    if(keyboard[GLFW_KEY_Q])           world->quit();
+    if(keyboard[GLFW_KEY_ESCAPE])       world->quit();
 
 }
 
-int main(int argc, char*argv[]){
-
-    // Set logging level
-    loglevel_GLOBAL = LOGMEDIUM;
+int main(void){
 
     world = new World();
 
     init();
-
-    //set up server or client: eventually we will make command line flags more advanced
-    //First arg is "s" for server or "c" for client
-    //Second arg is server hostname is we are a client
-    int isServer = (argv[1][0] == 's');
-    Server *server;
-    Client *client;
-    if(isServer){
-        server = new Server((short)PORT, NULL);
-        printf("Port: %d\n", server->getPort());
-        server->initListeningSocket();
-    } else {
-        client = new Client(PORT, argv[2]);
-        printf("Hostname: %s, Port: %d\n", client->getHost(), client->getPort());
-        client->connectServer();
-    }
 
     // set up shaders.
     Shader *shader = new Shader();
@@ -180,12 +151,16 @@ int main(int argc, char*argv[]){
     Camera *camera = new Camera();
     
     //position, look-at point, up-vector
+<<<<<<< HEAD
     camera->init(vec3(-2,0,-2),vec3(3,0,3),vec3(0,1,0)); //location, looking-at, up
+=======
+    camera->init(vec3(0,0,-4),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
+>>>>>>> physics
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
 
     vec3 oceanColor = vec3(0,70,95) / 256.0;
-    vec3 oceanBrightColor = vec3(70,241,245) / 256.0;
+    vec3 oceanBrightColor = vec3(141,241,245) / 256.0;
 
     //create view
     View *view = new View(world->window);
@@ -204,18 +179,22 @@ int main(int argc, char*argv[]){
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
-    Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/bigmonkey.obj");
-    cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
-    cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
-    for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
-        cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
-        cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
+    Cube * cubes[ncubes];
+    for(i=0; i<ncubes; i++){
+<<<<<<< HEAD
+        cubes[i] = new Cube(cubePos[i], mat3(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i]);
     }
 
     //create skybox
-    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Cube *skybox = new Cube(vec3(0,0,0), mat3(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1));
+=======
+        cubes[i] = new Cube(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f);
+        
+    }
+
+    //create skybox
+    Cube *skybox = new Cube(vec3(0,0,0), quaternion(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f);
+>>>>>>> physics
 
     int width, height;
 
@@ -225,11 +204,6 @@ int main(int argc, char*argv[]){
     high_resolution_clock::time_point time_curr;
     duration<double, std::milli> time_span;
     double elapsed;
-
-    if(!isServer) {
-        char *str = "binch";
-        client->messageServer(strlen(str), (uint8_t*)str);
-    }
 
     while (!glfwWindowShouldClose(world->window)){
 
@@ -241,18 +215,9 @@ int main(int argc, char*argv[]){
 
         time_prev = time_curr;
 
-        //network testing
-        if(isServer){
-            char *str = "hi im a server lol";
-            server->readOneMessage();
-            //server->broadcast(strlen(str), str);
-        } else {
-            client->readOneMessage();
-        }
-
         //quick hack-in of a cube movement animation
-        // vec3 pos = cubes[0]->getPosition();
-        // cubes[0]->setPosition(pos - vec3(0,0.03,0));
+        vec3 pos = cubes[0]->getPosition();
+        cubes[0]->setPosition(pos - vec3(0,0.03,0));
 
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
@@ -261,13 +226,13 @@ int main(int argc, char*argv[]){
         glClearColor(1.0, 0.5, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        rsky->enable();
-        rsky->render(view, skybox);
+        rsky->Enable();
+        rsky->Render(view, skybox);
 
-        r->enable ();
+        r->Enable ();
 
         for(i=0; i<ncubes; i++){
-            r->render(view, cubes[i]);
+            r->Render(view, cubes[i]);
             cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f/64.f,vec3(0,1.f,0));
         }
 
