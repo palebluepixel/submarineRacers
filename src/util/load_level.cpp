@@ -1,7 +1,7 @@
 #include "json.hpp"
 
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <fstream>
 #include <streambuf>
 #include <sstream>
@@ -28,14 +28,14 @@ ent make_ent(const char *name, std::vector<double> location) {
 }
 
 typedef struct {
-    std::map <int, ent> entities;
+    std::unordered_map <int, ent> entities;
     std::vector<int> drawables;
     std::vector<int> collidables;
 } level, *lev;
 
 lev make_lev() {
     lev a = (lev)malloc(sizeof(level));
-    std::map<int, ent> entities;
+    std::unordered_map<int, ent> entities;
     a->entities = entities;
     return a;
 }
