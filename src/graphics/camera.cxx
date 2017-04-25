@@ -11,10 +11,10 @@ Camera::Camera ()
     : _errorFactor(-1)
 { }
 
-void Camera::init(vec3 pos, vec3 dir, vec3 up)
+void Camera::init(vec3 pos, vec3 ypr, vec3 up)
 {
     this->_pos = pos;
-    this->_dir = dir;
+    this->setYPR(ypr[0], ypr[1], ypr[2]);
     this->_up = up;
 }
 

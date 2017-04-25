@@ -20,7 +20,7 @@ class Camera {
     Camera ();
 
     //places the camera at the origin with the given position, looking at the given point, with the given up
-    void init(vec3 pos, vec3 dir, vec3 up);
+    void init(vec3 pos, vec3 ypr, vec3 up);
 
   //! the current camera position.
     vec3 position () const { return this->_pos; }

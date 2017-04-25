@@ -180,7 +180,7 @@ int main(int argc, char*argv[]){
     Camera *camera = new Camera();
     
     //position, look-at point, up-vector
-    camera->init(vec3(-2,0,-2),vec3(3,0,3),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
 
