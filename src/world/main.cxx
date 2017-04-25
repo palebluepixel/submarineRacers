@@ -23,6 +23,8 @@
 #include <graphics/texture.hxx>
 #include <network/Server.hxx>
 #include <network/Client.hxx>
+#include <network/MessageProtocols.hxx>
+#include <cstring>
 
 #define PORT 8008
 
@@ -200,14 +202,14 @@ int main(int argc, char*argv[]){
         0.03f, -5.0f, -30.0f);
 
     //create test objects
-    vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
+    vec3 cubePos[] = {vec3(-5,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
     Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/bigmonkey.obj");
+    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
     cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
-    cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
+    //cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
     for(i=1; i<ncubes; i++){
         cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
@@ -231,6 +233,8 @@ int main(int argc, char*argv[]){
         client->messageServer(strlen(str), (uint8_t*)str);
     }
 
+    world->moveable = cubes[0];
+
     while (!glfwWindowShouldClose(world->window)){
 
         // timing across update operations.
@@ -243,16 +247,15 @@ int main(int argc, char*argv[]){
 
         //network testing
         if(isServer){
-            char *str = "hi im a server lol";
             server->readOneMessage();
-            //server->broadcast(strlen(str), str);
+            //quick hack-in of a cube movement animation
+            vec3 pos = cubes[0]->getPosition();
+            cubes[0]->setPosition(pos - vec3(0,0.03,0));
+            posUpMsg msg; msg.pos = cubes[0]->getPosition();
+            server->broadcast((short)24, sizeof(msg), (uint8_t*)&msg);
         } else {
             client->readOneMessage();
         }
-
-        //quick hack-in of a cube movement animation
-         vec3 pos = cubes[0]->getPosition();
-         cubes[0]->setPosition(pos - vec3(0,0.03,0));
 
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
@@ -268,7 +271,8 @@ int main(int argc, char*argv[]){
 
         for(i=0; i<ncubes; i++){
             r->render(view, cubes[i]);
-            cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f/64.f,vec3(0,1.f,0));
+            if(i!=0)
+                cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f/64.f,vec3(0,1.f,0));
         }
 
         glfwSwapBuffers(world->window);

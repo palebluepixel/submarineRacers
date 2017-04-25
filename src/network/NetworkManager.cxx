@@ -1,8 +1,9 @@
 #include "NetworkManager.hxx"
 
-handler NetworkManager::table[3] = {{ CODE_PING, &NetworkManager::pingCommand }, 
-                                    { CODE_PONG, &NetworkManager::pongCommand }, 
-                                    { CODE_INIT, &NetworkManager::initCommand }};
+handler NetworkManager::table[4] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
+                                    { CODE_PONG,          &NetworkManager::pongCommand }, 
+                                    { CODE_INIT,          &NetworkManager::initCommand },
+                                    { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand }};
 
 NetworkManager::NetworkManager() 
 {}
@@ -13,8 +14,9 @@ void NetworkManager::sendMessage(uint8_t* message, int len)
     struct sockaddr_in targetAddr = this->getTargetAddr();
     int sock = this->getTargetSocket();
 
-    log(LOGMEDIUM, "\nSending message: %s (length: %d)\nTo: %s at port on socket %d\n", message, len,
+    log(LOGMEDIUM, "\nSending message: (length: %d)\nTo: %s at port on socket %d\n", len,
         inet_ntoa(targetAddr.sin_addr), sock);
+    logPrintBuf(LOGMEDIUM, message, len);
     int bytesSent = sendto(sock, message, len, 0, (struct sockaddr*)&targetAddr, sizeof(struct sockaddr_in));
     log(LOGMEDIUM, "Sent %d bytes\n\n", bytesSent);
 }
@@ -86,3 +88,12 @@ void NetworkManager::pongCommand(COMMAND_PARAMS) {
     //this->sendCommand(CODE_PING, 0, nullptr);
 }
 void NetworkManager::initCommand(COMMAND_PARAMS) {}
+
+
+void NetworkManager::objectChangeCommand(COMMAND_PARAMS) 
+{
+    posUpMsg *msg = getPosUpMsg(message);
+    world->setEntData(msg);
+    free(msg);
+
+}

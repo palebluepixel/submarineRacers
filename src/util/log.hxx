@@ -2,6 +2,8 @@
 #define _LOG_HXX_
 
 #include <stdarg.h>
+#include <stdio.h>
+#include <iostream>
 
 #define LOGDEFAULT 0
 #define LOGERROR 4

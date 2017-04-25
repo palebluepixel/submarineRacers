@@ -3,7 +3,6 @@
 
 #define RECV_PARSE_BUFFER_SIZE MAX_MESSAGE_LENGTH*2 + 1
 
-#include <util/log.hxx>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -16,8 +15,12 @@
 #include <sys/time.h>
 #include <network/MessageQueue.hxx>
 #include <functional>
+#include <network/MessageProtocols.hxx>
 
-#include "CommandCodes.hxx"
+#include <network/CommandCodes.hxx>
+#include <world/world.hxx>
+
+extern World* world; //global 
 
 
 #define COMMAND_PARAMS short len, uint8_t *message
@@ -37,6 +40,7 @@ public:
 
 	void recieveMessage(uint8_t* message, int len);
     void sendMessage(uint8_t* message, int len); 
+    void sendCommand(short code, short len, uint8_t *message);
 
     inline void setTargetSocket(int fd) { this->targetSocket = fd;}
     inline void setTargetAddr(struct sockaddr_in sa) { this->targetAddr = sa; }
@@ -49,10 +53,9 @@ protected:
     void pongCommand(COMMAND_PARAMS);
     void initCommand(COMMAND_PARAMS);
     void disconnectCommand(COMMAND_PARAMS);
+    void objectChangeCommand(COMMAND_PARAMS);
 
-    static handler table[3];
-
-    void sendCommand(short code, short len, uint8_t *message);
+    static handler table[4];
 
     bool virtual processCommand(short code, short len, uint8_t *message);
     bool checkDispatch(short code, short len, uint8_t *message);

@@ -6,6 +6,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <graphics/renderer.hxx>
+#include <network/MessageProtocols.hxx>
+#include <ent/Entity.hxx>
+#include <util/log.hxx>
+
+using namespace glm;
 
 #define ALL_GOOD 0
 #define STATE_ENUM_START ALL_GOOD + 1
@@ -42,7 +47,7 @@ enum EventType {
     ADVANCEMENU,
     BACKMENU, //moves between menus if multiple
     LOADLEVEL,
-    PAUSE,
+    PAUSEGAME,
     EXIT, //returns to menu1
     USERDISCONNECT,
     USERFINISH
@@ -64,6 +69,13 @@ public:
     // based on time, e.g. race timer running down or status conditions ending
     int handleTimerTic(float t, float dt);
 
+
+    /* Functions for setting position updates we recive from server */
+    void setEntData(posUpMsg* msg);
+    void setEntData(int objID, vec3 pos, vec3 ori, vec3 vel);
+        Entity *moveable;
+
+
     //View: rendering information, camera, skybox, ground, sun, etc
     View *view;
     Renderer **renderers;
@@ -84,7 +96,7 @@ private:
     int handleEventADVANCEMENU();
     int handleEventBACKMENU();
     int handleEventLOADLEVEL();
-    int handleEventPAUSE();
+    int handleEventPAUSEGAME();
     int handleEventEXIT();
     int handleEventUSERDISCONNECT();
     int handleEventUSERFINISH();

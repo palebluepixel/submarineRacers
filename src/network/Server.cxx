@@ -122,6 +122,11 @@ void Server::messageClient(ServerNetworkManager *nm, short len, uint8_t *msg)
     nm->sendMessage(msg, len);
 }
 
+void Server::messageClient(ServerNetworkManager *nm, short code, short len, uint8_t *payload)
+{
+    nm->sendCommand(code, len, payload);
+}
+
 
 /* Sends a message to all clients.*/
 void Server::broadcast(short len, uint8_t *msg)
@@ -135,6 +140,17 @@ void Server::broadcast(short len, uint8_t *msg)
     {
         nm = get<1>(*iter); //map returns a (k,v) pair, get<1> return the value
         this->messageClient(nm, len, msg);
+    }
+}
+
+void Server::broadcast(short code, short len, uint8_t *payload)
+{
+    ServerNetworkManager *nm;
+    map<struct sockaddr_in, ServerNetworkManager*, sockaddr_inComparator>::iterator iter;
+    for(iter = this->clients.begin(); iter != this->clients.end(); iter++)
+    {
+        nm = get<1>(*iter); //map returns a (k,v) pair, get<1> return the value
+        this->messageClient(nm, code, len, payload);
     }
 }
 
