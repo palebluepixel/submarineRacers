@@ -92,7 +92,7 @@ void NetworkManager::initCommand(COMMAND_PARAMS) {}
 
 void NetworkManager::objectChangeCommand(COMMAND_PARAMS) 
 {
-    posUpMsg *msg = getPosUpMsg(message);
+    posUpBuf *msg = getPosUpBuf(message);
     world->setEntData(msg);
     free(msg);
 

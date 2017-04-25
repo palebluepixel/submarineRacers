@@ -117,6 +117,11 @@ void Server::messageClient(struct sockaddr_in clientAddr, short len, uint8_t *ms
 }
 
 /* Send a message to the client, identified by their ServerNetworkManager */
+void Server::messageClient(ServerNetworkManager *nm, message *msg)
+{
+    nm->sendCommand(msg->code, msg->len, msg->msg);
+}
+
 void Server::messageClient(ServerNetworkManager *nm, short len, uint8_t *msg)
 {
     nm->sendMessage(msg, len);
@@ -129,6 +134,17 @@ void Server::messageClient(ServerNetworkManager *nm, short code, short len, uint
 
 
 /* Sends a message to all clients.*/
+void Server::broadcast(message *msg)
+{
+    ServerNetworkManager *nm;
+    map<struct sockaddr_in, ServerNetworkManager*, sockaddr_inComparator>::iterator iter;
+    for(iter = this->clients.begin(); iter != this->clients.end(); iter++)
+    {
+        nm = get<1>(*iter); //map returns a (k,v) pair, get<1> return the value
+        this->messageClient(nm, msg);
+    }
+}
+
 void Server::broadcast(short len, uint8_t *msg)
 {
     /* Loop through the network manager for all clients */

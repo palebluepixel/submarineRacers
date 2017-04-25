@@ -39,6 +39,12 @@ vec3 Entity::getPosition(){
     return this->position;
 }
 
+vec3 Entity::setVelocity(vec3 vel) {
+    vec3 old = this->velocity;
+    this->velocity = vel;
+    return old;
+}
+
 tquat<float> Entity::setOrientation(tquat<float> ori)
 {
     tquat<float> old = this->orientation;
@@ -60,6 +66,21 @@ int Entity::setID(int id)
     return old;
 }
 
+int Entity::getID()
+{
+    return this->id;
+}
+
+quaternion Entity::getOrientation()
+{
+    return this->orientation;
+}    
+
+vec3 Entity::getVelocity()
+{
+    return this->velocity;
+}
+
 char* Entity::setName(char* name)
 {
     char*old = this->name;
@@ -68,17 +89,25 @@ char* Entity::setName(char* name)
 }
 
 //overwrite client data with server
-int Entity::overwrite(vec3 pos, tquat<float> ori)
+int Entity::overwrite(vec3 pos, tquat<float> ori, vec3 vel)
 {
     this->setPosition(pos);
     this->setOrientation(ori);
+    this->setVelocity(vel);
+
+    return 0;
+}
+
+int Entity::overwrite(posUpBuf *msg)
+{
+    this->overwrite(msg->pos, msg->ori, msg->vel);
 
     return 0;
 }
 
 //creates server message describing current pos and ori
-int Entity::prepare_message_segment(){
-    return 0;
+message * Entity::prepareMessageSegment(){
+    return createPosUpMsg(this);
 }
 
 //physics tick behavior
@@ -105,7 +134,7 @@ int Entity::onTick(float dt){
 
 //change object's status to spawned and place it in its intial position
 EntityStatus Entity::spawn(){
-    this->overwrite(this->initial_position, this->initial_orientation);
+    this->overwrite(this->initial_position, this->initial_orientation, this->initial_velocity);
     EntityStatus old = this->status;
     this->status = SPAWNED;
     return old;

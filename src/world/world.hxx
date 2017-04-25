@@ -71,9 +71,9 @@ public:
 
 
     /* Functions for setting position updates we recive from server */
-    void setEntData(posUpMsg* msg);
-    void setEntData(int objID, vec3 pos, vec3 ori, vec3 vel);
-        Entity *moveable;
+    void setEntData(posUpBuf* msg);
+    void setEntData(int objID, vec3 pos, quaternion ori, vec3 vel);
+    Entity *moveable;
 
 
     //View: rendering information, camera, skybox, ground, sun, etc

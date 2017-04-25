@@ -159,12 +159,12 @@ int World::handleEventUSERFINISH()
 }
 
 
-void World::setEntData(posUpMsg* msg)
+void World::setEntData(posUpBuf* msg)
 {
     this->setEntData(msg->id, msg->pos, msg->ori, msg->vel);
 }
 
-void World::setEntData(int objID, vec3 pos, vec3 ori, vec3 vel)
+void World::setEntData(int objID, vec3 pos, quaternion ori, vec3 vel)
 {
     this->moveable->setPosition(pos);
 }

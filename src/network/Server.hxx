@@ -58,10 +58,12 @@ public:
     void messageClient(struct sockaddr_in clientAddr, short len, uint8_t *msg);
 
     /* Send a message to the client, identified by their ServerNetworkManager */
+    void messageClient(ServerNetworkManager *nm, message *msg);
     void messageClient(ServerNetworkManager *nm, short len, uint8_t *msg);
     void messageClient(ServerNetworkManager *nm, short code, short len, uint8_t *payload);
 
     /* Sends a message to all clients.*/
+    void broadcast(message *msg);
     void broadcast(short len, uint8_t *msg);
     void broadcast(short code, short len, uint8_t *payload);
 

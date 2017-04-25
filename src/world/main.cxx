@@ -196,7 +196,7 @@ int main(int argc, char*argv[]){
     view->setFOV(90);
     view->setNear(0.1);
     view->setFar(1000.0);
-    view->setSunlight(vec3(-0.3, 1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
+    view->setSunlight(vec3(-0.3, -1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
     view->setFog(0, oceanColor, 0.05f, 5.0);
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
         0.03f, -5.0f, -30.0f);
@@ -251,8 +251,11 @@ int main(int argc, char*argv[]){
             //quick hack-in of a cube movement animation
             vec3 pos = cubes[0]->getPosition();
             cubes[0]->setPosition(pos - vec3(0,0.03,0));
-            posUpMsg msg; msg.pos = cubes[0]->getPosition();
-            server->broadcast((short)24, sizeof(msg), (uint8_t*)&msg);
+            //posUpBuf msg; msg.pos = cubes[0]->getPosition();
+            //server->broadcast((short)24, sizeof(msg), (uint8_t*)&msg);
+            message *msg = cubes[0]->prepareMessageSegment();
+            server->broadcast(msg);
+            deleteMessage(msg);
         } else {
             client->readOneMessage();
         }

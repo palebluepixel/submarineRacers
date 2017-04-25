@@ -1,13 +1,62 @@
 #include "MessageProtocols.hxx"
+#include <ent/Entity.hxx>
 
-posUpMsg *getPosUpMsg(uint8_t*msg)
+message * createMessage(short code, short len, uint8_t *msg)
 {
-	posUpMsg *p = (posUpMsg*)malloc(sizeof(posUpMsg));
+	message *m = (message*) malloc(sizeof(message));
+	if(m==NULL)
+	{
+		exit(-1);
+	}
+
+	m->code = code;
+	m->len = len;
+	m->msg = msg;
+
+	return m;
+}
+
+void deleteMessage(message *m)
+{
+	if(m->msg != NULL)
+		free(m->msg);
+	free(m);
+}
+
+posUpBuf *getPosUpBuf(uint8_t*msg)
+{
+	posUpBuf *p = (posUpBuf*)malloc(sizeof(posUpBuf));
 	if(p==NULL)
 	{
 		//log(LOGERROR, "%s", "malloc failed in getPosUpMsg");
 		exit(-1);
 	}
 
-	memcpy(p, msg, sizeof(posUpMsg)); //this is hacky
+	memcpy(p, msg, sizeof(posUpBuf)); //this is hacky
+
+	return p;
+}
+
+/* Create a posUpMsg for the entity's current fields */
+posUpBuf *createPosUpBuf(Entity *ent)
+{
+	posUpBuf *p = (posUpBuf*)malloc(sizeof(posUpBuf));
+	if(p==NULL)
+	{
+		//log(LOGERROR, "%s", "malloc failed in getPosUpMsg");
+		exit(-1);
+	}
+
+	p->id = ent->getID();
+	p->pos = ent->getPosition();
+	p->ori = ent->getOrientation();
+	p->vel = ent->getVelocity();
+
+	return p;
+}
+
+message *createPosUpMsg(Entity *ent)
+{
+	uint8_t * buf = (uint8_t *) createPosUpBuf(ent);
+	return createMessage(CODE_OBJECT_CHANGE, sizeof(posUpBuf), buf);
 }

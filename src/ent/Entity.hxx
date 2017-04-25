@@ -11,6 +11,7 @@
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
 #include <vector>
+#include <network/MessageProtocols.hxx>
 
 using namespace glm;
 using namespace Space;
@@ -53,12 +54,18 @@ public:
     EntityType   setEntityType(EntityType type);
 
     vec3         setPosition(vec3 pos);
-    vec3         getPosition();
     quaternion   setOrientation(quaternion ori);
+    vec3         setVelocity(vec3 vel);
+
+    vec3         getPosition();
+    quaternion   getOrientation();
+    vec3         getVelocity();
+    int          getID();
 
     /**     networking:     **/
-    virtual int overwrite(vec3 pos, quaternion ori);    //overwrite client data with server
-    virtual int prepare_message_segment();                //creates server message describing current pos and ori
+    virtual int overwrite(vec3 pos, quaternion ori, vec3 vel);    //overwrite client data with server
+    virtual int overwrite(posUpBuf *msg);
+    virtual message* prepareMessageSegment();                  //creates server message describing current pos, ori, and velocity
     
     /**     physics:        **/
     virtual int onTick(float dt);
@@ -83,7 +90,8 @@ protected:
     vec3 position;
     vec3 initial_position;      // we should remove this field.
 
-    vec3 velocity;
+    vec3 velocity; // Used for interpolation
+    vec3 initial_velocity;
 
     quaternion initial_orientation;
 
