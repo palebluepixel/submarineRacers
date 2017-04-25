@@ -2,7 +2,7 @@
 
 enum PointStatus { IN, A, B };
 
-bool insideSegment(vec3 p, Segment l) {
+PointStatus insideSegment(vec3 p, Segment l) {
     //Check if c in line segment from a to b.
     //TODO could be much more efficient, this is just quick
     if(length(p - l.a) < length(l.b - l.a)) {

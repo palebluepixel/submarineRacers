@@ -62,6 +62,7 @@ public:
     
     /**     physics:        **/
     virtual int onTick(float dt);
+    virtual vec3 getDrag();
     void applyForce(vec3 force);
     void applyTorque(quaternion torque);
 
@@ -90,7 +91,7 @@ protected:
     quaternion angular_velocity;
 
     float mass;
-    float dragCoef; //
+    float dragCoef;
 
     int id;
     char* name;

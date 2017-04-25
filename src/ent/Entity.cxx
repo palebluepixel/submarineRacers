@@ -87,8 +87,7 @@ int Entity::onTick(float dt){
     //Collision checks already done
 
     // Calculate physics forces
-    vec3 drag = velocity * length(velocity) * (-dragCoef);
-    applyForce(drag);
+    applyForce(getDrag());
     //Do we want some sort of bouyancy to restrict objects to underwater?
 
     // Apply Forces
@@ -97,10 +96,22 @@ int Entity::onTick(float dt){
     position += (velocity + acceleration * (dt/2)) * dt;
     velocity += acceleration * dt;
 
+    // Apply rotations
+    //angular_velocity += torques
+
+    quaternion rotation = this->angular_velocity;
+    //rotation *= dt //Multiply angle by dt
+    //orientation = rotation * initial_orientation //Order matters!
+
     // Reset
     forces = glm::vec3(0, 0, 0);
     //torques.zero();
     return 0;
+}
+
+// Some entites can have more complex drag functions
+vec3 Entity::getDrag() {
+    return velocity * length(velocity) * (-dragCoef);
 }
 
 //change object's status to spawned and place it in its intial position
