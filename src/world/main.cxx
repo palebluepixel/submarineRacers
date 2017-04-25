@@ -157,7 +157,7 @@ int main(void){
     camera->setNearFar(0.1, 1000.0);
 
     vec3 oceanColor = vec3(0,70,95) / 256.0;
-    vec3 oceanBrightColor = vec3(141,241,245) / 256.0;
+    vec3 oceanBrightColor = vec3(70,241,245) / 256.0;
 
     //create view
     View *view = new View(world->window);
@@ -167,7 +167,7 @@ int main(void){
     view->setNear(0.1);
     view->setFar(1000.0);
     view->setSunlight(vec3(-0.3, 1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
-    view->setFog(1, oceanColor, 0.05f, 5.0);
+    view->setFog(0, oceanColor, 0.05f, 5.0);
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
         0.03f, -5.0f, -30.0f);
 
