@@ -251,8 +251,6 @@ int main(int argc, char*argv[]){
             //quick hack-in of a cube movement animation
             vec3 pos = cubes[0]->getPosition();
             cubes[0]->setPosition(pos - vec3(0,0.03,0));
-            //posUpBuf msg; msg.pos = cubes[0]->getPosition();
-            //server->broadcast((short)24, sizeof(msg), (uint8_t*)&msg);
             message *msg = cubes[0]->prepareMessageSegment();
             server->broadcast(msg);
             deleteMessage(msg);
