@@ -83,7 +83,6 @@ int Entity::prepare_message_segment(){
 
 //physics tick behavior
 int Entity::onTick(float dt){
-    //TODO fix all pseudocode
     //Collision checks already done
 
     // Calculate physics forces
@@ -97,15 +96,19 @@ int Entity::onTick(float dt){
     velocity += acceleration * dt;
 
     // Apply rotations
-    //angular_velocity += torques
+    vec3 angular_accel = torques / mass;
 
-    quaternion rotation = this->angular_velocity;
-    //rotation *= dt //Multiply angle by dt
-    //orientation = rotation * initial_orientation //Order matters!
+    vec3 rot_vec = (this->angular_velocity + angular_accel * (dt/2)) * dt;
+    float rot_vec_len = length(rot_vec);
+
+    angular_velocity += angular_accel * dt;
+
+    quaternion rotation = angleAxis(rot_vec_len, rot_vec / rot_vec_len);
+    orientation = rotation * initial_orientation; //Order matters!
 
     // Reset
     forces = glm::vec3(0, 0, 0);
-    //torques.zero();
+    torques = glm::vec3(0, 0, 0);
     return 0;
 }
 
@@ -145,7 +148,7 @@ mat4 Entity::modelMatrix(){
 
 
 void Entity::drawEntity(){
-    int i;
+    //int i;
     for(TransformedMesh tmesh : meshes)
         tmesh.mesh->draw();
 }
@@ -153,3 +156,12 @@ void Entity::drawEntity(){
 void Entity::applyForce(vec3 force) {
     forces += force;
 }
+
+void Entity::applyTorque(vec3 torque) {
+    torques += torque;
+}
+
+//TODO
+/*vec3 Entity::getDirection() {
+    return (0,0,1) transformed by orientation
+}*/
