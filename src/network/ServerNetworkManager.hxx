@@ -20,7 +20,7 @@ protected:
     int id;
 
 
-	Actuator<Submarine> *actuator;
+	//Actuator<Submarine> *actuator;
 	Submarine *sub;
 
 	void controllerStateCommand(short len, char* message);
