@@ -159,17 +159,50 @@ int World::handleEventUSERFINISH()
 }
 
 
+/* Handle one tick of the graphics clock (that is, render the game) */
+int World::handleGraphicsTick(float t, float dt)
+{
+    /* Client-side interpolation may happen here as well */ 
+
+    this->renderAll();
+
+    return 1;
+}
+
+void World::renderAll()
+{
+    this->getLevel()->renderAll(this->getView(), this->getEntityRenderer(), 
+        this->getSkyboxRenderer());
+}
+
+/* Handle one tick of the networks clock. This is where we handle communication
+with the server/client. */
+int World::handleNetworksTick(float t, float dt, int mmax)
+{
+    if(this->isServer())
+        this->handleNetworksTickServer(t, dt, mmax);
+    else
+        this->handleNetworksTickClient(t, dt, mmax);
+
+    return 1;
+}
+
+void World::handleNetworksTickServer(float t, float dt, int mmax)
+{
+    this->getServer()->ReadMessages(mmax);
+    this->sendAllUpdates();
+}
+
+void World::handleNetworksTickClient(float t, float dt, int mmax)
+{
+    this->getClient()->ReadMessages(mmax);
+}
+
+
+
 void World::sendAllUpdates()
 {
-    for (auto entry : this->getLevel()->entities)
-    {
-        auto entity = entry.second;
-        if(entity->isShouldSendUpdate()){
-            message* m = entity->prepareMessageSegment();
-            this->server->broadcast(m);
-            deleteMessage(m);
-        }
-    }
+    this->getLevel()->sendPosUps(this->getServer());
 }
 
 void World::setEntData(posUpBuf* msg)

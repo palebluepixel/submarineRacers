@@ -17,14 +17,6 @@ public:
     constructor */
     void connectServer();
 
-    /* Reads any incoming messages and then parses them. 
-    Will process a maximum of mmax messages (used to control how much time
-    we spend doing network stuff per tick, anything leftover will be done
-    next tick). Processes messages until none remain if mmax == 0 (there
-    is a risk of this continuing infinitely if we always recieve a new 
-    message before we finish processing the old one. */
-    void handleNetworkTick(uint32_t mmax);
-
     /* Tell the server what's good */
     void messageServer(short len, uint8_t*msg);
 

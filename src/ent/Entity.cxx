@@ -21,6 +21,8 @@ Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, char*nam
     this->forces = glm::vec3(0, 0, 0);
     //this.>torques
 
+    this->drawable = 1;
+
     /* This is intialized to 1 so we can be positive the server and client
     agree about the starting position of every object. */
     this->shouldSendUpdate = 1;

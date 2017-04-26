@@ -40,7 +40,7 @@ void Level::upEntData(posUpBuf *info)
 }
 
 /* Spawn or despawn an object. Returns the old EntityStatus */
-EntityStatus Level::changeObjectSpawn(int id, EntityStatus n) { return SPAWNED; }
+EntityStatus Level::changeObjectSpawn(int id, EntityStatus n) { /*TODO*/return SPAWNED; }
 
 
 /* Get the entity with the given ID */
@@ -68,4 +68,52 @@ int Level::addEntity(Entity *entity)
 		return 0;
 	this->entities[entity->getID()] = entity;
 	return 1;
+}
+
+
+
+
+/* Using the given server, broadcast position updates to all clients. */
+void Level::sendPosUps(Server *server)
+{
+	for (auto entry : this->entities)
+    {
+        auto entity = entry.second;
+        if(entity->isShouldSendUpdate()){
+            message* m = entity->prepareMessageSegment();
+            server->broadcast(m);
+            deleteMessage(m);
+        }
+    }
+}
+
+/* Render all renderable entities, the skybox ... */
+void Level::renderAll(View *view, Renderer *r, Renderer *rsky)
+{
+	this->renderSkybox(view, rsky);
+	this->renderAllEnts(view, r);
+}
+
+/* Using the given view and renderer, draw all entities in the level. */
+void Level::renderAllEnts(View *view, Renderer *r)
+{
+	r->enable();
+	for (auto entry : this->entities) {
+        auto entity = entry.second;
+        //log(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
+        if(entity->isDrawable())
+        	r->render(view, entity);
+    }
+}
+
+/* Skybox */
+void Level::setSkybox(Gadget *skybox)
+{
+	this->skybox = skybox;
+}
+
+void Level::renderSkybox(View *view, Renderer *r)
+{
+	r->enable();
+	r->render(view, this->skybox);
 }

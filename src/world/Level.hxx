@@ -8,6 +8,9 @@
 #include <vector>
 #include <unordered_map>
 #include <util/log.hxx>
+#include <network/Server.hxx>
+#include <graphics/view.hxx>
+#include <graphics/renderer.hxx>
 
 using namespace std;
 
@@ -43,15 +46,32 @@ public:
 	added, 0 if it couldn't due to the ID already being taken. */
 	int addEntity(Entity *entity);
 
-	/* A list of every entity that exists in the level. For ease of finding 
-	specific entities, we store them as a hash table (unoredered map)*/
-	unordered_map<int, Entity *> entities;
+	/* Using the given server, broadcast position updates to all clients. */
+	void sendPosUps(Server *server);
+
+	/* Render all renderable entities, the skybox ... 
+	Right now we pass in two renderers, one for entities, and one for the skybox. 
+	We may eventually want to change this to be a map <char*,renderer*> and allow
+	entities to define the "name" of the renderer that is supposed to render them.*/
+	void renderAll(View *view, Renderer *r, Renderer *rsky);
+
+	/* Using the given view and renderer, draw all entities in the level. */
+	void renderAllEnts(View *view, Renderer *r);
+	
+	/* Skybox */
+	void setSkybox(Gadget *skybox);
+	void renderSkybox(View *view, Renderer *r);
 
 	/**** TODO ****/
 	/* Color and camera information */
 	/* heightmap */
 
+private:
+	/* A list of every entity that exists in the level. For ease of finding 
+	specific entities, we store them as a hash table (unordered map)*/
+	unordered_map<int, Entity *> entities;
 
+	Gadget *skybox;
 
 };
 

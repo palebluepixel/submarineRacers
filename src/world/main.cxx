@@ -104,7 +104,7 @@ void update(double elapsed){
     using namespace std;
     // std::cout << elapsed << std::endl;
 
-    View *view = world->view;    
+    View *view = world->getView();    
     Camera *cam = view->activeCamera(); 
 
     double rSpeed = 2.0 * elapsed;
@@ -150,15 +150,14 @@ int main(int argc, char*argv[]){
     //set up server or client: eventually we will make command line flags more advanced
     //First arg is "s" for server or "c" for client
     //Second arg is server hostname is we are a client
-    world->isServer = (argv[1][0] == 's');
-    if(world->isServer){
-        world->server = new Server((short)PORT, NULL);
-        printf("Port: %d\n", world->server->getPort());
-        world->server->initListeningSocket();
+    world->setIsServer(argv[1][0] == 's');
+    if(world->isServer()){
+        world->setServer(new Server((short)PORT, NULL));
+        world->getServer()->initListeningSocket();
     } else {
-        world->client = new Client(PORT, argv[2]);
-        printf("Hostname: %s, Port: %d\n", world->client->getHost(), world->client->getPort());
-        world->client->connectServer();
+        world->setClient(new Client(PORT, argv[2]));
+        log(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
+        world->getClient()->connectServer();
     }
 
     // set up shaders.
@@ -189,7 +188,6 @@ int main(int argc, char*argv[]){
 
     //create view
     View *view = new View(world->window);
-    world->view = view;
     view->addCamera(camera);
     view->setFOV(90);
     view->setNear(0.1);
@@ -201,10 +199,15 @@ int main(int argc, char*argv[]){
 
     Level *level = new Level();
     level->buildLevelFromFile();
-    world->setLevel(level);
 
     //create skybox
     Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    level->setSkybox(skybox);
+
+    world->setLevel(level);
+    world->setView(view);
+    world->setEntityRenderer(r);
+    world->setSkyboxRenderer(rsky);
 
     int width, height;
 
@@ -215,9 +218,10 @@ int main(int argc, char*argv[]){
     duration<double, std::milli> time_span;
     double elapsed;
 
-    if(!world->isServer) {
+    //init connection
+    if(world->isClient()) {
         char *str = "binch";
-        world->client->messageServer(strlen(str), (uint8_t*)str);
+        world->getClient()->messageServer(strlen(str), (uint8_t*)str);
     }
 
 
@@ -232,15 +236,11 @@ int main(int argc, char*argv[]){
         time_prev = time_curr;
 
         //network testing
-        if(world->isServer){
-            world->server->handleNetworkTick(20);
+        if(world->isServer()){
             //quick hack-in of a cube movement animation
             Entity *c = world->getLevel()->getEntityByID(0);
-            vec3 pos = c->getPosition();
-            c->setPosition(pos - vec3(0,0.03,0));
-            world->sendAllUpdates();
-        } else {
-            world->client->handleNetworkTick(20);
+            vec3 pos = c->getPosition() - vec3(0,0.02,0);
+            c->setPosition(pos);
         }
 
         //window setup
@@ -250,17 +250,9 @@ int main(int argc, char*argv[]){
         glClearColor(1.0, 0.5, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        rsky->enable();
-        rsky->render(view, skybox);
-
-        r->enable ();
-
-        for (auto entry : world->getLevel()->entities) {
-            auto entity = entry.second;
-            r->render(view, entity);
-            if(!entity->getID() == 0)
-                entity->setOrientation(glm::rotate(entity->getOrientation(),3.14f/64.f,vec3(0,1.f,0)));
-        }
+        world->handleNetworksTick(0,0,20);
+        world->handleGraphicsTick(0,0);
+        
 
         glfwSwapBuffers(world->window);
         glfwPollEvents();

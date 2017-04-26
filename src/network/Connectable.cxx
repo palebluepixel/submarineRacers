@@ -9,6 +9,37 @@ Connectable::Connectable(short port, const char *hostname)
 Connectable::~Connectable()
 {}
 
+/* Reads any incoming messages and then parses them. 
+Will process a maximum of mmax messages (used to control how much time
+we spend doing network stuff per tick, anything leftover will be done
+next tick). Processes messages until none remain if mmax == 0 (there
+is a risk of this continuing infinitely if we always recieve a new 
+message before we finish processing the old one. */
+void Connectable::ReadMessages(uint32_t mmax)
+{
+    int i, ret;
+    if(mmax == 0){
+        while(1){
+            if(!this->ReadOneMessage())
+                return;
+        }
+    }
+
+    for(i=0; i<mmax; i++){
+        if(!this->ReadOneMessage())
+            return;
+    }
+}
+
+/* Process one message from the message buffer. This has no functionality
+in the Connectbale class and should be implemented in server / client */
+int Connectable::ReadOneMessage()
+{
+    return -1;
+}
+
+
+
 /* Reads the least recently recieved message from our listening
     socket and copies it into the message buffer as a messageContainer. */
 void Connectable::recieveOneMessage(int socket)
