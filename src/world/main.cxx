@@ -141,7 +141,7 @@ void update(double elapsed){
 int main(int argc, char*argv[]){
 
     // Set logging level
-    loglevel_GLOBAL = LOGMEDIUM;
+    loglevel_GLOBAL = LOGLOW;
 
     world = new World();
 
@@ -150,17 +150,15 @@ int main(int argc, char*argv[]){
     //set up server or client: eventually we will make command line flags more advanced
     //First arg is "s" for server or "c" for client
     //Second arg is server hostname is we are a client
-    int isServer = (argv[1][0] == 's');
-    Server *server;
-    Client *client;
-    if(isServer){
-        server = new Server((short)PORT, NULL);
-        printf("Port: %d\n", server->getPort());
-        server->initListeningSocket();
+    world->isServer = (argv[1][0] == 's');
+    if(world->isServer){
+        world->server = new Server((short)PORT, NULL);
+        printf("Port: %d\n", world->server->getPort());
+        world->server->initListeningSocket();
     } else {
-        client = new Client(PORT, argv[2]);
-        printf("Hostname: %s, Port: %d\n", client->getHost(), client->getPort());
-        client->connectServer();
+        world->client = new Client(PORT, argv[2]);
+        printf("Hostname: %s, Port: %d\n", world->client->getHost(), world->client->getPort());
+        world->client->connectServer();
     }
 
     // set up shaders.
@@ -201,23 +199,12 @@ int main(int argc, char*argv[]){
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
         0.03f, -5.0f, -30.0f);
 
-    //create test objects
-    vec3 cubePos[] = {vec3(-5,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
-        vec3(5, -40, 5)}; 
-    vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
-    int ncubes = 6, i;
-    Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
-    cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
-    //cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
-    for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
-        cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
-        //cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
-    }
+    Level *level = new Level();
+    level->buildLevelFromFile();
+    world->setLevel(level);
 
     //create skybox
-    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
 
     int width, height;
 
@@ -228,12 +215,11 @@ int main(int argc, char*argv[]){
     duration<double, std::milli> time_span;
     double elapsed;
 
-    if(!isServer) {
+    if(!world->isServer) {
         char *str = "binch";
-        client->messageServer(strlen(str), (uint8_t*)str);
+        world->client->messageServer(strlen(str), (uint8_t*)str);
     }
 
-    world->moveable = cubes[0];
 
     while (!glfwWindowShouldClose(world->window)){
 
@@ -246,16 +232,15 @@ int main(int argc, char*argv[]){
         time_prev = time_curr;
 
         //network testing
-        if(isServer){
-            server->readOneMessage();
+        if(world->isServer){
+            world->server->readOneMessage();
             //quick hack-in of a cube movement animation
-            vec3 pos = cubes[0]->getPosition();
-            cubes[0]->setPosition(pos - vec3(0,0.03,0));
-            message *msg = cubes[0]->prepareMessageSegment();
-            server->broadcast(msg);
-            deleteMessage(msg);
+            Entity *c = world->getLevel()->getEntityByID(0);
+            vec3 pos = c->getPosition();
+            c->setPosition(pos - vec3(0,0.03,0));
+            world->sendAllUpdates();
         } else {
-            client->readOneMessage();
+            world->client->readOneMessage();
         }
 
         //window setup
@@ -270,10 +255,11 @@ int main(int argc, char*argv[]){
 
         r->enable ();
 
-        for(i=0; i<ncubes; i++){
-            r->render(view, cubes[i]);
-            if(i!=0)
-                cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f/64.f,vec3(0,1.f,0));
+        for (auto entry : world->getLevel()->entities) {
+            auto entity = entry.second;
+            r->render(view, entity);
+            if(!entity->getID() == 0)
+                entity->setOrientation(glm::rotate(entity->getOrientation(),3.14f/64.f,vec3(0,1.f,0)));
         }
 
         glfwSwapBuffers(world->window);

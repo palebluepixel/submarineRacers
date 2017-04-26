@@ -1,5 +1,10 @@
 #include "NetworkManager.hxx"
 
+#include <world/world.hxx>
+class World;
+extern World* world; //global 
+
+
 handler NetworkManager::table[4] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },

@@ -9,6 +9,9 @@
 #include <network/MessageProtocols.hxx>
 #include <ent/Entity.hxx>
 #include <util/log.hxx>
+#include <world/Level.hxx>
+#include <network/Server.hxx>
+#include <network/Client.hxx>
 
 using namespace glm;
 
@@ -70,12 +73,6 @@ public:
     int handleTimerTic(float t, float dt);
 
 
-    /* Functions for setting position updates we recive from server */
-    void setEntData(posUpBuf* msg);
-    void setEntData(int objID, vec3 pos, quaternion ori, vec3 vel);
-    Entity *moveable;
-
-
     //View: rendering information, camera, skybox, ground, sun, etc
     View *view;
     Renderer **renderers;
@@ -84,7 +81,26 @@ public:
 
     //reset
     void fatalError();
-    void quit();  
+    void quit(); 
+
+    //level
+    int loadLevel();
+    inline Level * getLevel() {return this->curLevel; }
+    inline void setLevel(Level * level) { this->curLevel = level; }
+
+    //server
+    Server *server;
+    Client *client;
+    int isServer;
+
+    /* Functions for parsing the entity list and sending updates to the client */
+    void sendAllUpdates();
+
+    /* Functions for setting position updates we recieve from server */
+    void setEntData(posUpBuf* msg);
+    Entity *moveable;
+
+
 
 private:
     WorldState state;
@@ -107,7 +123,7 @@ private:
     //ActiveLevel * activeLevel;
         //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
         //Submarine ** subs;
-    int loadLevel();
+    Level * curLevel;
 
     //Players
     //Player ** players; 

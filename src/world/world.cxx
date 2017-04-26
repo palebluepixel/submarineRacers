@@ -159,12 +159,20 @@ int World::handleEventUSERFINISH()
 }
 
 
-void World::setEntData(posUpBuf* msg)
+void World::sendAllUpdates()
 {
-    this->setEntData(msg->id, msg->pos, msg->ori, msg->vel);
+    for (auto entry : this->getLevel()->entities)
+    {
+        auto entity = entry.second;
+        if(entity->isShouldSendUpdate()){
+            message* m = entity->prepareMessageSegment();
+            this->server->broadcast(m);
+            deleteMessage(m);
+        }
+    }
 }
 
-void World::setEntData(int objID, vec3 pos, quaternion ori, vec3 vel)
+void World::setEntData(posUpBuf* msg)
 {
-    this->moveable->setPosition(pos);
+    this->getLevel()->upEntData(msg);
 }

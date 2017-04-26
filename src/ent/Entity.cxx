@@ -2,12 +2,12 @@
 
 using namespace glm;
 
-Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, int id, char*name, 
+Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, char*name, 
     EntityType type, EntityStatus status, float tick_interval) : meshes()
 {
     this->initial_position = initial_position;
     this->initial_orientation = initial_orientation;
-    this->id = id;
+    this->id = this->assignNewID();
     this->name = strdup(name); //not takin any fuckin chances
     this->type = type;
     this->status = status;
@@ -20,6 +20,10 @@ Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, int id, 
     //this->angular_velocity
     this->forces = glm::vec3(0, 0, 0);
     //this.>torques
+
+    /* This is intialized to 1 so we can be positive the server and client
+    agree about the starting position of every object. */
+    this->shouldSendUpdate = 1;
 }
 
 Entity::~Entity()
@@ -30,6 +34,7 @@ Entity::~Entity()
 
 vec3 Entity::Entity::setPosition(vec3 pos)
 {
+    this->shouldSendUpdate = 1;
     vec3 old = this->position;
     this->position = pos;
     return old;
@@ -40,6 +45,7 @@ vec3 Entity::getPosition(){
 }
 
 vec3 Entity::setVelocity(vec3 vel) {
+    this->shouldSendUpdate = 1;
     vec3 old = this->velocity;
     this->velocity = vel;
     return old;
@@ -47,6 +53,7 @@ vec3 Entity::setVelocity(vec3 vel) {
 
 tquat<float> Entity::setOrientation(tquat<float> ori)
 {
+    this->shouldSendUpdate = 1;
     tquat<float> old = this->orientation;
     this->orientation = ori;
     return old;
@@ -107,6 +114,7 @@ int Entity::overwrite(posUpBuf *msg)
 
 //creates server message describing current pos and ori
 message * Entity::prepareMessageSegment(){
+    this->shouldSendUpdate = 0;
     return createPosUpMsg(this);
 }
 
@@ -170,4 +178,10 @@ void Entity::drawEntity(){
 
 void Entity::applyForce(vec3 force) {
     forces += force;
+}
+
+int Entity::assignNewID()
+{
+    static int ID = -1;
+    return ++ID;
 }
