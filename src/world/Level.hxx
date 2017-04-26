@@ -89,6 +89,11 @@ private:
     std::vector<AI_entry> ais;  //REMARK this might need to become a list later if we start doing a lot of deleteions
 
     Gadget *skybox;
+
+    void physicsTick(float dt);
+    void handleCollisions(float dt);
+    void updateEntities(float dt);
+    void updateAIs(float dt);
 };
 
 

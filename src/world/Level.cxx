@@ -146,3 +146,36 @@ void Level::renderSkybox(View *view, Renderer *r)
 	r->enable();
 	r->render(view, this->skybox);
 }
+
+
+
+void Level::updateLevel(float dt) {
+    updateAIs(dt);
+    physicsTick(dt);
+}
+
+void Level::updateAIs(float dt) {
+    for(AI_entry en : ais) {
+        en.time_left -= dt;
+        if(en.time_left <= 0) {
+            en.time_left = en.tickrate; //REMARK could be better with time_left += tickrate depending on behavior
+            en.ai->updateAI();
+        }
+    }
+}
+
+void Level::physicsTick(float dt) {
+    handleCollisions(dt);
+    updateEntities(dt);
+}
+
+void Level::handleCollisions(float dt) {
+    //TODO
+}
+
+void Level::updateEntities(float dt) {
+    for(std::pair<int, Entity *> en : entities) {
+        en.second->onTick(dt);
+    }
+}
+
