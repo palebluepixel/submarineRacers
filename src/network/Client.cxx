@@ -50,6 +50,11 @@ void Client::connectServer()
     this->commSocket = serverSocket;
     this->initalizeListeningThread();
 
+    /* Send the server a message so they know we exist */
+    message *m = createInitMsg();
+    this->messageServer(m);
+    deleteMessage(m);
+
     log(LOGLOW,"Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port), serverAddr.sin_port);
     
 }
@@ -89,6 +94,11 @@ int Client::readOneMessage()
     delete(m);
 
     return 1;
+}
+
+void Client::messageServer(message *msg)
+{
+    this->nm->sendCommand(msg->code, msg->len, msg->msg);
 }
 
 void Client::messageServer(short len, uint8_t *msg)

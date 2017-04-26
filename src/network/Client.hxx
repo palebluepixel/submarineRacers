@@ -18,6 +18,7 @@ public:
     void connectServer();
 
     /* Tell the server what's good */
+    void messageServer(message *msg);
     void messageServer(short len, uint8_t*msg);
 
     /* Reads any incoming messages and then parses them. 

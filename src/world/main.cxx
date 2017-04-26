@@ -177,7 +177,7 @@ int main(int argc, char*argv[]){
     //initalize camera
     Camera *camera = new Camera();
     
-    //position, look-at point, up-vector
+    //position, yaw-roll, up-vector
     camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
@@ -217,12 +217,6 @@ int main(int argc, char*argv[]){
     duration<double, std::milli> time_span;
     double elapsed;
 
-    //init connection
-    if(world->isClient()) {
-        char *str = "binch";
-        world->getClient()->messageServer(strlen(str), (uint8_t*)str);
-    }
-
 
     while (!glfwWindowShouldClose(world->window)){
 
@@ -234,7 +228,6 @@ int main(int argc, char*argv[]){
 
         time_prev = time_curr;
 
-        //network testing
         if(world->isServer()){
             //quick hack-in of a cube movement animation
             Entity *c = world->getLevel()->getEntityByID(0);

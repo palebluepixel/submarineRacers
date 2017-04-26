@@ -53,7 +53,8 @@ int World::handleEventSTARTCLIENT()
     {
         case TITLE:
             this->state = CONNECTING;
-            //send connection request to server
+            this->getClient()->connectServer();
+            this->state = MENU1;
             return ALL_GOOD;
         default:
             //disconnect, reset as client
@@ -68,7 +69,7 @@ int World::handleEventSTARTSERVER()
     {
         case TITLE:
             this->state = LISTEN;
-            // set up port to listen for client connections
+            this->getServer()->initListeningSocket();
             return ALL_GOOD;
         default:
             //disconnect, reset as server
@@ -76,6 +77,7 @@ int World::handleEventSTARTSERVER()
     }
 }
 
+/* unused */
 int World::handleEventWEARECONNECTED()
 {
     switch(this->state)
@@ -108,11 +110,20 @@ int World::handleEventBACKMENU()
 
 int World::handleEventLOADLEVEL()
 {
-    /*switch(this->state)
+    Level *level;
+    switch(this->state)
     {
-
-    }*/
-        return 0;
+        case MENU1:
+        case MENU2:
+            this->state = LOADING_LEVEL;
+            level = new Level();
+            level->buildLevelFromFile();
+            this->setLevel(level);
+            this->state = RACE_START;
+            return ALL_GOOD;
+        default:
+            return this->state;
+    }
 }
 
 int World::handleEventPAUSEGAME()

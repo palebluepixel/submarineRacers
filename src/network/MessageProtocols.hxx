@@ -22,6 +22,11 @@ typedef struct {
 message * createMessage(short code, short len, uint8_t *msg);
 void deleteMessage(message *m);
 
+
+/* Message for client initating connection with server */
+inline message *createInitMsg() { return createMessage(CODE_INIT, 0, NULL); }
+
+
 /* Message for server telling a client where an object is located and its current orientation.
 Velocity can be used for interpolation. */
 typedef struct {
