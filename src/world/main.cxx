@@ -19,7 +19,6 @@
 #include <ent/cube.hxx>
 #include <ent/gadget.hxx>
 #include <world/world.hxx>
-#include <userinput/callbacks.hxx>
 #include <graphics/texture.hxx>
 #include <network/Server.hxx>
 #include <network/Client.hxx>

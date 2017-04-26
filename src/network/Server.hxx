@@ -35,6 +35,14 @@ public:
     /* Prepare our listening socket to listen for connections. */
     void initListeningSocket();
 
+    /* Reads any incoming messages and then parses them. 
+    Will process a maximum of mmax messages (used to control how much time
+    we spend doing network stuff per tick, anything leftover will be done
+    next tick). Processes messages until none remain if mmax == 0 (there
+    is a risk of this continuing infinitely if we always recieve a new 
+    message before we finish processing the old one. */
+    void ReadMessages(uint32_t mmax);
+
     /* Takes a message from the back of the message queue and 
     and calls recieveMessage() from the ServerNetworkManager 
     corresponding to the source client. */
