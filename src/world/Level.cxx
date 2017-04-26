@@ -1,6 +1,6 @@
 #include "Level.hxx"
 
-Level::Level() { }
+Level::Level() {}
 
 Level::~Level() { }
 
@@ -70,6 +70,35 @@ int Level::addEntity(Entity *entity)
 	return 1;
 }
 
+//Returns 0 if successful, -1 if the element can't be found
+int Level::removeEntity(Entity *entity)
+{   
+    //TODO
+    return -1;
+}
+
+
+
+void Level::addAI(AI *ai, float tickrate)
+{   
+    AI_entry entry;
+    entry.ai = ai;
+    entry.tickrate = tickrate;
+    entry.time_left = tickrate;
+    ais.push_back(entry);
+}
+//Returns 0 if successful, -1 if the element can't be found
+int Level::removeAI(AI *ai)
+{   
+    for (std::vector<AI_entry>::const_iterator it = ais.begin() ; it != ais.end(); ++it) {
+        if(it->ai == ai) {
+            ais.erase(it);
+            return 0;
+        }
+    }
+    
+    return -1;
+}
 
 
 

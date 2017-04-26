@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <network/MessageProtocols.hxx>
 #include <ent/Entity.hxx>
+#include <ai/AI.hxx>
 #include <ent/gadget.hxx>
 #include <vector>
 #include <unordered_map>
@@ -14,65 +15,80 @@
 
 using namespace std;
 
+
+struct AI_entry {
+    AI* ai;
+    float tickrate;
+    float time_left;
+};
+
+
 class Level {
 
 public:
-	Level(); 
-	~Level();
+    Level(); 
+    ~Level();
 
-	/* Populate all fields of the class by loading them from a file. */
-	void buildLevelFromFile();
+    /* Populate all fields of the class by loading them from a file. */
+    void buildLevelFromFile();
 
-	/* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
-	void upEntData(posUpBuf *info);
+    /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
+    void upEntData(posUpBuf *info);
 
-	/* Spawn or despawn an object. Returns the old EntityStatus */
-	EntityStatus changeObjectSpawn(int id, EntityStatus n);
+    /* Spawn or despawn an object. Returns the old EntityStatus */
+    EntityStatus changeObjectSpawn(int id, EntityStatus n);
 
-	/* Starting positions for each submarine. In the future, this might be
-	a map of <Submarine, vec3> */
-	vector<vec3> submarineStarts;
+    /* Starting positions for each submarine. In the future, this might be
+    a map of <Submarine, vec3> */
+    vector<vec3> submarineStarts;
 
 
-	/* Get the entity with the given ID */
-	Entity * getEntityByID(int id);
+    /* Get the entity with the given ID */
+    Entity * getEntityByID(int id);
 
-	/* Returns 1 if an entity with id exists in our entity list,
-	0 otherwise */
-	int entityExists(int id);
+    /* Returns 1 if an entity with id exists in our entity list,
+    0 otherwise */
+    int entityExists(int id);
 
-	/* Add this entity to the entity list. This function checks that an entity
-	with the current ID does not already exist. Returns 1 if the entity was
-	added, 0 if it couldn't due to the ID already being taken. */
-	int addEntity(Entity *entity);
+    /* Add this entity to the entity list. This function checks that an entity
+    with the current ID does not already exist. Returns 1 if the entity was
+    added, 0 if it couldn't due to the ID already being taken. */
+    int addEntity(Entity *entity);
+    int removeEntity(Entity * entity);
 
-	/* Using the given server, broadcast position updates to all clients. */
-	void sendPosUps(Server *server);
+    /* Adds an AI to the list of AIs to update*/
+    void addAI(AI *ai, float tickrate);
+    int removeAI(AI *ai);
 
-	/* Render all renderable entities, the skybox ... 
-	Right now we pass in two renderers, one for entities, and one for the skybox. 
-	We may eventually want to change this to be a map <char*,renderer*> and allow
-	entities to define the "name" of the renderer that is supposed to render them.*/
-	void renderAll(View *view, Renderer *r, Renderer *rsky);
+    /* Using the given server, broadcast position updates to all clients. */
+    void sendPosUps(Server *server);
 
-	/* Using the given view and renderer, draw all entities in the level. */
-	void renderAllEnts(View *view, Renderer *r);
-	
-	/* Skybox */
-	void setSkybox(Gadget *skybox);
-	void renderSkybox(View *view, Renderer *r);
+    /* Render all renderable entities, the skybox ... 
+    Right now we pass in two renderers, one for entities, and one for the skybox. 
+    We may eventually want to change this to be a map <char*,renderer*> and allow
+    entities to define the "name" of the renderer that is supposed to render them.*/
+    void renderAll(View *view, Renderer *r, Renderer *rsky);
 
-	/**** TODO ****/
-	/* Color and camera information */
-	/* heightmap */
+    /* Using the given view and renderer, draw all entities in the level. */
+    void renderAllEnts(View *view, Renderer *r);
+    
+    /* Skybox */
+    void setSkybox(Gadget *skybox);
+    void renderSkybox(View *view, Renderer *r);
+
+    void updateLevel(float dt);
+
+    /**** TODO ****/
+    /* Color and camera information */
+    /* heightmap */
 
 private:
-	/* A list of every entity that exists in the level. For ease of finding 
-	specific entities, we store them as a hash table (unordered map)*/
-	unordered_map<int, Entity *> entities;
+    /* A list of every entity that exists in the level. For ease of finding 
+    specific entities, we store them as a hash table (unordered map)*/
+    unordered_map<int, Entity *> entities;
+    std::vector<AI_entry> ais;  //REMARK this might need to become a list later if we start doing a lot of deleteions
 
-	Gadget *skybox;
-
+    Gadget *skybox;
 };
 
 
