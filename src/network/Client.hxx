@@ -30,7 +30,7 @@ public:
 
     /* Takes one message out of the message queue and sends it to
     the network manager's process command */
-    void readOneMessage();
+    int readOneMessage();
 
     inline short getPort() { return this->port; }
     inline char* getHost() { return strdup(this->hostname); }

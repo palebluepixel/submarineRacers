@@ -63,21 +63,34 @@ is a risk of this continuing infinitely if we always recieve a new
 message before we finish processing the old one. */
 void Client::handleNetworkTick(uint32_t mmax)
 {
+    int i, ret;
+    if(mmax == 0){
+        while(1){
+            if(!this->readOneMessage())
+                return;
+        }
+    }
 
+    for(i=0; i<mmax; i++){
+        if(!this->readOneMessage())
+            return;
+    }
 }
 
 
 /* Takes one message out of the message queue and sends it to
 the network manager's process command */
-void Client::readOneMessage()
+int Client::readOneMessage()
 {
     MessageContainer *m = this->queue.readMessage();
     if(m==NULL) // no messages
-        return;
+        return 0;
 
     this->nm->recieveMessage(m->msg, m->msgLen);
 
     delete(m);
+
+    return 1;
 }
 
 void Client::messageServer(short len, uint8_t *msg)

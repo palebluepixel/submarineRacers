@@ -25,7 +25,7 @@ Will print at any log level <= priority.
 			} while(0)
 
 #define logPrintBuf(priority, buf, len) \
-			if(loglevel_GLOBAL >= priority) { \
+			if(loglevel_GLOBAL <= priority) { \
 				int ___BUFPRINT___; \
 				for(___BUFPRINT___=0; ___BUFPRINT___<len; ___BUFPRINT___++) \
 					printf("%x ", buf[___BUFPRINT___]); \

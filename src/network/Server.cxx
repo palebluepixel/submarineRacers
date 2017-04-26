@@ -74,19 +74,31 @@ is a risk of this continuing infinitely if we always recieve a new
 message before we finish processing the old one. */
 void Server::handleNetworkTick(uint32_t mmax)
 {
-    
+    int i, ret;
+    if(mmax == 0){
+        while(1){
+            if(!this->readOneMessage())
+                return;
+        }
+    }
+
+    for(i=0; i<mmax; i++){
+        if(!this->readOneMessage())
+            return;
+    }
 }
 
 
 /* Takes one message from the message queue, finds the client who sent it,
     and calls recieveMessage() from the ServerNetworkManager corresponding
-    to the source client. */
-void Server::readOneMessage()
+    to the source client. Returns 0 if there were no messages remaining,
+    1 otherwise. */
+int Server::readOneMessage()
 {
 
     MessageContainer *m = this->queue.readMessage();
     if(m==NULL) // no messages
-        return;
+        return 0;
 
     ServerNetworkManager *client;
     /* If a client with this address is in our list, we will call
@@ -100,6 +112,8 @@ void Server::readOneMessage()
     client->recieveMessage(m->msg, m->msgLen);
 
     delete(m);
+
+    return 1;
 }
 
 

@@ -233,14 +233,14 @@ int main(int argc, char*argv[]){
 
         //network testing
         if(world->isServer){
-            world->server->readOneMessage();
+            world->server->handleNetworkTick(20);
             //quick hack-in of a cube movement animation
             Entity *c = world->getLevel()->getEntityByID(0);
             vec3 pos = c->getPosition();
             c->setPosition(pos - vec3(0,0.03,0));
             world->sendAllUpdates();
         } else {
-            world->client->readOneMessage();
+            world->client->handleNetworkTick(20);
         }
 
         //window setup

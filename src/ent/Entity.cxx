@@ -32,7 +32,7 @@ Entity::~Entity()
 }
 
 
-vec3 Entity::Entity::setPosition(vec3 pos)
+vec3 Entity::setPosition(vec3 pos)
 {
     this->shouldSendUpdate = 1;
     vec3 old = this->position;
@@ -45,7 +45,7 @@ vec3 Entity::getPosition(){
 }
 
 vec3 Entity::setVelocity(vec3 vel) {
-    this->shouldSendUpdate = 1;
+    //this->shouldSendUpdate = 1;
     vec3 old = this->velocity;
     this->velocity = vel;
     return old;
@@ -53,7 +53,7 @@ vec3 Entity::setVelocity(vec3 vel) {
 
 tquat<float> Entity::setOrientation(tquat<float> ori)
 {
-    this->shouldSendUpdate = 1;
+    //this->shouldSendUpdate = 1;
     tquat<float> old = this->orientation;
     this->orientation = ori;
     return old;

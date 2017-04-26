@@ -48,7 +48,7 @@ public:
     /* Takes a message from the back of the message queue and 
     and calls recieveMessage() from the ServerNetworkManager 
     corresponding to the source client. */
-    void readOneMessage();
+    int readOneMessage();
 
     /* Returns 0 if there is no client associated with the given address in our
     client list, 1 if a client with this address does exist. */
