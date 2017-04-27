@@ -1,4 +1,5 @@
 #include "mesh.hxx"
+#include <obj/obj.hxx>
 #include <obj/obj-reader.hxx>
 
 /*! The locations of the standard mesh attributes.  The layout directives in the shaders
@@ -16,7 +17,7 @@ Mesh::Mesh(GLenum p) {
   data.prim=p;
   data.nIndicies=0;
   data.color=vec4 (1,1,1,0.5f);
-  data.shouldTexture = 0;
+  data.shouldTexture = 1;
 
   data.polygon_mode=GL_FILL;
   data.visible=1;
@@ -89,7 +90,14 @@ void Mesh::loadOBJ(char *file){
   data.shouldTexture = false;  // change.
   data.color = vec4(1.f,1.f,1.f,1.f);
 
+  // todo: change code to use this form vvv . and make each
+  //       group a single mesh.
+  // Model loaded(std::string(file));
+  //            ^^^
+
   OBJmodel *model = OBJReadOBJ (file);
+
+  printf("texture: %s\n",model->mtllibname);
 
   vec3 *verts = new vec3[model->numtriangles*3];
   vec3 *norms = new vec3[model->numtriangles*3];
@@ -105,6 +113,8 @@ void Mesh::loadOBJ(char *file){
 
   int ind=0;
   while(gp != 0){
+    // struct Material mat = model->Material(gp->material);
+    // printf("g texture: %s\n",mat.diffuseMap.c_str());
     for(int i=0;i<gp->numtriangles;++i){
       OBJtriangle &tri = model->triangles[gp->triangles[i]];
       verts[ind+0]=model->vertices[tri.vindices[0]];
@@ -118,9 +128,11 @@ void Mesh::loadOBJ(char *file){
       norms[ind+1]=model->normals[tri.nindices[1]];
       norms[ind+2]=model->normals[tri.nindices[2]];
 
-      // texcs[ind+0]=model->texcoords[tri.tindices[0]];
-      // texcs[ind+1]=model->texcoords[tri.tindices[1]];
-      // texcs[ind+2]=model->texcoords[tri.tindices[2]];
+      if(model->numtexcoords > 0){
+        texcs[ind+0]=model->texcoords[tri.tindices[0]];
+        texcs[ind+1]=model->texcoords[tri.tindices[1]];
+        texcs[ind+2]=model->texcoords[tri.tindices[2]];
+      }
 
       ind+=3;
     }

@@ -14,7 +14,7 @@ Camera::Camera ()
 void Camera::init(vec3 pos, vec3 ypr, vec3 up)
 {
     this->_pos = pos;
-    this->setYPR(ypr[0], ypr[1], ypr[2]);
+    this->setYPR(ypr.x,ypr.y,ypr.z);
     this->_up = up;
 }
 

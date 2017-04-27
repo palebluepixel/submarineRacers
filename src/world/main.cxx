@@ -180,7 +180,7 @@ int main(int argc, char*argv[]){
     Camera *camera = new Camera();
     
     //position, look-at point, up-vector
-    camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(-20,0,-20),vec3(3.141592f/4,3.141592f*-0.1f,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
 
@@ -205,13 +205,17 @@ int main(int argc, char*argv[]){
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
     Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/bigmonkey.obj");
-    cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
+    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
+    cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),1.f);
     cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
-    for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+    cubes[1] = new Cube(cubePos[1], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[1]);
+    cubes[2] = new Gadget(cubePos[2], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[2], "../assets/models/bigmonkey.obj");
+    cubes[2]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
+    cubes[2]->meshes.push_back(cubes[2]->volume->collisionMesh());
+    for(i=3; i<ncubes; i++){
+        cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/crate.obj");
         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
-        //cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
+        // cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
     }
 
     //create skybox
@@ -222,8 +226,10 @@ int main(int argc, char*argv[]){
     // for timing
     using namespace std::chrono;
     high_resolution_clock::time_point time_prev = high_resolution_clock::now();
+    high_resolution_clock::time_point time_begin = time_prev;
     high_resolution_clock::time_point time_curr;
     duration<double, std::milli> time_span;
+    duration<double, std::milli> time_total;
     double elapsed;
 
     if(!isServer) {
@@ -236,6 +242,7 @@ int main(int argc, char*argv[]){
         // timing across update operations.
         time_curr = high_resolution_clock::now();
         time_span = time_curr - time_prev;
+        time_total = time_curr - time_begin;
         elapsed   = time_span.count() / 1000.0;
         update(elapsed);
 
@@ -251,8 +258,8 @@ int main(int argc, char*argv[]){
         }
 
         //quick hack-in of a cube movement animation
-         vec3 pos = cubes[0]->getPosition();
-         cubes[0]->setPosition(pos - vec3(0,0.03,0));
+        vec3 pos = cubes[0]->getPosition();
+        cubes[0]->setPosition(vec3(pos.x,-10.f + 10.f*sin(time_total.count()*0.0005),pos.z));
 
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
@@ -268,7 +275,7 @@ int main(int argc, char*argv[]){
 
         for(i=0; i<ncubes; i++){
             r->render(view, cubes[i]);
-            cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f/64.f,vec3(0,1.f,0));
+            cubes[i]->orientation = glm::rotate(cubes[i]->orientation,3.14f*(i+1)/1024.f,vec3(0,1.f,0));
         }
 
         glfwSwapBuffers(world->window);

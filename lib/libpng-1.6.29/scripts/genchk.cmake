@@ -9,7 +9,7 @@
 # and license in png.h
 
 # Variables substituted from CMakeLists.txt
-set(SRCDIR "/home/amsadowski/submarineRacers/lib/libpng-1.6.29")
+set(SRCDIR "/home/ashwin/repo/submarines/lib/libpng-1.6.29")
 
 set(AWK "/usr/bin/awk")
 

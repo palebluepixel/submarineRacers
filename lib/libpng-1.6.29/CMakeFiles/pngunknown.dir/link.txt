@@ -1,1 +1,1 @@
-/usr/bin/cc     CMakeFiles/pngunknown.dir/contrib/libtests/pngunknown.c.o  -o pngunknown -Wl,-rpath,/home/amsadowski/submarineRacers/lib/libpng-1.6.29 -rdynamic libpng16.so.16.29.0 -lz -lm 
+/usr/bin/cc     CMakeFiles/pngunknown.dir/contrib/libtests/pngunknown.c.o  -o pngunknown -rdynamic libpng16.so.16.29.0 -lz -lm -Wl,-rpath,/home/ashwin/repo/submarines/lib/libpng-1.6.29 

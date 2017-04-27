@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/tools/png-fix-itxt.c" "/home/amsadowski/submarineRacers/lib/libpng-1.6.29/CMakeFiles/png-fix-itxt.dir/contrib/tools/png-fix-itxt.c.o"
+  "/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/tools/png-fix-itxt.c" "/home/ashwin/repo/submarines/lib/libpng-1.6.29/CMakeFiles/png-fix-itxt.dir/contrib/tools/png-fix-itxt.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

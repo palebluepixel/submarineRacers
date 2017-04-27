@@ -184,14 +184,14 @@ void UnderwaterRenderer::render(View *view, TransformedMesh mesh){
   setUniform(surfaceDepthLoc, oc.surfaceDepth);
   setUniform(floorDepthLoc, oc.floorDepth);
 
-  setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
+  setUniform(shouldTextureLoc, 1);
   texture2d *tex = mesh.mesh->data.tex;
   if(tex){
     tex->Bind();
     tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
     tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
   }
-  setUniform(texSamplerLoc, 0);
+  // setUniform(texSamplerLoc, 0);
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);

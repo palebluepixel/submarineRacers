@@ -12,12 +12,12 @@
 # Modeled after libxml-config.
 
 version="1.6.29"
-prefix="/home/amsadowski/submarineRacers/lib/png"
-exec_prefix="${prefix}"
-libdir="${exec_prefix}/lib"
-includedir="${prefix}/include/libpng16"
+prefix="/usr/local"
+exec_prefix="/usr/local"
+libdir="/usr/local/lib"
+includedir="/usr/local/include/libpng16"
 libs="-lpng16"
-all_libs="-lpng16 -lm -lz -lm "
+all_libs="-lpng16 -lz -lm"
 I_opts="-I${includedir}"
 L_opts="-L${libdir}"
 R_opts=""

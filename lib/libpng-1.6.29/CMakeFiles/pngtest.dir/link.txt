@@ -1,1 +1,1 @@
-/usr/bin/cc     CMakeFiles/pngtest.dir/pngtest.c.o  -o pngtest -Wl,-rpath,/home/amsadowski/submarineRacers/lib/libpng-1.6.29 -rdynamic libpng16.so.16.29.0 -lz -lm 
+/usr/bin/cc     CMakeFiles/pngtest.dir/pngtest.c.o  -o pngtest -rdynamic libpng16.so.16.29.0 -lz -lm -Wl,-rpath,/home/ashwin/repo/submarines/lib/libpng-1.6.29 
