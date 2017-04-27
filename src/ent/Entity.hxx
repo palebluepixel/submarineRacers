@@ -3,12 +3,16 @@
 
 
 #include <glm/glm.hpp>
-#include <physics/physics.hxx>
+#include <glm/gtc/quaternion.hpp>
+#include <physics/Volume.hxx>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
+// #include <physics/PhysicsEngine.hxx>
+#include <vector>
+#include <network/MessageProtocols.hxx>
 
 using namespace glm;
 using namespace Space;
@@ -33,58 +37,80 @@ enum EntityStatus {
     DESTROYED
 };
 
+typedef glm::tquat<float> quaternion;
 
 class Entity {
 
+// friend class PhysicsEngine;
+
 public:
 
-    Entity(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
+    Entity(vec3 initial_position, quaternion initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
     ~Entity();
 
-    vec3 setPosition(vec3 pos);
-    mat3 setOrientation(mat3 ori);
-    EntityType setEntityType(EntityType type);
-    int setID(int id);
-    char* setName(char* name);
-
-    //overwrite client data with server
-    virtual int overwrite(vec3 pos, mat3 ori);
-    //creates server message describing current pos and ori
-    virtual int prepare_message_segment();
-
-    //physics tick behavior
-    virtual int onTick();
-
     EntityStatus status;
-    //change object's status to spawned and place it in its intial position
-    virtual EntityStatus spawn();
 
-    //return the model matrix to translate and rotate this object in world-space
-    mat4 modelMatrix();
+public:
+    char*        setName(char* name);
+    int          setID(int id);
+    EntityType   setEntityType(EntityType type);
 
+    vec3         setPosition(vec3 pos);
+    quaternion   setOrientation(quaternion ori);
+    vec3         setVelocity(vec3 vel);
 
-    //Render all meshes to screen
-    void drawEntity();
+    vec3         getPosition();
+    quaternion   getOrientation();
+    vec3         getVelocity();
+    int          getID();
 
-    inline int getNMeshes() { return this->nMeshes; }
-    inline Mesh ** getMeshes() {return this->nMeshes>0 ? this->meshes : NULL;}
+    inline bool  isCollidable()       { return this->collidable;       }
+    inline bool  isDrawable()         { return this->drawable;         }
+    inline bool  isMovable()          { return this->movable;          }
+    inline bool  isShouldSendUpdate() { return this->shouldSendUpdate; }
+
+    /**     networking:     **/
+    virtual int overwrite(vec3 pos, quaternion ori, vec3 vel);    //overwrite client data with server
+    virtual int overwrite(posUpBuf *msg);
+    virtual message* prepareMessageSegment();                  //creates server message describing current pos, ori, and velocity
+    
+    /**     physics:        **/
+    virtual int onTick(float dt);
+    void applyForce(vec3 force);
+    void applyTorque(quaternion torque);
+
+    /**     game state:     **/
+    virtual EntityStatus spawn();     // set status to spawned, place in intial position
+
+    /**     graphics:       **/
+    mat4 modelMatrix();           // return transform matrix TO world space.
+    void drawEntity();            // render meshes to screen
+
+    inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
+public:
+    Volume *volume;
+    quaternion orientation;
+    std::vector<TransformedMesh> meshes;
 protected:
-
     vec3 position;
-    vec3 initial_position;
+    vec3 initial_position;      // we should remove this field.
 
-    mat3 orientation;    
-    mat3 initial_orientation;
+    vec3 velocity; // Used for interpolation
+    vec3 initial_velocity;
+
+    quaternion initial_orientation;
+
+    quaternion angular_velocity;
+
+    float mass;
+    float dragCoef; //
 
     int id;
     char* name;
     EntityType type;
-
-    //Bounding volume, not sure how we are representing it
-    Volume *volume;
 
     float tick_interval;
 
@@ -92,14 +118,23 @@ protected:
     bool movable;
     bool drawable;
 
-    //allow objects to be composed of multiple meshes
-    int nMeshes;
-    Mesh ** meshes;
+    /* if the server needs to send an update to the client this tick. This should be
+    set to TRUE whenever we change this entity's position, velocity, or orientation.
+    It should be set to FALSE when we call prepareMessageSegment. */
+    bool shouldSendUpdate;
+
     virtual void initalizeMeshes()=0;
 
     texture2d *tex;
     image2d *img;
     virtual void initalizeTextures(const char* texfile)=0;
+
+    //per tick quantities
+    vec3 forces;    // Sum of all forces on this object
+    //vec3 torques; //What should torques be? Do we even want torques // Sum of all torques on this object
+
+    /* Generates a unique ID for this object. */
+    int assignNewID();
 };
 
 //TODO remove this

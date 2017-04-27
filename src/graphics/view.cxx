@@ -32,6 +32,12 @@ void View::addCamera(Camera *cam)
     if(this->nCameras == 1) this->activeCamerai = 0;
 }
 
+void View::nextCamera()
+{
+    this->activeCamerai = (this->activeCamerai + 1) % this->nCameras;
+    log(LOGMEDIUM, "current camera: %d out of %d\n", this->activeCamerai, this->nCameras);
+}
+
 void View::switchCamera(int cami)
 {
     if(cami < 0 || cami > this->nCameras || cami > this->maxCameras) return;

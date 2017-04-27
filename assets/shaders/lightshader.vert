@@ -11,14 +11,18 @@ in vec2 texCoord;
 varying vec3 fragmentNormal; 
 varying vec2 fragmentTexCoord;
 varying float distToCam;
+varying float depth;
 
 
 void main (void)
 {
-    vec4 position = projection * modelView * model * vec4(position,1.0);
-    fragmentNormal = normal;
+    // Transform vertex from model space to camera space
+    vec4 positionModel = model * vec4(position,1.0);
+    vec4 positionModelView = projection * modelView * positionModel;
+    fragmentNormal = (model * vec4(normal,0.0)).xyz;
     fragmentTexCoord = texCoord;
 
-    distToCam = -position.z;
-    gl_Position = position;
+    distToCam = -positionModelView.z;
+    depth = positionModel.y;
+    gl_Position = positionModelView;
 }

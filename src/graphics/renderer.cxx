@@ -8,7 +8,6 @@
 Renderer::Renderer (Shader *sh)
     : _shader(sh)
 { 
-  //positionLoc = glGetAttribLocation(_shader->ID(), "aPosition");
   projectionLoc = _shader->getUniformLocation("projection");
   modelViewLoc = _shader->getUniformLocation ("modelView");
   colorLoc = _shader->getUniformLocation("color");
@@ -18,26 +17,24 @@ Renderer::Renderer (Shader *sh)
 Renderer::~Renderer ()
 { }
 
-void Renderer::Enable ()
-{
+/* Prepare the shader for this renderer for use, and set openGL global
+state information */
+void Renderer::enable (){
   _shader->use();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glEnable (GL_DEPTH_TEST);
 }
 
-void Renderer::Render(View *view, Entity *entity)
-{
-  //std::cout << to_string(entity->modelMatrix());
-  setUniform(modelLoc, entity->modelMatrix());
+void Renderer::render(){ }
 
-  int i;
-  int n = entity->getNMeshes();
-  Mesh ** meshes = entity->getMeshes();
-  if(meshes == NULL)
-    return;
-  for (i=0; i<n; i++){
-    if(meshes[i] != NULL)
-      this->Render(view, meshes[i]);
+/* Given an entity, render each of its meshes */
+void Renderer::render(View *view, Entity *entity){
+  mat4 modelMatrix = entity->modelMatrix();
+  for (auto mesh : entity->getMeshes()){
+    if(mesh.mesh != NULL){
+      setUniform(modelLoc, modelMatrix * mesh.transform);
+      this->render(view, mesh);
+    }
   }
 }
 
@@ -50,21 +47,15 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
-void FlatShadingRenderer::Render (View *view, Mesh *mesh)
-{
-
-  //std::cout << "model view: " << glm::to_string(modelViewMat) << "\ncolor: " << glm::to_string(mesh->color) << "\n";
+void FlatShadingRenderer::render (View *view, TransformedMesh mesh) {
 
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
-  //std::cout << "view matrix: " << glm::to_string(viewMat * modelMat) << "\n";
-  //std::cout << "projection matrix: " << glm::to_string(projectionMat) << "\n";
-
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->color);
-  mesh->draw();
+  setUniform(colorLoc, mesh.mesh->data.color);
+  mesh.mesh->draw();
 
 }
 
@@ -73,8 +64,7 @@ void FlatShadingRenderer::Render (View *view, Mesh *mesh)
 /*==================== class SunlightShadingRenderer member functions======================*/
 
 SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
-    : Renderer (sh)
-{ 
+    : Renderer (sh) { 
   lightDirLoc = _shader->getUniformLocation("lightDir");
   lightIntenLoc = _shader->getUniformLocation("lightInten");
   lightAmbLoc = _shader->getUniformLocation("lightAmb");
@@ -88,11 +78,9 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
   texSamplerLoc = _shader->getUniformLocation("texSampler");
 }
 
-SunlightShadingRenderer::~SunlightShadingRenderer()
-{ }
+SunlightShadingRenderer::~SunlightShadingRenderer() { }
 
-void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
-{
+void SunlightShadingRenderer::render (View *view, TransformedMesh mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -107,17 +95,19 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
 
-  setUniform(shouldTextureLoc, mesh->shouldTexture);
-  texture2d *tex = mesh->tex;
-  tex->Bind();
-  tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
-  tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
+  texture2d *tex = mesh.mesh->data.tex;
+  if(tex){
+    tex->Bind();
+    tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  }
   setUniform(texSamplerLoc, 0);
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->color);
-  mesh->draw();
+  setUniform(colorLoc, mesh.mesh->data.color);
+  mesh.mesh->draw();
 
 }
 
@@ -129,13 +119,76 @@ void SunlightShadingRenderer::Render (View *view, Mesh *mesh)
 
 UnderwaterRenderer::UnderwaterRenderer (Shader *sh)
     : SunlightShadingRenderer(sh)
-{ }
+{ 
+  oceanColoringOnLoc = _shader->getUniformLocation("oceanColoringOn");
+  oceanTopBrightnessLoc = _shader->getUniformLocation("oceanTopBrightness");
+  oceanBottomBrightnessLoc = _shader->getUniformLocation("oceanBottomBrightness");
+  oceanTopColorLoc = _shader->getUniformLocation("oceanTopColor");
+  oceanBottomColorLoc = _shader->getUniformLocation("oceanBottomColor");
+  oceanDensityLoc = _shader->getUniformLocation("oceanDensity");
+  surfaceDepthLoc = _shader->getUniformLocation("surfaceDepth");
+  floorDepthLoc = _shader->getUniformLocation("floorDepth");
+}
 
 UnderwaterRenderer::~UnderwaterRenderer()
 { }
 
-void UnderwaterRenderer::Render(View *view, Mesh *mesh)
-{ }
+void UnderwaterRenderer::enable (){
+  _shader->use();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glEnable(GL_DEPTH_TEST);
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+}
+void UnderwaterRenderer::render(View *view, TransformedMesh mesh){
+
+  if(!mesh.mesh->data.visible){
+    return;
+  }
+ 
+  mat4 projectionMat = view->projectionMatrix();
+  mat4 viewMat = view->viewMatrix();
+
+  Sunlight sun = view->getSunlight();
+  setUniform(lightDirLoc,   sun.lightDir);
+  setUniform(lightIntenLoc, sun.lightInten);
+  setUniform(lightAmbLoc,   sun.lightAmb);
+
+  Fog fog = view->getFog();
+  setUniform(fogOnLoc, fog.fogOn);
+  setUniform(fogColorLoc, fog.fogColor);
+  setUniform(fogDensityLoc, fog.fogDensity);
+  setUniform(fogStartLoc, fog.fogStart);
+
+  OceanColoring oc = view->getColoring();
+  setUniform(oceanColoringOnLoc, oc.oceanColoringOn);
+  setUniform(oceanTopBrightnessLoc, oc.oceanTopBrightness);
+  setUniform(oceanBottomBrightnessLoc, oc.oceanBottomBrightness);
+  setUniform(oceanTopColorLoc, oc.oceanTopColor);
+  setUniform(oceanBottomColorLoc, oc.oceanBottomColor);
+  setUniform(oceanDensityLoc, oc.oceanDensity);
+  setUniform(surfaceDepthLoc, oc.surfaceDepth);
+  setUniform(floorDepthLoc, oc.floorDepth);
+
+  setUniform(shouldTextureLoc, 1);
+  texture2d *tex = mesh.mesh->data.tex;
+  if(tex){
+    tex->Bind();
+    tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  }
+  // setUniform(texSamplerLoc, 0);
+
+  setUniform(modelViewLoc, viewMat);
+  setUniform(projectionLoc, projectionMat);
+  setUniform(colorLoc, mesh.mesh->data.color);
+
+  glPolygonMode(GL_FRONT_AND_BACK, mesh.mesh->data.polygon_mode);
+
+  mesh.mesh->draw();
+}
 
 
 
@@ -147,45 +200,39 @@ void UnderwaterRenderer::Render(View *view, Mesh *mesh)
 SkyboxRenderer::SkyboxRenderer (Shader *sh)
     : Renderer (sh)
 { 
-  fogOnLoc = _shader->getUniformLocation("fogOn");
-  fogColorLoc = _shader->getUniformLocation("fogColor");
-
-  shouldTextureLoc = _shader->getUniformLocation("shouldTexture");
-  texSamplerLoc = _shader->getUniformLocation("texSampler");
-
-  xDimLoc = _shader->getUniformLocation("xDim");
-  yDimLoc = _shader->getUniformLocation("yDim");
-  zDimLoc = _shader->getUniformLocation("zDim");
   camPosLoc = _shader->getUniformLocation("camPos");
+
+  oceanTopBrightnessLoc = _shader->getUniformLocation("oceanTopBrightness");
+  oceanBottomBrightnessLoc = _shader->getUniformLocation("oceanBottomBrightness");
+  oceanBottomColorLoc = _shader->getUniformLocation("oceanBottomColor");
 }
 
-SkyboxRenderer::~SkyboxRenderer()
-{ }
+SkyboxRenderer::~SkyboxRenderer(){}
 
-void SkyboxRenderer::Render (View *view, Mesh *mesh)
-{
+void SkyboxRenderer::enable (){
+  _shader->use();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glDisable(GL_DEPTH_TEST);
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_CULL_FACE);
+  // glCullFace(GL_BACK);
+}
+
+
+void SkyboxRenderer::render (View *view, TransformedMesh mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
-  Fog fog = view->getFog();
-  setUniform(fogOnLoc, fog.fogOn);
-  setUniform(fogColorLoc, fog.fogColor);
-
-  setUniform(shouldTextureLoc, mesh->shouldTexture);
-  texture2d *tex = mesh->tex;
-  tex->Bind();
-  tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
-  tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-  setUniform(texSamplerLoc, 0);
+  OceanColoring oc = view->getColoring();
+  setUniform(oceanTopBrightnessLoc, oc.oceanTopBrightness);
+  setUniform(oceanBottomBrightnessLoc, oc.oceanBottomBrightness);
+  setUniform(oceanBottomColorLoc, oc.oceanBottomColor);
 
   setUniform(camPosLoc, view->activeCamera()->position());
-  setUniform(xDimLoc, view->getWid());
-  setUniform(yDimLoc, view->getHt());
-  setUniform(zDimLoc, view->getWid());
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh->color);
-  mesh->draw();
-
+  setUniform(colorLoc, mesh.mesh->data.color);
+  mesh.mesh->draw();
 }

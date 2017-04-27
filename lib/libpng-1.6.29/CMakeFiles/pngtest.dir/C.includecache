@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
+pnglibconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pnglibconf.h
+pngconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngconf.h
+
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngconf.h
+limits.h
+-
+stddef.h
+-
+stdio.h
+-
+setjmp.h
+-
+time.h
+-
+
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pnglibconf.h
+
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngtest.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+png.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
+zlib.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/zlib.h
+time.h
+-
+

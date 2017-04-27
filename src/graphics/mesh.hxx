@@ -8,30 +8,44 @@
 #include <glm/gtx/string_cast.hpp>
 #include <stdio.h>
 #include <iostream>
+#include <vector>
 #include <graphics/texture.hxx>
 
 using namespace glm;
 
 //! the information needed to render a mesh
-struct Mesh {
+class Mesh {
+public:
+    struct {
+      GLuint vaoId;
+      GLuint vbufId; //vertices
+      GLuint ibufId; //indices
+      GLuint nbufId; //normals
+      GLuint tbufId; //texcoords
+      GLenum prim;
+      int nIndicies;
+      int nTexCoords;
 
+      Mesh *owner;
 
-    GLuint vaoId;
-    GLuint vbufId; //vertices
-    GLuint ibufId; //indices
-    GLuint nbufId; //normals
-    GLuint tbufId; //texcoords
-    GLenum prim;
-    int nIndicies;
-    int nTexCoords;
+      int polygon_mode;
+      int visible;
 
-    int shouldTexture;
+      int shouldTexture;
 
-    texture2d *tex;
+      texture2d *tex;
 
-    vec4 color; //R,G,B,Alpha
+      vec4 color; //R,G,B,Alpha
+    }data;
 
     Mesh (GLenum p);
+
+    /**
+     * used to save space in the graphics buffer. construct
+     * a new mesh that uses the same data as copyfrom, but
+     * which has different auxiliary fields, eg. visible, ...
+     */
+    Mesh (const Mesh &copyfrom);
 
   //! initialize the vertex data buffers for the mesh
     void loadVertices (int nVerts, const vec3 *verts);
@@ -48,6 +62,30 @@ struct Mesh {
   //! draw the mesh using a glDrawElements call
     void draw ();
 
+    void loadOBJ(char *file);
+
+};
+
+class HeightmapMesh : public Mesh{
+public:
+  HeightmapMesh();
+  void init(int w, int h, float texscalex, float texscaley);
+  void loadFile(std::string filename);
+};
+
+struct TransformedMesh{
+  TransformedMesh(Mesh *mesh);
+  Mesh *mesh;
+  mat4 transform;
+};
+
+class Model{
+  Model();
+  Model(std::string file);
+  Model(Model *parent);
+  std::vector<TransformedMesh> meshes;
+
+  void draw();
 };
 
 #endif // !_MESH_HXX_

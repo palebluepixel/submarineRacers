@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/png-fix-itxt.dir/contrib/tools/png-fix-itxt.c.o  -o CMakeFiles/CMakeRelink.dir/png-fix-itxt -rdynamic -lz -lm 

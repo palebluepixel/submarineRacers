@@ -4,18 +4,21 @@
 #include "Actuator.hxx"
 #include "Entity.hxx"
 
+class Actuator;
+
 class Agent : public Entity {
 
 protected:
-    //void (*actuatorSteering)(): 
+	Actuator *actuator;
     //TODO destructors for this, actuator, and controller
 
 public:
-    Agent(vec3 initial_position, mat3 initial_orientation, int id, char*name, 
+    Agent(vec3 initial_position, mat3 initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
 
-    int onTick();
+    int onTick(float dt);
 };
+
 
 
 #endif

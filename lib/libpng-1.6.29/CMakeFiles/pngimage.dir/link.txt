@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/pngimage.dir/contrib/libtests/pngimage.c.o  -o pngimage -rdynamic libpng16.so.16.29.0 -lz -lm -Wl,-rpath,/home/ashwin/repo/submarines/lib/libpng-1.6.29 

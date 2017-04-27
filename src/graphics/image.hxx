@@ -17,7 +17,6 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
-#include <graphics/image.hxx>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 

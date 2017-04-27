@@ -1,6 +1,8 @@
 #ifndef _RENDER_HXX_
 #define _RENDER_HXX_
 
+#include <vector>
+
 #include "view.hxx"
 #include <ent/Entity.hxx>
 #include "shader.hxx"
@@ -11,19 +13,31 @@ using namespace glm;
 //
 class Renderer {
   public:
-
-  //! enable the renderer
-  //! \param projectMat the projection matrix for the current camera state
-    void Enable ();
-
-  //! render a mesh using this renderer
-  //! \param modelViewMat the model-view matrix for the mesh and camera
-  //! \param mesh the mesh to be rendered
-    void Render (View *view, Entity *entity);
-    virtual void Render (View *view, Mesh *mesh) = 0;
-
-
     virtual ~Renderer ();
+
+    /**
+     * Prepare the shader for this renderer for use, and set openGL global
+     * state information
+    **/
+    virtual void enable ();
+
+    /**
+     * render a mesh using this renderer
+     * param modelViewMat the model-view matrix for the mesh and camera
+     * param mesh the mesh to be rendered
+     */
+    virtual void render (View *view, Entity *entity);
+    
+    /**
+     * this function should be called once per render cycle.
+     */
+    virtual void render();
+    
+    /**
+     * render a single mesh
+     */
+    virtual void render (View *view, TransformedMesh mesh) = 0;
+
 
   protected:
     Shader  *_shader; //!< the shader program
@@ -45,7 +59,7 @@ class FlatShadingRenderer : public Renderer {
     FlatShadingRenderer (Shader *sh);
     ~FlatShadingRenderer ();
 
-    void Render (View *view, Mesh *mesh);
+    void render (View *view, TransformedMesh mesh);
 };
 
 
@@ -54,7 +68,7 @@ class SunlightShadingRenderer : public Renderer {
     SunlightShadingRenderer(Shader *sh);
     ~SunlightShadingRenderer();
 
-    void Render (View *view, Mesh *mesh);
+    void render (View *view, TransformedMesh mesh);
 
   protected:
     GLint lightDirLoc;
@@ -75,7 +89,18 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
     UnderwaterRenderer(Shader *sh);
     ~UnderwaterRenderer();
 
-    void Render(View *view, Mesh *mesh);
+    void enable();
+    void render(View *view, TransformedMesh mesh);
+
+  protected:
+    GLint oceanColoringOnLoc;
+    GLint oceanTopBrightnessLoc;
+    GLint oceanBottomBrightnessLoc;
+    GLint oceanTopColorLoc;
+    GLint oceanBottomColorLoc;
+    GLint oceanDensityLoc;
+    GLint surfaceDepthLoc;
+    GLint floorDepthLoc;
 
 };
 
@@ -84,20 +109,17 @@ class SkyboxRenderer : public Renderer {
     SkyboxRenderer(Shader *sh);
     ~SkyboxRenderer();
 
-    void Render(View *view, Mesh *mesh);
+    void enable();
+    void render(View *view, TransformedMesh mesh);
 
   protected:
-    GLint fogOnLoc;
-    GLint fogColorLoc;
-    GLint fogDensityLoc;
-
-    GLint shouldTextureLoc;
-    GLint texSamplerLoc;
-
-    GLint xDimLoc;
-    GLint yDimLoc;
-    GLint zDimLoc;
     GLint camPosLoc; 
+
+    GLint oceanTopBrightnessLoc;
+    GLint oceanBottomBrightnessLoc;
+    GLint oceanBottomColorLoc;
+    //GLint surfaceDepth;  //everything above this is max bright
+    //GLint floorDepth;    //everything below this is max dark
 };
 
 #endif // !_RENDER_HXX_
