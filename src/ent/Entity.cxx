@@ -2,12 +2,12 @@
 
 using namespace glm;
 
-Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, int id, char*name, 
+Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, char*name, 
     EntityType type, EntityStatus status, float tick_interval) : meshes()
 {
     this->initial_position = initial_position;
     this->initial_orientation = initial_orientation;
-    this->id = id;
+    this->id = this->assignNewID();
     this->name = strdup(name); //not takin any fuckin chances
     this->type = type;
     this->status = status;
@@ -20,6 +20,12 @@ Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, int id, 
     //this->angular_velocity
     this->forces = glm::vec3(0, 0, 0);
     //this.>torques
+
+    this->drawable = 1;
+
+    /* This is intialized to 1 so we can be positive the server and client
+    agree about the starting position of every object. */
+    this->shouldSendUpdate = 1;
 }
 
 Entity::~Entity()
@@ -28,8 +34,9 @@ Entity::~Entity()
 }
 
 
-vec3 Entity::Entity::setPosition(vec3 pos)
+vec3 Entity::setPosition(vec3 pos)
 {
+    this->shouldSendUpdate = 1;
     vec3 old = this->position;
     this->position = pos;
     return old;
@@ -39,8 +46,16 @@ vec3 Entity::getPosition(){
     return this->position;
 }
 
+vec3 Entity::setVelocity(vec3 vel) {
+    //this->shouldSendUpdate = 1;
+    vec3 old = this->velocity;
+    this->velocity = vel;
+    return old;
+}
+
 tquat<float> Entity::setOrientation(tquat<float> ori)
 {
+    //this->shouldSendUpdate = 1;
     tquat<float> old = this->orientation;
     this->orientation = ori;
     return old;
@@ -60,6 +75,21 @@ int Entity::setID(int id)
     return old;
 }
 
+int Entity::getID()
+{
+    return this->id;
+}
+
+quaternion Entity::getOrientation()
+{
+    return this->orientation;
+}    
+
+vec3 Entity::getVelocity()
+{
+    return this->velocity;
+}
+
 char* Entity::setName(char* name)
 {
     char*old = this->name;
@@ -68,17 +98,26 @@ char* Entity::setName(char* name)
 }
 
 //overwrite client data with server
-int Entity::overwrite(vec3 pos, tquat<float> ori)
+int Entity::overwrite(vec3 pos, tquat<float> ori, vec3 vel)
 {
     this->setPosition(pos);
     this->setOrientation(ori);
+    this->setVelocity(vel);
+
+    return 0;
+}
+
+int Entity::overwrite(posUpBuf *msg)
+{
+    this->overwrite(msg->pos, msg->ori, msg->vel);
 
     return 0;
 }
 
 //creates server message describing current pos and ori
-int Entity::prepare_message_segment(){
-    return 0;
+message * Entity::prepareMessageSegment(){
+    this->shouldSendUpdate = 0;
+    return createPosUpMsg(this);
 }
 
 //physics tick behavior
@@ -105,7 +144,7 @@ int Entity::onTick(float dt){
 
 //change object's status to spawned and place it in its intial position
 EntityStatus Entity::spawn(){
-    this->overwrite(this->initial_position, this->initial_orientation);
+    this->overwrite(this->initial_position, this->initial_orientation, this->initial_velocity);
     EntityStatus old = this->status;
     this->status = SPAWNED;
     return old;
@@ -141,4 +180,10 @@ void Entity::drawEntity(){
 
 void Entity::applyForce(vec3 force) {
     forces += force;
+}
+
+int Entity::assignNewID()
+{
+    static int ID = -1;
+    return ++ID;
 }

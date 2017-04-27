@@ -9,13 +9,18 @@ using namespace glm;
 
 Camera::Camera ()
     : _errorFactor(-1)
-{ }
+{ 
+    this->tethered = 0;
+}
 
 void Camera::init(vec3 pos, vec3 ypr, vec3 up)
 {
     this->_pos = pos;
     this->setYPR(ypr.x,ypr.y,ypr.z);
     this->_up = up;
+
+    this->setFOV(DEFAULTFOV);
+    this->setNearFar(DEFAULTNEAR, DEFAULTFAR);
 }
 
 mat4 Camera::modelMatrix()
@@ -165,6 +170,17 @@ void Camera::rotateCam(float theta, vec3 axis){
     //printf("new dir %f %f %f\n", newdir[0], newdir[1], newdir[2]);
 }
 
+void Camera::updateLookDir()
+{
+    this->updateLookDirYPR(this->ypr[0], this->ypr[1], this->ypr[2]);
+}
+
+void Camera::updateLookDirYPR(float yaw, float pitch, float roll)
+{
+    vec3 lookAtPoint = vec3(cos(pitch)*sin(yaw), sin(pitch), cos(pitch)*cos(yaw));
+    this->_dir = this->_pos+lookAtPoint;
+}
+
 void Camera::setYPR(float yaw, float pitch, float roll){
     ypr_control = true;
     static float max_pitch = 0.99f*3.141592653f/2.f;
@@ -173,8 +189,7 @@ void Camera::setYPR(float yaw, float pitch, float roll){
     // todo: allow looking straight up.
     if(pitch > max_pitch) pitch = max_pitch;
     if(pitch < min_pitch) pitch = min_pitch;
-    vec3 lookAt(cos(pitch)*sin(yaw), sin(pitch), cos(pitch)*cos(yaw));
-    this->_dir = this->_pos+lookAt;
+    this->updateLookDirYPR(yaw, pitch, roll);
     this->_up = vec3(0,1,0);
     ypr=vec3(yaw,pitch,roll);
 }

@@ -1,5 +1,10 @@
 #include "NetworkManager.hxx"
 
+#include <world/world.hxx>
+class World;
+extern World* world; //global 
+
+
 handler NetworkManager::table[4] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },
@@ -92,7 +97,7 @@ void NetworkManager::initCommand(COMMAND_PARAMS) {}
 
 void NetworkManager::objectChangeCommand(COMMAND_PARAMS) 
 {
-    posUpMsg *msg = getPosUpMsg(message);
+    posUpBuf *msg = getPosUpBuf(message);
     world->setEntData(msg);
     free(msg);
 

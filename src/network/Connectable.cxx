@@ -9,6 +9,7 @@ Connectable::Connectable(short port, const char *hostname)
 Connectable::~Connectable()
 {}
 
+
 /* Reads the least recently recieved message from our listening
     socket and copies it into the message buffer as a messageContainer. */
 void Connectable::recieveOneMessage(int socket)

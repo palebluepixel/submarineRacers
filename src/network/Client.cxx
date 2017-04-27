@@ -50,10 +50,14 @@ void Client::connectServer()
     this->commSocket = serverSocket;
     this->initalizeListeningThread();
 
+    /* Send the server a message so they know we exist */
+    message *m = createInitMsg();
+    this->messageServer(m);
+    deleteMessage(m);
+
     log(LOGLOW,"Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port), serverAddr.sin_port);
     
 }
-
 
 /* Reads any incoming messages and then parses them. 
 Will process a maximum of mmax messages (used to control how much time
@@ -61,23 +65,40 @@ we spend doing network stuff per tick, anything leftover will be done
 next tick). Processes messages until none remain if mmax == 0 (there
 is a risk of this continuing infinitely if we always recieve a new 
 message before we finish processing the old one. */
-void Client::handleNetworkTick(uint32_t mmax)
+void Client::ReadMessages(uint32_t mmax)
 {
+    int i, ret;
+    if(mmax == 0){
+        while(1){
+            if(!this->readOneMessage())
+                return;
+        }
+    }
 
+    for(i=0; i<mmax; i++){
+        if(!this->readOneMessage())
+            return;
+    }
 }
-
 
 /* Takes one message out of the message queue and sends it to
 the network manager's process command */
-void Client::readOneMessage()
+int Client::readOneMessage()
 {
     MessageContainer *m = this->queue.readMessage();
     if(m==NULL) // no messages
-        return;
+        return 0;
 
     this->nm->recieveMessage(m->msg, m->msgLen);
 
     delete(m);
+
+    return 1;
+}
+
+void Client::messageServer(message *msg)
+{
+    this->nm->sendCommand(msg->code, msg->len, msg->msg);
 }
 
 void Client::messageServer(short len, uint8_t *msg)

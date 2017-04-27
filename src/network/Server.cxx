@@ -72,21 +72,32 @@ we spend doing network stuff per tick, anything leftover will be done
 next tick). Processes messages until none remain if mmax == 0 (there
 is a risk of this continuing infinitely if we always recieve a new 
 message before we finish processing the old one. */
-void Server::handleNetworkTick(uint32_t mmax)
+void Server::ReadMessages(uint32_t mmax)
 {
-    
-}
+    int i, ret;
+    if(mmax == 0){
+        while(1){
+            if(!this->readOneMessage())
+                return;
+        }
+    }
 
+    for(i=0; i<mmax; i++){
+        if(!this->readOneMessage())
+            return;
+    }
+}
 
 /* Takes one message from the message queue, finds the client who sent it,
     and calls recieveMessage() from the ServerNetworkManager corresponding
-    to the source client. */
-void Server::readOneMessage()
+    to the source client. Returns 0 if there were no messages remaining,
+    1 otherwise. */
+int Server::readOneMessage()
 {
 
     MessageContainer *m = this->queue.readMessage();
     if(m==NULL) // no messages
-        return;
+        return 0;
 
     ServerNetworkManager *client;
     /* If a client with this address is in our list, we will call
@@ -100,6 +111,8 @@ void Server::readOneMessage()
     client->recieveMessage(m->msg, m->msgLen);
 
     delete(m);
+
+    return 1;
 }
 
 
@@ -117,6 +130,11 @@ void Server::messageClient(struct sockaddr_in clientAddr, short len, uint8_t *ms
 }
 
 /* Send a message to the client, identified by their ServerNetworkManager */
+void Server::messageClient(ServerNetworkManager *nm, message *msg)
+{
+    nm->sendCommand(msg->code, msg->len, msg->msg);
+}
+
 void Server::messageClient(ServerNetworkManager *nm, short len, uint8_t *msg)
 {
     nm->sendMessage(msg, len);
@@ -129,6 +147,17 @@ void Server::messageClient(ServerNetworkManager *nm, short code, short len, uint
 
 
 /* Sends a message to all clients.*/
+void Server::broadcast(message *msg)
+{
+    ServerNetworkManager *nm;
+    map<struct sockaddr_in, ServerNetworkManager*, sockaddr_inComparator>::iterator iter;
+    for(iter = this->clients.begin(); iter != this->clients.end(); iter++)
+    {
+        nm = get<1>(*iter); //map returns a (k,v) pair, get<1> return the value
+        this->messageClient(nm, msg);
+    }
+}
+
 void Server::broadcast(short len, uint8_t *msg)
 {
     /* Loop through the network manager for all clients */

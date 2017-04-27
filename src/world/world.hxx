@@ -10,6 +10,9 @@
 #include <network/MessageProtocols.hxx>
 #include <ent/Entity.hxx>
 #include <util/log.hxx>
+#include <world/Level.hxx>
+#include <network/Server.hxx>
+#include <network/Client.hxx>
 
 using namespace glm;
 
@@ -71,15 +74,29 @@ public:
     int handleTimerTic(float t, float dt);
 
 
-    /* Functions for setting position updates we recive from server */
-    void setEntData(posUpMsg* msg);
-    void setEntData(int objID, vec3 pos, vec3 ori, vec3 vel);
-        Entity *moveable;
+    /* Handle one tick of the graphics clock (that is, render the game) */
+    int handleGraphicsTick(float t, float dt);
+
+    /* Handle one tick of the networks clock. This is where we handle communication
+    with the server/client. 
+    Will process a maximum of mmax messages (used to control how much time
+    we spend doing network stuff per tick, anything leftover will be done
+    next tick). Processes messages until none remain if mmax == 0 (there
+    is a risk of this continuing infinitely if we always recieve a new 
+    message before we finish processing the old one.*/
+    int handleNetworksTick(float t, float dt, int mmax);
+
+
 
 
     //View: rendering information, camera, skybox, ground, sun, etc
-    View *view;
-    Renderer **renderers;
+    inline void setView(View *view) { this->view = view; }
+    inline void setEntityRenderer(Renderer *r) { this->r = r; }
+    inline void setSkyboxRenderer(Renderer *r) { this->rsky = r; }
+
+    inline View* getView() { return this->view; }
+    inline Renderer* getEntityRenderer() { return this->r; }
+    inline Renderer* getSkyboxRenderer() { return this->rsky; }
 
     //Physics:
     PhysicsEngine *physics;
@@ -88,7 +105,32 @@ public:
 
     //reset
     void fatalError();
-    void quit();  
+    void quit(); 
+
+    //level
+    int loadLevel();
+    inline Level * getLevel() { return this->curLevel; }
+    inline void setLevel(Level * level) { this->curLevel = level; }
+
+    //server
+    inline void setIsServer(int t) { this->isServ = t; }
+    inline void setServer(Server *s) { this->server = s; }
+    inline void setClient(Client *c) { this->client = c; }
+
+    inline int isServer() { return   this->isServ; }
+    inline int isClient() { return !(this->isServ); }
+    inline Server* getServer() { return this->isServer() ? this->server : NULL; }
+    inline Client* getClient() { return this->isClient() ? this->client : NULL; }
+
+
+    /* Functions for parsing the entity list and sending updates to the client */
+    void sendAllUpdates();
+
+    /* Functions for setting position updates we recieve from server */
+    void setEntData(posUpBuf* msg);
+    Entity *moveable;
+
+
 
 private:
     WorldState state;
@@ -105,13 +147,26 @@ private:
     int handleEventUSERDISCONNECT();
     int handleEventUSERFINISH();
 
+    void handleNetworksTickServer(float t, float dt, int mmax);
+    void handleNetworksTickClient(float t, float dt, int mmax);
+
+    void renderAll();
+
     /* Uncomment stuff as it is implemented */
+
+    View *view;
+    Renderer *r;
+    Renderer *rsky;
+
+    Server *server;
+    Client *client;
+    int isServ;
 
     //ActiveLevel: all entities in the world, world boundaries, etc
     //ActiveLevel * activeLevel;
         //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
         //Submarine ** subs;
-    int loadLevel();
+    Level * curLevel;
 
     //Players
     //Player ** players; 

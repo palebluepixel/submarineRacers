@@ -12,6 +12,7 @@
 #include <graphics/texture.hxx>
 // #include <physics/PhysicsEngine.hxx>
 #include <vector>
+#include <network/MessageProtocols.hxx>
 
 using namespace glm;
 using namespace Space;
@@ -44,7 +45,7 @@ class Entity {
 
 public:
 
-    Entity(vec3 initial_position, quaternion initial_orientation, int id, char*name, 
+    Entity(vec3 initial_position, quaternion initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
     ~Entity();
 
@@ -56,12 +57,23 @@ public:
     EntityType   setEntityType(EntityType type);
 
     vec3         setPosition(vec3 pos);
-    vec3         getPosition();
     quaternion   setOrientation(quaternion ori);
+    vec3         setVelocity(vec3 vel);
+
+    vec3         getPosition();
+    quaternion   getOrientation();
+    vec3         getVelocity();
+    int          getID();
+
+    inline bool  isCollidable()       { return this->collidable;       }
+    inline bool  isDrawable()         { return this->drawable;         }
+    inline bool  isMovable()          { return this->movable;          }
+    inline bool  isShouldSendUpdate() { return this->shouldSendUpdate; }
 
     /**     networking:     **/
-    virtual int overwrite(vec3 pos, quaternion ori);    //overwrite client data with server
-    virtual int prepare_message_segment();                //creates server message describing current pos and ori
+    virtual int overwrite(vec3 pos, quaternion ori, vec3 vel);    //overwrite client data with server
+    virtual int overwrite(posUpBuf *msg);
+    virtual message* prepareMessageSegment();                  //creates server message describing current pos, ori, and velocity
     
     /**     physics:        **/
     virtual int onTick(float dt);
@@ -86,7 +98,8 @@ protected:
     vec3 position;
     vec3 initial_position;      // we should remove this field.
 
-    vec3 velocity;
+    vec3 velocity; // Used for interpolation
+    vec3 initial_velocity;
 
     quaternion initial_orientation;
 
@@ -105,6 +118,11 @@ protected:
     bool movable;
     bool drawable;
 
+    /* if the server needs to send an update to the client this tick. This should be
+    set to TRUE whenever we change this entity's position, velocity, or orientation.
+    It should be set to FALSE when we call prepareMessageSegment. */
+    bool shouldSendUpdate;
+
     virtual void initalizeMeshes()=0;
 
     texture2d *tex;
@@ -114,6 +132,9 @@ protected:
     //per tick quantities
     vec3 forces;    // Sum of all forces on this object
     //vec3 torques; //What should torques be? Do we even want torques // Sum of all torques on this object
+
+    /* Generates a unique ID for this object. */
+    int assignNewID();
 };
 
 //TODO remove this

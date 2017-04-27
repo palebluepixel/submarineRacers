@@ -18,10 +18,6 @@
 #include <network/MessageProtocols.hxx>
 
 #include <network/CommandCodes.hxx>
-#include <world/world.hxx>
-
-extern World* world; //global 
-
 
 #define COMMAND_PARAMS short len, uint8_t *message
 

@@ -11,6 +11,10 @@
 //! we can support large worlds.
 //
 
+#define DEFAULTFOV  90.0f
+#define DEFAULTNEAR 0.1f
+#define DEFAULTFAR  1000.0f
+
 using namespace glm;
 
 class Camera {
@@ -38,6 +42,8 @@ class Camera {
 
     inline void setNear(float near)     { this->_nearZ = near; }
     inline void setFar(float far)       { this->_farZ = far; }
+
+    inline int isTethered() { return this->tethered; }
 
     void setUp(vec3 const &up);
 
@@ -102,6 +108,9 @@ class Camera {
 
     void rotateZ(float theta);
 
+    void updateLookDir();
+    void updateLookDirYPR(float yaw, float pitch, float roll);
+
     void setYPR(float yaw, float pitch, float roll);
     void addYPR(vec3 del_ypr);
 
@@ -129,7 +138,8 @@ class Camera {
      vec3 ypr;
      bool ypr_control;
 
-  private:
+  protected:
+    int tethered;
     vec3    _pos;       //!< position is double precision to allow large world
     vec3    _up;        //! camera up vector
     float       _nearZ;     //!< distance to the near plane

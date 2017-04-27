@@ -35,20 +35,18 @@ public:
     /* Prepare our listening socket to listen for connections. */
     void initListeningSocket();
 
-
-
     /* Reads any incoming messages and then parses them. 
     Will process a maximum of mmax messages (used to control how much time
     we spend doing network stuff per tick, anything leftover will be done
     next tick). Processes messages until none remain if mmax == 0 (there
     is a risk of this continuing infinitely if we always recieve a new 
     message before we finish processing the old one. */
-    void handleNetworkTick(uint32_t mmax);
+    void ReadMessages(uint32_t mmax);
 
     /* Takes a message from the back of the message queue and 
     and calls recieveMessage() from the ServerNetworkManager 
     corresponding to the source client. */
-    void readOneMessage();
+    int readOneMessage();
 
     /* Returns 0 if there is no client associated with the given address in our
     client list, 1 if a client with this address does exist. */
@@ -58,10 +56,12 @@ public:
     void messageClient(struct sockaddr_in clientAddr, short len, uint8_t *msg);
 
     /* Send a message to the client, identified by their ServerNetworkManager */
+    void messageClient(ServerNetworkManager *nm, message *msg);
     void messageClient(ServerNetworkManager *nm, short len, uint8_t *msg);
     void messageClient(ServerNetworkManager *nm, short code, short len, uint8_t *payload);
 
     /* Sends a message to all clients.*/
+    void broadcast(message *msg);
     void broadcast(short len, uint8_t *msg);
     void broadcast(short code, short len, uint8_t *payload);
 
