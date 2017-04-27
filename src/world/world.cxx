@@ -32,8 +32,8 @@ int World::handleEvent(EventType t)
             return this->handleEventBACKMENU();
         case LOADLEVEL:
             return this->handleEventLOADLEVEL();
-        case PAUSE:
-            return this->handleEventPAUSE();
+        case PAUSEGAME:
+            return this->handleEventPAUSEGAME();
         case EXIT:
             return this->handleEventEXIT();
         case USERDISCONNECT:
@@ -115,7 +115,7 @@ int World::handleEventLOADLEVEL()
         return 0;
 }
 
-int World::handleEventPAUSE()
+int World::handleEventPAUSEGAME()
 {
     switch(this->state)
     {
@@ -156,4 +156,15 @@ int World::handleEventUSERFINISH()
 
     }*/
         return 0;
+}
+
+
+void World::setEntData(posUpMsg* msg)
+{
+    this->setEntData(msg->id, msg->pos, msg->ori, msg->vel);
+}
+
+void World::setEntData(int objID, vec3 pos, vec3 ori, vec3 vel)
+{
+    this->moveable->setPosition(pos);
 }

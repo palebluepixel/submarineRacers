@@ -59,9 +59,11 @@ public:
 
     /* Send a message to the client, identified by their ServerNetworkManager */
     void messageClient(ServerNetworkManager *nm, short len, uint8_t *msg);
+    void messageClient(ServerNetworkManager *nm, short code, short len, uint8_t *payload);
 
     /* Sends a message to all clients.*/
     void broadcast(short len, uint8_t *msg);
+    void broadcast(short code, short len, uint8_t *payload);
 
 
     inline int getPort() { return this->port; }

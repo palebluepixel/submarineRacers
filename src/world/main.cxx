@@ -24,6 +24,8 @@
 #include <graphics/texture.hxx>
 #include <network/Server.hxx>
 #include <network/Client.hxx>
+#include <network/MessageProtocols.hxx>
+#include <cstring>
 
 #define PORT 8008
 
@@ -265,6 +267,8 @@ int main(int argc, char*argv[]){
         client->messageServer(strlen(str), (uint8_t*)str);
     }
 
+    world->moveable = cubes[0];
+
     while (!glfwWindowShouldClose(world->window)){
 
         // timing across update operations.
@@ -281,7 +285,11 @@ int main(int argc, char*argv[]){
         if(isServer){
             char *str = "hi im a server lol";
             server->readOneMessage();
-            //server->broadcast(strlen(str), str);
+            //quick hack-in of a cube movement animation
+            vec3 pos = cubes[0]->getPosition();
+            cubes[0]->setPosition(pos - vec3(0,0.03,0));
+            posUpMsg msg; msg.pos = cubes[0]->getPosition();
+            server->broadcast((short)24, sizeof(msg), (uint8_t*)&msg);
         } else {
             client->readOneMessage();
         }
