@@ -30,8 +30,11 @@
 //defined in util/log.hxx
 int loglevel_GLOBAL;
 
-int keyboard[350];
-int mouse[8];
+
+#define KEYBOARDSIZE 350
+#define MOUSESIZE 8
+int keyboard[KEYBOARDSIZE];
+int mouse[MOUSESIZE];
 double mousepos[2];
 
 // there is only one world per instance of our program.
@@ -129,15 +132,28 @@ GLFWwindow *initializeGLFW(){
 
     return window;
 }
-void init(){
+void initalizeWorld(int isServer, char*hostname){
     world = new World();
     world->window = initializeGLFW();
+
+    world->setIsServer(isServer);
+    if(world->isServer()){
+        world->setServer(new Server((short)PORT, NULL));
+        world->getServer()->initListeningSocket();
+    } else {
+        world->setClient(new Client(PORT, hostname));
+        log(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
+        world->getClient()->connectServer();
+    }
+
+    world->worldInitalizeDefault(isServer);
 
     //associate the window with our world struct so window callbacks
     //can easily find the world state using glfwGetWindowUserPointer(window)
     glfwSetWindowUserPointer(world->window, world);
 
-    for(int i=0;i<350;++i)keyboard[i]=0;
+    //memzero the globally availible keyboard state
+    for(int i=0;i<KEYBOARDSIZE;++i)keyboard[i]=0;
 }
 
 
@@ -148,71 +164,15 @@ int main(int argc, char*argv[]){
     loglevel_GLOBAL = LOGLOW;
 
     world = new World();
+    initalizeWorld(argv[1][0] == 's', argv[2]);
 
-    init();
-
-    //set up server or client: eventually we will make command line flags more advanced
-    //First arg is "s" for server or "c" for client
-    //Second arg is server hostname is we are a client
-    world->setIsServer(argv[1][0] == 's');
-    if(world->isServer()){
-        world->setServer(new Server((short)PORT, NULL));
-        world->getServer()->initListeningSocket();
-    } else {
-        world->setClient(new Client(PORT, argv[2]));
-        log(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
-        world->getClient()->connectServer();
-    }
-
-    // set up shaders.
-    Shader *shader = new Shader();
-    shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/lightshader.vert"));
-    shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/lightshader.frag"));
-    shader->build();
-
-    Shader *skyboxShader = new Shader();
-    skyboxShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/skyboxshader.vert"));
-    skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
-    skyboxShader->build();
-
-    //create renderer for the given shader
-    Renderer *r = new UnderwaterRenderer(shader);  
-    Renderer *rsky = new SkyboxRenderer(skyboxShader);
-
-    //initalize camera
-    Camera *camera = new Camera();
-    
-    //position, yaw-roll, up-vector
-    camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
-    camera->setFOV(90.0);
-    camera->setNearFar(0.1, 1000.0);
-
-    vec3 oceanColor = vec3(0,70,95) / 256.0;
-    vec3 oceanBrightColor = vec3(70,241,245) / 256.0;
-
-    //create view
-    View *view = new View(world->window);
-    view->setSunlight(vec3(-0.3, -1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
-    view->setFog(0, oceanColor, 0.05f, 5.0);
-    view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
-        0.03f, -5.0f, -30.0f);
-
+    /* Build example level */
     Level *level = new Level();
     level->buildLevelFromFile();
-
-    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, level->getEntityByID(0), vec3(4,7,0));
-
-    view->addCamera(camera);
-    view->addCamera(camTeth);
-
-    //create skybox
-    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
-    level->setSkybox(skybox);
-
     world->setLevel(level);
-    world->setView(view);
-    world->setEntityRenderer(r);
-    world->setSkyboxRenderer(rsky);
+    /* Add camera tethered to the first object */
+    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, level->getEntityByID(0), vec3(4,7,0));
+    world->getView()->addCamera(camTeth);
 
     int width, height;
 

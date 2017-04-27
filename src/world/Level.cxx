@@ -24,6 +24,11 @@ void Level::buildLevelFromFile()
 
     for(i=0; i<ncubes; i++)
     	this->addEntity(cubes[i]);
+
+     //create skybox
+    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    this->setSkybox(skybox);
+
 }
 
 /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */

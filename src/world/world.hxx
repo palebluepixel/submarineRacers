@@ -1,17 +1,27 @@
 #ifndef _WORLD_HXX_
 #define _WORLD_HXX_
 
-#include <stdio.h>
+#include <glm/ext.hpp>
 #include <stdlib.h>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <graphics/renderer.hxx>
-#include <network/MessageProtocols.hxx>
-#include <ent/Entity.hxx>
+#include <stdio.h>
+#include <string>
+#include <iostream>
+
 #include <util/log.hxx>
-#include <world/Level.hxx>
+#include <error/error.hxx>
+#include <util/file.hxx>
+#include <graphics/shader.hxx>
+#include <graphics/TetheredCamera.hxx>
+#include <graphics/renderer.hxx>
+#include <ent/Entity.hxx>
+#include <ent/cube.hxx>
+#include <ent/gadget.hxx>
+#include <graphics/texture.hxx>
 #include <network/Server.hxx>
 #include <network/Client.hxx>
+#include <network/MessageProtocols.hxx>
+#include <world/Level.hxx>
+#include <cstring>
 
 using namespace glm;
 
@@ -61,6 +71,14 @@ class World {
 public:
     World(); //constructor
     ~World(); //destructor
+
+    /* Create all renderers, views, cameras, etc for the world, based off a 
+    default. We may eventually want to write a function to load this stuff
+    from a .config file instead of having it hard coded here. 
+    If isServer==1, then we initalize the world as a server, otherwise, as 
+    a client. */
+    void worldInitalizeDefault(int isServer);
+
 
     //dispacth function for event handlers
     int handleEvent(EventType t);

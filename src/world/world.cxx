@@ -225,3 +225,55 @@ void World::setEntData(posUpBuf* msg)
 {
     this->getLevel()->upEntData(msg);
 }
+
+
+
+
+
+
+
+/* Create all renderers, views, cameras, etc for the world, based off a 
+default. We may eventually want to write a function to load this stuff
+from a .config file instead of having it hard coded here. */
+void World::worldInitalizeDefault(int isServer)
+{
+    // set up shaders.
+    Shader *shader = new Shader();
+    shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/lightshader.vert"));
+    shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/lightshader.frag"));
+    shader->build();
+
+    Shader *skyboxShader = new Shader();
+    skyboxShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/skyboxshader.vert"));
+    skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
+    skyboxShader->build();
+
+    //create renderer for the given shader
+    Renderer *r = new UnderwaterRenderer(shader);  
+    Renderer *rsky = new SkyboxRenderer(skyboxShader);
+
+    //initalize camera
+    Camera *camera = new Camera();
+    
+    //position, yaw-roll, up-vector
+    camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
+    camera->setFOV(90.0);
+    camera->setNearFar(0.1, 1000.0);
+
+    vec3 oceanColor = vec3(0,70,95) / 256.0;
+    vec3 oceanBrightColor = vec3(70,241,245) / 256.0;
+
+    //create view
+    View *view = new View(this->window);
+    view->setSunlight(vec3(-0.3, -1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
+    view->setFog(0, oceanColor, 0.05f, 5.0);
+    view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
+        0.03f, -5.0f, -30.0f);
+
+    view->addCamera(camera);
+
+    this->setView(view);
+    this->setEntityRenderer(r);
+    this->setSkyboxRenderer(rsky);
+
+}
