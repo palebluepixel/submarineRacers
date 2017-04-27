@@ -8,13 +8,14 @@
 #include <glm/gtx/string_cast.hpp>
 #include <stdio.h>
 #include <iostream>
+#include <vector>
 #include <graphics/texture.hxx>
 
 using namespace glm;
 
 //! the information needed to render a mesh
-struct Mesh {
-
+class Mesh {
+public:
     struct {
       GLuint vaoId;
       GLuint vbufId; //vertices
@@ -65,10 +66,26 @@ struct Mesh {
 
 };
 
+class HeightmapMesh : public Mesh{
+public:
+  HeightmapMesh();
+  void init(int w, int h, float texscalex, float texscaley);
+  void loadFile(std::string filename);
+};
+
 struct TransformedMesh{
   TransformedMesh(Mesh *mesh);
   Mesh *mesh;
   mat4 transform;
+};
+
+class Model{
+  Model();
+  Model(std::string file);
+  Model(Model *parent);
+  std::vector<TransformedMesh> meshes;
+
+  void draw();
 };
 
 #endif // !_MESH_HXX_

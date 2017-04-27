@@ -64,43 +64,6 @@ static void cursorpos_callback(GLFWwindow* window, double xpos, double ypos){
 }
 
 
-void update(double elapsed){
-    using namespace std;
-    // std::cout << elapsed << std::endl;
-
-    View *view = world->getView();    
-    Camera *cam = view->activeCamera(); 
-
-    double rSpeed = 2.0 * elapsed;
-    double tSpeed = 10.0 * elapsed;
-
-    // if(keyboard[GLFW_KEY_UP])          cam->rotateCamUpDown(-rSpeed);
-    // if(keyboard[GLFW_KEY_DOWN])        cam->rotateCamUpDown(rSpeed);
-    // if(keyboard[GLFW_KEY_LEFT])        cam->rotateCamLeftRight(rSpeed);
-    // if(keyboard[GLFW_KEY_RIGHT])       cam->rotateCamLeftRight(-rSpeed);
-
-
-    if(keyboard[GLFW_KEY_UP])          cam->addYPR(glm::vec3(0, rSpeed,0));
-    if(keyboard[GLFW_KEY_DOWN])        cam->addYPR(glm::vec3(0, -rSpeed,0));
-    if(keyboard[GLFW_KEY_LEFT])        cam->addYPR(glm::vec3(rSpeed, 0,0));
-    if(keyboard[GLFW_KEY_RIGHT])       cam->addYPR(glm::vec3(-rSpeed, 0,0));          
-
-    // if(keyboard[GLFW_KEY_Q])          cam->rotateCamRoll(rSpeed);
-    // if(keyboard[GLFW_KEY_E])          cam->rotateCamRoll(-rSpeed);
-    
-    // cout << keyboard[GLFW_KEY_UP] <<" , " << keyboard[GLFW_KEY_DOWN] << endl;
-
-    if(keyboard[GLFW_KEY_W])           cam->translateCamViewAxis(tSpeed);
-    if(keyboard[GLFW_KEY_S])           cam->translateCamViewAxis(-tSpeed);
-    if(keyboard[GLFW_KEY_A])           cam->translateCamStrafeAxis(-tSpeed);
-    if(keyboard[GLFW_KEY_D])           cam->translateCamStrafeAxis(tSpeed);
-    if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
-    if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
-
-    if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
-    if(keyboard[GLFW_KEY_Q])           world->quit();
-
-}
 
 GLFWwindow *initializeGLFW(){
     glfwSetErrorCallback(error_callback);
@@ -118,6 +81,7 @@ GLFWwindow *initializeGLFW(){
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
+    // glfwSetKeyCallback (window, KeyCallback);
     glfwMakeContextCurrent (window);
 
     // initialize GLEW
@@ -157,6 +121,43 @@ void initalizeWorld(int isServer, char*hostname){
 }
 
 
+void update(double elapsed){
+    using namespace std;
+    // std::cout << elapsed << std::endl;
+
+    View *view = world->view;    
+    Camera *cam = view->activeCamera(); 
+
+    double rSpeed = 2.0 * elapsed;
+    double tSpeed = 10.0 * elapsed;
+
+    // if(keyboard[GLFW_KEY_UP])          cam->rotateCamUpDown(-rSpeed);
+    // if(keyboard[GLFW_KEY_DOWN])        cam->rotateCamUpDown(rSpeed);
+    // if(keyboard[GLFW_KEY_LEFT])        cam->rotateCamLeftRight(rSpeed);
+    // if(keyboard[GLFW_KEY_RIGHT])       cam->rotateCamLeftRight(-rSpeed);
+
+
+    if(keyboard[GLFW_KEY_UP])          cam->addYPR(glm::vec3(0, rSpeed,0));
+    if(keyboard[GLFW_KEY_DOWN])        cam->addYPR(glm::vec3(0, -rSpeed,0));
+    if(keyboard[GLFW_KEY_LEFT])        cam->addYPR(glm::vec3(rSpeed, 0,0));
+    if(keyboard[GLFW_KEY_RIGHT])       cam->addYPR(glm::vec3(-rSpeed, 0,0));
+
+    // if(keyboard[GLFW_KEY_Q])          cam->rotateCamRoll(rSpeed);
+    // if(keyboard[GLFW_KEY_E])          cam->rotateCamRoll(-rSpeed);
+    
+    // cout << keyboard[GLFW_KEY_UP] <<" , " << keyboard[GLFW_KEY_DOWN] << endl;
+
+    if(keyboard[GLFW_KEY_W])           cam->translateCamViewAxis(tSpeed);
+    if(keyboard[GLFW_KEY_S])           cam->translateCamViewAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_A])           cam->translateCamStrafeAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_D])           cam->translateCamStrafeAxis(tSpeed);
+    if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
+    if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
+
+    if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
+    if(keyboard[GLFW_KEY_Q])           world->quit();
+
+}
 
 int main(int argc, char*argv[]){
 

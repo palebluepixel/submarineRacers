@@ -13,7 +13,7 @@ Gadget::~Gadget()
 { }
 
 void Gadget::initalizeVisualData(){
-    this->initalizeTextures("../assets/textures/cubetex.png");
+    this->initalizeTextures("../assets/textures/wood1.png");
     this->initalizeMeshes();
 }
 

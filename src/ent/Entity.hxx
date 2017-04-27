@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
+// #include <physics/PhysicsEngine.hxx>
 #include <vector>
 #include <network/MessageProtocols.hxx>
 
@@ -39,6 +40,8 @@ enum EntityStatus {
 typedef glm::tquat<float> quaternion;
 
 class Entity {
+
+// friend class PhysicsEngine;
 
 public:
 

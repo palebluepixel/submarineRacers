@@ -8,7 +8,7 @@
 # and license in png.h
 
 set(TEST_OPTIONS "--tmpfile;1.8-alpha-;--log")
-set(TEST_FILES "/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/testpngs/gray-alpha-16-1.8.png;/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/testpngs/gray-alpha-8-1.8.png;/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/testpngs/rgb-alpha-16-1.8.png;/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/testpngs/rgb-alpha-8-1.8.png")
+set(TEST_FILES "/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/testpngs/gray-alpha-16-1.8.png;/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/testpngs/gray-alpha-8-1.8.png;/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/testpngs/rgb-alpha-16-1.8.png;/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/testpngs/rgb-alpha-8-1.8.png")
 
 foreach(file ${TEST_FILES})
   file(TO_NATIVE_PATH "${file}" native_file)

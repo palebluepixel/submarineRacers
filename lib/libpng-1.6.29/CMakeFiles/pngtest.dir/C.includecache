@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/png.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
 pnglibconf.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pnglibconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pnglibconf.h
 pngconf.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pngconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngconf.h
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pngconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngconf.h
 limits.h
 -
 stddef.h
@@ -24,9 +24,9 @@ setjmp.h
 time.h
 -
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pnglibconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pnglibconf.h
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pngtest.c
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngtest.c
 stdio.h
 -
 stdlib.h
@@ -34,9 +34,9 @@ stdlib.h
 string.h
 -
 png.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/png.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
 zlib.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/zlib.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/zlib.h
 time.h
 -
 
