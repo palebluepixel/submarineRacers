@@ -23,21 +23,13 @@ void Renderer::enable (){
   _shader->use();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glEnable (GL_DEPTH_TEST);
-
-  // glEnable(GL_BLEND);
-  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // glEnable(GL_CULL_FACE);
-  // glCullFace(GL_BACK);
 }
 
-void Renderer::render(){
-  // do nothing.
-}
+void Renderer::render(){ }
 
 /* Given an entity, render each of its meshes */
 void Renderer::render(View *view, Entity *entity){
   mat4 modelMatrix = entity->modelMatrix();
-
   for (auto mesh : entity->getMeshes()){
     if(mesh.mesh != NULL){
       setUniform(modelLoc, modelMatrix * mesh.transform);
@@ -55,8 +47,7 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
-void FlatShadingRenderer::render (View *view, TransformedMesh mesh)
-{
+void FlatShadingRenderer::render (View *view, TransformedMesh mesh) {
 
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
@@ -73,8 +64,7 @@ void FlatShadingRenderer::render (View *view, TransformedMesh mesh)
 /*==================== class SunlightShadingRenderer member functions======================*/
 
 SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
-    : Renderer (sh)
-{ 
+    : Renderer (sh) { 
   lightDirLoc = _shader->getUniformLocation("lightDir");
   lightIntenLoc = _shader->getUniformLocation("lightInten");
   lightAmbLoc = _shader->getUniformLocation("lightAmb");
@@ -88,11 +78,9 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
   texSamplerLoc = _shader->getUniformLocation("texSampler");
 }
 
-SunlightShadingRenderer::~SunlightShadingRenderer()
-{ }
+SunlightShadingRenderer::~SunlightShadingRenderer() { }
 
-void SunlightShadingRenderer::render (View *view, TransformedMesh mesh)
-{
+void SunlightShadingRenderer::render (View *view, TransformedMesh mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 

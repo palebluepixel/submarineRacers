@@ -66,9 +66,11 @@ public:
 
 };
 
-class Heightmap : public Mesh{
+class HeightmapMesh : public Mesh{
 public:
-  Heightmap();
+  HeightmapMesh();
+  void init(int w, int h, float texscalex, float texscaley);
+  void loadFile(std::string filename);
 };
 
 struct TransformedMesh{

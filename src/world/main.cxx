@@ -227,9 +227,10 @@ int main(int argc, char*argv[]){
     int ncubes = 6, i;
 
     Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
+    cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
     cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),1.f);
     cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
+    world->moveable = cubes[0];
     cubes[1] = new Cube(cubePos[1], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[1]);
     cubes[2] = new Gadget(cubePos[2], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[2], "../assets/models/bigmonkey.obj");
     cubes[2]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
@@ -267,8 +268,6 @@ int main(int argc, char*argv[]){
         client->messageServer(strlen(str), (uint8_t*)str);
     }
 
-    world->moveable = cubes[0];
-
     while (!glfwWindowShouldClose(world->window)){
 
         // timing across update operations.
@@ -287,8 +286,8 @@ int main(int argc, char*argv[]){
             server->readOneMessage();
             //quick hack-in of a cube movement animation
             vec3 pos = cubes[0]->getPosition();
-            cubes[0]->setPosition(pos - vec3(0,0.03,0));
-            posUpMsg msg; msg.pos = cubes[0]->getPosition();
+            cubes[0]->setPosition(vec3(pos.x,-10.f + 10.f*sin(time_total.count()*0.0005),pos.z));
+            posUpMsg msg;msg.pos = cubes[0]->getPosition();
             server->broadcast((short)24, sizeof(msg), (uint8_t*)&msg);
         } else {
             client->readOneMessage();
@@ -296,7 +295,6 @@ int main(int argc, char*argv[]){
 
         //quick hack-in of a cube movement animation
         vec3 pos = cubes[0]->getPosition();
-        cubes[0]->setPosition(vec3(pos.x,-10.f + 10.f*sin(time_total.count()*0.0005),pos.z));
 
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);

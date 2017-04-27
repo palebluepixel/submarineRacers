@@ -9,8 +9,7 @@ const GLint CoordAttrLoc = 0;   //!< location of vertex coordinates attribute
 const GLint NormAttrLoc = 1;
 const GLint TexCoordAttrLoc = 2;
 
-//! create a MeshInfo object by initializing its buffer Ids.  The buffer data is
-//! loaded separately.
+// build an empty Mesh.
 Mesh::Mesh(GLenum p) {
   data.vbufId=0;
   data.ibufId=0;
@@ -24,8 +23,9 @@ Mesh::Mesh(GLenum p) {
   data.owner = this;
 
   data.tex = 0;
+  data.vaoId = 0;
 
-  glGenVertexArrays(1, &data.vaoId);
+
 }
 
 Mesh::Mesh(const Mesh &copyfrom){
@@ -33,8 +33,8 @@ Mesh::Mesh(const Mesh &copyfrom){
 }
 
 //! initialize the vertex data buffers for the mesh
-void Mesh::loadVertices (int nVerts, const vec3 *verts)
-{
+void Mesh::loadVertices (int nVerts, const vec3 *verts){
+    if(!data.vaoId)glGenVertexArrays(1, &data.vaoId);
     glBindVertexArray(data.vaoId);
     glGenBuffers(1, &data.vbufId);
     glBindBuffer(GL_ARRAY_BUFFER, data.vbufId);
@@ -44,8 +44,8 @@ void Mesh::loadVertices (int nVerts, const vec3 *verts)
 }
 
 //! initialize the element array for the mesh
-void Mesh::loadIndices (int n, const uint32_t *indices)
-{
+void Mesh::loadIndices (int n, const uint32_t *indices){
+    if(!data.vaoId)glGenVertexArrays(1, &data.vaoId);
     data.nIndicies = n; 
     glBindVertexArray (data.vaoId);
     glGenBuffers (1, &data.ibufId);
@@ -56,6 +56,7 @@ void Mesh::loadIndices (int n, const uint32_t *indices)
 }
 
 void Mesh::LoadTexCoords (int nCoords, vec2 *tcoords){
+  if(!data.vaoId)glGenVertexArrays(1, &data.vaoId);
   data.nTexCoords = nCoords;
   glBindVertexArray (data.vaoId);
   glGenBuffers (1, &data.tbufId);
@@ -67,6 +68,7 @@ void Mesh::LoadTexCoords (int nCoords, vec2 *tcoords){
 
 //! initalize the vertex array for the normals
 void Mesh::loadNormals (int nVerts, vec3 *norms){
+  if(!data.vaoId)glGenVertexArrays(1, &data.vaoId);
   glBindVertexArray (data.vaoId);
   glGenBuffers (1, &data.nbufId);
   glBindBuffer (GL_ARRAY_BUFFER, data.nbufId);
@@ -75,8 +77,8 @@ void Mesh::loadNormals (int nVerts, vec3 *norms){
   glEnableVertexAttribArray(NormAttrLoc);
 }
 
-void Mesh::draw ()
-{
+void Mesh::draw (){
+    if(!data.vaoId)glGenVertexArrays(1, &data.vaoId);
     glBindVertexArray(data.vaoId);
     glBindBuffer(GL_ARRAY_BUFFER, data.vbufId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.ibufId);
@@ -145,7 +147,57 @@ void Mesh::loadOBJ(char *file){
   loadIndices(model->numtriangles*3, indices);
 }
 
+HeightmapMesh::HeightmapMesh() : Mesh(GL_QUADS){
 
+}
 TransformedMesh::TransformedMesh(Mesh *mesh){
   this->mesh=mesh;
+}
+
+
+
+void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
+  if(w<2)w=2;
+  if(h<2)h=2;
+  data.prim=GL_QUADS;
+
+  vec3 *verts = new vec3[w*h];
+  vec2 *texcs = new vec2[w*h];
+  vec3 *norms = new vec3[w*h];
+  unsigned int *indices =new unsigned int[4*(w-1)*(h-1)];
+
+  float x_inc = 1.f/float(w);
+  float z_inc = 1.f/float(h);
+
+  float xp,zp;
+
+  int ind=0;
+  for(int z=0;z<h;++z){
+    for(int x=0;x<w;++x){
+      xp=-0.5f+x_inc*float(x);
+      zp=-0.5f+z_inc*float(z);
+      texcs[ind] = vec2(-0.0f+x_inc*float(x)/texscalex, -0.0f+z_inc*float(z)/texscaley);
+      verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
+      norms[ind] = vec3(sin(xp),cos(xp),0);
+      ++ind;
+    }
+  }
+  ind=0;
+  for(int i=0;i<h-1;i++){
+    for(int j=0;j<w-1;j++){
+      indices[ind+3]=i*w+j;
+      indices[ind+2]=i*w+(j+1);
+      indices[ind+1]=(i+1)*w+(j+1);
+      indices[ind+0]=(i+1)*w+j;
+      ind+=4;
+    }
+  }
+
+  loadNormals(w*h,norms);
+  LoadTexCoords(w*h,texcs);
+  loadVertices(w*h,verts);
+  loadIndices(4*(w-1)*(h-1),indices);
+}
+void HeightmapMesh::loadFile(std::string filename){
+
 }
