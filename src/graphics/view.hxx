@@ -15,7 +15,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "camera.hxx"
+#include <graphics/TetheredCamera.hxx>
+#include <util/log.hxx>
 
 
 #define NCAMS 5 //maximum number of cameras
@@ -58,6 +59,7 @@ public:
     //Camera
     void addCamera(Camera *cam);
     void switchCamera(int cami);
+    void nextCamera();
     Camera *activeCamera();
 
     //View info for active camera

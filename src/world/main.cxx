@@ -13,7 +13,7 @@
 #include <error/error.hxx>
 #include <util/file.hxx>
 #include <graphics/shader.hxx>
-#include <graphics/camera.hxx>
+#include <graphics/TetheredCamera.hxx>
 #include <graphics/renderer.hxx>
 #include <ent/Entity.hxx>
 #include <ent/cube.hxx>
@@ -34,13 +34,21 @@ int keyboard[350];
 int mouse[8];
 double mousepos[2];
 
+// there is only one world per instance of our program.
+World* world;
+
 static void error_callback(int error, const char* description){
     fprintf(stderr, "Error: %s\n", description);
     Error::error(std::string(description),0);
 }
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+    /* On-press or on-release actiosn should go here */
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
+            world->getView()->nextCamera();
+
+    /* Continous actions should go here */
     keyboard[key] = action;
 }
 static void mouse_callback(GLFWwindow* window, int button, int action, int mods){
@@ -53,8 +61,43 @@ static void cursorpos_callback(GLFWwindow* window, double xpos, double ypos){
 }
 
 
-// there is only one world per instance of our program.
-World* world;
+void update(double elapsed){
+    using namespace std;
+    // std::cout << elapsed << std::endl;
+
+    View *view = world->getView();    
+    Camera *cam = view->activeCamera(); 
+
+    double rSpeed = 2.0 * elapsed;
+    double tSpeed = 10.0 * elapsed;
+
+    // if(keyboard[GLFW_KEY_UP])          cam->rotateCamUpDown(-rSpeed);
+    // if(keyboard[GLFW_KEY_DOWN])        cam->rotateCamUpDown(rSpeed);
+    // if(keyboard[GLFW_KEY_LEFT])        cam->rotateCamLeftRight(rSpeed);
+    // if(keyboard[GLFW_KEY_RIGHT])       cam->rotateCamLeftRight(-rSpeed);
+
+
+    if(keyboard[GLFW_KEY_UP])          cam->addYPR(glm::vec3(0, rSpeed,0));
+    if(keyboard[GLFW_KEY_DOWN])        cam->addYPR(glm::vec3(0, -rSpeed,0));
+    if(keyboard[GLFW_KEY_LEFT])        cam->addYPR(glm::vec3(rSpeed, 0,0));
+    if(keyboard[GLFW_KEY_RIGHT])       cam->addYPR(glm::vec3(-rSpeed, 0,0));          
+
+    // if(keyboard[GLFW_KEY_Q])          cam->rotateCamRoll(rSpeed);
+    // if(keyboard[GLFW_KEY_E])          cam->rotateCamRoll(-rSpeed);
+    
+    // cout << keyboard[GLFW_KEY_UP] <<" , " << keyboard[GLFW_KEY_DOWN] << endl;
+
+    if(keyboard[GLFW_KEY_W])           cam->translateCamViewAxis(tSpeed);
+    if(keyboard[GLFW_KEY_S])           cam->translateCamViewAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_A])           cam->translateCamStrafeAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_D])           cam->translateCamStrafeAxis(tSpeed);
+    if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
+    if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
+
+    if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
+    if(keyboard[GLFW_KEY_Q])           world->quit();
+
+}
 
 GLFWwindow *initializeGLFW(){
     glfwSetErrorCallback(error_callback);
@@ -72,7 +115,6 @@ GLFWwindow *initializeGLFW(){
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
-    // glfwSetKeyCallback (window, KeyCallback);
     glfwMakeContextCurrent (window);
 
     // initialize GLEW
@@ -99,43 +141,6 @@ void init(){
 }
 
 
-void update(double elapsed){
-    using namespace std;
-    // std::cout << elapsed << std::endl;
-
-    View *view = world->getView();    
-    Camera *cam = view->activeCamera(); 
-
-    double rSpeed = 2.0 * elapsed;
-    double tSpeed = 10.0 * elapsed;
-
-    // if(keyboard[GLFW_KEY_UP])          cam->rotateCamUpDown(-rSpeed);
-    // if(keyboard[GLFW_KEY_DOWN])        cam->rotateCamUpDown(rSpeed);
-    // if(keyboard[GLFW_KEY_LEFT])        cam->rotateCamLeftRight(rSpeed);
-    // if(keyboard[GLFW_KEY_RIGHT])       cam->rotateCamLeftRight(-rSpeed);
-
-
-    if(keyboard[GLFW_KEY_UP])          cam->addYPR(glm::vec3(0, rSpeed,0));
-    if(keyboard[GLFW_KEY_DOWN])        cam->addYPR(glm::vec3(0, -rSpeed,0));
-    if(keyboard[GLFW_KEY_LEFT])        cam->addYPR(glm::vec3(rSpeed, 0,0));
-    if(keyboard[GLFW_KEY_RIGHT])       cam->addYPR(glm::vec3(-rSpeed, 0,0));
-
-    // if(keyboard[GLFW_KEY_Q])          cam->rotateCamRoll(rSpeed);
-    // if(keyboard[GLFW_KEY_E])          cam->rotateCamRoll(-rSpeed);
-    
-    // cout << keyboard[GLFW_KEY_UP] <<" , " << keyboard[GLFW_KEY_DOWN] << endl;
-
-    if(keyboard[GLFW_KEY_W])           cam->translateCamViewAxis(tSpeed);
-    if(keyboard[GLFW_KEY_S])           cam->translateCamViewAxis(-tSpeed);
-    if(keyboard[GLFW_KEY_A])           cam->translateCamStrafeAxis(-tSpeed);
-    if(keyboard[GLFW_KEY_D])           cam->translateCamStrafeAxis(tSpeed);
-    if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
-    if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
-
-    if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
-    if(keyboard[GLFW_KEY_Q])           world->quit();
-
-}
 
 int main(int argc, char*argv[]){
 
@@ -187,10 +192,6 @@ int main(int argc, char*argv[]){
 
     //create view
     View *view = new View(world->window);
-    view->addCamera(camera);
-    view->setFOV(90);
-    view->setNear(0.1);
-    view->setFar(1000.0);
     view->setSunlight(vec3(-0.3, -1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
     view->setFog(0, oceanColor, 0.05f, 5.0);
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
@@ -198,6 +199,11 @@ int main(int argc, char*argv[]){
 
     Level *level = new Level();
     level->buildLevelFromFile();
+
+    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, level->getEntityByID(0), vec3(4,7,0));
+
+    view->addCamera(camera);
+    view->addCamera(camTeth);
 
     //create skybox
     Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");

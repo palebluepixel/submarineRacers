@@ -175,6 +175,11 @@ int World::handleGraphicsTick(float t, float dt)
 {
     /* Client-side interpolation may happen here as well */ 
 
+    /* Update tethered camera before rendering */
+    Camera * curCam = this->view->activeCamera();
+    if(curCam->isTethered())
+        ((TetheredCamera*)curCam)->updateTetheredCameraPos();
+
     this->renderAll();
 
     return 1;
