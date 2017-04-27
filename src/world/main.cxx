@@ -18,6 +18,7 @@
 #include <ent/Entity.hxx>
 #include <ent/cube.hxx>
 #include <ent/gadget.hxx>
+#include <ent/terrain.hxx>
 #include <world/world.hxx>
 #include <userinput/callbacks.hxx>
 #include <graphics/texture.hxx>
@@ -134,6 +135,24 @@ void update(double elapsed){
     if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
     if(keyboard[GLFW_KEY_Q])           world->quit();
 
+    int scw, sch;
+    glfwGetWindowSize (world->window, &scw, &sch);
+
+    int cenx=scw/2;
+    int ceny=sch/2;
+
+    double dmx = mousepos[0] - cenx;
+    double dmy = mousepos[1] - ceny;
+
+    if(abs(dmx) > 1.f){
+        // cam->addYPR(glm::vec3(-dmx*rSpeed*0.05f, 01,0));
+    }
+    if(abs(dmy) > 1.f){
+        // cam->addYPR(glm::vec3(0, -dmy*rSpeed*0.05f,0));
+    }
+
+    // glfwSetCursorPos(world->window,cenx,ceny);
+
 }
 
 int main(int argc, char*argv[]){
@@ -148,16 +167,16 @@ int main(int argc, char*argv[]){
     //set up server or client: eventually we will make command line flags more advanced
     //First arg is "s" for server or "c" for client
     //Second arg is server hostname is we are a client
-    int isServer = (argv[1][0] == 's');
+    int isServer = !((argc>=2) && (argv[1][0] == 'c'));
     Server *server;
     Client *client;
     if(isServer){
         server = new Server((short)PORT, NULL);
-        printf("Port: %d\n", server->getPort());
+        fprintf(stderr,"Port: %d\n", server->getPort());
         server->initListeningSocket();
     } else {
         client = new Client(PORT, argv[2]);
-        printf("Hostname: %s, Port: %d\n", client->getHost(), client->getPort());
+        fprintf(stderr,"Hostname: %s, Port: %d\n", client->getHost(), client->getPort());
         client->connectServer();
     }
 
@@ -200,10 +219,11 @@ int main(int argc, char*argv[]){
         0.03f, -5.0f, -30.0f);
 
     //create test objects
-    vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
+    vec3 cubePos[] = {vec3(1,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -13, 5),
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 6, i;
+
     Entity * cubes[ncubes];
     cubes[0] = new Gadget(cubePos[0], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
     cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),1.f);
@@ -212,11 +232,19 @@ int main(int argc, char*argv[]){
     cubes[2] = new Gadget(cubePos[2], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[2], "../assets/models/bigmonkey.obj");
     cubes[2]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
     cubes[2]->meshes.push_back(cubes[2]->volume->collisionMesh());
-    for(i=3; i<ncubes; i++){
+    cubes[3] = new Gadget(cubePos[3], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[3], "../assets/models/crate.obj");
+    cubes[3]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
+    cubes[4] = new Terrain(cubePos[4], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[4]);
+    cubes[4]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
+    for(i=5; i<ncubes; i++){
         cubes[i] = new Gadget(cubePos[i], quaternion(), 0, strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/crate.obj");
         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
         // cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
     }
+
+    world->physics = new PhysicsEngine();
+    world->physics->entities.push_back(cubes[0]);
+    world->physics->entities.push_back(cubes[2]);
 
     //create skybox
     Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), 0, strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
@@ -245,6 +273,7 @@ int main(int argc, char*argv[]){
         time_total = time_curr - time_begin;
         elapsed   = time_span.count() / 1000.0;
         update(elapsed);
+        world->physics->update(elapsed);
 
         time_prev = time_curr;
 

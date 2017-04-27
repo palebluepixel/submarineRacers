@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <graphics/renderer.hxx>
+#include <physics/PhysicsEngine.hxx>
 
 #define ALL_GOOD 0
 #define STATE_ENUM_START ALL_GOOD + 1
@@ -67,6 +68,9 @@ public:
     //View: rendering information, camera, skybox, ground, sun, etc
     View *view;
     Renderer **renderers;
+
+    //Physics:
+    PhysicsEngine *physics;
 
     GLFWwindow *window;
 
