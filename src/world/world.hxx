@@ -13,7 +13,7 @@
 #include <graphics/shader.hxx>
 #include <graphics/TetheredCamera.hxx>
 #include <graphics/renderer.hxx>
-#include <physics/PhysicsEngine.hxx>
+//#include <physics/PhysicsEngine.hxx>
 #include <network/MessageProtocols.hxx>
 #include <ent/Entity.hxx>
 #include <ent/cube.hxx>
@@ -118,7 +118,7 @@ public:
     inline Renderer* getSkyboxRenderer() { return this->rsky; }
 
     //Physics:
-    PhysicsEngine *physics;
+    //PhysicsEngine *physics;
 
     GLFWwindow *window;
 
