@@ -129,6 +129,8 @@ public:
     /* Functions for setting position updates we recieve from server */
     void setEntData(posUpBuf* msg);
     Entity *moveable;
+    
+    View *view;
 
 
 
@@ -154,7 +156,6 @@ private:
 
     /* Uncomment stuff as it is implemented */
 
-    View *view;
     Renderer *r;
     Renderer *rsky;
 
