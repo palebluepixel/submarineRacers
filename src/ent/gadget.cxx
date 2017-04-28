@@ -1,6 +1,6 @@
 #include "gadget.hxx"
 
-Gadget::Gadget(vec3 initial_position, quaternion initial_orientation, char*name, 
+Gadget::Gadget(vec3 initial_position, quaternion initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein)
 : Entity(initial_position, initial_orientation, name, type, status, tick_interval){
     this->color = color;

@@ -90,7 +90,7 @@ void Mesh::draw (){
 void Mesh::loadOBJ(char *file){
   data.prim = GL_TRIANGLES;
   data.shouldTexture = false;  // change.
-  data.color = vec4(1.f,1.f,1.f,1.f);
+  //data.color = vec4(1.f,1.f,1.f,1.f);
 
   // todo: change code to use this form vvv . and make each
   //       group a single mesh.

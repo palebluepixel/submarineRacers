@@ -24,24 +24,26 @@ Entity *entityFromJSON(json j) {
     quaternion realOrientation = quatFromSTDVec(orientation);
     float tick_interval = j["tick_interval"];
     bool movable = j["movable"];
-    float mass = 0; float dragCoef = 0;
-    if (movable) {
-        float mass = j["mass"];
-        float dragCoef = j["dragCoef"];
-    }
     bool drawable = j["drawable"];
     vec3 color = vec3(0,0,0);
-    char *model_file = NULL;
+    const char *model_file = NULL;
     if (drawable) {
         std::vector<float> fakeColor = j["color"];
-        realColor = vec3FromSTDVec(color);
-        model_file = j["model"];
+        color = vec3FromSTDVec(fakeColor);
+        std::string model_file_str = j["model"];
+        model_file = model_file_str.c_str();
     }
     bool collidable = j["collidable"];
     std::string volume_type = "";
     json volume_data = {};
     // this line probably should be edited in the future to reflect "not all entities are gadgets"
-    Entity retVal = new Gadget(real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, model_file);
+    Entity *retVal = new Gadget(real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, (char*)model_file);
+    if (movable) {
+        float mass = j["mass"];
+        retVal->mass = mass;
+        float dragCoef = j["dragCoef"];
+        retVal->dragCoef = dragCoef;
+    }
     if (collidable) {
         volume_type = j["volume-type"];
         volume_data = j["volume-data"];
@@ -225,12 +227,25 @@ void Level::updateAIs(float dt) {
 }
 
 void Level::physicsTick(float dt) {
+    for(std::pair<int, Entity *> en : entities) {
+        // if(en.second->velocity.y != en.second->velocity.y)en.second->velocity = vec3();
+        // en.second->position += dt*en.second->velocity;
+        fprintf(stderr,"%s, %f, %f\n",en.second->name.c_str(),dt,en.second->velocity.y);
+        en.second->onTick(dt);
+        en.second->updatePhysicsVolume();
+    }
     handleCollisions(dt);
     updateEntities(dt);
 }
 
 void Level::handleCollisions(float dt) {
-    //TODO
+    for(std::pair<int, Entity *> en1 : entities) {
+        for(std::pair<int, Entity *> en2 : entities) {
+            vec3 pushe1 = en1.second->volume->push(en2.second->volume);
+            fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
+            en1.second->position += -pushe1;
+        }
+    }
 }
 
 void Level::updateEntities(float dt) {
