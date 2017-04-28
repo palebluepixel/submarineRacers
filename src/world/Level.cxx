@@ -1,10 +1,15 @@
-#include "Level.hxx"
 #include <json/json.hpp>
+#include "Level.hxx"
 #include <util/file.hxx>
 
 using json = nlohmann::json;
 
 Level::Level() {}
+
+Level::Level(const char *path) {
+    log(LOGHIGH, "calling the constructor\n");
+    this->path = path;
+}
 
 Level::~Level() { }
 
@@ -59,9 +64,10 @@ Entity *entityFromJSON(json j) {
 }
 
 /* Populate all fields of the class by loading them from a file. */
-void Level::buildLevelFromFile(const char *path) 
+void Level::buildLevelFromFile() 
 { 
-    char *raw = fileio::load_file(path);
+    log(LOGHIGH, "calling buildLevelFromFile()\n");
+    char *raw = fileio::load_file(this->path);
     json raw_j = json::parse(raw);
     std::vector<json> entities = raw_j["entities"];
 // 	//create test objects

@@ -168,7 +168,7 @@ int main(int argc, char*argv[]){
     initalizeWorld(argv[1][0] == 's', argv[2]);
 
     /* Build example level */
-    Level *level = new Level();
+    Level *level = new Level("level1.json");
     level->buildLevelFromFile();
     world->setLevel(level);
     /* Add camera tethered to the first object */

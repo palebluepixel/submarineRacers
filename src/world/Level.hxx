@@ -27,10 +27,11 @@ class Level {
 
 public:
     Level(); 
+    Level(const char *path);
     ~Level();
 
     /* Populate all fields of the class by loading them from a file. */
-    void buildLevelFromFile(const char *path);
+    void buildLevelFromFile();
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);
@@ -85,6 +86,7 @@ public:
 private:
     /* A list of every entity that exists in the level. For ease of finding 
     specific entities, we store them as a hash table (unordered map)*/
+    const char *path;
     unordered_map<int, Entity *> entities;
     std::vector<AI_entry> ais;  //REMARK this might need to become a list later if we start doing a lot of deleteions
 
