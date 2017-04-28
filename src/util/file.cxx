@@ -1,14 +1,9 @@
 #include "file.hxx"
-#include <ent/Entity.hxx>
-// #include <json.hpp>
-#include <glm/glm.hpp>
 
 #include <fstream>
 #include <streambuf>
 #include <sstream>
 #include <iostream>
-
-// using json = nlohmann::json;
 
 char* fileio::load_file(const char* path){
 	std::ifstream t;

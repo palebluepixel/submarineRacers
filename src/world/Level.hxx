@@ -84,9 +84,9 @@ public:
     /* heightmap */
 
 private:
+    const char *path;
     /* A list of every entity that exists in the level. For ease of finding 
     specific entities, we store them as a hash table (unordered map)*/
-    const char *path;
     unordered_map<int, Entity *> entities;
     std::vector<AI_entry> ais;  //REMARK this might need to become a list later if we start doing a lot of deleteions
 

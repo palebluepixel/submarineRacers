@@ -1,40 +1,12 @@
 {
-    "entities": [ // could change this to like...subs, obstacles, etc.
-//        {
-////            "id": int, // this gets assigned in the constructor
-///*
-// * add "id" back in if we end up splitting up the entities a lot and have
-// * to use it internally to refer to earlier-defined ones
-// * in which case this will be bijective with the real IDs
-// */
-////            "velocity": [float, float, float],
-////            "angular_velocity": [float, float, float, float],
-///*
-// * apparently velocity and angular velocity are set in the constructor
-// */
-////            "type": int?,
-////            "status": int?,
-//            "name": "string",
-//            "position": [float, float, float],
-//            "orientation": [float, float, float, float],
-//            "tick_interval": float,
-//            "collidable": bool,
-//            "movable": bool,
-//            "mass": float,
-//            "dragCoef": float,
-///*
-// * those two are ignored for now, but I would argue will be important
-// */
-//            "drawable": bool,
-//            "color": [float, float, float],
-//            "model": "string"
-//        },
+    "entities": [
         {
             "name": "submarine",
             "position": [-5, 5, 10],
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
+            "velocity": [0.0, -0.5, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
@@ -53,11 +25,12 @@
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
+            "velocity": [0.0, -0.5, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
             "color": [1.0, 1.0, 1.0],
-            "model": "../assets/models/cube.obj"
+            "model": "../assets/models/cube.obj",
             "collidable": true,
             "volume-type": "sphere",
             "volume-data": {
@@ -71,11 +44,12 @@
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
+            "velocity": [0.0, -0.5, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
             "color": [1.0, 1.0, 0.0],
-            "model": "../assets/models/cube.obj"
+            "model": "../assets/models/cube.obj",
             "collidable": true,
             "volume-type": "sphere",
             "volume-data": {
@@ -89,11 +63,12 @@
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
+            "velocity": [0.0, -0.5, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
             "color": [1.0, 0.0, 1.0],
-            "model": "../assets/models/cube.obj"
+            "model": "../assets/models/cube.obj",
             "collidable": true,
             "volume-type": "sphere",
             "volume-data": {
@@ -107,11 +82,12 @@
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
+            "velocity": [0.0, -0.5, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
             "color": [0.0, 1.0, 1.0],
-            "model": "../assets/models/cube.obj"
+            "model": "../assets/models/cube.obj",
             "collidable": true,
             "volume-type": "sphere",
             "volume-data": {
@@ -125,22 +101,18 @@
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
+            "velocity": [0.0, -0.5, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
             "color": [0.0, 0.0, 1.0],
-            "model": "../assets/models/cube.obj"
+            "model": "../assets/models/cube.obj",
             "collidable": true,
             "volume-type": "sphere",
             "volume-data": {
                 "position": [0.0, 0.0, 0.0],
                 "radius": 1.414
             }
-        },
-    ],
-    "skybox": {
-        "position": [float, float, float],
-        "orientation": [float, float, float, float],
-        "name": "skybox" // might just ignore this
-    }
+        }
+    ]
 }

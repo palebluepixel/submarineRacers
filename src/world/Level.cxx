@@ -7,7 +7,6 @@ using json = nlohmann::json;
 Level::Level() {}
 
 Level::Level(const char *path) {
-    log(LOGHIGH, "calling the constructor\n");
     this->path = path;
 }
 
@@ -48,6 +47,8 @@ Entity *entityFromJSON(json j) {
         retVal->mass = mass;
         float dragCoef = j["dragCoef"];
         retVal->dragCoef = dragCoef;
+        std::vector<float> velocity = j["velocity"];
+        retVal->velocity = vec3FromSTDVec(velocity);
     }
     if (collidable) {
         volume_type = j["volume-type"];
@@ -66,7 +67,6 @@ Entity *entityFromJSON(json j) {
 /* Populate all fields of the class by loading them from a file. */
 void Level::buildLevelFromFile() 
 { 
-    log(LOGHIGH, "calling buildLevelFromFile()\n");
     char *raw = fileio::load_file(this->path);
     json raw_j = json::parse(raw);
     std::vector<json> entities = raw_j["entities"];
@@ -88,10 +88,16 @@ void Level::buildLevelFromFile()
 //     for(i=0; i<ncubes; i++)
 //     	this->addEntity(cubes[i]);
     std::vector<json>::iterator it = entities.begin();
-    while ((++it) != entities.end()) {
+    while (it != entities.end()) {
         Entity *ent = entityFromJSON(*it);
+        log(LOGMEDIUM, "adding an item called %s\n", ent->name.c_str());
         this->addEntity(ent);
+        ++it;
     }
+
+//create skybox
+    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    this->setSkybox(skybox);
 }
 
 /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
