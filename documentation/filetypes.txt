@@ -1,0 +1,19 @@
+File format specifications:
+
+filetype .hmp
+
+for storing heightmaps in plaintext
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+orig [x] [y] [z]
+xaxs [x] [y] [z]
+yaxs [x] [y] [z]
+zaxs [x] [y] [z]
+scle [x] [y] [z]
+resl [x_numsteps] [y_numsteps]
+[v00] [v01] [v02] ... [v0n]
+[v10] [v11] [v12] ... [v1n]
+  .       .             .
+  .         .           .
+  .           .         .
+[vm0] [vm1] [vm2] ... [vmn]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
