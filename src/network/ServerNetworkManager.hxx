@@ -19,11 +19,13 @@ public:
 protected:
     int id;
 
-
-	//Actuator<Submarine> *actuator;
+    bool virtual processCommand(short code, short len, uint8_t *message);
+    static handler table[1];
+	SubmarineActuator *actuator;
 	Submarine *sub;
 
 	void controllerStateCommand(short len, char* message);
+	ControllerState previousControllerState;
 };
 
 #endif

@@ -8,9 +8,13 @@ Submarine::Submarine(vec3 initial_position, mat3 initial_orientation, char*name,
 	//
 }
 
+void Submarine::switchWeapons(uint8_t weapon) {
+    //TODO
+}
+
 
 void SubmarineSteeringState::reset() {
-    rotationChange = 0;
+    rotationChange = 0; // + is left
     depthChange = 0;
     acceleration = 0;
     fireWeapon = false;
@@ -19,7 +23,7 @@ void SubmarineSteeringState::reset() {
 
 SubmarineActuator::SubmarineActuator(Submarine *agent) : Actuator(agent) {}
 
-void SubmarineActuator::doSteering() {
+void SubmarineActuator::doSteering(float dt) {
     //agent.rotation += state.rotationChange;
     //Not sure what this will be called in the physics engine
     //agent.AddAcceleration(state.acceleration * agent.rotation);
@@ -32,4 +36,27 @@ void SubmarineActuator::doSteering() {
     }
 
     state.reset();
+}
+
+
+void SubmarineActuator::rise() {
+    state.depthChange += 1;
+}
+void SubmarineActuator::dive() {
+    state.depthChange -= 1;
+}
+void SubmarineActuator::turnLeft() {
+    state.rotationChange += 1;
+}
+void SubmarineActuator::turnRight() {
+    state.rotationChange -= 1;
+}
+void SubmarineActuator::accelerate() {
+    state.acceleration += 1;
+}
+void SubmarineActuator::fire() {
+    state.fireWeapon = true;
+}
+void SubmarineActuator::switchWeapons(uint8_t weapon) {
+    agent->switchWeapons(weapon);
 }
