@@ -73,6 +73,7 @@ int main(int argc, char* argv[]) {
     std::vector<int>::const_iterator int_it;
     std::vector<int> collidables = raw_j["collidables"];
     std::vector<int> drawables = raw_j["drawables"];
+    float test = raw_j["test"];
     a->collidables = collidables;
     a->drawables = drawables;
     std::cout << "collidables" << std::endl;

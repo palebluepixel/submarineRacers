@@ -30,7 +30,7 @@ public:
     ~Level();
 
     /* Populate all fields of the class by loading them from a file. */
-    void buildLevelFromFile();
+    void buildLevelFromFile(const char *path);
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);

@@ -1,29 +1,89 @@
 #include "Level.hxx"
+#include <json/json.hpp>
+#include <util/file.hxx>
+
+using json = nlohmann::json;
 
 Level::Level() {}
 
 Level::~Level() { }
 
-/* Populate all fields of the class by loading them from a file. */
-void Level::buildLevelFromFile() 
-{ 
-	//create test objects
-    vec3 cubePos[] = {vec3(-5,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
-        vec3(5, -40, 5)}; 
-    vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
-    int ncubes = 6, i;
-    Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
-    cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
-    //cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
-    for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(cubePos[i], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
-        cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
-        //cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
-    }
+quaternion quatFromSTDVec(std::vector<float> v) {
+    return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
+}
 
-    for(i=0; i<ncubes; i++)
-    	this->addEntity(cubes[i]);
+vec3 vec3FromSTDVec(std::vector<float> v) {
+    return vec3(v.at(0), v.at(1), v.at(2));
+}
+
+Entity *entityFromJSON(json j) {
+    std::string name = j["name"];
+    std::vector<float> position = j["position"];
+    vec3 real_position = vec3FromSTDVec(position);
+    std::vector<float> orientation = j["orientation"];
+    quaternion realOrientation = quatFromSTDVec(orientation);
+    float tick_interval = j["tick_interval"];
+    bool movable = j["movable"];
+    float mass = 0; float dragCoef = 0;
+    if (movable) {
+        float mass = j["mass"];
+        float dragCoef = j["dragCoef"];
+    }
+    bool drawable = j["drawable"];
+    vec3 color = vec3(0,0,0);
+    char *model_file = NULL;
+    if (drawable) {
+        std::vector<float> fakeColor = j["color"];
+        realColor = vec3FromSTDVec(color);
+        model_file = j["model"];
+    }
+    bool collidable = j["collidable"];
+    std::string volume_type = "";
+    json volume_data = {};
+    // this line probably should be edited in the future to reflect "not all entities are gadgets"
+    Entity retVal = new Gadget(real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, model_file);
+    if (collidable) {
+        volume_type = j["volume-type"];
+        volume_data = j["volume-data"];
+        // initialize a sphere
+        if (volume_type.compare("sphere") == 0) {
+            std::vector<float> spherePos = volume_data["position"];
+            vec3 sphereCenter = vec3FromSTDVec(spherePos);
+            float sphereRad = volume_data["radius"];
+            retVal->volume = new Space::SphereVolume(sphereCenter, sphereRad);
+        }
+    }
+    return retVal;
+}
+
+/* Populate all fields of the class by loading them from a file. */
+void Level::buildLevelFromFile(const char *path) 
+{ 
+    char *raw = fileio::load_file(path);
+    json raw_j = json::parse(raw);
+    std::vector<json> entities = raw_j["entities"];
+// 	//create test objects
+//     vec3 cubePos[] = {vec3(-5,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
+//         vec3(5, -40, 5)}; 
+//     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
+//     int ncubes = 6, i;
+//     Entity * cubes[ncubes];
+//     cubes[0] = new Gadget(cubePos[0], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
+//     cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
+//     //cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
+//     for(i=1; i<ncubes; i++){
+//         cubes[i] = new Gadget(cubePos[i], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+//         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
+//         //cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
+//     }
+// 
+//     for(i=0; i<ncubes; i++)
+//     	this->addEntity(cubes[i]);
+    std::vector<json>::iterator it = entities.begin();
+    while ((++it) != entities.end()) {
+        Entity *ent = entityFromJSON(*it);
+        this->addEntity(ent);
+    }
 }
 
 /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */

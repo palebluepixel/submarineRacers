@@ -10,6 +10,7 @@
             "position": [0.0,0.0,0.0]
         }
     },
+    "test": 0.1,
     "drawables": [0,1],
     "collidables": [0]
 }
