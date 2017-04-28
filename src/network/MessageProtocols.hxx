@@ -53,7 +53,7 @@ struct ControllerState {
     bool leftKey;
     bool rightKey;
     bool forwardKey;
-    bool backwardKey;
+    bool reverseKey;
     bool fireKey;
     bool secondaryKey;
     bool sonarKey;
