@@ -30,7 +30,7 @@ class Gadget : public Entity {
 
 public:
 
-    Gadget(vec3 initial_position, quaternion initial_orientation, char*name, 
+    Gadget(vec3 initial_position, quaternion initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color, char* modelfile);
     ~Gadget();
 

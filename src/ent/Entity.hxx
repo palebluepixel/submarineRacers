@@ -45,14 +45,14 @@ class Entity {
 
 public:
 
-    Entity(vec3 initial_position, quaternion initial_orientation, char*name, 
+    Entity(vec3 initial_position, quaternion initial_orientation, std::string name, 
         EntityType type, EntityStatus status, float tick_interval);
     ~Entity();
 
     EntityStatus status;
 
 public:
-    char*        setName(char* name);
+    std::string  setName(std::string name);
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
 
@@ -79,6 +79,7 @@ public:
     virtual int onTick(float dt);
     void applyForce(vec3 force);
     void applyTorque(quaternion torque);
+    void updatePhysicsVolume();
 
     /**     game state:     **/
     virtual EntityStatus spawn();     // set status to spawned, place in intial position
@@ -94,12 +95,12 @@ public:
     Volume *volume;
     quaternion orientation;
     std::vector<TransformedMesh> meshes;
-protected:
     vec3 position;
     vec3 initial_position;      // we should remove this field.
 
     vec3 velocity; // Used for interpolation
     vec3 initial_velocity;
+// protected:
 
     quaternion initial_orientation;
 
@@ -109,7 +110,7 @@ protected:
     float dragCoef; //
 
     int id;
-    char* name;
+    std::string name;
     EntityType type;
 
     float tick_interval;
