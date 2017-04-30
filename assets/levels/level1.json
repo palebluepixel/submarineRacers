@@ -2,11 +2,7 @@
     "entities": [
         {
             "name": "submarine",
-<<<<<<< HEAD:src/world/level1.json
             "position": [5, 5, 5],
-=======
-            "position": [-5, 0, 10],
->>>>>>> 652bbbf8bdcd739e638e6963f3bc3f6d69ca7cf2:assets/levels/level1.json
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
