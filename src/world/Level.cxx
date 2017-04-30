@@ -21,6 +21,7 @@ vec3 vec3FromSTDVec(std::vector<float> v) {
 }
 
 Entity *entityFromJSON(json j) {
+    /* copy over entity data */
     std::string name = j["name"];
     std::vector<float> position = j["position"];
     vec3 real_position = vec3FromSTDVec(position);
@@ -30,18 +31,22 @@ Entity *entityFromJSON(json j) {
     bool movable = j["movable"];
     bool drawable = j["drawable"];
     vec3 color = vec3(0,0,0);
-    const char *model_file = NULL;
+    char *model_file = NULL;
+
     if (drawable) {
         std::vector<float> fakeColor = j["color"];
         color = vec3FromSTDVec(fakeColor);
         std::string model_file_str = j["model"];
-        model_file = model_file_str.c_str();
+        model_file = strdup(model_file_str.c_str());
     }
+
     bool collidable = j["collidable"];
     std::string volume_type = "";
     json volume_data = {};
+
+    /* Create entity */
     // this line probably should be edited in the future to reflect "not all entities are gadgets"
-    Entity *retVal = new Gadget(real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, (char*)model_file);
+    Entity *retVal = new Gadget(real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, model_file);
     if (movable) {
         float mass = j["mass"];
         retVal->mass = mass;
@@ -61,32 +66,21 @@ Entity *entityFromJSON(json j) {
             retVal->volume = new Space::SphereVolume(sphereCenter, sphereRad);
         }
     }
+
+    /* Free any memory used in object construction */
+    /* TODO: We almost def have to free more stuff here */
+    free(model_file);
+
     return retVal;
 }
 
 /* Populate all fields of the class by loading them from a file. */
 void Level::buildLevelFromFile() 
-{ 
+{
     char *raw = fileio::load_file(this->path);
     json raw_j = json::parse(raw);
     std::vector<json> entities = raw_j["entities"];
-// 	//create test objects
-//     vec3 cubePos[] = {vec3(-5,5,10), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
-//         vec3(5, -40, 5)}; 
-//     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
-//     int ncubes = 6, i;
-//     Entity * cubes[ncubes];
-//     cubes[0] = new Gadget(cubePos[0], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
-//     cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
-//     //cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
-//     for(i=1; i<ncubes; i++){
-//         cubes[i] = new Gadget(cubePos[i], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
-//         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
-//         //cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
-//     }
-// 
-//     for(i=0; i<ncubes; i++)
-//     	this->addEntity(cubes[i]);
+
     std::vector<json>::iterator it = entities.begin();
     while (it != entities.end()) {
         Entity *ent = entityFromJSON(*it);
