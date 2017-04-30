@@ -1,8 +1,18 @@
 #include "gadget.hxx"
 
+<<<<<<< HEAD
 Gadget::Gadget(int ID, vec3 initial_position, quaternion initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein)
 : Entity(ID, initial_position, initial_orientation, name, type, status, tick_interval){
+=======
+#include <util/log.hxx>
+
+Gadget::Gadget(vec3 initial_position, quaternion initial_orientation, std::string name, 
+    EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein)
+: Entity(initial_position, initial_orientation, name, type, status, tick_interval){
+    log(LOGMEDIUM, "infile: %s\n", modelfilein);
+
+>>>>>>> 9b091affd63a0a5d798cf69be4d2d2e048546ff7
     this->color = color;
 
     this->modelfile = strdup(modelfilein);

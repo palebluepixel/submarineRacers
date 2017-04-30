@@ -92,10 +92,22 @@ protected:
 };
 
 class HeightmapVolume : public Volume{
-    HeightmapVolume(vec3 pp, int width, int height);
+public:
+    HeightmapVolume(vec3 pp, vec3 scale, int width, int height, float *data);
     const char *type();
+
+    double distance(Volume *other);
+
+    vec3 push(Volume *other);
+    vec3 pushAlong(Volume *other, vec3 direction);
+    bool collision(Volume *other);
+    bool containsPoint(vec3 pt);
+
+    TransformedMesh collisionMesh();
+protected:
     int width;
     int height;
+    vec3 scale;
 };
 
 class UnionVolume : public Volume{

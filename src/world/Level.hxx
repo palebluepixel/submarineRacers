@@ -27,10 +27,12 @@ class Level {
 
 public:
     Level(); 
+    Level(const char *path);
     ~Level();
 
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();
+    void buildDemoLevel();
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);
@@ -84,6 +86,7 @@ public:
     /* heightmap */
 
 private:
+    const char *path;
     /* A list of every entity that exists in the level. For ease of finding 
     specific entities, we store them as a hash table (unordered map)*/
     unordered_map<int, Entity *> entities;

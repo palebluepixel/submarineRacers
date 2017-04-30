@@ -1,6 +1,7 @@
 #include "terrain.hxx"
+#include <physics/Volume.hxx>
 
-Terrain::Terrain(int ID, vec3 initial_position, quaternion initial_orientation, int id, std::string name, 
+Terrain::Terrain(int ID, vec3 initial_position, quaternion initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color)
 : Entity(ID,initial_position, initial_orientation, name, type, status, tick_interval){
     this->color = color;
@@ -33,4 +34,6 @@ void Terrain::initalizeMeshes(){
     TransformedMesh tm(mesh);
     tm.transform = glm::scale(glm::mat4(1),vec3(10,1,10));
     meshes.push_back(tm);
+
+    volume = new HeightmapVolume(pos(), vec3(10,1,10), 32, 32, 0);
 }

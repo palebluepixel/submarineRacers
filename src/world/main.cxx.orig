@@ -166,8 +166,21 @@ int main(int argc, char*argv[]){
     loglevel_GLOBAL = LOGLOW;
 
     world = new World();
+<<<<<<< HEAD
     bool isClient = (argc > 2) && argv[1][0]=='c';
     initalizeWorld(!isClient, isClient?argv[2]:0);
+=======
+
+    // Stops the segfaults if you type in the wrong code.
+    if(argc == 1 || (argc == 2 && strcmp(argv[1], "s") == 0)) {
+        initalizeWorld('s', NULL);
+    } else if(argc == 3 && strcmp(argv[1], "c") == 0) {
+        initalizeWorld(argv[1][0] == 'c', argv[2]);
+    } else {
+        printf("Error: Usage: './game s' for server or './game c hostname' for client.\n");
+        return -1;
+    }
+>>>>>>> 9b091affd63a0a5d798cf69be4d2d2e048546ff7
 
     /* Build example level */
     Level *level = new Level("../src/world/level1.json");

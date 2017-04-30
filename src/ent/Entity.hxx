@@ -1,7 +1,6 @@
 #ifndef _ENTITY_HXX_
 #define _ENTITY_HXX_
 
-
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <physics/Volume.hxx>
