@@ -1,20 +1,20 @@
 #include "Entity.hxx"
+#include <util/log.hxx>
 
 using namespace glm;
 
-Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, std::string name, 
+Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval) : meshes(), velocity(vec3())
 {
-    this->initial_position = initial_position;
-    this->initial_orientation = initial_orientation;
-    this->id = this->assignNewID();
-    this->name = name;
+    this->id = (ID);
+    this->name = (name);
+    
     this->type = type;
     this->status = status;
     this->tick_interval = tick_interval;
 
-    this->position = this->initial_position;
-    this->orientation = this->initial_orientation;
+    setPosition(initial_position);
+    setOrientation(initial_orientation);
 
     this->velocity = glm::vec3(0, 0, 0);
     //this->angular_velocity
@@ -26,6 +26,9 @@ Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, std::str
     /* This is intialized to 1 so we can be positive the server and client
     agree about the starting position of every object. */
     this->shouldSendUpdate = 1;
+
+    _mass = 1.f;
+    dragCoef=0.f;
 }
 
 Entity::~Entity()
@@ -34,23 +37,49 @@ Entity::~Entity()
 }
 
 
-vec3 Entity::setPosition(vec3 pos)
-{
-    this->shouldSendUpdate = 1;
+vec3 Entity::setPosition(vec3 pos){
+    // if(pos != this->position)
+        this->shouldSendUpdate = 1;
+
     vec3 old = this->position;
     this->position = pos;
     return old;
 }
-
 vec3 Entity::getPosition(){
     return this->position;
 }
+vec3 Entity::pos(){return getPosition();}
+vec3 Entity::pos(vec3 in){return setPosition(in);};
+
+vec3 Entity::vel(){return getVelocity();}
+vec3 Entity::vel(vec3 in){return setVelocity(in);};
+
+float Entity::mass(){return getMass();}
+float Entity::mass(float in){return setMass(in);};
 
 vec3 Entity::setVelocity(vec3 vel) {
-    //this->shouldSendUpdate = 1;
+    if(vel != this->velocity)
+        this->shouldSendUpdate = 1;
+
     vec3 old = this->velocity;
     this->velocity = vel;
     return old;
+}
+
+
+float Entity::setMass(float newmass){
+    this->_mass = newmass;
+}
+float Entity::getMass(){
+    return _mass;
+}
+
+void Entity::setVolume(Volume *vol){
+    this->volume = vol;
+    updatePhysicsVolume();
+}
+Volume* Entity::getVolume(){
+    return volume;
 }
 
 void Entity::updatePhysicsVolume(){
@@ -66,27 +95,23 @@ tquat<float> Entity::setOrientation(tquat<float> ori)
     return old;
 }
 
-EntityType Entity::setEntityType(EntityType type)
-{
+EntityType Entity::setEntityType(EntityType type){
     EntityType old = this->type;
     this->type = type;
     return old;
 }
 
-int Entity::setID(int id)
-{
+int Entity::setID(int id){
     int old = this->id;
     this->id = id;
     return old;
 }
 
-int Entity::getID()
-{
+int Entity::getID(){
     return this->id;
 }
 
-quaternion Entity::getOrientation()
-{
+quaternion Entity::getOrientation(){
     return this->orientation;
 }    
 
@@ -98,6 +123,9 @@ vec3 Entity::getVelocity()
 std::string Entity::setName(std::string name){
     std::string old = this->name;
     return old;
+}
+std::string Entity::getName(){
+    return name;
 }
 
 //overwrite client data with server
@@ -119,12 +147,21 @@ int Entity::overwrite(posUpBuf *msg)
 
 //creates server message describing current pos and ori
 message * Entity::prepareMessageSegment(){
+    // log(LOGLOW,"preparing message statement %s",name.c_str());
     this->shouldSendUpdate = 0;
     return createPosUpMsg(this);
 }
 
 //physics tick behavior
 int Entity::onTick(float dt){
+
+    // update server position every second.
+    static float serverupdatetick=0;
+    serverupdatetick+=dt;
+    if(serverupdatetick>1.f){
+        serverupdatetick=0.f;
+        shouldSendUpdate=1;
+    }
     //TODO fix all pseudocode
     //Collision checks already done
 
@@ -134,9 +171,11 @@ int Entity::onTick(float dt){
     //Do we want some sort of bouyancy to restrict objects to underwater?
 
     // Apply Forces
-    if(mass == 0)mass=1;
-    vec3 acceleration = forces / mass;
-
+    vec3 acceleration = forces / _mass;
+    if(acceleration != vec3()){
+        shouldSendUpdate = 1;
+    }
+    // printf("(%.3f,%.3f,%.3f),(%.3f,%.3f,%.3f),(%.3f,%.3f,%.3f)/%.3f\n",velocity.x,velocity.y,velocity.z,drag.x,drag.y,drag.z,forces.x,forces.y,forces.z,_mass);
     position += (velocity + acceleration * (dt/2)) * dt;
     velocity += acceleration * dt;
 
@@ -146,12 +185,15 @@ int Entity::onTick(float dt){
     return 0;
 }
 
-//change object's status to spawned and place it in its intial position
+// create a new Entity and spawn it in the world.
+
 EntityStatus Entity::spawn(){
-    this->overwrite(this->initial_position, this->initial_orientation, this->initial_velocity);
-    EntityStatus old = this->status;
-    this->status = SPAWNED;
-    return old;
+    // this code should be handled by the Level and by
+    // the physics engine. It should not be here.
+    // this->overwrite(this->initial_position, this->initial_orientation, this->initial_velocity);
+    // EntityStatus old = this->status;
+    // this->status = SPAWNED;
+    // return old;
 }
 
 mat4 Entity::modelMatrix(){

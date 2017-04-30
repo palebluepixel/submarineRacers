@@ -1,8 +1,8 @@
 #include "terrain.hxx"
 
-Terrain::Terrain(vec3 initial_position, quaternion initial_orientation, int id, std::string name, 
+Terrain::Terrain(int ID, vec3 initial_position, quaternion initial_orientation, int id, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color)
-: Entity(initial_position, initial_orientation, name, type, status, tick_interval){
+: Entity(ID,initial_position, initial_orientation, name, type, status, tick_interval){
     this->color = color;
 
     this->initalizeVisualData();

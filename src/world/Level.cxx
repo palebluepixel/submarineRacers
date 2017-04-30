@@ -8,28 +8,32 @@ Level::~Level() { }
 void Level::buildLevelFromFile() 
 { 
 	//create test objects
-    vec3 cubePos[] = {vec3(-5,6,10), vec3(-5, 0, 10), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
+    vec3 cubePos[] = {vec3(5,6,5), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
-    int ncubes = 2, i;
+    int ncubes = 4, i;
     Entity * cubes[ncubes];
-    cubes[0] = new Gadget(cubePos[0], quaternion(), ("c0"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
-    cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),1.f);
-    cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
-    cubes[0]->velocity = vec3(0,-0.5f,0);
+    cubes[0] = new Gadget(0,cubePos[0], quaternion(), "cube0", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
+    cubes[0]->setVolume(new SphereVolume(vec3(0,0,0),1.f));
+    // cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
+    cubes[0]->setVelocity(vec3(0,-0.8f,0));
+    cubes[0]->setMass(1.f);
     for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
-        cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
-        cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
-        cubes[i]->velocity=vec3();
+        cubes[i] = new Gadget(i,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+        cubes[i]->setVolume(new SphereVolume(vec3(0,0,0),1.414));
+        // cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
+        cubes[i]->setVelocity(vec3());
+        cubes[i]->setMass(1.f);;
     }
 
     for(i=0; i<ncubes; i++)
     	this->addEntity(cubes[i]);
 
      //create skybox
-    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Gadget *skybox = new Gadget(ncubes,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
+
+    logln(LOGHIGH,"built level.");
 
 }
 
@@ -110,12 +114,12 @@ int Level::removeAI(AI *ai)
 
 
 /* Using the given server, broadcast position updates to all clients. */
-void Level::sendPosUps(Server *server)
-{
-	for (auto entry : this->entities)
-    {
+void Level::sendPosUps(Server *server){
+	for (auto entry : this->entities){
         auto entity = entry.second;
-        if(entity->isShouldSendUpdate()){
+        bool should = entity->isShouldSendUpdate();
+        if(should){
+            fprintf(stderr,"%s: %s\n",entry.second->getName().c_str(),should?"1":"-");
             message* m = entity->prepareMessageSegment();
             server->broadcast(m);
             deleteMessage(m);
@@ -160,6 +164,9 @@ void Level::updateLevel(float dt) {
     updateAIs(dt);
     physicsTick(dt);
 }
+void Level::interpolateLevel(float dt) {
+    physicsTick(dt);
+}
 
 void Level::updateAIs(float dt) {
     for(AI_entry en : ais) {
@@ -171,31 +178,53 @@ void Level::updateAIs(float dt) {
     }
 }
 
+/**
+ * ONLY physics (and unimportant graphics update) behaviors
+ * go in here. This function is called both (1) by the server
+ * as well as (2) by the client when interpolating between
+ * server messages.
+ *
+ */
 void Level::physicsTick(float dt) {
     for(std::pair<int, Entity *> en : entities) {
-        // if(en.second->velocity.y != en.second->velocity.y)en.second->velocity = vec3();
-        // en.second->position += dt*en.second->velocity;
-        fprintf(stderr,"%s, %f, %f\n",en.second->name.c_str(),dt,en.second->velocity.y);
         en.second->onTick(dt);
         en.second->updatePhysicsVolume();
     }
     handleCollisions(dt);
-    updateEntities(dt);
 }
 
 void Level::handleCollisions(float dt) {
+    map<int, bool> processed;
+    for(std::pair<int, Entity *> e : entities)
+        processed[e.first]=false;
+
     for(std::pair<int, Entity *> en1 : entities) {
+        // fprintf(stderr,"col %d %d %s\n",en1.first, en1.second->getID(),en1.second->getName().c_str());
         for(std::pair<int, Entity *> en2 : entities) {
-            vec3 pushe1 = en1.second->volume->push(en2.second->volume);
-            fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
-            en1.second->position += -pushe1;
+            if(processed[en2.first])continue;
+            if(en1.first == en2.first)continue;
+            // fprintf(stderr,"check %d %d\n",en1.first,en2.first);
+            Entity &e1 = *(en1.second);
+            Entity &e2 = *(en2.second);
+            vec3 e1p = e1.pos();
+            vec3 pushe1 = e1.getVolume()->push(e2.getVolume());
+            // fprintf(stderr,"(%.3f,%.3f,%.3f)\n",e1p.x,e1p.y,e1p.z);
+            // fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
+            if(pushe1 != vec3()){
+                // there is a collision
+                e1.pos(e1.pos()-pushe1);
+                vec3 v1 = (e1.vel()*(e1.mass()-e2.mass()) + e2.vel()*2.f*e2.mass())/(e1.mass()+e2.mass());
+                vec3 v2 = (e2.vel()*(e2.mass()-e1.mass()) + e1.vel()*2.f*e1.mass())/(e1.mass()+e2.mass());
+                e1.vel(v1);
+                e2.vel(v2);
+            }
+            vec3 np = e1.pos();
+            // fprintf(stderr,"(%.3f,%.3f,%.3f)\n\n",np.x,np.y,np.z);
         }
+        processed[en1.first] = true;
     }
-}
 
-void Level::updateEntities(float dt) {
-    for(std::pair<int, Entity *> en : entities) {
-        en.second->onTick(dt);
-    }
+    // for(std::pair<int, Entity *> e : entities){
+    //     printf("> %s: %s\n",e.second->getName().c_str(), e.second->isShouldSendUpdate()?"1":"-");
+    // }
 }
-

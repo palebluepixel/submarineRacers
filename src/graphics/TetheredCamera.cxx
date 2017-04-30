@@ -1,4 +1,5 @@
 #include "TetheredCamera.hxx"
+#include <util/log.hxx>
 
 TetheredCamera::TetheredCamera(cameraType type, Entity *tether, vec3 fixed)
 {
@@ -8,9 +9,12 @@ TetheredCamera::TetheredCamera(cameraType type, Entity *tether, vec3 fixed)
 	this->fixed = fixed;
 	this->dist = 5;
 
-	vec3 pos = tether->getPosition()+fixed;
-	log(LOGMEDIUM, "%f %f %f\n", pos[0], pos[1], pos[2]);
-	this->init(pos, vec3(0,0,0), vec3(0,1,0));
+	// logln(LOGMEDIUM,"tethering to: %p",tether);
+	if(tether){
+		vec3 pos = tether->getPosition()+fixed;
+		log(LOGMEDIUM, "%f %f %f\n", pos[0], pos[1], pos[2]);
+		this->init(pos, vec3(0,0,0), vec3(0,1,0));
+	}
 }
 
 TetheredCamera::~TetheredCamera() 
@@ -43,8 +47,8 @@ This should be called every graphics tick to make sure our camera
 sticks with the thether point. If we are a first person camera, this
 just sets camera->_pos to be thether->getPosition() + fixed. If we are
 a third person camera, we need to move  */
-void TetheredCamera::updateTetheredCameraPos()
-{
+void TetheredCamera::updateTetheredCameraPos(){
+	if(!tether)return;
 	if(this->type == FIRSTPERSON){
 		this->_pos = tether->getPosition() + fixed;
 		this->updateLookDir();

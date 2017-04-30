@@ -28,7 +28,7 @@ void NetworkManager::sendMessage(uint8_t* message, int len)
 
 
 void NetworkManager::recieveMessage(uint8_t* message, int len) {
-    log(LOGMEDIUM, "\nrecieved message: ");
+    log(LOGMEDIUM, "\nreceived message: ");
     logPrintBuf(LOGMEDIUM, message, len);
     log(LOGMEDIUM, "\n");
     
@@ -97,6 +97,7 @@ void NetworkManager::initCommand(COMMAND_PARAMS) {}
 
 void NetworkManager::objectChangeCommand(COMMAND_PARAMS) 
 {
+    logln(LOGLOW,"rec obj change");
     posUpBuf *msg = getPosUpBuf(message);
     world->setEntData(msg);
     free(msg);

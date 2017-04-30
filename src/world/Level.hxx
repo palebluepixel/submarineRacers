@@ -77,6 +77,7 @@ public:
     void renderSkybox(View *view, Renderer *r);
 
     void updateLevel(float dt);
+    void interpolateLevel(float dt);
 
     /**** TODO ****/
     /* Color and camera information */
@@ -92,7 +93,6 @@ private:
 
     void physicsTick(float dt);
     void handleCollisions(float dt);
-    void updateEntities(float dt);
     void updateAIs(float dt);
 
 };

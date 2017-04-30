@@ -96,12 +96,13 @@ GLFWwindow *initializeGLFW(){
 
     return window;
 }
-void initalizeWorld(int isServer, char*hostname){
+void initalizeWorld(int isServer, char *hostname){
     world = new World();
     world->window = initializeGLFW();
 
     world->setIsServer(isServer);
     if(world->isServer()){
+        log(LOGMEDIUM,"building server\n");
         world->setServer(new Server((short)PORT, NULL));
         world->getServer()->initListeningSocket();
     } else {
@@ -165,7 +166,8 @@ int main(int argc, char*argv[]){
     loglevel_GLOBAL = LOGLOW;
 
     world = new World();
-    initalizeWorld(argv[1][0] == 's', argv[2]);
+    bool isClient = (argc > 2) && argv[1][0]=='c';
+    initalizeWorld(!isClient, isClient?argv[2]:0);
 
     /* Build example level */
     Level *level = new Level();
@@ -197,15 +199,18 @@ int main(int argc, char*argv[]){
 
         time_prev = time_curr;
 
-        world->curLevel->updateLevel(elapsed);
         update(elapsed);
 
 
         if(world->isServer()){
+            world->curLevel->updateLevel(elapsed);
             //quick hack-in of a cube movement animation
             Entity *c = world->getLevel()->getEntityByID(0);
             // vec3 pos = c->getPosition() - vec3(0,0.02,0);
             // c->setPosition(pos);
+        }
+        else{
+            world->curLevel->interpolateLevel(elapsed);
         }
 
         //window setup

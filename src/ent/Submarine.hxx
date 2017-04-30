@@ -5,7 +5,7 @@
 
 class Submarine : public Agent {
 public:
-    Submarine(vec3 initial_position, mat3 initial_orientation, char*name, 
+    Submarine(int ID, vec3 initial_position, mat3 initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval);
 
 };

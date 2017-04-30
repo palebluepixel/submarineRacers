@@ -12,7 +12,7 @@ class Terrain : public Entity {
 
 public:
 
-    Terrain(vec3 initial_position, quaternion initial_orientation, int id, std::string name, 
+    Terrain(int ID,vec3 initial_position, quaternion initial_orientation, int id, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color);
     ~Terrain();
 

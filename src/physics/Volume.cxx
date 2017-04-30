@@ -36,7 +36,7 @@ TransformedMesh SphereVolume::collisionMesh(){
   TransformedMesh tm(mesh);
   tm.transform = glm::scale(glm::mat4(1),vec3(r,r,r));
   for(int i=0;i<4;i++){
-    printf("%f,%f,%f,%f\n",tm.transform[i][0],tm.transform[i][1],tm.transform[i][2],tm.transform[i][3]);
+    // printf("%f,%f,%f,%f\n",tm.transform[i][0],tm.transform[i][1],tm.transform[i][2],tm.transform[i][3]);
   }
   return tm;
 }

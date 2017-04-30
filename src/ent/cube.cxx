@@ -1,3 +1,5 @@
+/*
+
 #include "cube.hxx"
 
 Cube::Cube(vec3 initial_position, quaternion initial_orientation, std::string name, 
@@ -54,3 +56,5 @@ void Cube::initalizeMeshes()
         meshes.push_back(mesh);
     }
 }
+
+*/
