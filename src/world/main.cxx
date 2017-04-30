@@ -165,7 +165,16 @@ int main(int argc, char*argv[]){
     loglevel_GLOBAL = LOGLOW;
 
     world = new World();
-    initalizeWorld(argv[1][0] == 's', argv[2]);
+
+    // Stops the segfaults if you type in the wrong code.
+    if(argc == 1 || (argc == 2 && strcmp(argv[1], "s") == 0)) {
+        initalizeWorld('s', NULL);
+    } else if(argc == 3 && strcmp(argv[1], "c") == 0) {
+        initalizeWorld(argv[1][0] == 'c', argv[2]);
+    } else {
+        printf("Error: Usage: './game s' for server or './game c hostname' for client.\n");
+        return -1;
+    }
 
     /* Build example level */
     Level *level = new Level();
@@ -179,27 +188,33 @@ int main(int argc, char*argv[]){
 
     // for timing
     using namespace std::chrono;
-    high_resolution_clock::time_point time_prev = high_resolution_clock::now();
+    high_resolution_clock::time_point time_start = high_resolution_clock::now();
+    high_resolution_clock::time_point time_prev = time_start;
     high_resolution_clock::time_point time_curr;
-    duration<double, std::milli> time_span;
-    double elapsed;
+    duration<float, std::milli> time_span;
+    duration<float, std::milli> time_total;
+    float elapsed;
 
 
     while (!glfwWindowShouldClose(world->window)){
 
         // timing across update operations.
-        time_curr = high_resolution_clock::now();
-        time_span = time_curr - time_prev;
+        time_curr  = high_resolution_clock::now();
+        time_span  = time_curr - time_prev;
+        time_total = time_curr - time_start;
         elapsed   = time_span.count() / 1000.0;
-        update(elapsed);
 
         time_prev = time_curr;
+
+        world->curLevel->updateLevel(elapsed);
+        update(elapsed);
+
 
         if(world->isServer()){
             //quick hack-in of a cube movement animation
             Entity *c = world->getLevel()->getEntityByID(0);
-            vec3 pos = c->getPosition() - vec3(0,0.02,0);
-            c->setPosition(pos);
+            // vec3 pos = c->getPosition() - vec3(0,0.02,0);
+            // c->setPosition(pos);
         }
 
         //window setup
@@ -209,8 +224,8 @@ int main(int argc, char*argv[]){
         glClearColor(1.0, 0.5, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        world->handleNetworksTick(0,0,20);
-        world->handleGraphicsTick(0,0);
+        world->handleNetworksTick(time_total.count(),elapsed,20);
+        world->handleGraphicsTick(time_total.count(),elapsed);
         
 
         glfwSwapBuffers(world->window);

@@ -186,6 +186,7 @@ private:
     //ActiveLevel * activeLevel;
         //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
         //Submarine ** subs;
+public:
     Level * curLevel;
 
     //Players

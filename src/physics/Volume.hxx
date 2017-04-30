@@ -7,6 +7,7 @@
 #include <vector>
 
 namespace Space{
+    typedef glm::tquat<float> quaternion;
     using namespace glm;
     /**
      *  a Position object represents everything that there
@@ -14,11 +15,12 @@ namespace Space{
      *  submarine world: ie. depth (integer), 3D position
      *  in space, 3D orientation, etc...
      */
-    struct Pos{
+    typedef struct{
         vec3 pos;
-        mat3 orient;
-        int depth;
-    };
+        quaternion orient;
+        float depth;
+        float mass;
+    }Pos;
     
     /**
      *  abstract class Volume object representing an oriented
@@ -28,8 +30,9 @@ namespace Space{
      */
     class Volume{
     protected:
-        Pos pos;    // where is this object in space?
     public:
+        Volume(Pos ps);
+        Pos pos;    // where is this object in space?
         virtual inline const char *type() =0;
         /**
          *  returns shortest distance between this volume

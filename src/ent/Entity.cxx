@@ -2,13 +2,13 @@
 
 using namespace glm;
 
-Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, char*name, 
-    EntityType type, EntityStatus status, float tick_interval) : meshes()
+Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, std::string name, 
+    EntityType type, EntityStatus status, float tick_interval) : meshes(), velocity(vec3())
 {
     this->initial_position = initial_position;
     this->initial_orientation = initial_orientation;
     this->id = this->assignNewID();
-    this->name = strdup(name); //not takin any fuckin chances
+    this->name = name;
     this->type = type;
     this->status = status;
     this->tick_interval = tick_interval;
@@ -30,7 +30,7 @@ Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, char*nam
 
 Entity::~Entity()
 {
-    free(this->name);
+    
 }
 
 
@@ -51,6 +51,11 @@ vec3 Entity::setVelocity(vec3 vel) {
     vec3 old = this->velocity;
     this->velocity = vel;
     return old;
+}
+
+void Entity::updatePhysicsVolume(){
+    volume->pos.pos = position;
+    volume->pos.orient = orientation;
 }
 
 tquat<float> Entity::setOrientation(tquat<float> ori)
@@ -90,10 +95,8 @@ vec3 Entity::getVelocity()
     return this->velocity;
 }
 
-char* Entity::setName(char* name)
-{
-    char*old = this->name;
-    this->name = strdup(name);
+std::string Entity::setName(std::string name){
+    std::string old = this->name;
     return old;
 }
 
@@ -131,6 +134,7 @@ int Entity::onTick(float dt){
     //Do we want some sort of bouyancy to restrict objects to underwater?
 
     // Apply Forces
+    if(mass == 0)mass=1;
     vec3 acceleration = forces / mass;
 
     position += (velocity + acceleration * (dt/2)) * dt;
