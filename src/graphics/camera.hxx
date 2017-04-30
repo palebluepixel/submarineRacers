@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <math.h>
 
 //! The camera class encapsulates the current view and projection matrices.
 //! Note that we track the camera's position using double-precision so that
@@ -110,6 +111,9 @@ class Camera {
 
     void updateLookDir();
     void updateLookDirYPR(float yaw, float pitch, float roll);
+    
+    /* Caclulate the YP for the given look point and set our YP */
+    void updateYPRLookDir(vec3 lookPoint);
 
     void setYPR(float yaw, float pitch, float roll);
     void addYPR(vec3 del_ypr);

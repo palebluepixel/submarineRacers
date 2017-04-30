@@ -181,6 +181,20 @@ void Camera::updateLookDirYPR(float yaw, float pitch, float roll)
     this->_dir = this->_pos+lookAtPoint;
 }
 
+/* Caclulate the YP for the given look point and set our YP */
+void Camera::updateYPRLookDir(vec3 lookPoint)
+{
+    float x = lookPoint[0];
+    float y = lookPoint[1];
+    float z = lookPoint[2];
+    vec3 lookVec = lookPoint-this->_pos;
+    vec3 ypr = vec3(atan(y/z), 
+                    atan(sqrt(x*x+y*y)/z),
+                    this->ypr[2]);
+    this->_dir = lookPoint;
+    this->ypr = ypr;
+}
+
 void Camera::setYPR(float yaw, float pitch, float roll){
     ypr_control = true;
     static float max_pitch = 0.99f*3.141592653f/2.f;
