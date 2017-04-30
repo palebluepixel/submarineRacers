@@ -170,7 +170,7 @@ int main(int argc, char*argv[]){
     initalizeWorld(!isClient, isClient?argv[2]:0);
 
     /* Build example level */
-    Level *level = new Level("../src/world/level1.json");
+    Level *level = new Level("../assets/levels/level1.json");
     level->buildLevelFromFile();
     world->setLevel(level);
     /* Add camera tethered to the first object */
