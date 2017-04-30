@@ -6,7 +6,7 @@
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
-            "velocity": [0.0, -100.0, 0.0],
+            "velocity": [0.0, -0.9, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
