@@ -27,13 +27,13 @@ void Terrain::initalizeTextures(const char* texfile){
 
 void Terrain::initalizeMeshes(){
     HeightmapMesh *mesh = new HeightmapMesh();
-    mesh->init(32,32, 0.5f, 0.5f);
+    mesh->init(32,32, 0.15f, 0.15f);
     // mesh->loadOBJ(modelfile);
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
     TransformedMesh tm(mesh);
-    tm.transform = glm::scale(glm::mat4(1),vec3(10,1,10));
+    tm.transform = glm::scale(glm::mat4(1),vec3(100,1,100));
     meshes.push_back(tm);
-
+    pos(vec3(0,-20,0));
     volume = new HeightmapVolume(pos(), vec3(10,1,10), 32, 32, 0);
 }

@@ -95,6 +95,9 @@ void Level::buildLevelFromFile() {
         this->addEntity(ent);
         ++it;
     }
+    // todo: remove this. 
+    Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
+    addEntity(cave);
 
      //create skybox
     Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");

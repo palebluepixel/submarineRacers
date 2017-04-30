@@ -147,15 +147,23 @@ void Mesh::loadOBJ(char *file){
   loadIndices(model->numtriangles*3, indices);
 }
 
-HeightmapMesh::HeightmapMesh() : Mesh(GL_QUADS){
-
-}
 TransformedMesh::TransformedMesh(Mesh *mesh){
   this->mesh=mesh;
 }
 
+//////////////////////////////////////////*
+//           Heightmap Volume
+/////////////////////////////////////////*/
 
+static std::function<float(float,float)> canyon_generator = [](float x, float z){
+  x*=8;
+  z*=8;
+  return pow(x,4)+z*z*z;
+};
 
+HeightmapMesh::HeightmapMesh() : Mesh(GL_QUADS){
+
+}
 void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
   if(w<2)w=2;
   if(h<2)h=2;
@@ -177,7 +185,8 @@ void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
       xp=-0.5f+x_inc*float(x);
       zp=-0.5f+z_inc*float(z);
       texcs[ind] = vec2(-0.0f+x_inc*float(x)/texscalex, -0.0f+z_inc*float(z)/texscaley);
-      verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
+      // verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
+      verts[ind] = vec3(xp,canyon_generator(xp,zp),zp);
       norms[ind] = vec3(sin(xp),cos(xp),0);
       ++ind;
     }
@@ -200,4 +209,7 @@ void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
 }
 void HeightmapMesh::loadFile(std::string filename){
 
+}
+void HeightmapMesh::setGenerator(std::function<float(float,float)> in){
+  generator=in;
 }

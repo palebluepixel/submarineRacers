@@ -71,6 +71,9 @@ public:
   HeightmapMesh();
   void init(int w, int h, float texscalex, float texscaley);
   void loadFile(std::string filename);
+  void setGenerator(std::function<float(float,float)> in);
+private:
+  std::function<float(float,float)> generator;
 };
 
 struct TransformedMesh{

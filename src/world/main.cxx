@@ -171,6 +171,7 @@ int main(int argc, char*argv[]){
 
     /* Build example level */
     Level *level = new Level("../assets/levels/level1.json");
+    // Level *level = new Level(0);
     level->buildLevelFromFile();
     world->setLevel(level);
     /* Add camera tethered to the first object */

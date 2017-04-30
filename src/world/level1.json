@@ -1,0 +1,118 @@
+{
+    "entities": [
+        {
+            "name": "submarine",
+            "position": [-5, 5, 10],
+            "orientation": [1, 0, 0, 0],
+            "tick_interval": 0.1,
+            "movable": true,
+            "velocity": [0.0, -3.5, 0.0],
+            "mass": 10.0,
+            "dragCoef": 1.0,
+            "drawable": true,
+            "color": [1.0, 1.0, 1.0],
+            "model": "../assets/models/sub_3.obj",
+            "collidable": true,
+            "volume-type": "sphere",
+            "volume-data": {
+                "position": [0.0, 0.0, 0.0],
+                "radius": 2.0
+            }
+        },
+        {
+            "name": "cube 1",
+            "position": [5, 0, 5],
+            "orientation": [1, 0, 0, 0],
+            "tick_interval": 0.1,
+            "movable": true,
+            "velocity": [0.0, 0.0, 0.0],
+            "mass": 1.0,
+            "dragCoef": 1.0,
+            "drawable": true,
+            "color": [1.0, 1.0, 1.0],
+            "model": "../assets/models/cube.obj",
+            "collidable": true,
+            "volume-type": "sphere",
+            "volume-data": {
+                "position": [0.0, 0.0, 0.0],
+                "radius": 1.414
+            }
+        },
+        {
+            "name": "cube 2",
+            "position": [5, -5, 5],
+            "orientation": [1, 0, 0, 0],
+            "tick_interval": 0.1,
+            "movable": true,
+            "velocity": [0.0, 0.0, 0.0],
+            "mass": 1.0,
+            "dragCoef": 1.0,
+            "drawable": true,
+            "color": [1.0, 1.0, 0.0],
+            "model": "../assets/models/cube.obj",
+            "collidable": true,
+            "volume-type": "sphere",
+            "volume-data": {
+                "position": [0.0, 0.0, 0.0],
+                "radius": 1.414
+            }
+        },
+        {
+            "name": "cube 3",
+            "position": [5, -10, 5],
+            "orientation": [1, 0, 0, 0],
+            "tick_interval": 0.1,
+            "movable": true,
+            "velocity": [0.0, 0.0, 0.0],
+            "mass": 1.0,
+            "dragCoef": 1.0,
+            "drawable": true,
+            "color": [1.0, 0.0, 1.0],
+            "model": "../assets/models/cube.obj",
+            "collidable": true,
+            "volume-type": "sphere",
+            "volume-data": {
+                "position": [0.0, 0.0, 0.0],
+                "radius": 1.414
+            }
+        },
+        {
+            "name": "cube 4",
+            "position": [5, -20, 5],
+            "orientation": [1, 0, 0, 0],
+            "tick_interval": 0.1,
+            "movable": true,
+            "velocity": [0.0, 0.0, 0.0],
+            "mass": 1.0,
+            "dragCoef": 1.0,
+            "drawable": true,
+            "color": [0.0, 1.0, 1.0],
+            "model": "../assets/models/cube.obj",
+            "collidable": true,
+            "volume-type": "sphere",
+            "volume-data": {
+                "position": [0.0, 0.0, 0.0],
+                "radius": 1.414
+            }
+        },
+        {
+            "name": "cube 5",
+            "position": [5, -40, 5],
+            "orientation": [1, 0, 0, 0],
+            "tick_interval": 0.1,
+            "movable": true,
+            "velocity": [0.0, 0.0, 0.0],
+            "mass": 1.0,
+            "dragCoef": 1.0,
+            "drawable": true,
+            "color": [0.0, 0.0, 1.0],
+            "model": "../assets/models/cube.obj",
+            "collidable": true,
+            "volume-type": "sphere",
+            "volume-data": {
+                "position": [0.0, 0.0, 0.0],
+                "radius": 1.414
+            }
+        }
+    ]
+}
