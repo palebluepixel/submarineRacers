@@ -2,11 +2,11 @@
     "entities": [
         {
             "name": "submarine",
-            "position": [-5, 5, 10],
+            "position": [-5, 0, 10],
             "orientation": [1, 0, 0, 0],
             "tick_interval": 0.1,
             "movable": true,
-            "velocity": [0.0, -0.5, 0.0],
+            "velocity": [0.0, -100.0, 0.0],
             "mass": 1.0,
             "dragCoef": 1.0,
             "drawable": true,
