@@ -13,7 +13,7 @@ Level::Level(const char *path) {
 Level::~Level() 
 { 
     //uncomment if you DARE 
-    //this->unload();
+    this->unload();
 }
 
 quaternion quatFromSTDVec(std::vector<float> v) {
@@ -82,6 +82,7 @@ Entity *entityFromJSON(json j) {
 void Level::unload()
 {
     for(auto ent : this->entities){
+        log(LOGMEDIUM, "removing entity %d", ent.second->getID());
         delete(ent.second);
     }
 }
@@ -248,7 +249,7 @@ void Level::physicsTick(float dt) {
     for(std::pair<int, Entity *> en : entities) {
         // if(en.second->velocity.y != en.second->velocity.y)en.second->velocity = vec3();
         // en.second->position += dt*en.second->velocity;
-        fprintf(stderr,"%s, %f, %f\n",en.second->name.c_str(),dt,en.second->velocity.y);
+        //fprintf(stderr,"%s, %f, %f\n",en.second->name.c_str(),dt,en.second->velocity.y);
         en.second->onTick(dt);
         en.second->updatePhysicsVolume();
     }
@@ -260,7 +261,7 @@ void Level::handleCollisions(float dt) {
     for(std::pair<int, Entity *> en1 : entities) {
         for(std::pair<int, Entity *> en2 : entities) {
             vec3 pushe1 = en1.second->volume->push(en2.second->volume);
-            fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
+            //fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
             en1.second->position += -pushe1;
         }
     }
