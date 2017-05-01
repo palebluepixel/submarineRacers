@@ -27,7 +27,7 @@ void Terrain::initalizeTextures(const char* texfile){
 
 void Terrain::initalizeMeshes(){
     HeightmapMesh *mesh = new HeightmapMesh();
-    mesh->init(32,32, 0.15f, 0.15f);
+    mesh->init(8,8, 0.15f, 0.15f);
     // mesh->loadOBJ(modelfile);
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
