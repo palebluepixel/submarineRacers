@@ -35,6 +35,7 @@ public:
 
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();
+    void buildDemoLevel();
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);
@@ -81,6 +82,7 @@ public:
     void renderSkybox(View *view, Renderer *r);
 
     void updateLevel(float dt);
+    void interpolateLevel(float dt);
 
     /**** TODO ****/
     /* Color and camera information */
@@ -97,7 +99,6 @@ private:
 
     void physicsTick(float dt);
     void handleCollisions(float dt);
-    void updateEntities(float dt);
     void updateAIs(float dt);
 
 };

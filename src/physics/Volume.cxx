@@ -7,6 +7,10 @@ using namespace Space;
 
 Volume::Volume(Pos p) : pos(p){ }
 
+//////////////////////////////////////////*
+//            Sphere Volume
+/////////////////////////////////////////*/
+
 const char *SphereVolume::type(){ return "sphere"; }
 SphereVolume::SphereVolume(vec3 pp, double rad) : Volume(Pos({pp,quaternion(),0.f,1.f})){
   r = rad>0?rad:0;
@@ -36,7 +40,7 @@ TransformedMesh SphereVolume::collisionMesh(){
   TransformedMesh tm(mesh);
   tm.transform = glm::scale(glm::mat4(1),vec3(r,r,r));
   for(int i=0;i<4;i++){
-    printf("%f,%f,%f,%f\n",tm.transform[i][0],tm.transform[i][1],tm.transform[i][2],tm.transform[i][3]);
+    // printf("%f,%f,%f,%f\n",tm.transform[i][0],tm.transform[i][1],tm.transform[i][2],tm.transform[i][3]);
   }
   return tm;
 }
@@ -53,14 +57,49 @@ vec3 SphereVolume::push(Volume *other){
     return vec3(0,0,0);
   }
 }
-        vec3 SphereVolume::pushAlong(Volume *other, vec3 direction){}
-        bool SphereVolume::collision(Volume *other){}
-        bool SphereVolume::containsPoint(vec3 pt){}
 
-
-const char* CylinderVolume::type(){ return "cylinder"; }
-
-const char* HeightmapVolume::type(){ return "heightmap"; }
-
+vec3 SphereVolume::pushAlong(Volume *other, vec3 direction){
+  return vec3();
+}
+bool SphereVolume::collision(Volume *other){
+  return false;
+}
+bool SphereVolume::containsPoint(vec3 pt){
+  return false;
+}
 
 Mesh* SphereVolume::mesh = 0;
+
+
+//////////////////////////////////////////*
+//           Heightmap Volume
+/////////////////////////////////////////*/
+
+HeightmapVolume::HeightmapVolume(vec3 pp, vec3 scale, int width, int height,
+  float *data) : Volume(Pos({pp,quaternion(),0.f,1.f})){
+  // nothing yet.
+  this->width = width;
+  this->height=height;
+  this->scale = scale;
+}
+const char *HeightmapVolume::type(){return "heightmap";}
+
+double HeightmapVolume::distance(Volume *other){
+  return 1.f;
+}
+
+vec3 HeightmapVolume::push(Volume *other){
+  return vec3();
+}
+vec3 HeightmapVolume::pushAlong(Volume *other, vec3 direction){
+  return vec3();
+}
+bool HeightmapVolume::collision(Volume *other){
+  return false;
+}
+bool HeightmapVolume::containsPoint(vec3 pt){
+  return false;
+}
+TransformedMesh HeightmapVolume::collisionMesh(){
+  return TransformedMesh(0);
+}

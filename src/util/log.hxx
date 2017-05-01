@@ -11,6 +11,10 @@
 #define LOGMEDIUM 2
 #define LOGLOW 1
 
+#define KYEL  "\x1B[33m"
+#define KRED  "\x1B[31m"
+#define KNRM  "\x1B[0m"
+
 /* User must set this to the desired log level. Higher levels indicate
 more printing. */
 extern int loglevel_GLOBAL;
@@ -21,7 +25,18 @@ Will print at any log level <= priority.
 */
 #define log(priority, format, args...) \
 			if(loglevel_GLOBAL <= priority) { \
-				printf(format, ##args); \
+				fprintf(stderr,format, ##args); \
+			} while(0)
+
+/**
+	* same as above (with \n), but also print
+	* logging filename/line number for easy
+	* debugging.
+*/
+#define logln(priority, format, args...) \
+			if(loglevel_GLOBAL <= priority) { \
+				fprintf(stderr,KYEL"%s: %d\n"KNRM,__FILE__,__LINE__); \
+				fprintf(stderr,format"\n", ##args); \
 			} while(0)
 
 #define logPrintBuf(priority, buf, len) \

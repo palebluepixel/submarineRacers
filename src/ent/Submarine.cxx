@@ -2,9 +2,9 @@
 #include "Actuator.hxx"
 
 
-Submarine::Submarine(vec3 initial_position, mat3 initial_orientation, char*name, 
+Submarine::Submarine(int ID, vec3 initial_position, mat3 initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval) :
-	Agent(initial_position, initial_orientation, name, type, status, tick_interval) {
+	Agent(ID, initial_position, initial_orientation, name, type, status, tick_interval) {
 	//
 }
 

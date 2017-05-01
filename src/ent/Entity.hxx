@@ -44,25 +44,41 @@ class Entity {
 
 public:
 
-    Entity(vec3 initial_position, quaternion initial_orientation, std::string name, 
-        EntityType type, EntityStatus status, float tick_interval);
+    Entity(int ID, vec3 initial_position, quaternion initial_orientation,
+        std::string name, EntityType type, EntityStatus status, float tick_interval);
     virtual ~Entity();
 
     EntityStatus status;
 
 public:
     std::string  setName(std::string name);
+    std::string  getName();
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
 
     vec3         setPosition(vec3 pos);
     quaternion   setOrientation(quaternion ori);
     vec3         setVelocity(vec3 vel);
+    float        setMass(float newmass);
 
     vec3         getPosition();
+
+    vec3         pos();
+    vec3         pos(vec3 in);
+
+    vec3         vel();
+    vec3         vel(vec3 in);
+
+    float        mass();
+    float        mass(float in);
+
     quaternion   getOrientation();
     vec3         getVelocity();
     int          getID();
+    float        getMass();
+
+    void         setVolume(Volume *vol);
+    Volume*      getVolume();
 
     inline bool  isCollidable()       { return this->collidable;       }
     inline bool  isDrawable()         { return this->drawable;         }
@@ -90,22 +106,17 @@ public:
     inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
-public:
+protected:
     Volume *volume;
     quaternion orientation;
     std::vector<TransformedMesh> meshes;
     vec3 position;
-    vec3 initial_position;      // we should remove this field.
 
     vec3 velocity; // Used for interpolation
-    vec3 initial_velocity;
-// protected:
-
-    quaternion initial_orientation;
 
     quaternion angular_velocity;
 
-    float mass;
+    float _mass;
     float dragCoef; //
 
     int id;
