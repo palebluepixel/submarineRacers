@@ -83,8 +83,10 @@ Volume* Entity::getVolume(){
 }
 
 void Entity::updatePhysicsVolume(){
-    volume->pos.pos = position;
-    volume->pos.orient = orientation;
+    if(volume){
+        volume->pos.pos = position;
+        volume->pos.orient = orientation;
+    }
 }
 
 tquat<float> Entity::setOrientation(tquat<float> ori)

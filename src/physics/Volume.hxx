@@ -68,11 +68,6 @@ public:
     virtual TransformedMesh collisionMesh() = 0;
 };
 
-class CylinderVolume : public Volume{
-    CylinderVolume(vec3 p1, vec3 p2);
-    const char *type();
-    vec3 p1,p2;
-};
 
 class SphereVolume : public Volume{
 public:
@@ -85,10 +80,29 @@ public:
     bool collision(Volume *other);
     bool containsPoint(vec3 pt);
 
+    float R();
+
     TransformedMesh collisionMesh();
     static Mesh* mesh;
 protected:
     double r;
+};
+
+class CylinderVolume : public Volume{
+public:
+    CylinderVolume(vec3 pp, double rad, double height);
+    const char *type();
+    double distance(Volume *other);
+
+    vec3 push(Volume *other);
+    vec3 pushAlong(Volume *other, vec3 direction);
+    bool collision(Volume *other);
+    bool containsPoint(vec3 pt);
+
+    TransformedMesh collisionMesh();
+    static Mesh* mesh;
+protected:
+    double r,h;
 };
 
 class HeightmapVolume : public Volume{

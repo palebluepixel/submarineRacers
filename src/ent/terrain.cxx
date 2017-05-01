@@ -28,7 +28,7 @@ void Terrain::initalizeTextures(const char* texfile){
 void Terrain::initalizeMeshes(){
     HeightmapMesh *mesh = new HeightmapMesh();
     mesh->init(8,8, 0.15f, 0.15f);
-    // mesh->loadOBJ(modelfile);
+    // mesh->loadFileOBJ("../assets/levels/bumps.obj");
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
     TransformedMesh tm(mesh);

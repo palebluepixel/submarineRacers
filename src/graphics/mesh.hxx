@@ -70,7 +70,8 @@ class HeightmapMesh : public Mesh{
 public:
   HeightmapMesh();
   void init(int w, int h, float texscalex, float texscaley);
-  void loadFile(std::string filename);
+  int loadFile(std::string filename);
+  void loadFileOBJ(char *file);
   void setGenerator(std::function<float(float,float)> in);
 private:
   std::function<float(float,float)> generator;
@@ -81,7 +82,6 @@ struct TransformedMesh{
   Mesh *mesh;
   mat4 transform;
 };
-
 class Model{
   Model();
   Model(std::string file);

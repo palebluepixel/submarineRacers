@@ -99,9 +99,13 @@ void Level::buildLevelFromFile() {
     Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
     addEntity(cave);
 
+    // Gadget *plateau = new Gadget(++id,vec3(0,0,0), quaternion(), "landscape", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/levels/bumps.obj");
+    // addEntity(plateau);
+
      //create skybox
     Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
+
 
 }
 
@@ -293,7 +297,7 @@ void Level::physicsTick(float dt) {
     for(std::pair<int, Entity *> en : entities) {
         // if(en.second->velocity.y != en.second->velocity.y)en.second->velocity = vec3();
         // en.second->position += dt*en.second->velocity;
-        fprintf(stderr,"%s, %f, %f\n",en.second->getName().c_str(),dt,en.second->vel().y);
+        // fprintf(stderr,"%s, %f, %f\n",en.second->getName().c_str(),dt,en.second->vel().y);
         en.second->onTick(dt);
         en.second->updatePhysicsVolume();
     }
@@ -310,6 +314,7 @@ void Level::handleCollisions(float dt) {
         for(std::pair<int, Entity *> en2 : entities) {
             if(processed[en2.first])continue;
             if(en1.first == en2.first)continue;
+            if(!en2.second->getVolume() || !en1.second->getVolume())continue;
             // fprintf(stderr,"check %d %d\n",en1.first,en2.first);
             Entity &e1 = *(en1.second);
             Entity &e2 = *(en2.second);
