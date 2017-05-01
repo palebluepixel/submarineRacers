@@ -19,18 +19,18 @@ void NetworkManager::sendMessage(uint8_t* message, int len)
     struct sockaddr_in targetAddr = this->getTargetAddr();
     int sock = this->getTargetSocket();
 
-    log(LOGMEDIUM, "\nSending message: (length: %d)\nTo: %s at port on socket %d\n", len,
+    logln(LOGMEDIUM, "\nSending message: (length: %d)\nTo: %s at port on socket %d\n", len,
         inet_ntoa(targetAddr.sin_addr), sock);
     logPrintBuf(LOGMEDIUM, message, len);
     int bytesSent = sendto(sock, message, len, 0, (struct sockaddr*)&targetAddr, sizeof(struct sockaddr_in));
-    log(LOGMEDIUM, "Sent %d bytes\n\n", bytesSent);
+    logln(LOGMEDIUM, "Sent %d bytes\n\n", bytesSent);
 }
 
 
 void NetworkManager::recieveMessage(uint8_t* message, int len) {
-    log(LOGMEDIUM, "\nreceived message: ");
+    logln(LOGMEDIUM, "\nreceived message: ");
     logPrintBuf(LOGMEDIUM, message, len);
-    log(LOGMEDIUM, "\n");
+    logln(LOGMEDIUM, "\n");
     
     uint8_t *current = message;
 
@@ -53,7 +53,7 @@ void NetworkManager::recieveMessage(uint8_t* message, int len) {
 /* This is a wrapper for checkDispatch. Subclasses can replace this to
    checkDispatch with their own table. */
 bool NetworkManager::processCommand(short code, short len, uint8_t *message) {
-    log(LOGLOW, "command: %d %d\n", code, len);
+    logln(LOGLOW, "command: %d %d\n", code, len);
 
     return checkDispatch(code, len, message);
 }
@@ -84,12 +84,12 @@ void NetworkManager::sendCommand(short code, short len, uint8_t *payload) {
 }
 
 void NetworkManager::pingCommand(COMMAND_PARAMS) {
-    log(LOGLOW, "got ping\n");
+    logln(LOGLOW, "got ping\n");
     this->sendCommand(CODE_PONG, 0, nullptr);
 }
 
 void NetworkManager::pongCommand(COMMAND_PARAMS) {
-    log(LOGLOW, "got pong\n");
+    logln(LOGLOW, "got pong\n");
     //this->sendCommand(CODE_PING, 0, nullptr);
 }
 void NetworkManager::initCommand(COMMAND_PARAMS) {}

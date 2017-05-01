@@ -29,7 +29,7 @@ void Connectable::recieveOneMessage(int socket)
     MessageContainer *m = new MessageContainer(src, bytebuf, bytesRead+1);
 
     //add to the queue
-    //log(LOGMEDIUM, "Recieved the message: %s\n", bytebuf);
+    //logln(LOGMEDIUM, "Recieved the message: %s\n", bytebuf);
     this->queue.addMessage(m);
 
 }

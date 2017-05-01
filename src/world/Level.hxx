@@ -8,7 +8,7 @@
 #include <ent/gadget.hxx>
 #include <vector>
 #include <unordered_map>
-#include <util/log.hxx>
+//#include <util/log.hxx>
 #include <network/Server.hxx>
 #include <graphics/view.hxx>
 #include <graphics/renderer.hxx>

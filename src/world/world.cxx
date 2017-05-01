@@ -177,20 +177,23 @@ int World::handleEventUSERFINISH()
 int World::loadLevel(int i)
 {
     if(i >= this->levels.size()){
-        log(LOGERROR, "Invalid level ID: %d\n", i);
+        logln(LOGERROR, "Invalid level ID: %d\n", i);
         return -1;
     }
 
     Level* oldLevel = this->getLevel();
     const char* levelPath = this->levels[i];
     
-    log(LOGMEDIUM, "loading level %s\n", levelPath);
+    logln(LOGMEDIUM, "loading level %s\n", levelPath);
     Level* newLevel = new Level(levelPath);
     newLevel->buildLevelFromFile();
 
     this->setLevel(newLevel);
     if(!(oldLevel==NULL))
         delete(oldLevel);
+
+    // For now, tether our camera to the first entity.
+    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(1));
 }
 
 void World::addLevel(const char*path)
@@ -213,8 +216,9 @@ int World::handleGraphicsTick(float t, float dt)
 
     /* Update tethered camera before rendering */
     Camera * curCam = this->view->activeCamera();
-    if(curCam->isTethered())
+    if(curCam->isTethered()){
         ((TetheredCamera*)curCam)->updateTetheredCameraPos();
+    }
 
     this->renderAll();
 
@@ -290,11 +294,12 @@ void World::worldInitalizeDefault(int isServer)
 
     //initalize camera
     Camera *camera = new Camera();
-    
     //position, yaw-roll, up-vector
     camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
+    /* Add tethered Camera */
+    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, NULL, vec3(0,3,0));
 
     vec3 oceanColor = vec3(0,70,95) / 256.0;
     vec3 oceanBrightColor = vec3(70,241,245) / 256.0;
@@ -307,6 +312,8 @@ void World::worldInitalizeDefault(int isServer)
         0.03f, -5.0f, -30.0f);
 
     view->addCamera(camera);
+    view->addCamera(camTeth);
+    view->setFirstPersonCam(camTeth);
 
     this->setView(view);
     this->setEntityRenderer(r);

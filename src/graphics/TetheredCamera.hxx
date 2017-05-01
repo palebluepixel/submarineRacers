@@ -23,6 +23,9 @@ public:
 	TetheredCamera(cameraType type, Entity *tether, vec3 fixed);
 	~TetheredCamera();
 
+	/* Change our entity */
+	void changeTether(Entity *entity);
+
 	vec3 sphericalToCartesian(float yaw, float pitch, float r);
 
 	/* All camera movement is done through YPR commands. If we are
@@ -40,6 +43,8 @@ public:
 	just sets camera->_pos to be thether->getPosition() + fixed. If we are
 	a third person camera, we need to move  */
 	void updateTetheredCameraPos();
+
+	inline Entity *getTether() { return this->tether; }
 
 protected:
 	cameraType type;

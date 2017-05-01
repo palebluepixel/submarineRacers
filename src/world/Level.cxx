@@ -4,6 +4,9 @@
 #include <graphics/mesh.hxx>
 #include <physics/Volume.hxx>
 #include <ent/terrain.hxx>
+#include <world/world.hxx>
+
+extern World* world;
 
 using json = nlohmann::json;
 
@@ -15,7 +18,6 @@ Level::Level(const char *path) {
 
 Level::~Level() 
 { 
-    //uncomment if you DARE 
     this->unload();
 }
 
@@ -85,7 +87,7 @@ Entity *entityFromJSON(int id, json j) {
 void Level::unload()
 {
     for(auto ent : this->entities){
-        log(LOGMEDIUM, "removing entity %d", ent.second->getID());
+        //logln(LOGMEDIUM, "removing entity %d", ent.second->getID());
         delete(ent.second);
     }
 }
@@ -104,7 +106,7 @@ void Level::buildLevelFromFile() {
     std::vector<json>::iterator it = entities.begin();
     while (it != entities.end()) {
         Entity *ent = entityFromJSON(++id,*it);
-        log(LOGMEDIUM, "adding an item called %s\n", ent->getName().c_str());
+        //logln(LOGMEDIUM, "adding an item called %s\n", ent->getName().c_str());
         this->addEntity(ent);
         ++it;
     }
@@ -150,7 +152,7 @@ void Level::buildDemoLevel()
     Gadget *skybox = new Gadget(ncubes+1,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
 
-    logln(LOGHIGH,"built level.");
+    //logln(LOGHIGH,"built level.");
 
 }
 
@@ -160,7 +162,7 @@ void Level::upEntData(posUpBuf *info)
 	// Get the entity for this ID
 	Entity *ent = this->getEntityByID(info->id);
 	if(ent == NULL){
-		log(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
+		//logln(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
 		return;
 	}
 
@@ -257,7 +259,7 @@ void Level::renderAllEnts(View *view, Renderer *r)
 	r->enable();
 	for (auto entry : this->entities) {
         auto entity = entry.second;
-        //log(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
+        //logln(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
         if(entity->isDrawable())
         	r->render(view, entity);
     }

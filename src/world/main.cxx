@@ -109,12 +109,12 @@ void initalizeWorld(int isServer, char *hostname){
 
     world->setIsServer(isServer);
     if(world->isServer()){
-        log(LOGMEDIUM,"building server\n");
+        logln(LOGMEDIUM,"building server\n");
         world->setServer(new Server((short)PORT, NULL));
         world->getServer()->initListeningSocket();
     } else {
         world->setClient(new Client(PORT, hostname));
-        log(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
+        logln(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
         world->getClient()->connectServer();
     }
 
@@ -188,10 +188,6 @@ int main(int argc, char*argv[]){
     world->addAllLevels(levels);
     world->loadLevel(0);
 
-    /* Add camera tethered to the first object */
-    //TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, level->getEntityByID(0), vec3(4,7,0));
-    //world->getView()->addCamera(camTeth);
-
     int width, height;
 
     // for timing
@@ -214,20 +210,18 @@ int main(int argc, char*argv[]){
 
         time_prev = time_curr;
 
-
-        world->getLevel()->updateLevel(elapsed);
         update(elapsed);
 
 
         if(world->isServer()){
-            world->curLevel->updateLevel(elapsed);
+            world->getLevel()->updateLevel(elapsed);
             //quick hack-in of a cube movement animation
             Entity *c = world->getLevel()->getEntityByID(0);
             // vec3 pos = c->getPosition() - vec3(0,0.02,0);
             // c->setPosition(pos);
         }
         else{
-            world->curLevel->interpolateLevel(elapsed);
+            world->getLevel()->interpolateLevel(elapsed);
         }
 
         //window setup

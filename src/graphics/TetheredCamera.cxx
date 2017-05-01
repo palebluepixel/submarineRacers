@@ -9,16 +9,26 @@ TetheredCamera::TetheredCamera(cameraType type, Entity *tether, vec3 fixed)
 	this->fixed = fixed;
 	this->dist = 5;
 
-	// logln(LOGMEDIUM,"tethering to: %p",tether);
+	// loglnln(LOGMEDIUM,"tethering to: %p",tether);
 	if(tether){
 		vec3 pos = tether->getPosition()+fixed;
-		log(LOGMEDIUM, "%f %f %f\n", pos[0], pos[1], pos[2]);
+		logln(LOGMEDIUM, "%f %f %f\n", pos[0], pos[1], pos[2]);
 		this->init(pos, vec3(0,0,0), vec3(0,1,0));
+	} else {
+		// Start at the origin if entity was null
+		this->init(vec3(0,0,0), vec3(0,0,0), vec3(0,1,0));
 	}
 }
 
 TetheredCamera::~TetheredCamera() 
 { }
+
+/* Change our entity */
+void TetheredCamera::changeTether(Entity *entity)
+{
+	this->tether = entity;
+}
+
 
 vec3 TetheredCamera::sphericalToCartesian(float yaw, float pitch, float r)
 {
@@ -28,6 +38,7 @@ vec3 TetheredCamera::sphericalToCartesian(float yaw, float pitch, float r)
 
 void TetheredCamera::setYPR(float yaw, float pitch, float roll)
 {
+	if(!tether) return;
 	if(this->type == FIRSTPERSON){
 		((Camera*)this)->setYPR(yaw, pitch, roll);
 	} else {

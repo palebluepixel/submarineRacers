@@ -23,10 +23,10 @@ extern int loglevel_GLOBAL;
 Will print at any log level <= priority.
 	format / args...: write as you would a printf(format, args...)
 */
-#define log(priority, format, args...) \
+/*#define log(priority, format, args...) \
 			if(loglevel_GLOBAL <= priority) { \
 				fprintf(stderr,format, ##args); \
-			} while(0)
+			} while(0)*/
 
 /**
 	* same as above (with \n), but also print
@@ -35,7 +35,7 @@ Will print at any log level <= priority.
 */
 #define logln(priority, format, args...) \
 			if(loglevel_GLOBAL <= priority) { \
-				fprintf(stderr,KYEL"%s: %d\n"KNRM,__FILE__,__LINE__); \
+				fprintf(stderr, KYEL "%s: %d\n" KNRM ,__FILE__,__LINE__); \
 				fprintf(stderr,format"\n", ##args); \
 			} while(0)
 

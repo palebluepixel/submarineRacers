@@ -26,14 +26,14 @@ void Client::connectServer()
     /* Create a socket to talk to the server */
     serverSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if(serverSocket < 0) {
-        log(LOGERROR, "%s\n", "Could not open socket");
+        logln(LOGERROR, "%s\n", "Could not open socket");
         exit(-1);
     }
 
     /* Get server info by hostname */
     serverInfo = gethostbyname(this->hostname);
     if(serverInfo == NULL) {
-        log(LOGERROR, "Server with hostname %s did not exist\n",this->hostname);
+        logln(LOGERROR, "Server with hostname %s did not exist\n",this->hostname);
         exit(-1);
     }
 
@@ -55,7 +55,7 @@ void Client::connectServer()
     this->messageServer(m);
     deleteMessage(m);
 
-    log(LOGLOW,"Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port), serverAddr.sin_port);
+    logln(LOGLOW,"Successfully connected to %s at port %d %d\n", inet_ntoa(serverAddr.sin_addr), ntohs(serverAddr.sin_port), serverAddr.sin_port);
     
 }
 
