@@ -46,8 +46,8 @@ enum WorldState {
     TITLE = STATE_ENUM_START,
     LISTEN, //server only, waiting for user connections or LOADLEVEL events    
     CONNECTING, //client only, waiting for WEARECONNECTED
-    MENU1,
-    MENU2, //more if needed
+    MENUSUBSELECT,
+    MENULEVELSELECT, //more if needed
     LOADING_LEVEL,
     RACE_START,
     RACE_RUNNING,
@@ -59,7 +59,6 @@ enum WorldState {
 enum EventType {
     STARTCLIENT = 0,
     STARTSERVER,
-    WEARECONNECTED, //our client got a message from the server that we're in
     ADVANCEMENU,
     BACKMENU, //moves between menus if multiple
     LOADLEVEL,
@@ -128,7 +127,9 @@ public:
     void quit(); 
 
     //level
+    void unloadLevel();
     int loadLevel(int i);
+    void addLevel(Level *level);
     void addLevel(const char*path);
     void addAllLevels(vector<const char*> levels);
 
@@ -186,14 +187,14 @@ private:
     Client *client;
     int isServ;
 
+    vector<Level*> levels;
+    Level * curLevel;
+
     //ActiveLevel: all entities in the world, world boundaries, etc
     //ActiveLevel * activeLevel;
         //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
         //Submarine ** subs;
 
-    /* A vector of filenames for levels. Whenever we load a level, we build it from scratch from the file. */
-    vector<const char*> levels;
-    Level * curLevel;
 
     //Players
     //Player ** players; 

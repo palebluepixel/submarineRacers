@@ -46,7 +46,7 @@ public:
 
     Entity(vec3 initial_position, quaternion initial_orientation, std::string name, 
         EntityType type, EntityStatus status, float tick_interval);
-    ~Entity();
+    virtual ~Entity();
 
     EntityStatus status;
 

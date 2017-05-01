@@ -45,11 +45,18 @@ static void error_callback(int error, const char* description){
     Error::error(std::string(description),0);
 }
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
-    /* On-press or on-release actiosn should go here */
+    /* On-press or on-release actions should go here */
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+
     if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
-            world->getView()->nextCamera();
+        world->getView()->nextCamera();
+
+    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+        world->loadLevel(0);
+
+    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+        world->loadLevel(1);
 
     /* Continous actions should go here */
     keyboard[key] = action;
@@ -177,12 +184,20 @@ int main(int argc, char*argv[]){
     }
 
     /* Build example level */
-    Level *level = new Level("../assets/levels/level1.json");
-    level->buildLevelFromFile();
-    world->setLevel(level);
+    //Level *level = new Level("../assets/levels/level1.json");
+    //level->buildLevelFromFile();
+    //world->setLevel(level);
+
+    /* Create levels */
+    vector<const char*> levels;
+    levels.push_back((const char*)strdup("../assets/levels/level1.json"));
+    levels.push_back((const char*)strdup("../assets/levels/level2.json"));
+    world->addAllLevels(levels);
+    world->loadLevel(0);
+
     /* Add camera tethered to the first object */
-    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, level->getEntityByID(0), vec3(4,7,0));
-    world->getView()->addCamera(camTeth);
+    //TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, level->getEntityByID(0), vec3(4,7,0));
+    //world->getView()->addCamera(camTeth);
 
     int width, height;
 
@@ -206,7 +221,7 @@ int main(int argc, char*argv[]){
 
         time_prev = time_curr;
 
-        world->curLevel->updateLevel(elapsed);
+        world->getLevel()->updateLevel(elapsed);
         update(elapsed);
 
 

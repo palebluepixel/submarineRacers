@@ -10,7 +10,11 @@ Level::Level(const char *path) {
     this->path = path;
 }
 
-Level::~Level() { }
+Level::~Level() 
+{ 
+    //uncomment if you DARE 
+    //this->unload();
+}
 
 quaternion quatFromSTDVec(std::vector<float> v) {
     return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
@@ -72,6 +76,14 @@ Entity *entityFromJSON(json j) {
     free(model_file);
 
     return retVal;
+}
+
+/* Release all memeory associated with this level */
+void Level::unload()
+{
+    for(auto ent : this->entities){
+        delete(ent.second);
+    }
 }
 
 /* Populate all fields of the class by loading them from a file. */

@@ -10,7 +10,7 @@
             "mass": 1.0,
             "dragCoef": 0.0,
             "drawable": true,
-            "color": [0.1, 0.8, 0.8],
+            "color": [1.0, 0.0, 0.0],
             "model": "../assets/models/sub_3.obj",
             "collidable": true,
             "volume-type": "sphere",

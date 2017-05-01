@@ -28,8 +28,6 @@ int World::handleEvent(EventType t)
             return this->handleEventSTARTCLIENT();
         case STARTSERVER:
             return this->handleEventSTARTSERVER();
-        case WEARECONNECTED:
-            return this->handleEventWEARECONNECTED();
         case ADVANCEMENU:
             return this->handleEventADVANCEMENU();
         case BACKMENU:
@@ -58,7 +56,7 @@ int World::handleEventSTARTCLIENT()
         case TITLE:
             this->state = CONNECTING;
             this->getClient()->connectServer();
-            this->state = MENU1;
+            this->state = MENUSUBSELECT;
             return ALL_GOOD;
         default:
             //disconnect, reset as client
@@ -77,19 +75,6 @@ int World::handleEventSTARTSERVER()
             return ALL_GOOD;
         default:
             //disconnect, reset as server
-            return this->state;
-    }
-}
-
-/* unused */
-int World::handleEventWEARECONNECTED()
-{
-    switch(this->state)
-    {
-        case CONNECTING:
-            this->state = MENU1;
-            return ALL_GOOD;
-        default:
             return this->state;
     }
 }
@@ -117,8 +102,7 @@ int World::handleEventLOADLEVEL()
     Level *level;
     switch(this->state)
     {
-        case MENU1:
-        case MENU2:
+        case MENULEVELSELECT:
             this->state = LOADING_LEVEL;
             level = new Level();
             level->buildLevelFromFile();
@@ -173,37 +157,38 @@ int World::handleEventUSERFINISH()
         return 0;
 }
 
+void World::unloadLevel()
+{
+
+    this->getLevel()->unload();
+
+}
 
 int World::loadLevel(int i)
 {
-    if(i >= this->levels.size()){
-        log(LOGERROR, "Invalid level ID: %d\n", i);
+    // Unload the current level
+    //if(this->getLevel() != NULL)
+    //    this->unloadLevel();
+
+    log(LOGMEDIUM, "loading level %d\n", i);
+    if(i >= this->levels.size())
         return -1;
-    }
+    this->setLevel(this->levels[i]);
+    this->getLevel()->buildLevelFromFile();
 
-    Level* oldLevel = this->getLevel();
-    const char* levelPath = this->levels[i];
-    
-    log(LOGMEDIUM, "loading level %s\n", levelPath);
-    Level* newLevel = new Level(levelPath);
-    newLevel->buildLevelFromFile();
+    return 0;
+}
 
-    this->setLevel(newLevel);
-    if(!(oldLevel==NULL))
-        delete(oldLevel);
+void World::addLevel(Level *level)
+{
+    this->levels.push_back(level);
 }
 
 void World::addLevel(const char*path)
 {
-    this->levels.push_back(path);
+    this->levels.push_back(new Level(path));
 }
 
-void World::addAllLevels(vector<const char*> levels)
-{
-    for (auto level : levels) {
-        this->levels.push_back(level);
-    }
-}
 
 
 /* Handle one tick of the graphics clock (that is, render the game) */
@@ -312,4 +297,12 @@ void World::worldInitalizeDefault(int isServer)
     this->setEntityRenderer(r);
     this->setSkyboxRenderer(rsky);
 
+}
+
+/* Load all levels in the given vector of strings */
+void World::addAllLevels(vector<const char*> levels)
+{
+    for(auto it : levels){
+        this->addLevel(it);
+    }
 }
