@@ -222,7 +222,6 @@ int World::handleGraphicsTick(float t, float dt)
     Camera * curCam;
     switch(this->state)
     {
-        case LOADING_LEVEL: //take this out
         case RACE_RUNNING:
         case RACE_START:
         case RACE_FINISH:
@@ -265,7 +264,16 @@ int World::handleNetworksTick(float t, float dt, int mmax)
 void World::handleNetworksTickServer(float t, float dt, int mmax)
 {
     this->getServer()->ReadMessages(mmax);
-    this->sendAllUpdates();
+    switch(this->state)
+    {  
+        case RACE_RUNNING:
+        case RACE_START:
+        case RACE_FINISH:
+            this->sendAllUpdates();
+            return;
+        default:
+            return;
+    }
 }
 
 void World::handleNetworksTickClient(float t, float dt, int mmax)
@@ -297,12 +305,14 @@ int World::handlePhysicsTick(float t, float dt)
 
 void World::sendAllUpdates()
 {
-    this->getLevel()->sendPosUps(this->getServer());
+    if(this->getLevel())
+        this->getLevel()->sendPosUps(this->getServer());
 }
 
 void World::setEntData(posUpBuf* msg)
 {
-    this->getLevel()->upEntData(msg);
+    if(this->getLevel())
+        this->getLevel()->upEntData(msg);
 }
 
 

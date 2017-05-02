@@ -188,7 +188,7 @@ int main(int argc, char*argv[]){
     levels.push_back((const char*)strdup("../assets/levels/level1.json"));
     levels.push_back((const char*)strdup("../assets/levels/level2.json"));
     world->addAllLevels(levels);
-    world->loadLevel(0);
+    //world->loadLevel(0);
 
     int width, height;
 
