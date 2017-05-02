@@ -32,7 +32,7 @@ typedef struct {
 
 class NetworkManager {
 public:
-	NetworkManager(/*other args*/);
+	NetworkManager();
 
 	void recieveMessage(uint8_t* message, int len);
     void sendMessage(uint8_t* message, int len); 

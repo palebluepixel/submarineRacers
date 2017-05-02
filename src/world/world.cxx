@@ -212,6 +212,7 @@ void World::handleNetworksTickServer(float t, float dt, int mmax)
 void World::handleNetworksTickClient(float t, float dt, int mmax)
 {
     this->getClient()->ReadMessages(mmax);
+    this->getClient()->sendControllerState();
 }
 
 

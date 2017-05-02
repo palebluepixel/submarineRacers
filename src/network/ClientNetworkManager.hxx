@@ -7,13 +7,12 @@
 
 class ClientNetworkManager : public NetworkManager {
 public:
-	ClientNetworkManager(int id);
+    ClientNetworkManager();
+    void sendControllerState();
 
 protected:
     bool virtual processCommand(short code, short len, uint8_t *message);
     static handler table[0];
-
-	void sendControllerState();
 };
 
 #endif
