@@ -1,6 +1,6 @@
 #include "ServerNetworkManager.hxx"
 
-handler ServerNetworkManager::table[1] = {{ CODE_CONTROLLER, &ServerNetworkManager::pingCommand }};
+server_handler ServerNetworkManager::table[1] = {{ CODE_CONTROLLER, &ServerNetworkManager::controllerStateCommand }};
 
 ServerNetworkManager::ServerNetworkManager(int id)
         : NetworkManager(/*other args*/) {
@@ -17,7 +17,12 @@ void sendWorldDeltas(/*TODO: args?*/) {
     //TODO
 }
 
-void ServerNetworkManager::controllerStateCommand(short len, char* message) {
+void ServerNetworkManager::controllerStateCommand(COMMAND_PARAMS) {
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
     ControllerState state;
     memcpy(&state, message, len);
     //state->moude = ntoh(state->mouse)
@@ -43,11 +48,9 @@ void ServerNetworkManager::controllerStateCommand(short len, char* message) {
     if(state.forwardKey) {
         actuator->accelerate();
     }
-    if(state.fireKey && !previousControllerState.fireKey) {
+    if(state.fireKey) {
         actuator->fire();
     }
-
-    previousControllerState = state;
 }
 
 // First checks dispatch table in superclass, then in this class.
