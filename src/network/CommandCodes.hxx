@@ -21,5 +21,9 @@
 //Server to Client
 #define CODE_OBJECT_CHANGE 30
 #define CODE_LOAD_LEVEL 31
+#define CODE_LEVEL_START 32
+
+//Race running and finishing
+#define CODE_EXIT_LEVEL 40
 
 #endif

@@ -57,6 +57,13 @@ inline message *createLevelLoadMsg(int level) {return createMessageIntPayload(CO
 /* Tells the server we finished loading the level */
 inline message *createLevelLoadedMsg(int level) {return createMessageIntPayload(CODE_LEVEL_LOADED, level);}
 
+/* Tells the client that the race is starting on the current level. This will most likely begin a countdown */
+inline message *createStartLevelMsg() {return createMessage(CODE_LEVEL_START, 0, NULL);}
+
+/* Tells either the server or client to unload the current level and go back to menu screen */
+inline message *createExitLevelMsg() {return createMessage(CODE_EXIT_LEVEL, 0, NULL);}
+
+
 
 
 

@@ -114,3 +114,10 @@ void Client::loadLevel(int level)
     this->messageServer(msg);
     deleteMessage(msg);
 }
+
+void Client::exitLevel()
+{
+    message *msg = createExitLevelMsg();
+    this->messageServer(msg);
+    deleteMessage(msg);
+}

@@ -73,6 +73,9 @@ public:
     void sendLoadLevel(int level);
     int  clientsLoaded(int level);
 
+    /* Unloads the current level, and tells all clients to do the same. */
+    void exitLevel();
+
 
     inline int getPort() { return this->port; }
 

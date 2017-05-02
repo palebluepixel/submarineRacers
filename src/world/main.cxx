@@ -58,6 +58,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
         world->getClient()->loadLevel(1);
 
+    if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+        if(world->isClient())
+            world->getClient()->exitLevel(); 
+        else
+            world->getServer()->exitLevel();   
+    }
+
     /* Continous actions should go here */
     keyboard[key] = action;
 }

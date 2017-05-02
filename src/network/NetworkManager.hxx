@@ -55,8 +55,10 @@ protected:
     void levelSelectCommand(COMMAND_PARAMS);
     void levelLoadCommand(COMMAND_PARAMS);
     void levelLoadedCommand(COMMAND_PARAMS);
+    void exitLevelCommand(COMMAND_PARAMS);
+    void startLevelCommand(COMMAND_PARAMS);
 
-    static handler table[7];
+    static handler table[9];
 
     bool virtual processCommand(short code, short len, uint8_t *message);
     bool checkDispatch(short code, short len, uint8_t *message);

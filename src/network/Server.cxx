@@ -257,3 +257,10 @@ int Server::clientsLoaded(int level)
     }
     return 1;
 }
+
+void Server::exitLevel()
+{
+    message * msg = createExitLevelMsg();
+    broadcast(msg);
+    deleteMessage(msg);
+}

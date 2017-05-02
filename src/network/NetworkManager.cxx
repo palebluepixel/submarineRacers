@@ -6,13 +6,15 @@ class World;
 extern World* world; //global 
 
 
-handler NetworkManager::table[7] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
+handler NetworkManager::table[9] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },
                                     { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand },
                                     { CODE_LEVEL_SELECT,  &NetworkManager::levelSelectCommand },
                                     { CODE_LOAD_LEVEL,    &NetworkManager::levelLoadCommand },
-                                    { CODE_LEVEL_LOADED,  &NetworkManager::levelLoadedCommand }};
+                                    { CODE_LEVEL_LOADED,  &NetworkManager::levelLoadedCommand },
+                                    { CODE_EXIT_LEVEL,    &NetworkManager::exitLevelCommand },
+                                    { CODE_LEVEL_START,   &NetworkManager::startLevelCommand }};
 
 NetworkManager::NetworkManager() 
 {}
@@ -134,8 +136,25 @@ void NetworkManager::levelLoadedCommand(COMMAND_PARAMS)
         if(world->getServer()->clientsLoaded(level)){
             world->handleEvent(LEVELLOADEDBYALL, level);
             //tell clients the race is starting
+            message *msg = createStartLevelMsg();
+            world->getServer()->broadcast(msg);
         }
     }
+}
+
+/* RACERS START UR ENGYNES */
+void NetworkManager::startLevelCommand(COMMAND_PARAMS)
+{
+    world->handleEvent(LEVELLOADEDBYALL, 0);
+}
+
+/* If we are a server, exit the current level and tell all clients
+to do the same. If we are a client, exit the current level. */
+void NetworkManager::exitLevelCommand(COMMAND_PARAMS)
+{
+    world->handleEvent(EXIT, 0);
+    if(world->isServer())
+        world->getServer()->exitLevel();
 }
 
 /* This doesn't require any actual processing because just getting

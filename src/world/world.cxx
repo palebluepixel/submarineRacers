@@ -92,21 +92,6 @@ int World::handleEventADVANCEMENU(HANDLER_PARAMS)
 
 int World::handleEventBACKMENU(HANDLER_PARAMS)
 {
-    switch(this->state)
-    {
-        /* Exit the current level */
-        case RACE_RUNNING:
-        case RACE_START:
-        case RACE_FINISH:
-            if(this->isClient())
-                this->state = MENU1;
-            else 
-                this->state = LISTEN;
-            return ALL_GOOD;
-        default:
-            return this->state;
-
-    }
         return 0;
 }
 
@@ -156,10 +141,24 @@ int World::handleEventPAUSEGAME(HANDLER_PARAMS)
 
 int World::handleEventEXIT(HANDLER_PARAMS)
 {
-    /*switch(this->state)
+    switch(this->state)
     {
+        /* Exit the current level */
+        case RACE_RUNNING:
+        case RACE_START:
+        case RACE_FINISH:
+            /* Might want to actually unload here too, currently
+            the level just gets unloaded automatically when a
+            new one is loaded up. */
+            if(this->isClient())
+                this->state = MENU1;
+            else 
+                this->state = LISTEN;
+            return ALL_GOOD;
+        default:
+            return this->state;
 
-    }*/
+    }
         return 0;
 }
 
