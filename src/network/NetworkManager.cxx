@@ -25,18 +25,18 @@ void NetworkManager::sendMessage(uint8_t* mes, int len)
     struct sockaddr_in targetAddr = this->getTargetAddr();
     int sock = this->getTargetSocket();
 
-    logln(LOGMEDIUM, "\nSending message: (length: %d)\nTo: %s at port on socket %d\n", len,
+    /*logln(LOGMEDIUM, "\nSending message: (length: %d)\nTo: %s at port on socket %d\n", len,
         inet_ntoa(targetAddr.sin_addr), sock);
-    logPrintBuf(LOGMEDIUM, mes, len);
+    logPrintBuf(LOGMEDIUM, mes, len);*/
     int bytesSent = sendto(sock, mes, len, 0, (struct sockaddr*)&targetAddr, sizeof(struct sockaddr_in));
-    logln(LOGMEDIUM, "Sent %d bytes\n\n", bytesSent);
+    //logln(LOGMEDIUM, "Sent %d bytes\n\n", bytesSent);
 }
 
 
 void NetworkManager::recieveMessage(uint8_t* mes, int len) {
-    logln(LOGMEDIUM, "\nreceived message: ");
+    /*logln(LOGMEDIUM, "\nreceived message: ");
     logPrintBuf(LOGMEDIUM, mes, len);
-    logln(LOGMEDIUM, "\n");
+    logln(LOGMEDIUM, "\n");*/
     
     uint8_t *current = mes;
 
@@ -59,7 +59,7 @@ void NetworkManager::recieveMessage(uint8_t* mes, int len) {
 /* This is a wrapper for checkDispatch. Subclasses can replace this to
    checkDispatch with their own table. */
 bool NetworkManager::processCommand(short code, short len, uint8_t *mes) {
-    logln(LOGLOW, "command: %d %d\n", code, len);
+    //logln(LOGLOW, "command: %d %d\n", code, len);
 
     return checkDispatch(code, len, mes);
 }
@@ -166,7 +166,6 @@ void NetworkManager::initCommand(COMMAND_PARAMS)
 
 void NetworkManager::objectChangeCommand(COMMAND_PARAMS) 
 {
-    logln(LOGLOW,"rec obj change");
     posUpBuf *msg = getPosUpBuf(mes);
     world->setEntData(msg);
     free(msg);

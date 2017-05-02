@@ -27,6 +27,11 @@
 
 #define PORT 8008
 
+/* Set this to -1 if you want to initate the game in the title-screen state 
+and have to step throigh using client-server messages. Otherwise, for example
+if you are testing something, set this to the desired test level. */
+#define QUICKSTART 0
+
 //defined in util/log.hxx
 int loglevel_GLOBAL;
 
@@ -185,10 +190,9 @@ int main(int argc, char*argv[]){
 
     /* Create levels */
     vector<const char*> levels;
+    levels.push_back((const char*)strdup("../assets/levels/level0.json"));
     levels.push_back((const char*)strdup("../assets/levels/level1.json"));
-    levels.push_back((const char*)strdup("../assets/levels/level2.json"));
     world->addAllLevels(levels);
-    //world->loadLevel(0);
 
     int width, height;
 
@@ -201,6 +205,9 @@ int main(int argc, char*argv[]){
     duration<float, std::milli> time_total;
     float elapsed;
 
+    /* USE THIS TO DISABLE MENUES FOR TESTING. SEE THE DEFINE ABOVE. */
+    if(QUICKSTART>=0)
+        world->quickSetup(QUICKSTART);
 
     while (!glfwWindowShouldClose(world->window)){
 

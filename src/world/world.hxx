@@ -117,7 +117,9 @@ public:
     we run the physics engine just to interpolate the position of entities. */
     int handlePhysicsTick(float t, float dt);
 
-
+    /* Quickly set up the given level so that you can skip all the menu stuff.
+    Mostly useful for testing in-game things. */
+    void quickSetup(int level);
 
 
     //View: rendering information, camera, skybox, ground, sun, etc

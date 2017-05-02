@@ -369,3 +369,13 @@ void World::worldInitalizeDefault(int isServer)
     this->setSkyboxRenderer(rsky);
 
 }
+
+
+
+/* Quickly set up the given level so that you can skip all the menu stuff.
+Mostly useful for testing in-game things. */
+void World::quickSetup(int level)
+{
+    this->loadLevel(level);
+    this->state = RACE_RUNNING;
+}
