@@ -161,7 +161,6 @@ void Entity::applyTorque(vec3 torque) {
     torques += torque;
 }
 
-//TODO
-/*vec3 Entity::getDirection() {
-    return (0,0,1) transformed by orientation
-}*/
+vec3 Entity::getDirection() {
+    return orientation * glm::vec3(1, 0, 0);
+}
