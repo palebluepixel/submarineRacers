@@ -24,12 +24,10 @@ void SubmarineSteeringState::reset() {
 SubmarineActuator::SubmarineActuator(Submarine *agent) : Actuator(agent) {}
 
 void SubmarineActuator::doSteering(float dt) {
-    //agent.rotation += state.rotationChange;
-    //Not sure what this will be called in the physics engine
-    //agent.AddAcceleration(state.acceleration * agent.rotation);
+    agent->applyTorque(glm::vec3(0, state.rotationChange, 0));
+    agent->applyForce(state.acceleration * agent->getDirection());
 
-    //Again, not sure
-    //changeDepth(state.depth);
+    agent->applyForce(glm::vec3(0, state.depthChange, 0));
 
     if(state.fireWeapon) {
         //spawn(agent.weapon.missileType);
