@@ -112,6 +112,11 @@ public:
     message before we finish processing the old one.*/
     int handleNetworksTick(float t, float dt, int mmax);
 
+    /* Handle one tick of the physics system. If we are a server, we handle
+    AI input (not decision-making) in this tick as well. If we are a client,
+    we run the physics engine just to interpolate the position of entities. */
+    int handlePhysicsTick(float t, float dt);
+
 
 
 

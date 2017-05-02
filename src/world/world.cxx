@@ -273,6 +273,26 @@ void World::handleNetworksTickClient(float t, float dt, int mmax)
     this->getClient()->ReadMessages(mmax);
 }
 
+/* Handle one tick of the physics system. If we are a server, we handle
+AI input (not decision-making) in this tick as well. If we are a client,
+we run the physics engine just to interpolate the position of entities. */
+int World::handlePhysicsTick(float t, float dt)
+{
+    switch(this->state){
+    case RACE_RUNNING:
+    case RACE_START:
+    case RACE_FINISH:
+        if(this->isServer()){
+            this->getLevel()->updateLevel(dt);
+        }
+        else{
+            this->getLevel()->interpolateLevel(dt);
+        }
+        return 0;
+    default:
+        return 1;
+    }
+}
 
 
 void World::sendAllUpdates()

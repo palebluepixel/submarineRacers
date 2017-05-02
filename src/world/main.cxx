@@ -214,18 +214,6 @@ int main(int argc, char*argv[]){
 
         update(elapsed);
 
-
-        if(world->isServer()){
-            world->getLevel()->updateLevel(elapsed);
-            //quick hack-in of a cube movement animation
-            Entity *c = world->getLevel()->getEntityByID(0);
-            // vec3 pos = c->getPosition() - vec3(0,0.02,0);
-            // c->setPosition(pos);
-        }
-        else{
-            world->getLevel()->interpolateLevel(elapsed);
-        }
-
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
@@ -234,6 +222,7 @@ int main(int argc, char*argv[]){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         world->handleNetworksTick(time_total.count(),elapsed,20);
+        world->handlePhysicsTick(time_total.count(), elapsed);
         world->handleGraphicsTick(time_total.count(),elapsed);
         
 
