@@ -12,6 +12,12 @@ class Entity;
 using namespace glm;
 typedef glm::tquat<float> quaternion;
 
+
+
+
+
+/* ================= GENERIC ================ */
+
 /* General message struct */ 
 typedef struct {
 	short code;
@@ -19,13 +25,42 @@ typedef struct {
 	uint8_t *msg;
 } message;
 
+/* Create a message */
 message * createMessage(short code, short len, uint8_t *msg);
+
+/* Create a message who's payload is the byte representation of an int */
+message *createMessageIntPayload(short code, int payload);
+
+/* Free the payload of a message after use */
 void deleteMessage(message *m);
 
+
+
+
+
+/* ============= CONNECTION INIT ============= */
 
 /* Message for client initating connection with server */
 inline message *createInitMsg() { return createMessage(CODE_INIT, 0, NULL); }
 
+
+
+
+/* ============== LEVEL LOADING ============== */
+
+/* Tells the server which level the client requested in the level select menu */
+inline message *createLevelSelectMsg(int level) {return createMessageIntPayload(CODE_LEVEL_SELECT, level);}
+
+/* Tells the other clients which level has been selected to load */
+inline message *createLevelLoadMsg(int level) {return createMessageIntPayload(CODE_LOAD_LEVEL, level);}
+
+/* Tells the server we finished loading the level */
+inline message *createLevelLoadedMsg(int level) {return createMessageIntPayload(CODE_LEVEL_LOADED, level);}
+
+
+
+
+/* ========== SERVER POSITION UPDATES ======== */
 
 /* Message for server telling a client where an object is located and its current orientation.
 Velocity can be used for interpolation. */

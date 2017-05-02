@@ -52,11 +52,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
         world->getView()->nextCamera();
 
-    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-        world->loadLevel(0);
+    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && world->isClient())
+        world->getClient()->loadLevel(0);
 
-    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-        world->loadLevel(1);
+    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
+        world->getClient()->loadLevel(1);
 
     /* Continous actions should go here */
     keyboard[key] = action;
@@ -111,11 +111,11 @@ void initalizeWorld(int isServer, char *hostname){
     if(world->isServer()){
         logln(LOGMEDIUM,"building server\n");
         world->setServer(new Server((short)PORT, NULL));
-        world->getServer()->initListeningSocket();
+        world->handleEvent(STARTSERVER,0);
     } else {
         world->setClient(new Client(PORT, hostname));
         logln(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
-        world->getClient()->connectServer();
+        world->handleEvent(STARTCLIENT,0);
     }
 
     world->worldInitalizeDefault(isServer);
@@ -175,11 +175,6 @@ int main(int argc, char*argv[]){
     world = new World();
     bool isClient = (argc > 2) && argv[1][0]=='c';
     initalizeWorld(!isClient, isClient?argv[2]:0);
-
-    /* Build example level */
-    //Level *level = new Level("../assets/levels/level1.json");
-    //level->buildLevelFromFile();
-    //world->setLevel(level);
 
     /* Create levels */
     vector<const char*> levels;

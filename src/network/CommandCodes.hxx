@@ -13,10 +13,13 @@
 
 //Client to Server
 #define CODE_CONTROLLER 16
-#define PAUSE 17
-#define MENU_SELECT 18
+#define CODE_PAUSE 17
+#define CODE_MENU_SELECT 18
+#define CODE_LEVEL_SELECT 19
+#define CODE_LEVEL_LOADED 20
 
 //Server to Client
-#define CODE_OBJECT_CHANGE 24
+#define CODE_OBJECT_CHANGE 30
+#define CODE_LOAD_LEVEL 31
 
 #endif

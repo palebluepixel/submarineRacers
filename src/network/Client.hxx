@@ -21,6 +21,9 @@ public:
     void messageServer(message *msg);
     void messageServer(short len, uint8_t*msg);
 
+    /* Tell the server to laod the current level */
+    void loadLevel(int level);
+
     /* Reads any incoming messages and then parses them. 
     Will process a maximum of mmax messages (used to control how much time
     we spend doing network stuff per tick, anything leftover will be done

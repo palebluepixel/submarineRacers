@@ -99,7 +99,7 @@ void Mesh::loadOBJ(char *file){
 
   OBJmodel *model = OBJReadOBJ (file);
 
-  printf("texture: %s\n",model->mtllibname);
+  //printf("texture: %s\n",model->mtllibname);
 
   vec3 *verts = new vec3[model->numtriangles*3];
   vec3 *norms = new vec3[model->numtriangles*3];

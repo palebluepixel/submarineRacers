@@ -106,8 +106,8 @@ public:
 
 
     //First and third person tethered cameras
-    inline void *setFirstPersonCam(TetheredCamera *t) { this->firstp = t; }
-    inline void *setThirdPersonCam(TetheredCamera *t) { this->thirdp = t; }
+    inline void setFirstPersonCam(TetheredCamera *t) { this->firstp = t; }
+    inline void setThirdPersonCam(TetheredCamera *t) { this->thirdp = t; }
     inline TetheredCamera *getFirstPersonCam() { return this->firstp; }
     inline TetheredCamera *getThirdPersonCam() { return this->thirdp; }
 

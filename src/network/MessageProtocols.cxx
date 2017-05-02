@@ -16,6 +16,16 @@ message * createMessage(short code, short len, uint8_t *msg)
 	return m;
 }
 
+message *createMessageIntPayload(short code, int payload)
+{
+	int payloadcpy = payload;
+	uint8_t *buf = (uint8_t *)malloc(sizeof(int));
+	if(!buf) exit(-1);
+	memcpy(buf, &payloadcpy, sizeof(int));
+
+	return createMessage(code, sizeof(int), buf);
+}
+
 void deleteMessage(message *m)
 {
 	if(m->msg != NULL)

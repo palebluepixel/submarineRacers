@@ -20,37 +20,37 @@ void World::fatalError(){exit(-1);}
 
 //========================== EVENT HANDLERS =========================//
 
-int World::handleEvent(EventType t)
+int World::handleEvent(EventType t, HANDLER_PARAMS)
 {
     switch(t)
     {
         case STARTCLIENT:
-            return this->handleEventSTARTCLIENT();
+            return this->handleEventSTARTCLIENT(HANDLER_PARAMS_PASSED);
         case STARTSERVER:
-            return this->handleEventSTARTSERVER();
-        case WEARECONNECTED:
-            return this->handleEventWEARECONNECTED();
+            return this->handleEventSTARTSERVER(HANDLER_PARAMS_PASSED);
         case ADVANCEMENU:
-            return this->handleEventADVANCEMENU();
+            return this->handleEventADVANCEMENU(HANDLER_PARAMS_PASSED);
         case BACKMENU:
-            return this->handleEventBACKMENU();
+            return this->handleEventBACKMENU(HANDLER_PARAMS_PASSED);
         case LOADLEVEL:
-            return this->handleEventLOADLEVEL();
+            return this->handleEventLOADLEVEL(HANDLER_PARAMS_PASSED);
+        case LEVELLOADEDBYALL:
+            return this->handleEventLEVELLOADEDBYALL(HANDLER_PARAMS_PASSED);
         case PAUSEGAME:
-            return this->handleEventPAUSEGAME();
+            return this->handleEventPAUSEGAME(HANDLER_PARAMS_PASSED);
         case EXIT:
-            return this->handleEventEXIT();
+            return this->handleEventEXIT(HANDLER_PARAMS_PASSED);
         case USERDISCONNECT:
-            return this->handleEventUSERDISCONNECT();
+            return this->handleEventUSERDISCONNECT(HANDLER_PARAMS_PASSED);
         case USERFINISH:
-            return this->handleEventUSERFINISH();
+            return this->handleEventUSERFINISH(HANDLER_PARAMS_PASSED);
         default:
             this->fatalError();
             return this->state;
     }
 }
 
-int World::handleEventSTARTCLIENT()
+int World::handleEventSTARTCLIENT(HANDLER_PARAMS)
 {
 
     switch(this->state)
@@ -66,7 +66,7 @@ int World::handleEventSTARTCLIENT()
     }
 }
 
-int World::handleEventSTARTSERVER()
+int World::handleEventSTARTSERVER(HANDLER_PARAMS)
 {
 
     switch(this->state)
@@ -81,48 +81,55 @@ int World::handleEventSTARTSERVER()
     }
 }
 
-/* unused */
-int World::handleEventWEARECONNECTED()
+int World::handleEventADVANCEMENU(HANDLER_PARAMS)
+{
+    /*switch(this->state)
+    {
+
+    }*/
+        return 0;
+}
+
+int World::handleEventBACKMENU(HANDLER_PARAMS)
 {
     switch(this->state)
     {
-        case CONNECTING:
-            this->state = MENU1;
+        /* Exit the current level */
+        case RACE_RUNNING:
+        case RACE_START:
+        case RACE_FINISH:
+            if(this->isClient())
+                this->state = MENU1;
+            else 
+                this->state = LISTEN;
+            return ALL_GOOD;
+        default:
+            return this->state;
+
+    }
+        return 0;
+}
+
+int World::handleEventLOADLEVEL(HANDLER_PARAMS)
+{
+    switch(this->state)
+    {
+        case MENU1:
+        case MENU2:
+        case LISTEN:
+            this->state = LOADING_LEVEL;
+            this->loadLevel(i);
             return ALL_GOOD;
         default:
             return this->state;
     }
 }
 
-int World::handleEventADVANCEMENU()
+int World::handleEventLEVELLOADEDBYALL(HANDLER_PARAMS)
 {
-    /*switch(this->state)
-    {
-
-    }*/
-        return 0;
-}
-
-int World::handleEventBACKMENU()
-{
-    /*switch(this->state)
-    {
-
-    }*/
-        return 0;
-}
-
-int World::handleEventLOADLEVEL()
-{
-    Level *level;
     switch(this->state)
     {
-        case MENU1:
-        case MENU2:
-            this->state = LOADING_LEVEL;
-            level = new Level();
-            level->buildLevelFromFile();
-            this->setLevel(level);
+        case LOADING_LEVEL:
             this->state = RACE_START;
             return ALL_GOOD;
         default:
@@ -130,7 +137,8 @@ int World::handleEventLOADLEVEL()
     }
 }
 
-int World::handleEventPAUSEGAME()
+
+int World::handleEventPAUSEGAME(HANDLER_PARAMS)
 {
     switch(this->state)
     {
@@ -146,7 +154,7 @@ int World::handleEventPAUSEGAME()
 
 }
 
-int World::handleEventEXIT()
+int World::handleEventEXIT(HANDLER_PARAMS)
 {
     /*switch(this->state)
     {
@@ -155,7 +163,7 @@ int World::handleEventEXIT()
         return 0;
 }
 
-int World::handleEventUSERDISCONNECT()
+int World::handleEventUSERDISCONNECT(HANDLER_PARAMS)
 {
     /*switch(this->state)
     {
@@ -164,7 +172,7 @@ int World::handleEventUSERDISCONNECT()
         return 0;
 }
 
-int World::handleEventUSERFINISH()
+int World::handleEventUSERFINISH(HANDLER_PARAMS)
 {
     /*switch(this->state)
     {
@@ -212,17 +220,29 @@ void World::addAllLevels(vector<const char*> levels)
 /* Handle one tick of the graphics clock (that is, render the game) */
 int World::handleGraphicsTick(float t, float dt)
 {
-    /* Client-side interpolation may happen here as well */ 
+    Camera * curCam;
+    switch(this->state)
+    {
+        case LOADING_LEVEL: //take this out
+        case RACE_RUNNING:
+        case RACE_START:
+        case RACE_FINISH:
+        case PAUSED:
+            /* Client-side interpolation may happen here as well */ 
 
-    /* Update tethered camera before rendering */
-    Camera * curCam = this->view->activeCamera();
-    if(curCam->isTethered()){
-        ((TetheredCamera*)curCam)->updateTetheredCameraPos();
+            /* Update tethered camera before rendering */
+            curCam = this->view->activeCamera();
+            if(curCam->isTethered()){
+                ((TetheredCamera*)curCam)->updateTetheredCameraPos();
+            }
+
+            this->renderAll();
+
+            return 1;
+        
+        default:
+            return -1;
     }
-
-    this->renderAll();
-
-    return 1;
 }
 
 void World::renderAll()
@@ -306,7 +326,7 @@ void World::worldInitalizeDefault(int isServer)
 
     //create view
     View *view = new View(this->window);
-    view->setSunlight(vec3(-0.3, -1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
+    view->setSunlight(vec3(0.3, -1.0, 0), vec3(0.9, 0.9, 0.9), vec3(0.1, 0.1, 0.1));
     view->setFog(0, oceanColor, 0.05f, 5.0);
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
         0.03f, -5.0f, -30.0f);

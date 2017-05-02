@@ -225,3 +225,35 @@ int Server::getNextID()
     static int ID = -1;
     return ++ID;
 }
+
+
+
+
+
+
+
+/* Resets the LoadedLevel flag for all clients and sends them a message
+telling them to load the level. The World should call the following function,
+clientsLoaded(), once every time we get a LEVELLOADED reply from a client. */
+void Server::sendLoadLevel(int level)
+{
+    message *msg = createLevelLoadMsg(level);
+
+    for(auto clientpair : this->clients){
+        ServerNetworkManager *client = clientpair.second;
+        client->setLoadedLevel(0);
+        messageClient(client, msg);
+    }
+
+    deleteMessage(msg);
+}
+
+int Server::clientsLoaded(int level)
+{
+    for(auto clientpair : this->clients) {
+        ServerNetworkManager *client = clientpair.second;
+        if(!(client->getLoadedLevel() && (client->getWhichLevel()==level)))
+            return 0;
+    }
+    return 1;
+}

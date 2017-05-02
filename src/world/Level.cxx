@@ -238,7 +238,7 @@ void Level::sendPosUps(Server *server){
         auto entity = entry.second;
         bool should = entity->isShouldSendUpdate();
         if(should){
-            fprintf(stderr,"%s: %s\n",entry.second->getName().c_str(),should?"1":"-");
+            //fprintf(stderr,"%s: %s\n",entry.second->getName().c_str(),should?"1":"-");
             message* m = entity->prepareMessageSegment();
             server->broadcast(m);
             deleteMessage(m);

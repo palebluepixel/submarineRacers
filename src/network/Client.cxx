@@ -105,3 +105,12 @@ void Client::messageServer(short len, uint8_t *msg)
 {
     this->nm->sendMessage(msg, len);
 }
+
+
+/* Tell the server to laod the current level */
+void Client::loadLevel(int level)
+{
+    message *msg = createLevelSelectMsg(level);
+    this->messageServer(msg);
+    deleteMessage(msg);
+}

@@ -31,6 +31,11 @@ using namespace std;
 #define ALL_GOOD 0
 #define STATE_ENUM_START ALL_GOOD + 1
 
+#ifndef HANDLER_PARAMS
+#define HANDLER_PARAMS int i
+#define HANDLER_PARAMS_PASSED i
+#endif
+
 /**
 
 ZA WARUDO
@@ -63,6 +68,7 @@ enum EventType {
     ADVANCEMENU,
     BACKMENU, //moves between menus if multiple
     LOADLEVEL,
+    LEVELLOADEDBYALL, //all clients have loaded the level
     PAUSEGAME,
     EXIT, //returns to menu1
     USERDISCONNECT,
@@ -84,7 +90,7 @@ public:
 
 
     //dispacth function for event handlers
-    int handleEvent(EventType t);
+    int handleEvent(EventType t, HANDLER_PARAMS);
 
     // This is what gets called by the while loop in main.
     // Checks if enough time has passed for any ruinning clocks, e.g.
@@ -145,6 +151,7 @@ public:
     inline Server* getServer() { return this->isServer() ? this->server : NULL; }
     inline Client* getClient() { return this->isClient() ? this->client : NULL; }
 
+    inline WorldState getState() { return this->state; }
 
     /* Functions for parsing the entity list and sending updates to the client */
     void sendAllUpdates();
@@ -161,16 +168,16 @@ private:
     WorldState state;
 
     //event handlers
-    int handleEventSTARTCLIENT();
-    int handleEventSTARTSERVER();
-    int handleEventWEARECONNECTED();
-    int handleEventADVANCEMENU();
-    int handleEventBACKMENU();
-    int handleEventLOADLEVEL();
-    int handleEventPAUSEGAME();
-    int handleEventEXIT();
-    int handleEventUSERDISCONNECT();
-    int handleEventUSERFINISH();
+    int handleEventSTARTCLIENT(HANDLER_PARAMS);
+    int handleEventSTARTSERVER(HANDLER_PARAMS);
+    int handleEventADVANCEMENU(HANDLER_PARAMS);
+    int handleEventBACKMENU(HANDLER_PARAMS);
+    int handleEventLOADLEVEL(HANDLER_PARAMS);
+    int handleEventLEVELLOADEDBYALL(HANDLER_PARAMS);
+    int handleEventPAUSEGAME(HANDLER_PARAMS);
+    int handleEventEXIT(HANDLER_PARAMS);
+    int handleEventUSERDISCONNECT(HANDLER_PARAMS);
+    int handleEventUSERFINISH(HANDLER_PARAMS);
 
     void handleNetworksTickServer(float t, float dt, int mmax);
     void handleNetworksTickClient(float t, float dt, int mmax);
