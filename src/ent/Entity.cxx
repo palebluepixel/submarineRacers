@@ -122,12 +122,10 @@ message * Entity::prepareMessageSegment(){
 
 //physics tick behavior
 int Entity::onTick(float dt){
-    //TODO fix all pseudocode
     //Collision checks already done
 
     // Calculate physics forces
-    vec3 drag = velocity * length(velocity) * (-dragCoef);
-    applyForce(drag);
+    applyForce(getDrag());
     //Do we want some sort of bouyancy to restrict objects to underwater?
 
     // Apply Forces
@@ -136,10 +134,26 @@ int Entity::onTick(float dt){
     position += (velocity + acceleration * (dt/2)) * dt;
     velocity += acceleration * dt;
 
+    // Apply rotations
+    vec3 angular_accel = torques / mass;
+
+    vec3 rot_vec = (this->angular_velocity + angular_accel * (dt/2)) * dt;
+    float rot_vec_len = length(rot_vec);
+
+    angular_velocity += angular_accel * dt;
+
+    quaternion rotation = angleAxis(rot_vec_len, rot_vec / rot_vec_len);
+    orientation = rotation * initial_orientation; //Order matters!
+
     // Reset
     forces = glm::vec3(0, 0, 0);
-    //torques.zero();
+    torques = glm::vec3(0, 0, 0);
     return 0;
+}
+
+// Some entites can have more complex drag functions
+vec3 Entity::getDrag() {
+    return velocity * length(velocity) * (-dragCoef);
 }
 
 //change object's status to spawned and place it in its intial position
@@ -173,7 +187,7 @@ mat4 Entity::modelMatrix(){
 
 
 void Entity::drawEntity(){
-    int i;
+    //int i;
     for(TransformedMesh tmesh : meshes)
         tmesh.mesh->draw();
 }
@@ -186,4 +200,12 @@ int Entity::assignNewID()
 {
     static int ID = -1;
     return ++ID;
+}
+
+void Entity::applyTorque(vec3 torque) {
+    torques += torque;
+}
+
+vec3 Entity::getDirection() {
+    return orientation * glm::vec3(1, 0, 0);
 }

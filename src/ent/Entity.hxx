@@ -67,6 +67,8 @@ public:
     inline bool  isMovable()          { return this->movable;          }
     inline bool  isShouldSendUpdate() { return this->shouldSendUpdate; }
 
+    vec3 getDirection();    // Get forward direction vector from orientation
+
     /**     networking:     **/
     virtual int overwrite(vec3 pos, quaternion ori, vec3 vel);    //overwrite client data with server
     virtual int overwrite(posUpBuf *msg);
@@ -74,8 +76,9 @@ public:
     
     /**     physics:        **/
     virtual int onTick(float dt);
+    virtual vec3 getDrag();
     void applyForce(vec3 force);
-    void applyTorque(quaternion torque);
+    void applyTorque(vec3 torque);
 
     /**     game state:     **/
     virtual EntityStatus spawn();     // set status to spawned, place in intial position
@@ -100,10 +103,10 @@ protected:
 
     quaternion initial_orientation;
 
-    quaternion angular_velocity;
+    vec3 angular_velocity;
 
     float mass;
-    float dragCoef; //
+    float dragCoef;
 
     int id;
     char* name;
@@ -128,7 +131,7 @@ protected:
 
     //per tick quantities
     vec3 forces;    // Sum of all forces on this object
-    //vec3 torques; //What should torques be? Do we even want torques // Sum of all torques on this object
+    vec3 torques; // Sum of all torques on this object
 
     /* Generates a unique ID for this object. */
     int assignNewID();
