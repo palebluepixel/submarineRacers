@@ -30,7 +30,7 @@
 /* Set this to -1 if you want to initate the game in the title-screen state 
 and have to step throigh using client-server messages. Otherwise, for example
 if you are testing something, set this to the desired test level. */
-#define QUICKSTART -1
+#define QUICKSTART 0
 
 //defined in util/log.hxx
 int loglevel_GLOBAL;

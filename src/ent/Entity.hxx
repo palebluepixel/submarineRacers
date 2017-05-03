@@ -6,6 +6,7 @@
 #include <physics/Volume.hxx>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
@@ -15,6 +16,7 @@
 
 using namespace glm;
 using namespace Space;
+using namespace std;
 
 
 //not sure if we want this here
@@ -135,6 +137,7 @@ protected:
 
     virtual void initalizeMeshes()=0;
 
+    std::string texfile;
     texture2d *tex;
     image2d *img;
     virtual void initalizeTextures(const char* texfile)=0;

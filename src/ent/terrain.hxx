@@ -13,13 +13,15 @@ class Terrain : public Entity {
 public:
 
     Terrain(int ID,vec3 initial_position, quaternion initial_orientation, std::string name, 
-    EntityType type, EntityStatus status, float tick_interval, vec3 color);
+    EntityType type, EntityStatus status, float tick_interval, vec3 color, const char* texfile,
+    const char* hmpfile);
     ~Terrain();
 
     void initalizeVisualData();
 
 protected:
 
+	std::string hmpfile;
     vec3 color;
 
     void initalizeTextures(const char* texfile);

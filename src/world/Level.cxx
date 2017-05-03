@@ -111,7 +111,7 @@ void Level::buildLevelFromFile() {
         ++it;
     }
     // todo: remove this. 
-    Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
+    Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     addEntity(cave);
 
      //create skybox
@@ -145,7 +145,7 @@ void Level::buildDemoLevel()
     for(i=0; i<ncubes; i++)
     	this->addEntity(cubes[i]);
 
-    Entity *cave = new Terrain(ncubes, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
+    Entity *cave = new Terrain(ncubes, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     addEntity(cave);
 
     //create skybox

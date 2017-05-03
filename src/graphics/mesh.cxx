@@ -171,10 +171,33 @@ static std::function<float(float,float)> canyon_generator = [](float x, float z)
   return pow(x,4)+z*z*z;
 };
 
-HeightmapMesh::HeightmapMesh() : Mesh(GL_QUADS){
+/* A heightmap has three essential features:
+  1. A generator, which takes an (x,z) coordinate and maps it to a y-value. This can
+be a function that reads a pre-loaded array such that x and z are psuedo-indicies
+into the array (using some rounding to snap (x,z) values to the integer indexed grid),
+or it can be a function like cos(x,z). 
+  2. Dimensions, a width (maximum x) and height (maximum z). For an array-reading
+generator, this should be the bounds of the array.
+  3. Scales for positions and textures. It might be the case that a heightmap file
+has values in [0:1], and we want to transform that to an arbitrary height. We do this
+by calculating the vertex coordinates using the genrator and then scaling them. 
 
+In this implementation, you must first set the generator for the heightmap (which
+calling loadFile() or loadDefaultGenerator() does), then call init() with the given
+dimensions and scaling. 
+*/ 
+HeightmapMesh::HeightmapMesh() : Mesh(GL_QUADS){
 }
-void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
+
+/* Call this after setting the generator. Initalize the verte mesh representation of a heightmap
+using the given information. 
+  If we loaded the generator from a file, w and h should be the width
+and height of the heightmap as specified in that file. If the generator is functional, they can
+be any value such that {(x,z) | x in [0:w], z in [0:h]} is in the domain of the function. 
+  Scale is a 3-vector representing the scaling for the position of each vertex. 
+  the two texscale coords set the resolution for the texturing of the heightmap. 
+*/
+void HeightmapMesh::init(int w, int h, vec3 scale, float texscalex, float texscaley){
   if(w<2)w=2;
   if(h<2)h=2;
   data.prim=GL_QUADS;
@@ -196,7 +219,7 @@ void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
       zp=-0.5f+z_inc*float(z);
       texcs[ind] = vec2(-0.0f+x_inc*float(x)/texscalex, -0.0f+z_inc*float(z)/texscaley);
       // verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
-      verts[ind] = vec3(xp,canyon_generator(xp,zp),zp);
+      verts[ind] = vec3(xp*scale[0],this->generator(xp,zp)*scale[1],zp*scale[2]); //scale as well
       norms[ind] = vec3(sin(xp),cos(xp),0);
       ++ind;
     }
@@ -218,6 +241,14 @@ void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
   loadIndices(4*(w-1)*(h-1),indices);
 }
 
+/* Load a functional generator which produces a canyon. */
+int HeightmapMesh::loadDefaultGenerator()
+{
+  this->generator = canyon_generator;
+  return 0;
+}
+
+/* Create a generator which for (x,z) returns the value stored at (x,z) in the file. */
 int HeightmapMesh::loadFile(std::string filename){
   char *file = fileio::load_file(filename.c_str());
   float *data = 0;
@@ -226,18 +257,21 @@ int HeightmapMesh::loadFile(std::string filename){
   char *tok2;
   char *delim = "\n\t ";
   int err =0;
-  int w=-1,h=-1;
+  int w=-1, h=-1;
 
-  while((tok = strtok(file,delim)) != 0){
+  tok = strtok(file,delim);
+  while((tok = strtok(NULL,delim)) != 0){
     if(!strcmp(tok,"resl")){
-      tok =strtok(file,delim);
-      tok2=strtok(file,delim);
+      tok =strtok(NULL,delim);
+      tok2=strtok(NULL,delim);
       if(!tok || !tok2){
         err=-1;
         break;
       }
       w = atoi(tok);
       h = atoi(tok2);
+      this->width = w;
+      this->height = h;
       data = new float[w*h];
     }
     else{
