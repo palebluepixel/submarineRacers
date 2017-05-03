@@ -248,9 +248,13 @@ int main(int argc, char*argv[]){
         glClearColor(1.0, 0.5, 0.5, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        printf("1\n");
+        world->getLevel()->updateLevel(elapsed);
+        printf("2\n");
         world->handleNetworksTick(0,0,20);
+        printf("3\n");
         world->handleGraphicsTick(0,0);
-        
+        printf("4\n");
 
         glfwSwapBuffers(world->window);
         glfwPollEvents();

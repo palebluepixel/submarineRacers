@@ -107,12 +107,8 @@ void NetworkManager::objectChangeCommand(COMMAND_PARAMS)
 void NetworkManager::controllerStateCommand(COMMAND_PARAMS) {
     if(world->isClient())
         return;
-    Actuator *actuator = ((ServerNetworkManager*)this)->actuator;
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    SubmarineActuator *actuator = ((ServerNetworkManager*)this)->actuator;
+
     ControllerState state;
     memcpy(&state, message, len);
     //state->moude = ntoh(state->mouse)

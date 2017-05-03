@@ -8,7 +8,7 @@ ServerNetworkManager::ServerNetworkManager(int id)
 void ServerNetworkManager::bindToSub(Submarine *sub)
 {
     this->sub = sub;
-    this->actuator = new SubmarineActuator(sub);
+    this->actuator = (SubmarineActuator *)sub->getActuator();
 }
 
 void sendWorldDeltas(/*TODO: args?*/) {

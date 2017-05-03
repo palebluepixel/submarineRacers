@@ -5,9 +5,16 @@
 
 class Submarine : public Agent {
 public:
-    Submarine(vec3 initial_position, mat3 initial_orientation, char*name, 
-        EntityType type, EntityStatus status, float tick_interval);
+    Submarine(vec3 initial_position, quaternion initial_orientation, char*name, 
+        EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein);
     void switchWeapons(uint8_t weapon);
+
+    void initalizeTextures(const char* texfile);
+    void initalizeVisualData();
+    void initalizeMeshes();
+
+    vec3 color;
+    char *modelfile;
 };
 
 

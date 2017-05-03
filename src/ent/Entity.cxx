@@ -127,7 +127,7 @@ int Entity::onTick(float dt){
     // Calculate physics forces
     applyForce(getDrag());
     //Do we want some sort of bouyancy to restrict objects to underwater?
-
+    
     // Apply Forces
     vec3 acceleration = forces / mass;
 
@@ -141,13 +141,14 @@ int Entity::onTick(float dt){
     float rot_vec_len = length(rot_vec);
 
     angular_velocity += angular_accel * dt;
-
+    
     quaternion rotation = angleAxis(rot_vec_len, rot_vec / rot_vec_len);
     orientation = rotation * initial_orientation; //Order matters!
 
     // Reset
     forces = glm::vec3(0, 0, 0);
     torques = glm::vec3(0, 0, 0);
+    
     return 0;
 }
 

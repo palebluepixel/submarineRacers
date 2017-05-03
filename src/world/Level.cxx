@@ -16,6 +16,9 @@ void Level::buildLevelFromFile()
     cubes[0] = new Gadget(cubePos[0], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
     cubes[0]->volume = new Space::SphereVolume(vec3(0,0,0),2.f);
     //cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
+    //Create submarine
+    Submarine * sub = new Submarine(vec3(0,0,0), quaternion(), strdup("sub1"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
+    this->addEntity(sub);
     for(i=1; i<ncubes; i++){
         cubes[i] = new Gadget(cubePos[i], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
@@ -151,7 +154,9 @@ void Level::renderSkybox(View *view, Renderer *r)
 
 void Level::updateLevel(float dt) {
     updateAIs(dt);
+    printf("Done updating AIs");
     physicsTick(dt);
+    printf("Done updating level\n");
 }
 
 void Level::updateAIs(float dt) {
@@ -175,6 +180,7 @@ void Level::handleCollisions(float dt) {
 
 void Level::updateEntities(float dt) {
     for(std::pair<int, Entity *> en : entities) {
+        printf("%d %p\n", en.first, en.second);
         en.second->onTick(dt);
     }
 }

@@ -8,14 +8,6 @@ extern int mouse[8];
 ClientNetworkManager::ClientNetworkManager()
         : NetworkManager() {}
 
-// First checks dispatch table in superclass, then in this class.
-bool ClientNetworkManager::processCommand(short code, short len, uint8_t *message) {
-    if(NetworkManager::processCommand(code, len, message)) {
-        return true;
-    }
-    return checkDispatch(code, len, message);
-}
-
 void ClientNetworkManager::sendControllerState() {
     ControllerState state;
 

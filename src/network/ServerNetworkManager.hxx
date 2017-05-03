@@ -16,11 +16,11 @@ public:
 
     inline int getID() { return this->id; }
 
+    SubmarineActuator *actuator;
+    Submarine *sub;
+
 protected:
     int id;
-
-	SubmarineActuator *actuator;
-	Submarine *sub;
 
 	void controllerStateCommand(COMMAND_PARAMS);
 };

@@ -1,6 +1,6 @@
 #include "Agent.hxx"
 
-Agent::Agent(vec3 initial_position, mat3 initial_orientation, char*name, 
+Agent::Agent(vec3 initial_position, quaternion initial_orientation, char*name, 
     EntityType type, EntityStatus status, float tick_interval) 
 : Entity(initial_position, initial_orientation, name, type, status, tick_interval) {
     //actuator = new Actuator<this->GetType()> (this);
