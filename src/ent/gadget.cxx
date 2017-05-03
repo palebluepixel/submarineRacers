@@ -31,5 +31,5 @@ void Gadget::initalizeMeshes(){
     mesh->loadOBJ(modelfile);
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
-    meshes.push_back(TransformedMesh(mesh));
+    meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4())));
 }

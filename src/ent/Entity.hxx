@@ -101,15 +101,14 @@ public:
 
     /**     graphics:       **/
     mat4 modelMatrix();           // return transform matrix TO world space.
-    void drawEntity();            // render meshes to screen
 
     inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
+    std::vector<TransformedMesh> meshes;
 protected:
     Volume *volume;
     quaternion orientation;
-    std::vector<TransformedMesh> meshes;
     vec3 position;
 
     vec3 velocity; // Used for interpolation

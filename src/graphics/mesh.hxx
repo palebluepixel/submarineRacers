@@ -70,25 +70,34 @@ class HeightmapMesh : public Mesh{
 public:
   HeightmapMesh();
   void init(int w, int h, float texscalex, float texscaley);
-  void loadFile(std::string filename);
+  int loadFile(std::string filename);
+  void loadFileOBJ(char *file);
   void setGenerator(std::function<float(float,float)> in);
 private:
   std::function<float(float,float)> generator;
 };
 
-struct TransformedMesh{
-  TransformedMesh(Mesh *mesh);
-  Mesh *mesh;
-  mat4 transform;
-};
+class TransformedMesh{
+public:
+  class MeshInfo{
+  public:
+    MeshInfo(Mesh *m, mat4 transform);
+    Mesh *mesh;
+    mat4 transform;
+    // additional rendering information
+    //  ....
+    ///
+  };
+public:
+  TransformedMesh(MeshInfo mesh);
+  std::vector<MeshInfo> meshes;
 
-class Model{
-  Model();
-  Model(std::string file);
-  Model(Model *parent);
-  std::vector<TransformedMesh> meshes;
 
-  void draw();
 };
 
 #endif // !_MESH_HXX_
+
+
+// a Mesh is a low-level aggregate of polygons.
+// a TransformedMesh is a Mesh coupled with transformation/rendering information (eg. mvp, back-face culling, shader effects)
+// a Model is a collection of TransformedMeshes

@@ -31,9 +31,11 @@ void Renderer::render(){ }
 void Renderer::render(View *view, Entity *entity){
   mat4 modelMatrix = entity->modelMatrix();
   for (auto mesh : entity->getMeshes()){
-    if(mesh.mesh != NULL){
-      setUniform(modelLoc, modelMatrix * mesh.transform);
-      this->render(view, mesh);
+    for (auto meshinfo : mesh.meshes){
+      if(meshinfo.mesh != NULL){
+        setUniform(modelLoc, modelMatrix * meshinfo.transform);
+        this->render(view, meshinfo);
+      }
     }
   }
 }
@@ -47,13 +49,15 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
-void FlatShadingRenderer::render (View *view, TransformedMesh mesh) {
+void FlatShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh) {
 
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
+
+  // todo: this function DOES NOT RENDER CORRECTLY
   setUniform(colorLoc, mesh.mesh->data.color);
   mesh.mesh->draw();
 
@@ -80,7 +84,7 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
 
 SunlightShadingRenderer::~SunlightShadingRenderer() { }
 
-void SunlightShadingRenderer::render (View *view, TransformedMesh mesh){
+void SunlightShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -95,6 +99,7 @@ void SunlightShadingRenderer::render (View *view, TransformedMesh mesh){
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
 
+  // todo: THIS FUNCTION DOES NOT TRANSFORM OBJECTS CORRECTLY
   setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
   texture2d *tex = mesh.mesh->data.tex;
   if(tex){
@@ -142,7 +147,7 @@ void UnderwaterRenderer::enable (){
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 }
-void UnderwaterRenderer::render(View *view, TransformedMesh mesh){
+void UnderwaterRenderer::render(View *view, TransformedMesh::MeshInfo mesh){
 
   if(!mesh.mesh->data.visible){
     return;
@@ -220,7 +225,7 @@ void SkyboxRenderer::enable (){
 }
 
 
-void SkyboxRenderer::render (View *view, TransformedMesh mesh){
+void SkyboxRenderer::render (View *view, TransformedMesh::MeshInfo mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 

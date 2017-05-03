@@ -1,6 +1,12 @@
 #include <json/json.hpp>
 #include "Level.hxx"
 #include <util/file.hxx>
+#include <graphics/mesh.hxx>
+#include <physics/Volume.hxx>
+#include <ent/terrain.hxx>
+#include <world/world.hxx>
+
+extern World* world;
 
 using json = nlohmann::json;
 
@@ -10,7 +16,10 @@ Level::Level(const char *path) {
     this->path = path;
 }
 
-Level::~Level() { }
+Level::~Level() 
+{ 
+    this->unload();
+}
 
 quaternion quatFromSTDVec(std::vector<float> v) {
     return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
@@ -20,7 +29,7 @@ vec3 vec3FromSTDVec(std::vector<float> v) {
     return vec3(v.at(0), v.at(1), v.at(2));
 }
 
-Entity *entityFromJSON(json j) {
+Entity *entityFromJSON(int id, json j) {
     /* copy over entity data */
     std::string name = j["name"];
     std::vector<float> position = j["position"];
@@ -46,14 +55,14 @@ Entity *entityFromJSON(json j) {
 
     /* Create entity */
     // this line probably should be edited in the future to reflect "not all entities are gadgets"
-    Entity *retVal = new Gadget(real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, model_file);
+    Entity *retVal = new Gadget(id, real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, model_file);
     if (movable) {
         float mass = j["mass"];
-        retVal->mass = mass;
-        float dragCoef = j["dragCoef"];
-        retVal->dragCoef = dragCoef;
+        retVal->setMass(mass);
+        // float dragCoef = j["dragCoef"];
+        // retVal->dragCoef = dragCoef;
         std::vector<float> velocity = j["velocity"];
-        retVal->velocity = vec3FromSTDVec(velocity);
+        retVal->vel(vec3FromSTDVec(velocity));
     }
     if (collidable) {
         volume_type = j["volume-type"];
@@ -63,7 +72,7 @@ Entity *entityFromJSON(json j) {
             std::vector<float> spherePos = volume_data["position"];
             vec3 sphereCenter = vec3FromSTDVec(spherePos);
             float sphereRad = volume_data["radius"];
-            retVal->volume = new Space::SphereVolume(sphereCenter, sphereRad);
+            retVal->setVolume(new SphereVolume(sphereCenter, sphereRad));
         }
     }
 
@@ -74,9 +83,49 @@ Entity *entityFromJSON(json j) {
     return retVal;
 }
 
+/* Release all memeory associated with this level */
+void Level::unload()
+{
+    for(auto ent : this->entities){
+        //logln(LOGMEDIUM, "removing entity %d", ent.second->getID());
+        delete(ent.second);
+    }
+}
+
 /* Populate all fields of the class by loading them from a file. */
-void Level::buildLevelFromFile() 
-<<<<<<< HEAD
+void Level::buildLevelFromFile() {
+    if(!this->path){
+        buildDemoLevel();
+        return;
+    }
+    int id =0;
+    char *raw = fileio::load_file(this->path);
+    json raw_j = json::parse(raw);
+    std::vector<json> entities = raw_j["entities"];
+
+    std::vector<json>::iterator it = entities.begin();
+    while (it != entities.end()) {
+        Entity *ent = entityFromJSON(++id,*it);
+        //logln(LOGMEDIUM, "adding an item called %s\n", ent->getName().c_str());
+        this->addEntity(ent);
+        ++it;
+    }
+    // todo: remove this. 
+    Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
+    addEntity(cave);
+
+    // Gadget *plateau = new Gadget(++id,vec3(0,0,0), quaternion(), "landscape", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/levels/bumps.obj");
+    // addEntity(plateau);
+
+     //create skybox
+    Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    this->setSkybox(skybox);
+
+
+}
+
+/* DEMO LEVEL */
+void Level::buildDemoLevel() 
 { 
 	//create test objects
     vec3 cubePos[] = {vec3(5,6,5), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
@@ -100,30 +149,15 @@ void Level::buildLevelFromFile()
     for(i=0; i<ncubes; i++)
     	this->addEntity(cubes[i]);
 
-     //create skybox
-    Gadget *skybox = new Gadget(ncubes,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Entity *cave = new Terrain(ncubes, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
+    addEntity(cave);
+
+    //create skybox
+    Gadget *skybox = new Gadget(ncubes+1,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
 
-    logln(LOGHIGH,"built level.");
+    //logln(LOGHIGH,"built level.");
 
-=======
-{
-    char *raw = fileio::load_file(this->path);
-    json raw_j = json::parse(raw);
-    std::vector<json> entities = raw_j["entities"];
-
-    std::vector<json>::iterator it = entities.begin();
-    while (it != entities.end()) {
-        Entity *ent = entityFromJSON(*it);
-        log(LOGMEDIUM, "adding an item called %s\n", ent->name.c_str());
-        this->addEntity(ent);
-        ++it;
-    }
-
-//create skybox
-    Gadget *skybox = new Gadget(vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
-    this->setSkybox(skybox);
->>>>>>> 9b091affd63a0a5d798cf69be4d2d2e048546ff7
 }
 
 /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
@@ -132,7 +166,7 @@ void Level::upEntData(posUpBuf *info)
 	// Get the entity for this ID
 	Entity *ent = this->getEntityByID(info->id);
 	if(ent == NULL){
-		log(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
+		//logln(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
 		return;
 	}
 
@@ -208,7 +242,7 @@ void Level::sendPosUps(Server *server){
         auto entity = entry.second;
         bool should = entity->isShouldSendUpdate();
         if(should){
-            fprintf(stderr,"%s: %s\n",entry.second->getName().c_str(),should?"1":"-");
+            //fprintf(stderr,"%s: %s\n",entry.second->getName().c_str(),should?"1":"-");
             message* m = entity->prepareMessageSegment();
             server->broadcast(m);
             deleteMessage(m);
@@ -229,7 +263,7 @@ void Level::renderAllEnts(View *view, Renderer *r)
 	r->enable();
 	for (auto entry : this->entities) {
         auto entity = entry.second;
-        //log(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
+        //logln(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
         if(entity->isDrawable())
         	r->render(view, entity);
     }
@@ -276,6 +310,13 @@ void Level::updateAIs(float dt) {
  */
 void Level::physicsTick(float dt) {
     for(std::pair<int, Entity *> en : entities) {
+        // if(en.second->velocity.y != en.second->velocity.y)en.second->velocity = vec3();
+        // en.second->position += dt*en.second->velocity;
+<<<<<<< HEAD
+        // fprintf(stderr,"%s, %f, %f\n",en.second->getName().c_str(),dt,en.second->vel().y);
+=======
+        //fprintf(stderr,"%s, %f, %f\n",en.second->getName().c_str(),dt,en.second->vel().y);
+>>>>>>> 21ab46271bb86b8be1426521409315126f9b7cb4
         en.second->onTick(dt);
         en.second->updatePhysicsVolume();
     }
@@ -292,6 +333,7 @@ void Level::handleCollisions(float dt) {
         for(std::pair<int, Entity *> en2 : entities) {
             if(processed[en2.first])continue;
             if(en1.first == en2.first)continue;
+            if(!en2.second->getVolume() || !en1.second->getVolume())continue;
             // fprintf(stderr,"check %d %d\n",en1.first,en2.first);
             Entity &e1 = *(en1.second);
             Entity &e2 = *(en2.second);
@@ -312,8 +354,5 @@ void Level::handleCollisions(float dt) {
         }
         processed[en1.first] = true;
     }
-
-    // for(std::pair<int, Entity *> e : entities){
-    //     printf("> %s: %s\n",e.second->getName().c_str(), e.second->isShouldSendUpdate()?"1":"-");
-    // }
 }
+

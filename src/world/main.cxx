@@ -190,8 +190,11 @@ int main(int argc, char*argv[]){
 
     /* Create levels */
     vector<const char*> levels;
+
+    levels.push_back(0);
     levels.push_back((const char*)strdup("../assets/levels/level0.json"));
     levels.push_back((const char*)strdup("../assets/levels/level1.json"));
+
     world->addAllLevels(levels);
 
     int width, height;

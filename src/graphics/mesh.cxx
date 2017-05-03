@@ -1,6 +1,9 @@
 #include "mesh.hxx"
+#include <util/file.hxx>
 #include <obj/obj.hxx>
 #include <obj/obj-reader.hxx>
+#include <stdio.h>
+#include <stdlib.h>
 
 /*! The locations of the standard mesh attributes.  The layout directives in the shaders
  * should match these values.
@@ -27,6 +30,8 @@ Mesh::Mesh(GLenum p) {
 
 
 }
+
+
 
 Mesh::Mesh(const Mesh &copyfrom){
   data = copyfrom.data;
@@ -147,8 +152,13 @@ void Mesh::loadOBJ(char *file){
   loadIndices(model->numtriangles*3, indices);
 }
 
-TransformedMesh::TransformedMesh(Mesh *mesh){
-  this->mesh=mesh;
+TransformedMesh::TransformedMesh(TransformedMesh::MeshInfo in){
+  this->meshes.push_back(in);
+}
+
+TransformedMesh::MeshInfo::MeshInfo(Mesh *m, mat4 transform){
+  mesh = m;
+  this->transform = transform;
 }
 
 //////////////////////////////////////////*
@@ -207,9 +217,190 @@ void HeightmapMesh::init(int w, int h, float texscalex, float texscaley){
   loadVertices(w*h,verts);
   loadIndices(4*(w-1)*(h-1),indices);
 }
-void HeightmapMesh::loadFile(std::string filename){
 
+int HeightmapMesh::loadFile(std::string filename){
+  char *file = fileio::load_file(filename.c_str());
+  float *data = 0;
+  int data_ind=0;
+  char *tok;
+  char *tok2;
+  char *delim = "\n\t ";
+  int err =0;
+  int w=-1,h=-1;
+
+  while((tok = strtok(file,delim)) != 0){
+    if(!strcmp(tok,"resl")){
+      tok =strtok(file,delim);
+      tok2=strtok(file,delim);
+      if(!tok || !tok2){
+        err=-1;
+        break;
+      }
+      w = atoi(tok);
+      h = atoi(tok2);
+      data = new float[w*h];
+    }
+    else{
+      if(!data){
+        err=-2;
+        break;
+      }
+      data[data_ind++] = atof(tok);
+    }
+  }
+  if(w==-1 || h==-1){
+    err=-3;
+  }
+  if(!err){
+    generator = [data,w,h](float x, float z){
+      int xind = (x+0.5f)*w;
+      int zind = (z+0.5f)*h;
+      if(xind<0)xind=0;
+      if(xind>=w)xind=w-1;
+      if(zind<0)zind=0;
+      if(zind>=h)zind=h-1;
+
+      return data[xind + zind*w];
+
+    };
+  }
+  return 0;
 }
+
+typedef struct{
+  vec3 point;
+  vec3 normal;
+}Plane;
+
+void HeightmapMesh::loadFileOBJ(char *file){
+  data.prim = GL_QUADS;
+  data.shouldTexture = false;  // change.
+  //data.color = vec4(1.f,1.f,1.f,1.f);
+
+  // todo: change code to use this form vvv . and make each
+  //       group a single mesh.
+  OBJ::Model *loaded = new OBJ::Model(std::string(file));
+  // int k = loaded->NumGroups();
+  for(int i=0;i<loaded->NumGroups();++i){
+    OBJ::Group gp = loaded->Group(i);
+    fprintf(stderr,"Parsing group %s\n",gp.name.c_str());
+    int nv = gp.nVerts;
+    vec3f *verts = gp.verts;
+
+    // STEP 1 : PERFORM RANSAC to determine plane of best fit.
+    Plane best_plane;
+    float best_score;
+
+    srand (time(NULL));
+    for(int i=0;i<100;i++){     // 100 RANSAC iterations. tune this parameter.
+      
+      // find random plane.
+      vec3f a = verts[rand() % nv];
+      vec3f b = verts[rand() % nv];
+      vec3f c = verts[rand() % nv];
+
+      Plane p = {a,glm::normalize(glm::cross(a-b,a-c))};
+      float score = 0.f;
+      for(int j=0;j<100;++j){
+        vec3f test = verts[rand() % nv];  // test point.
+        float dist = glm::dot(p.normal,p.point-test);
+        if(fabs(dist)<1.f)score += 1;
+      }
+      if(score > best_score){
+        best_plane = p;
+        best_score = score;
+      }
+    }
+
+    // STEP 2 : Find local coordinate system
+
+    vec3 x_axis = (glm::cross(best_plane.normal,vec3(1.1f,0.1f,-0.1f)));
+    if(glm::length(x_axis) < 0.001f){
+      x_axis = (glm::cross(best_plane.normal,vec3(0.1f,0.1f,-1.1f)));
+    }
+    x_axis = glm::normalize(x_axis);
+    vec3 z_axis = glm::normalize(glm::cross(best_plane.normal,x_axis));
+
+    // STEP 3: Transform to local coordinate system
+
+    // STEP 4: Find boundary points of quad
+
+    // STEP 5: 
+  }
+
+
+
+  free(loaded);
+  //            ^^^
+
+  // OBJmodel *model = OBJReadOBJ (file);
+
+  // printf("texture: %s\n",model->mtllibname);
+
+  // vec3 *verts = new vec3[model->numtriangles*3];
+  // vec3 *norms = new vec3[model->numtriangles*3];
+  // vec2 *texcs = new vec2[model->numtriangles*3];
+
+  // // indices. for our purposes, it is {0,1,2, 3,4,5, ... n*3};
+  // unsigned int *indices =new unsigned int[model->numtriangles*3];
+  // for(int i=0;i<model->numtriangles*3;++i){
+  //   indices[i]=i;
+  // }
+
+  // OBJgroup *gp = model->groups;
+
+  // int ind=0;
+  // while(gp != 0){
+  //   // struct Material mat = model->Material(gp->material);
+  //   // printf("g texture: %s\n",mat.diffuseMap.c_str());
+  //   for(int i=0;i<gp->numtriangles;++i){
+  //     OBJtriangle &tri = model->triangles[gp->triangles[i]];
+  //     verts[ind+0]=model->vertices[tri.vindices[0]];
+  //     verts[ind+1]=model->vertices[tri.vindices[1]];
+  //     verts[ind+2]=model->vertices[tri.vindices[2]];
+
+  //     // printf("triangle with %d %d %d\n",tri.vindices[0],tri.vindices[1],tri.vindices[2]);
+  //     // printf("triangle starting (%.3f,%.3f,%.3f)\n",verts[ind].x,verts[ind].y,verts[ind].z);
+
+  //     norms[ind+0]=model->normals[tri.nindices[0]];
+  //     norms[ind+1]=model->normals[tri.nindices[1]];
+  //     norms[ind+2]=model->normals[tri.nindices[2]];
+
+  //     if(model->numtexcoords > 0){
+  //       texcs[ind+0]=model->texcoords[tri.tindices[0]];
+  //       texcs[ind+1]=model->texcoords[tri.tindices[1]];
+  //       texcs[ind+2]=model->texcoords[tri.tindices[2]];
+  //     }
+
+  //     ind+=3;
+  //   }
+  //   gp = gp->next;
+  // }
+
+  // loadNormals(model->numtriangles*3, norms);
+  // LoadTexCoords(model->numtriangles*3, texcs);
+  // loadVertices(model->numtriangles*3, verts);
+  // loadIndices(model->numtriangles*3, indices);
+}
+
 void HeightmapMesh::setGenerator(std::function<float(float,float)> in){
   generator=in;
 }
+
+
+
+
+//////////////////////////////////////////*
+//               Model
+/////////////////////////////////////////*/
+
+
+// Model::Model() : parent(0){
+
+// }
+// Model::Model(std::string file) : parent(0){
+
+// }
+// Model::Model(Model *parent) : parent(0){
+
+// }
