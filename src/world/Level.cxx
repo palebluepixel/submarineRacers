@@ -4,6 +4,9 @@
 #include <graphics/mesh.hxx>
 #include <physics/Volume.hxx>
 #include <ent/terrain.hxx>
+#include <world/world.hxx>
+
+extern World* world;
 
 using json = nlohmann::json;
 
@@ -13,7 +16,10 @@ Level::Level(const char *path) {
     this->path = path;
 }
 
-Level::~Level() { }
+Level::~Level() 
+{ 
+    this->unload();
+}
 
 quaternion quatFromSTDVec(std::vector<float> v) {
     return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
@@ -77,6 +83,15 @@ Entity *entityFromJSON(int id, json j) {
     return retVal;
 }
 
+/* Release all memeory associated with this level */
+void Level::unload()
+{
+    for(auto ent : this->entities){
+        //logln(LOGMEDIUM, "removing entity %d", ent.second->getID());
+        delete(ent.second);
+    }
+}
+
 /* Populate all fields of the class by loading them from a file. */
 void Level::buildLevelFromFile() {
     if(!this->path){
@@ -91,7 +106,7 @@ void Level::buildLevelFromFile() {
     std::vector<json>::iterator it = entities.begin();
     while (it != entities.end()) {
         Entity *ent = entityFromJSON(++id,*it);
-        log(LOGMEDIUM, "adding an item called %s\n", ent->getName().c_str());
+        //logln(LOGMEDIUM, "adding an item called %s\n", ent->getName().c_str());
         this->addEntity(ent);
         ++it;
     }
@@ -99,13 +114,9 @@ void Level::buildLevelFromFile() {
     Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
     addEntity(cave);
 
-    // Gadget *plateau = new Gadget(++id,vec3(0,0,0), quaternion(), "landscape", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/levels/bumps.obj");
-    // addEntity(plateau);
-
      //create skybox
     Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
-
 
 }
 
@@ -113,20 +124,20 @@ void Level::buildLevelFromFile() {
 void Level::buildDemoLevel() 
 { 
 	//create test objects
-    vec3 cubePos[] = {vec3(5,6,5), vec3(5, 0, 5), vec3(5, -5, 5), vec3(5, -10, 5), vec3(5, -20, 5),
+    vec3 cubePos[] = {vec3(5,6,5), vec3(4, 0, 5), vec3(1, -5, 5), vec3(5, -6, 5), vec3(3, -13, 5),
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 4, i;
     Entity * cubes[ncubes];
-    cubes[0] = new Gadget(0,cubePos[0], quaternion(), "cube0", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/monkey.obj");
-    cubes[0]->setVolume(new SphereVolume(vec3(0,0,0),1.f));
-    // cubes[0]->meshes.push_back(cubes[0]->volume->collisionMesh());
-    cubes[0]->setVelocity(vec3(0,-0.8f,0));
+    cubes[0] = new Gadget(0,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
+    cubes[0]->setVolume(new CylinderVolume(vec3(0,0,0),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
+    cubes[0]->meshes.push_back(cubes[0]->getVolume()->collisionMesh());
+    cubes[0]->setVelocity(vec3(0,-1.5f,0));
     cubes[0]->setMass(1.f);
     for(i=1; i<ncubes; i++){
         cubes[i] = new Gadget(i,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
         cubes[i]->setVolume(new SphereVolume(vec3(0,0,0),1.414));
-        // cubes[i]->meshes.push_back(cubes[i]->volume->collisionMesh());
+        cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         cubes[i]->setVelocity(vec3());
         cubes[i]->setMass(1.f);;
     }
@@ -141,7 +152,7 @@ void Level::buildDemoLevel()
     Gadget *skybox = new Gadget(ncubes+1,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
 
-    logln(LOGHIGH,"built level.");
+    //logln(LOGHIGH,"built level.");
 
 }
 
@@ -151,7 +162,7 @@ void Level::upEntData(posUpBuf *info)
 	// Get the entity for this ID
 	Entity *ent = this->getEntityByID(info->id);
 	if(ent == NULL){
-		log(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
+		//logln(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
 		return;
 	}
 
@@ -227,7 +238,7 @@ void Level::sendPosUps(Server *server){
         auto entity = entry.second;
         bool should = entity->isShouldSendUpdate();
         if(should){
-            fprintf(stderr,"%s: %s\n",entry.second->getName().c_str(),should?"1":"-");
+            //fprintf(stderr,"%s: %s\n",entry.second->getName().c_str(),should?"1":"-");
             message* m = entity->prepareMessageSegment();
             server->broadcast(m);
             deleteMessage(m);
@@ -248,7 +259,7 @@ void Level::renderAllEnts(View *view, Renderer *r)
 	r->enable();
 	for (auto entry : this->entities) {
         auto entity = entry.second;
-        //log(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
+        //logln(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
         if(entity->isDrawable())
         	r->render(view, entity);
     }
@@ -297,7 +308,7 @@ void Level::physicsTick(float dt) {
     for(std::pair<int, Entity *> en : entities) {
         // if(en.second->velocity.y != en.second->velocity.y)en.second->velocity = vec3();
         // en.second->position += dt*en.second->velocity;
-        // fprintf(stderr,"%s, %f, %f\n",en.second->getName().c_str(),dt,en.second->vel().y);
+        //fprintf(stderr,"%s, %f, %f\n",en.second->getName().c_str(),dt,en.second->vel().y);
         en.second->onTick(dt);
         en.second->updatePhysicsVolume();
     }
@@ -320,15 +331,57 @@ void Level::handleCollisions(float dt) {
             Entity &e2 = *(en2.second);
             vec3 e1p = e1.pos();
             vec3 pushe1 = e1.getVolume()->push(e2.getVolume());
+
+
+
+
+
             // fprintf(stderr,"(%.3f,%.3f,%.3f)\n",e1p.x,e1p.y,e1p.z);
             // fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
             if(pushe1 != vec3()){
                 // there is a collision
                 e1.pos(e1.pos()-pushe1);
-                vec3 v1 = (e1.vel()*(e1.mass()-e2.mass()) + e2.vel()*2.f*e2.mass())/(e1.mass()+e2.mass());
-                vec3 v2 = (e2.vel()*(e2.mass()-e1.mass()) + e1.vel()*2.f*e1.mass())/(e1.mass()+e2.mass());
-                e1.vel(v1);
-                e2.vel(v2);
+                // vec3 v1 = (e1.vel()*(e1.mass()-e2.mass()) + e2.vel()*2.f*e2.mass())/(e1.mass()+e2.mass());
+                // vec3 v2 = (e2.vel()*(e2.mass()-e1.mass()) + e1.vel()*2.f*e1.mass())/(e1.mass()+e2.mass());
+
+                // normalized direction from e1 to e2.
+                vec3 vc = glm::normalize(pushe1);
+
+                // object velocities
+                vec3 v1 = e1.vel();
+                vec3 v2 = e2.vel();
+
+                // components in collision vector coordinate system.
+                float o1_c_comp = (glm::dot(vc,v1));
+                vec3  o1_c_remd = v1 - o1_c_comp*vc;
+
+                float o2_c_comp = (glm::dot(vc,v2));
+                vec3  o2_c_remd = v2 - o2_c_comp*vc;
+
+                o1_c_comp = fabsf(o1_c_comp);
+                o2_c_comp = fabsf(o2_c_comp);
+                
+                float magc1 = (o1_c_comp*(e1.mass()-e2.mass()) + o2_c_comp*2.f*e2.mass())/(e1.mass()+e2.mass());
+                float magc2 = (o2_c_comp*(e2.mass()-e1.mass()) + o1_c_comp*2.f*e1.mass())/(e1.mass()+e2.mass());
+
+                vec3 res1 = o1_c_remd - magc1*vc;
+                vec3 res2 = o2_c_remd + magc2*vc;
+
+                // float kq_a = v1.x*v1.x + v1.y*v1.y + v1.z*v1.z;
+                // float kq_b = 2*(v1.x*vd.x + v1.y*vd.y + v1.z*vd.z);
+                // float kq_c = vd.x*vd.x + vd.y*vd.y + vd.z*vd.z;
+                // float kq_d = sqrt(kq_b*kq_b - 4*kq_a*kq_c - m1*m1);
+
+                // float k = (-kq_b + kq_d)/(2*kq_a);
+                // if(k < 0)k= (-kq_b - kq_d)/(2*kq_a);
+
+                // fprintf(stderr,"k: %f\n",k);
+
+                // vec3 v1o = e1.vel() + k*vd;
+                // vec3 v2o = e2.vel() - k*vd;
+
+                e1.vel(res1);
+                e2.vel(res2);
             }
             vec3 np = e1.pos();
             // fprintf(stderr,"(%.3f,%.3f,%.3f)\n\n",np.x,np.y,np.z);

@@ -21,6 +21,13 @@ public:
     void messageServer(message *msg);
     void messageServer(short len, uint8_t*msg);
 
+    /* Tell the server to load the current level */
+    void loadLevel(int level);
+
+    /* Tell the server we want to unload the current level. Server
+    will reply with a confirmation, which is when we unload. */
+    void exitLevel();
+
     /* Reads any incoming messages and then parses them. 
     Will process a maximum of mmax messages (used to control how much time
     we spend doing network stuff per tick, anything leftover will be done

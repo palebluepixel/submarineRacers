@@ -26,7 +26,7 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     /* This is intialized to 1 so we can be positive the server and client
     agree about the starting position of every object. */
     this->shouldSendUpdate = 1;
-
+    this->volume = 0;
     _mass = 1.f;
     dragCoef=0.f;
 }
@@ -217,13 +217,6 @@ mat4 Entity::modelMatrix(){
     // model[1][3] = 0;
     // model[2][3] = 0;
     return model;
-}
-
-
-void Entity::drawEntity(){
-    int i;
-    for(TransformedMesh tmesh : meshes)
-        tmesh.mesh->draw();
 }
 
 void Entity::applyForce(vec3 force) {

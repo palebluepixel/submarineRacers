@@ -31,9 +31,10 @@ void Terrain::initalizeMeshes(){
     // mesh->loadFileOBJ("../assets/levels/bumps.obj");
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
-    TransformedMesh tm(mesh);
-    tm.transform = glm::scale(glm::mat4(1),vec3(100,1,100));
-    meshes.push_back(tm);
+
+    TransformedMesh::MeshInfo tmi(mesh,glm::scale(glm::mat4(1),vec3(100,1,100)));
+    TransformedMesh tmesh(tmi);
+    meshes.push_back(tmesh);
     pos(vec3(0,-20,0));
     volume = new HeightmapVolume(pos(), vec3(10,1,10), 32, 32, 0);
 }

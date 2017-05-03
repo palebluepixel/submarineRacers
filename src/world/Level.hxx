@@ -8,7 +8,7 @@
 #include <ent/gadget.hxx>
 #include <vector>
 #include <unordered_map>
-#include <util/log.hxx>
+//#include <util/log.hxx>
 #include <network/Server.hxx>
 #include <graphics/view.hxx>
 #include <graphics/renderer.hxx>
@@ -29,6 +29,9 @@ public:
     Level(); 
     Level(const char *path);
     ~Level();
+
+    /* Release all memory used by this level. Right now this causes seg faults LOL */
+    void unload();
 
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();

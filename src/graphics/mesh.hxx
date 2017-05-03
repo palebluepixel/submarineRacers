@@ -77,18 +77,27 @@ private:
   std::function<float(float,float)> generator;
 };
 
-struct TransformedMesh{
-  TransformedMesh(Mesh *mesh);
-  Mesh *mesh;
-  mat4 transform;
-};
-class Model{
-  Model();
-  Model(std::string file);
-  Model(Model *parent);
-  std::vector<TransformedMesh> meshes;
+class TransformedMesh{
+public:
+  class MeshInfo{
+  public:
+    MeshInfo(Mesh *m, mat4 transform);
+    Mesh *mesh;
+    mat4 transform;
+    // additional rendering information
+    //  ....
+    ///
+  };
+public:
+  TransformedMesh(MeshInfo mesh);
+  std::vector<MeshInfo> meshes;
 
-  void draw();
+
 };
 
 #endif // !_MESH_HXX_
+
+
+// a Mesh is a low-level aggregate of polygons.
+// a TransformedMesh is a Mesh coupled with transformation/rendering information (eg. mvp, back-face culling, shader effects)
+// a Model is a collection of TransformedMeshes

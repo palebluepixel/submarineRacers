@@ -31,6 +31,8 @@ Mesh::Mesh(GLenum p) {
 
 }
 
+
+
 Mesh::Mesh(const Mesh &copyfrom){
   data = copyfrom.data;
 }
@@ -102,7 +104,7 @@ void Mesh::loadOBJ(char *file){
 
   OBJmodel *model = OBJReadOBJ (file);
 
-  printf("texture: %s\n",model->mtllibname);
+  //printf("texture: %s\n",model->mtllibname);
 
   vec3 *verts = new vec3[model->numtriangles*3];
   vec3 *norms = new vec3[model->numtriangles*3];
@@ -150,8 +152,13 @@ void Mesh::loadOBJ(char *file){
   loadIndices(model->numtriangles*3, indices);
 }
 
-TransformedMesh::TransformedMesh(Mesh *mesh){
-  this->mesh=mesh;
+TransformedMesh::TransformedMesh(TransformedMesh::MeshInfo in){
+  this->meshes.push_back(in);
+}
+
+TransformedMesh::MeshInfo::MeshInfo(Mesh *m, mat4 transform){
+  mesh = m;
+  this->transform = transform;
 }
 
 //////////////////////////////////////////*
@@ -379,3 +386,21 @@ void HeightmapMesh::loadFileOBJ(char *file){
 void HeightmapMesh::setGenerator(std::function<float(float,float)> in){
   generator=in;
 }
+
+
+
+
+//////////////////////////////////////////*
+//               Model
+/////////////////////////////////////////*/
+
+
+// Model::Model() : parent(0){
+
+// }
+// Model::Model(std::string file) : parent(0){
+
+// }
+// Model::Model(Model *parent) : parent(0){
+
+// }

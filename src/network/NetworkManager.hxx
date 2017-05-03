@@ -1,7 +1,7 @@
 #ifndef _NETWORK_MANAGER_HXX_
 #define _NETWORK_MANAGER_HXX_
 
-#define RECV_PARSE_BUFFER_SIZE MAX_MESSAGE_LENGTH*2 + 1
+#define bufToInt(buf) ((int*)buf)[0]
 
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -19,7 +19,9 @@
 
 #include <network/CommandCodes.hxx>
 
-#define COMMAND_PARAMS short len, uint8_t *message
+#ifndef COMMAND_PARAMS
+#define COMMAND_PARAMS short len, uint8_t *mes
+#endif
 
 class NetworkManager;
 
@@ -50,8 +52,13 @@ protected:
     void initCommand(COMMAND_PARAMS);
     void disconnectCommand(COMMAND_PARAMS);
     void objectChangeCommand(COMMAND_PARAMS);
+    void levelSelectCommand(COMMAND_PARAMS);
+    void levelLoadCommand(COMMAND_PARAMS);
+    void levelLoadedCommand(COMMAND_PARAMS);
+    void exitLevelCommand(COMMAND_PARAMS);
+    void startLevelCommand(COMMAND_PARAMS);
 
-    static handler table[4];
+    static handler table[9];
 
     bool virtual processCommand(short code, short len, uint8_t *message);
     bool checkDispatch(short code, short len, uint8_t *message);

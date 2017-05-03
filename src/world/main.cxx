@@ -27,6 +27,11 @@
 
 #define PORT 8008
 
+/* Set this to -1 if you want to initate the game in the title-screen state 
+and have to step throigh using client-server messages. Otherwise, for example
+if you are testing something, set this to the desired test level. */
+#define QUICKSTART 0
+
 //defined in util/log.hxx
 int loglevel_GLOBAL;
 
@@ -45,11 +50,25 @@ static void error_callback(int error, const char* description){
     Error::error(std::string(description),0);
 }
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
-    /* On-press or on-release actiosn should go here */
+    /* On-press or on-release actions should go here */
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+
     if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
-            world->getView()->nextCamera();
+        world->getView()->nextCamera();
+
+    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && world->isClient())
+        world->getClient()->loadLevel(0);
+
+    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
+        world->getClient()->loadLevel(1);
+
+    if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+        if(world->isClient())
+            world->getClient()->exitLevel(); 
+        else
+            world->getServer()->exitLevel();   
+    }
 
     /* Continous actions should go here */
     keyboard[key] = action;
@@ -102,13 +121,13 @@ void initalizeWorld(int isServer, char *hostname){
 
     world->setIsServer(isServer);
     if(world->isServer()){
-        log(LOGMEDIUM,"building server\n");
+        logln(LOGMEDIUM,"building server\n");
         world->setServer(new Server((short)PORT, NULL));
-        world->getServer()->initListeningSocket();
+        world->handleEvent(STARTSERVER,0);
     } else {
         world->setClient(new Client(PORT, hostname));
-        log(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
-        world->getClient()->connectServer();
+        logln(LOGMEDIUM, "Hostname: %s, Port: %d\n", world->getClient()->getHost(), world->getClient()->getPort());
+        world->handleEvent(STARTCLIENT,0);
     }
 
     world->worldInitalizeDefault(isServer);
@@ -169,14 +188,14 @@ int main(int argc, char*argv[]){
     bool isClient = (argc > 2) && argv[1][0]=='c';
     initalizeWorld(!isClient, isClient?argv[2]:0);
 
-    /* Build example level */
-    Level *level = new Level("../assets/levels/level1.json");
-    // Level *level = new Level(0);
-    level->buildLevelFromFile();
-    world->setLevel(level);
-    /* Add camera tethered to the first object */
-    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, level->getEntityByID(0), vec3(4,7,0));
-    world->getView()->addCamera(camTeth);
+    /* Create levels */
+    vector<const char*> levels;
+
+    levels.push_back(0);
+    levels.push_back((const char*)strdup("../assets/levels/level0.json"));
+    levels.push_back((const char*)strdup("../assets/levels/level1.json"));
+
+    world->addAllLevels(levels);
 
     int width, height;
 
@@ -189,6 +208,9 @@ int main(int argc, char*argv[]){
     duration<float, std::milli> time_total;
     float elapsed;
 
+    /* USE THIS TO DISABLE MENUES FOR TESTING. SEE THE DEFINE ABOVE. */
+    if(QUICKSTART>=0)
+        world->quickSetup(QUICKSTART);
 
     while (!glfwWindowShouldClose(world->window)){
 
@@ -202,18 +224,6 @@ int main(int argc, char*argv[]){
 
         update(elapsed);
 
-
-        if(world->isServer()){
-            world->curLevel->updateLevel(elapsed);
-            //quick hack-in of a cube movement animation
-            Entity *c = world->getLevel()->getEntityByID(0);
-            // vec3 pos = c->getPosition() - vec3(0,0.02,0);
-            // c->setPosition(pos);
-        }
-        else{
-            world->curLevel->interpolateLevel(elapsed);
-        }
-
         //window setup
         glfwGetFramebufferSize(world->window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
@@ -222,6 +232,7 @@ int main(int argc, char*argv[]){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         world->handleNetworksTick(time_total.count(),elapsed,20);
+        world->handlePhysicsTick(time_total.count(), elapsed);
         world->handleGraphicsTick(time_total.count(),elapsed);
         
 

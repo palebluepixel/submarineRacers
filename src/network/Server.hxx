@@ -66,6 +66,17 @@ public:
     void broadcast(short code, short len, uint8_t *payload);
 
 
+
+    /* Resets the LoadedLevel flag for all clients and sends them a message
+    telling them to load the level. The World should call the following function,
+    clientsLoaded(), once every network tick after calling this function. */
+    void sendLoadLevel(int level);
+    int  clientsLoaded(int level);
+
+    /* Unloads the current level, and tells all clients to do the same. */
+    void exitLevel();
+
+
     inline int getPort() { return this->port; }
 
 private:

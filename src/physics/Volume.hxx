@@ -90,7 +90,7 @@ protected:
 
 class CylinderVolume : public Volume{
 public:
-    CylinderVolume(vec3 pp, double rad, double height);
+    CylinderVolume(vec3 pp, double rad, double height, glm::mat4 rotation);
     const char *type();
     double distance(Volume *other);
 
@@ -100,9 +100,11 @@ public:
     bool containsPoint(vec3 pt);
 
     TransformedMesh collisionMesh();
-    static Mesh* mesh;
+    static Mesh* meshcyl;
+    static Mesh* meshcap;
 protected:
     double r,h;
+    glm::mat4 rotation;
 };
 
 class HeightmapVolume : public Volume{
