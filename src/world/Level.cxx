@@ -19,6 +19,7 @@ void Level::buildLevelFromFile()
     //Create submarine
     Submarine * sub = new Submarine(vec3(0,0,0), quaternion(), strdup("sub1"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
     this->addEntity(sub);
+    sub->setID(0);
     for(i=1; i<ncubes; i++){
         cubes[i] = new Gadget(cubePos[i], quaternion(), strdup("kyubey"), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
         cubes[i]->volume = new Space::SphereVolume(vec3(0,0,0),1.414);
