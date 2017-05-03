@@ -25,14 +25,8 @@ protected:
 class Actuator {
 
 public:
-    Actuator(Agent *agent);
-
     // abstract function providing interface framework.
     virtual void doSteering(float dt)=0;
-   
-protected:
-    Agent *agent;
-    SteeringState *state;
 };
 
 

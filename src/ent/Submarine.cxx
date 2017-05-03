@@ -50,7 +50,10 @@ void SubmarineSteeringState::reset() {
 }
 
 
-SubmarineActuator::SubmarineActuator(Submarine *agent) : Actuator(agent) {}
+SubmarineActuator::SubmarineActuator(Submarine *agent) {
+    this->agent = agent;
+    state.reset();
+}
 
 void SubmarineActuator::doSteering(float dt) {
     printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
@@ -93,5 +96,6 @@ void SubmarineActuator::fire() {
     state.fireWeapon = true;
 }
 void SubmarineActuator::switchWeapons(uint8_t weapon) {
-    agent->switchWeapons(weapon);
+    printf("AGENT IS %p \n", this);
+    //agent->switchWeapons(weapon);
 }
