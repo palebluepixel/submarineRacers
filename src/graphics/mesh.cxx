@@ -161,6 +161,14 @@ TransformedMesh::MeshInfo::MeshInfo(Mesh *m, mat4 transform){
   this->transform = transform;
 }
 
+/* Given three points, return the normal vector of the plane which they define. */
+vec3 getNorm(vec3 a, vec3 b, vec3 c)
+{
+  vec3 v1 = b-a;
+  vec3 v2 = b-c;
+  return cross(v1, v2);
+}
+
 //////////////////////////////////////////*
 //           Heightmap Volume
 /////////////////////////////////////////*/
@@ -220,7 +228,7 @@ void HeightmapMesh::init(int w, int h, vec3 scale, float texscalex, float texsca
       texcs[ind] = vec2(-0.0f+x_inc*float(x)/texscalex, -0.0f+z_inc*float(z)/texscaley);
       // verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
       verts[ind] = vec3(xp*scale[0],this->generator(xp,zp)*scale[1],zp*scale[2]); //scale as well
-      norms[ind] = vec3(sin(xp),cos(xp),0);
+      norms[ind] = vec3(0,1,0);
       ++ind;
     }
   }
