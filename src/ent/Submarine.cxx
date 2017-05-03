@@ -11,6 +11,7 @@ Submarine::Submarine(vec3 initial_position, quaternion initial_orientation, char
     this->initalizeVisualData();
 
     this->actuator = new SubmarineActuator(this);
+    printf("TEST222222222222222222222222 %p", this->actuator);
 }
 
 void Submarine::switchWeapons(uint8_t weapon) {
