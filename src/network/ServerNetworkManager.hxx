@@ -7,13 +7,6 @@
 #include <ent/Actuator.hxx>
 #include <network/NetworkManager.hxx>
 
-class ServerNetworkManager;
-
-typedef struct {
-    const short code;
-    std::function<void(ServerNetworkManager&, COMMAND_PARAMS)> func;
-} server_handler;
-
 class ServerNetworkManager : public NetworkManager {
 public:
 	ServerNetworkManager(int id);
@@ -26,8 +19,6 @@ public:
 protected:
     int id;
 
-    bool virtual processCommand(short code, short len, uint8_t *message);
-    static server_handler table[1];
 	SubmarineActuator *actuator;
 	Submarine *sub;
 

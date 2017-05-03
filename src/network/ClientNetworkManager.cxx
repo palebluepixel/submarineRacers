@@ -5,8 +5,6 @@
 extern int keyboard[350];
 extern int mouse[8];
 
-handler ClientNetworkManager::table[0] = { /*{ CODE_CONTROLLER, &ServerNetworkManager::pingCommand }*/};
-
 ClientNetworkManager::ClientNetworkManager()
         : NetworkManager() {}
 

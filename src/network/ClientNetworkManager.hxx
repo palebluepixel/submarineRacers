@@ -11,7 +11,6 @@ public:
     void sendControllerState();
 
 protected:
-    bool virtual processCommand(short code, short len, uint8_t *message);
     static handler table[0];
 };
 

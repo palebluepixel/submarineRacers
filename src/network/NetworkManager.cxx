@@ -5,10 +5,11 @@ class World;
 extern World* world; //global 
 
 
-handler NetworkManager::table[4] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
+handler NetworkManager::table[5] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },
-                                    { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand }};
+                                    { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand },
+                                    { CODE_CONTROLLER,    &NetworkManager::controllerStateCommand}};
 
 NetworkManager::NetworkManager() 
 {}
@@ -101,4 +102,43 @@ void NetworkManager::objectChangeCommand(COMMAND_PARAMS)
     world->setEntData(msg);
     free(msg);
 
+}
+
+void NetworkManager::controllerStateCommand(COMMAND_PARAMS) {
+    if(world->isClient())
+        return;
+    Actuator *actuator = ((ServerNetworkManager*)this)->actuator;
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    ControllerState state;
+    memcpy(&state, message, len);
+    //state->moude = ntoh(state->mouse)
+
+    if(state.switchWeaponsKey != 0) {
+        actuator->switchWeapons(state.switchWeaponsKey);
+    }
+
+    if(state.riseKey) {
+        actuator->rise();
+    }
+    if(state.diveKey) {
+        actuator->dive();
+    }
+
+    if(state.leftKey && !state.rightKey) {
+        actuator->turnLeft();
+    }
+    if(state.rightKey && !state.leftKey) {
+        actuator->turnRight();
+    }
+
+    if(state.forwardKey) {
+        actuator->accelerate();
+    }
+    if(state.fireKey) {
+        actuator->fire();
+    }
 }

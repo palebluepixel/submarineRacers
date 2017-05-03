@@ -50,8 +50,9 @@ protected:
     void initCommand(COMMAND_PARAMS);
     void disconnectCommand(COMMAND_PARAMS);
     void objectChangeCommand(COMMAND_PARAMS);
+    void controllerStateCommand(COMMAND_PARAMS);
 
-    static handler table[4];
+    static handler table[5];
 
     bool virtual processCommand(short code, short len, uint8_t *message);
     bool checkDispatch(short code, short len, uint8_t *message);
