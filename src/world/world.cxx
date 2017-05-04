@@ -218,7 +218,7 @@ int World::loadLevel(int i)
     this->addSubsToLevel();
 
     // For now, tether our camera to the hard-coded sub
-    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(6969));
+    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(SUBID_START));
     logln(LOGMEDIUM, "Loading level %d completed.", i);
 
     return 0;
