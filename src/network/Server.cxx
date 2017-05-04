@@ -217,7 +217,7 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
     /* We could have a player struct created when the client is created that
     handles all in-level player things, like which submarine, laps completed,
     checkpoints completed, etc */
-    client->bindToSub((Submarine*)world->getLevel()->getEntityByID(0));
+    client->bindToSub((Submarine*)world->getSub(0));
 
     return client;
 }

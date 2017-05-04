@@ -8,7 +8,7 @@ Agent::Agent(int ID, vec3 initial_position, quaternion initial_orientation, char
 
 
 int Agent::onTick(float dt) {
-	actuator->doSteering(dt);
+	  actuator->doSteering(dt);
     int res = Entity::onTick(dt);
 
     return res;

@@ -65,8 +65,8 @@ SubmarineActuator::SubmarineActuator(Submarine *agent) {
 
 void SubmarineActuator::doSteering(float dt) {
     //printf("AGENT IS %p %p\n", agent, this->agent);
-    agent->applyTorque(vec3(0.0f, state.rotationChange, 0.0f));
-    agent->applyForce(state.acceleration * agent->getDirection());
+    agent->applyTorque(vec3(0.0f, state.rotationChange * 2.f, 0.0f));
+    agent->applyForce(state.acceleration * 10.f * agent->getDirection());
     agent->applyForce(vec3(0.0f, state.depthChange, 0.0f));
     if(state.fireWeapon) {
         //spawn(agent.weapon.missileType);
@@ -88,7 +88,7 @@ void SubmarineActuator::turnRight() {
     state.rotationChange -= 1;
 }
 void SubmarineActuator::accelerate() {
-    state.acceleration += 1;
+    state.acceleration += 3;
 }
 void SubmarineActuator::fire() {
     state.fireWeapon = true;
