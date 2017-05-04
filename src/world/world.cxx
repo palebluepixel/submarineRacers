@@ -1,5 +1,9 @@
+#include "json/json.hpp"
 #include "world.hxx"
 
+#define SUBID_START (1 << 31)
+
+using json = nlohmann::json;
 
 World::World() 
 {
@@ -181,6 +185,15 @@ int World::handleEventUSERFINISH(HANDLER_PARAMS)
 }
 
 
+quaternion quatFromSTDVec(std::vector<float> v) {
+    return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
+}
+
+vec3 vec3FromSTDVec(std::vector<float> v) {
+    return vec3(v.at(0), v.at(1), v.at(2));
+}
+
+
 int World::loadLevel(int i)
 {
     if(i >= this->levels.size()){
@@ -356,7 +369,7 @@ default. We may eventually want to write a function to load this stuff
 from a .config file instead of having it hard coded here. */
 void World::worldInitalizeDefault(int isServer)
 {
-    this->initalizeSubsDefault();
+    this->initializeSubsDefault();
 
     // set up shaders.
     Shader *shader = new Shader();
@@ -373,7 +386,7 @@ void World::worldInitalizeDefault(int isServer)
     Renderer *r = new UnderwaterRenderer(shader);  
     Renderer *rsky = new SkyboxRenderer(skyboxShader);
 
-    //initalize camera
+    //initialize camera
     Camera *camera = new Camera();
     //position, yaw-roll, up-vector
     camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
@@ -402,15 +415,32 @@ void World::worldInitalizeDefault(int isServer)
 
 }
 
-void World::initalizeSubsDefault()
+void World::initializeSubsDefault()
 {
     int id = 0;
+    int subid = SUBID_START;
+    char *raw = fileio::load_file("../assets/subs/subs0.json");
+    json raw_j = json::parse(raw);
 
-    Submarine * sub1 = new Submarine(6969,vec3(0,0,0), quaternion(), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
-    sub1->mass(2.0);
-    sub1->dragCoef(1.0);
+    std::vector<json> subs = raw_j["submarines"];
 
-    this->addSub(id++, sub1);
+    for (std::vector<json>::const_iterator it = subs.begin() ; it != subs.end(); ++it) {
+        std::vector<float> pos = (*it)["position"];
+        vec3 realpos = vec3FromSTDVec(pos);
+        std::vector<float> orientation = (*it)["orientation"];
+        quat realOrientation = quatFromSTDVec(orientation);
+        std::vector<float col = (*it)["color"];
+        vec3 realcol = vec3FromSTDVec(col);
+        string model_file = (*it)["model"];
+        char *real_mf = strdup(model_file.c_str());
+        string n= (*it)["name"];
+        char *real_name = strdup(n.c_str());
+        float mass = (*it)["mass"];
+        float drag = (*it)["drag"];
+        float tick_interval = (*it)["tick_interval"];
+        Submarine * next = new Submarine(subid++, realpos, realOrientation, real_name, TYPESUB, SPAWNED, tick_interval, realcol, real_mf);
+        this->addSub(id++, next);
+    }
 }
 
 
