@@ -8,7 +8,7 @@ Client::Client(short port, const char*hostname)
     this->port = port;
     this->hostname = strdup(hostname);
 
-    this->nm = new NetworkManager();
+    this->nm = new ClientNetworkManager();
 }
 
 Client::~Client()
@@ -106,6 +106,10 @@ void Client::messageServer(short len, uint8_t *msg)
     this->nm->sendMessage(msg, len);
 }
 
+
+void Client::sendControllerState() {
+    this->nm->sendControllerState();
+}
 
 /* Tell the server to laod the current level */
 void Client::loadLevel(int level)

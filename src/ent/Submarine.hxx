@@ -5,9 +5,17 @@
 
 class Submarine : public Agent {
 public:
-    Submarine(int ID, vec3 initial_position, mat3 initial_orientation, char*name, 
-        EntityType type, EntityStatus status, float tick_interval);
 
+    Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
+        EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein);
+    void switchWeapons(uint8_t weapon);
+
+    void initalizeTextures(const char* texfile);
+    void initalizeVisualData();
+    void initalizeMeshes();
+
+    vec3 color;
+    char *modelfile;
 };
 
 
@@ -30,7 +38,15 @@ class SubmarineActuator : public Actuator {
 public:
     SubmarineActuator(Submarine *agent);
 
-    void doSteering();
+    void doSteering(float dt);
+
+    void rise();
+    void dive();
+    void turnLeft();
+    void turnRight();
+    void accelerate();
+    void fire();
+    void switchWeapons(uint8_t weapon);
    
 protected:
     Submarine *agent;

@@ -2,6 +2,7 @@
 #define _CLIENT_HXX_
 
 #include <network/Connectable.hxx>
+#include "ClientNetworkManager.hxx"
 
 /* Wrapper class for network manager. Stores information about the server
 we are connected to and contains functions for connecting. */
@@ -39,6 +40,7 @@ public:
     /* Takes one message out of the message queue and sends it to
     the network manager's process command */
     int readOneMessage();
+    void sendControllerState();
 
     inline short getPort() { return this->port; }
     inline char* getHost() { return strdup(this->hostname); }
@@ -48,7 +50,7 @@ private:
     char*hostname;
 
     struct hostent * serverInfo;
-    NetworkManager *nm;
+    ClientNetworkManager *nm;
 
 };
 

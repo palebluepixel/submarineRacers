@@ -1,6 +1,5 @@
 #include "ServerNetworkManager.hxx"
 
-
 ServerNetworkManager::ServerNetworkManager(int id)
         : NetworkManager(/*other args*/) {
     this->id = id;
@@ -11,13 +10,12 @@ ServerNetworkManager::ServerNetworkManager(int id)
 void ServerNetworkManager::bindToSub(Submarine *sub)
 {
     this->sub = sub;
-    //this->actuator = sub->getActuator();
+    this->actuator = (SubmarineActuator *)sub->getActuator();
+    printf("TEST12222222222 %p", sub);
+    printf("TEST12222222222 %p", this->actuator);
 }
 
 void sendWorldDeltas(/*TODO: args?*/) {
     //TODO
 }
 
-void ServerNetworkManager::controllerStateCommand(short len, char* message) {
-    //TODO
-}

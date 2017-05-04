@@ -47,5 +47,10 @@ Will print at any log level <= priority.
 				printf("\n"); \
 			} while(0)
 
+#define logvec3(priority, v, s) \
+			if(loglevel_GLOBAL <= priority) { \
+				printf("%s %f %f %f\n", s, v[0], v[1], v[2]);  \
+			} while(0)
+
 
 #endif //!_LOG_HXX_

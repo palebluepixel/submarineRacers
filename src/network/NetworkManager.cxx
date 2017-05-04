@@ -5,11 +5,11 @@
 class World;
 extern World* world; //global 
 
-
-handler NetworkManager::table[9] = {{ CODE_PING,          &NetworkManager::pingCommand }, 
+handler NetworkManager::table[10] = {{ CODE_PING,         &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },
                                     { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand },
+                                    { CODE_CONTROLLER,    &NetworkManager::controllerStateCommand },
                                     { CODE_LEVEL_SELECT,  &NetworkManager::levelSelectCommand },
                                     { CODE_LOAD_LEVEL,    &NetworkManager::levelLoadCommand },
                                     { CODE_LEVEL_LOADED,  &NetworkManager::levelLoadedCommand },
@@ -25,11 +25,11 @@ void NetworkManager::sendMessage(uint8_t* mes, int len)
     struct sockaddr_in targetAddr = this->getTargetAddr();
     int sock = this->getTargetSocket();
 
-    /*logln(LOGMEDIUM, "\nSending message: (length: %d)\nTo: %s at port on socket %d\n", len,
+    /*log(LOGMEDIUM, "\nSending message: (length: %d)\nTo: %s at port on socket %d\n", len,
         inet_ntoa(targetAddr.sin_addr), sock);
-    logPrintBuf(LOGMEDIUM, mes, len);*/
+    logPrintBuf(LOGMEDIUM, message, len);*/
     int bytesSent = sendto(sock, mes, len, 0, (struct sockaddr*)&targetAddr, sizeof(struct sockaddr_in));
-    //logln(LOGMEDIUM, "Sent %d bytes\n\n", bytesSent);
+    //log(LOGMEDIUM, "Sent %d bytes\n\n", bytesSent);
 }
 
 
@@ -170,4 +170,39 @@ void NetworkManager::objectChangeCommand(COMMAND_PARAMS)
     world->setEntData(msg);
     free(msg);
 
+}
+
+void NetworkManager::controllerStateCommand(COMMAND_PARAMS) {
+    if(world->isClient())
+        return;
+    SubmarineActuator *actuator = ((ServerNetworkManager*)this)->actuator;
+
+    ControllerState state;
+    memcpy(&state, mes, len);
+    //state->moude = ntoh(state->mouse)
+
+    if(state.switchWeaponsKey != 0) {
+        actuator->switchWeapons(state.switchWeaponsKey);
+    }
+
+    if(state.riseKey) {
+        actuator->rise();
+    }
+    if(state.diveKey) {
+        actuator->dive();
+    }
+
+    if(state.leftKey && !state.rightKey) {
+        actuator->turnLeft();
+    }
+    if(state.rightKey && !state.leftKey) {
+        actuator->turnRight();
+    }
+
+    if(state.forwardKey) {
+        actuator->accelerate();
+    }
+    if(state.fireKey) {
+        actuator->fire();
+    }
 }

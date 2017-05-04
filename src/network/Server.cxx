@@ -1,4 +1,7 @@
 #include "Server.hxx"
+#include <world/world.hxx>
+
+extern World* world;
 
 Server::Server(){}
 
@@ -209,6 +212,12 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
 
     uint8_t ar[4] = { '\0', '\0', '\0', '\0' };
     messageClient(client, 4, ar);
+
+    /* THIS OBVIOUSLY NEEDS TO BE MADE MORE COMPLEX */
+    /* We could have a player struct created when the client is created that
+    handles all in-level player things, like which submarine, laps completed,
+    checkpoints completed, etc */
+    client->bindToSub((Submarine*)world->getSub(0));
 
     return client;
 }

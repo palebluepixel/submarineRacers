@@ -83,12 +83,20 @@ Entity *entityFromJSON(int id, json j) {
     return retVal;
 }
 
+/* Checks if the entity should be deleted on world unload. Some things, like
+submarines, stick around across levels. */
+int Level::shouldDeleteOnUnload(Entity *entity)
+{
+    return !(entity->getEntityType() == TYPESUB);
+}
+
 /* Release all memeory associated with this level */
 void Level::unload()
 {
     for(auto ent : this->entities){
         //logln(LOGMEDIUM, "removing entity %d", ent.second->getID());
-        delete(ent.second);
+        if(this->shouldDeleteOnUnload(ent.second))
+            delete(ent.second);
     }
 }
 
@@ -111,7 +119,7 @@ void Level::buildLevelFromFile() {
         ++it;
     }
     // todo: remove this. 
-    Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
+    Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     addEntity(cave);
 
      //create skybox
@@ -129,13 +137,17 @@ void Level::buildDemoLevel()
     vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 4, i;
     Entity * cubes[ncubes];
-    cubes[0] = new Gadget(0,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
+
+    int cur_id = 0;
+
+    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
     cubes[0]->setVolume(new CylinderVolume(vec3(0,0,0),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
     cubes[0]->meshes.push_back(cubes[0]->getVolume()->collisionMesh());
     cubes[0]->setVelocity(vec3(0,-1.5f,0));
     cubes[0]->setMass(1.f);
+
     for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(i,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
         cubes[i]->setVolume(new SphereVolume(vec3(0,0,0),1.414));
         cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         cubes[i]->setVelocity(vec3());
@@ -145,11 +157,11 @@ void Level::buildDemoLevel()
     for(i=0; i<ncubes; i++)
     	this->addEntity(cubes[i]);
 
-    Entity *cave = new Terrain(ncubes, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f));
+    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/lap_2.hmp");
     addEntity(cave);
 
     //create skybox
-    Gadget *skybox = new Gadget(ncubes+1,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Gadget *skybox = new Gadget(cur_id++,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
 
     //logln(LOGHIGH,"built level.");
@@ -281,7 +293,9 @@ void Level::renderSkybox(View *view, Renderer *r)
 
 void Level::updateLevel(float dt) {
     updateAIs(dt);
+    //printf("Done updating AIs");
     physicsTick(dt);
+    //printf("Done updating level\n");
 }
 void Level::interpolateLevel(float dt) {
     physicsTick(dt);
@@ -389,4 +403,12 @@ void Level::handleCollisions(float dt) {
         processed[en1.first] = true;
     }
 }
+
+/*void Level::updateEntities(float dt) {
+    for(std::pair<int, Entity *> en : entities) {
+        //printf("%d %p\n", en.first, en.second);
+        en.second->onTick(dt);
+    
+    }
+}*/
 

@@ -87,7 +87,7 @@ public:
     If isServer==1, then we initalize the world as a server, otherwise, as 
     a client. */
     void worldInitalizeDefault(int isServer);
-
+    void initalizeSubsDefault();
 
     //dispacth function for event handlers
     int handleEvent(EventType t, HANDLER_PARAMS);
@@ -147,6 +147,10 @@ public:
 
     inline Level * getLevel() { return this->curLevel; }
     inline void setLevel(Level * level) { this->curLevel = level; }
+
+    void addSub(int id, Submarine *sub);
+    Submarine * getSub(int id);
+    void addSubsToLevel();
 
     //server
     inline void setIsServer(int t) { this->isServ = t; }
@@ -208,6 +212,9 @@ private:
     /* A vector of filenames for levels. Whenever we load a level, we build it from scratch from the file. */
     vector<const char*> levels;
     Level * curLevel;
+
+    /* All playable submarines which are currently in the world. These will be bound to clients */
+    map<int, Submarine *> subs;
 
     //Players
     //Player ** players; 

@@ -85,4 +85,23 @@ posUpBuf *getPosUpBuf(uint8_t*msg);
 posUpBuf *createPosUpBuf(Entity *ent);
 message *createPosUpMsg(Entity *ent);
 
+
+
+
+struct ControllerState {
+    uint8_t switchWeaponsKey;   // 0 for nothing pressed, n for weapon n
+    bool riseKey;
+    bool diveKey;
+    bool leftKey;
+    bool rightKey;
+    bool forwardKey;
+    bool reverseKey;
+    bool fireKey;
+    bool secondaryKey;
+    bool sonarKey;
+    //TODO mouse data
+};
+
+
+
 #endif //!_MESSAGE_PROTOCOLS_H_

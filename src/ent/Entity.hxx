@@ -6,6 +6,7 @@
 #include <physics/Volume.hxx>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
@@ -15,17 +16,19 @@
 
 using namespace glm;
 using namespace Space;
+using namespace std;
 
 
 //not sure if we want this here
 enum EntityType {
     TYPE1=0,
     TYPE2,
-    TYPE3
+    TYPE3,
     //torpedo,
     //mine,
     //boost,
     //etc
+    TYPESUB //These don't get deleted when the world is free'd
 };
 
 //can be used to "turn an object off" or delay placing it in the world
@@ -55,6 +58,7 @@ public:
     std::string  getName();
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
+    EntityType   getEntityType(); 
 
     vec3         setPosition(vec3 pos);
     quaternion   setOrientation(quaternion ori);
@@ -72,6 +76,9 @@ public:
     float        mass();
     float        mass(float in);
 
+    float        dragCoef();
+    void         dragCoef(float in);
+
     quaternion   getOrientation();
     vec3         getVelocity();
     int          getID();
@@ -85,6 +92,8 @@ public:
     inline bool  isMovable()          { return this->movable;          }
     inline bool  isShouldSendUpdate() { return this->shouldSendUpdate; }
 
+    vec3 getDirection();    // Get forward direction vector from orientation
+
     /**     networking:     **/
     virtual int overwrite(vec3 pos, quaternion ori, vec3 vel);    //overwrite client data with server
     virtual int overwrite(posUpBuf *msg);
@@ -92,8 +101,9 @@ public:
     
     /**     physics:        **/
     virtual int onTick(float dt);
+    virtual vec3 getDrag();
     void applyForce(vec3 force);
-    void applyTorque(quaternion torque);
+    void applyTorque(vec3 torque);
     void updatePhysicsVolume();
 
     /**     game state:     **/
@@ -113,10 +123,10 @@ protected:
 
     vec3 velocity; // Used for interpolation
 
-    quaternion angular_velocity;
+    vec3 angular_velocity;
 
     float _mass;
-    float dragCoef; //
+    float _dragCoef; //
 
     int id;
     std::string name;
@@ -135,13 +145,14 @@ protected:
 
     virtual void initalizeMeshes()=0;
 
+    std::string texfile;
     texture2d *tex;
     image2d *img;
     virtual void initalizeTextures(const char* texfile)=0;
 
     //per tick quantities
     vec3 forces;    // Sum of all forces on this object
-    //vec3 torques; //What should torques be? Do we even want torques // Sum of all torques on this object
+    vec3 torques; // Sum of all torques on this object
 
     /* Generates a unique ID for this object. */
     int assignNewID();

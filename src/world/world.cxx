@@ -199,8 +199,12 @@ int World::loadLevel(int i)
     if(!(oldLevel==NULL))
         delete(oldLevel);
 
-    // For now, tether our camera to the first entity.
-    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(1));
+    /* Add submarine entities */
+    this->addSubsToLevel();
+
+    // For now, tether our camera to the hard-coded sub
+    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(6969));
+    logln(LOGMEDIUM, "Loading level %d completed.", i);
 }
 
 void World::addLevel(const char*path)
@@ -214,6 +218,31 @@ void World::addAllLevels(vector<const char*> levels)
         this->levels.push_back(level);
     }
 }
+
+
+void World::addSub(int id, Submarine *sub)
+{
+    printf("Adding sub %d %p\n", id, sub);
+    this->subs.insert(make_pair(id, sub));
+}
+
+Submarine * World::getSub(int id)
+{
+    return this->subs[id];
+}
+
+void World::addSubsToLevel()
+{
+    if(!this->curLevel) return;
+    printf("Adding subs to level %p\n", this->curLevel);
+
+    for (auto pair : subs){
+        printf("%d %d %p\n", pair.first, pair.second->getID(), pair.second);
+        curLevel->addEntity(pair.second);
+    }
+    printf("finsihed adding subs\n");
+}
+
 
 
 /* Handle one tick of the graphics clock (that is, render the game) */
@@ -279,6 +308,7 @@ void World::handleNetworksTickServer(float t, float dt, int mmax)
 void World::handleNetworksTickClient(float t, float dt, int mmax)
 {
     this->getClient()->ReadMessages(mmax);
+    this->getClient()->sendControllerState();
 }
 
 /* Handle one tick of the physics system. If we are a server, we handle
@@ -326,6 +356,8 @@ default. We may eventually want to write a function to load this stuff
 from a .config file instead of having it hard coded here. */
 void World::worldInitalizeDefault(int isServer)
 {
+    this->initalizeSubsDefault();
+
     // set up shaders.
     Shader *shader = new Shader();
     shader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/lightshader.vert"));
@@ -368,6 +400,17 @@ void World::worldInitalizeDefault(int isServer)
     this->setEntityRenderer(r);
     this->setSkyboxRenderer(rsky);
 
+}
+
+void World::initalizeSubsDefault()
+{
+    int id = 0;
+
+    Submarine * sub1 = new Submarine(6969,vec3(0,0,0), quaternion(), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
+    sub1->mass(2.0);
+    sub1->dragCoef(1.0);
+
+    this->addSub(id++, sub1);
 }
 
 
