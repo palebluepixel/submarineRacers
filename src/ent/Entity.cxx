@@ -1,4 +1,6 @@
 #include "Entity.hxx"
+#include <cmath>
+#include <util/log.hxx>
 
 using namespace glm;
 
@@ -20,6 +22,8 @@ Entity::Entity(vec3 initial_position, tquat<float> initial_orientation, char*nam
     //this->angular_velocity
     this->forces = glm::vec3(0, 0, 0);
     //this.>torques
+    this->mass = 1;
+    this->dragCoef = 0.1;
 
     this->drawable = 1;
 
@@ -47,7 +51,7 @@ vec3 Entity::getPosition(){
 }
 
 vec3 Entity::setVelocity(vec3 vel) {
-    //this->shouldSendUpdate = 1;
+    this->shouldSendUpdate = 1;
     vec3 old = this->velocity;
     this->velocity = vel;
     return old;
@@ -55,7 +59,7 @@ vec3 Entity::setVelocity(vec3 vel) {
 
 tquat<float> Entity::setOrientation(tquat<float> ori)
 {
-    //this->shouldSendUpdate = 1;
+    this->shouldSendUpdate = 1;
     tquat<float> old = this->orientation;
     this->orientation = ori;
     return old;
@@ -131,19 +135,20 @@ int Entity::onTick(float dt){
     // Apply Forces
     vec3 acceleration = forces / mass;
 
-    position += (velocity + acceleration * (dt/2)) * dt;
-    velocity += acceleration * dt;
+    this->setPosition(position + (velocity + acceleration * (dt/2)) * dt);
+    this->setVelocity(velocity + acceleration * dt);
 
     // Apply rotations
     vec3 angular_accel = torques / mass;
 
     vec3 rot_vec = (this->angular_velocity + angular_accel * (dt/2)) * dt;
-    float rot_vec_len = length(rot_vec);
 
-    angular_velocity += angular_accel * dt;
-    
-    quaternion rotation = angleAxis(rot_vec_len, rot_vec / rot_vec_len);
-    orientation = rotation * initial_orientation; //Order matters!
+    float rot_vec_len = length(rot_vec);
+    if(rot_vec_len != 0){
+        angular_velocity += angular_accel * dt;
+        quaternion rotation = angleAxis(rot_vec_len, rot_vec / rot_vec_len);
+        this->setOrientation(rotation * this->orientation); //Order matters!
+    }
 
     // Reset
     forces = glm::vec3(0, 0, 0);
@@ -166,23 +171,12 @@ EntityStatus Entity::spawn(){
 }
 
 mat4 Entity::modelMatrix(){
-    // orientation = glm::rotate(orientation,3.14f/16.f,vec3(1.f,1.f,1.f));
-    // printf("quat: %f,%f,%f,%f\n",orientation[0],orientation[1],orientation[2],orientation[3]);
     mat4 model = mat4_cast(orientation);
     model[3][0] += this->position[0];
     model[3][1] += this->position[1];
     model[3][2] += this->position[2];
     model[3][3] = 1.0;
 
-    // for(int i=0;i<4;i++){
-    //     printf("%f,%f,%f,%f\n",model[0][0],model[0][1],model[0][2],model[0][3]);
-    // }
-    // printf("\n");
-    //TODO: rotation
-
-    // model[0][3] = 0;
-    // model[1][3] = 0;
-    // model[2][3] = 0;
     return model;
 }
 
@@ -194,6 +188,9 @@ void Entity::drawEntity(){
 }
 
 void Entity::applyForce(vec3 force) {
+    if(isnan(force[0]) || isnan(force[1]) || isnan(force[2])){
+        return;
+    }
     forces += force;
 }
 
@@ -208,5 +205,5 @@ void Entity::applyTorque(vec3 torque) {
 }
 
 vec3 Entity::getDirection() {
-    return orientation * glm::vec3(1, 0, 0);
+    return orientation * glm::vec3(0, 0, 1);
 }

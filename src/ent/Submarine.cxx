@@ -1,5 +1,6 @@
 #include "Submarine.hxx"
 #include "Actuator.hxx"
+#include <util/log.hxx>
 
 
 Submarine::Submarine(vec3 initial_position, quaternion initial_orientation, char*name, 
@@ -11,8 +12,6 @@ Submarine::Submarine(vec3 initial_position, quaternion initial_orientation, char
     this->initalizeVisualData();
 
     this->actuator = new SubmarineActuator(this);
-    printf("TEST111111111 %p", this);
-    printf("TEST111111111 %p", this->actuator);
 }
 
 void Submarine::switchWeapons(uint8_t weapon) {
@@ -45,9 +44,9 @@ void Submarine::initalizeMeshes()
 
 
 void SubmarineSteeringState::reset() {
-    rotationChange = 0; // + is left
-    depthChange = 0;
-    acceleration = 0;
+    rotationChange = 0.0f; // + is left
+    depthChange = 0.0f;
+    acceleration = 0.0f;
     fireWeapon = false;
 }
 
@@ -58,24 +57,14 @@ SubmarineActuator::SubmarineActuator(Submarine *agent) {
 }
 
 void SubmarineActuator::doSteering(float dt) {
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-    printf("AGENT IS %p %p\n", agent, this->agent);
-    agent->applyTorque(glm::vec3(0, state.rotationChange, 0));
-    printf("steer1\n");
+    //printf("AGENT IS %p %p\n", agent, this->agent);
+    agent->applyTorque(vec3(0.0f, state.rotationChange, 0.0f));
     agent->applyForce(state.acceleration * agent->getDirection());
-    printf("steer2\n");
-    agent->applyForce(glm::vec3(0, state.depthChange, 0));
-    printf("steer3\n");
+    agent->applyForce(vec3(0.0f, state.depthChange, 0.0f));
     if(state.fireWeapon) {
         //spawn(agent.weapon.missileType);
     }
-    printf("steer4\n");
     state.reset();
-    printf("Steering done\n");
 }
 
 
@@ -98,6 +87,5 @@ void SubmarineActuator::fire() {
     state.fireWeapon = true;
 }
 void SubmarineActuator::switchWeapons(uint8_t weapon) {
-    printf("AGENT IS %p \n", this);
     //agent->switchWeapons(weapon);
 }

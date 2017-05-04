@@ -213,7 +213,7 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
     uint8_t ar[4] = { '\0', '\0', '\0', '\0' };
     messageClient(client, 4, ar);
 
-    client->bindToSub((Submarine*)world->getLevel()->getEntityByID(0));
+    client->bindToSub((Submarine*)world->getLevel()->getEntityByID(1));
 
     return client;
 }
