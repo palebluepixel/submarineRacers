@@ -60,8 +60,8 @@ Entity *entityFromJSON(int id, json j) {
     if (movable) {
         float mass = j["mass"];
         retVal->setMass(mass);
-        // float dragCoef = j["dragCoef"];
-        // retVal->dragCoef = dragCoef;
+        float dragCoef = j["dragCoef"];
+        retVal->setPhysicsParams({dragCoef});
         std::vector<float> velocity = j["velocity"];
         retVal->vel(convert::vec3FromSTDVec(velocity));
     }

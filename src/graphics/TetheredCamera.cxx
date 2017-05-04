@@ -36,7 +36,7 @@ vec3 TetheredCamera::sphericalToCartesian(float yaw, float pitch, float r)
 
 }
 
-void TetheredCamera::setYPR(float yaw, float pitch, float roll)
+/*void TetheredCamera::setYPR(float yaw, float pitch, float roll)
 {
 	if(!tether) return;
 	if(this->type == FIRSTPERSON){
@@ -47,7 +47,7 @@ void TetheredCamera::setYPR(float yaw, float pitch, float roll)
 		this->ypr[2] = roll;
 		this->updateYPRLookDir(tether->getPosition() + fixed);
 	}
-}
+}*/
 
 void TetheredCamera::setCameraDistance(float dist)
 {

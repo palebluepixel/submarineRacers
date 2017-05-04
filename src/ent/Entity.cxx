@@ -38,6 +38,10 @@ Entity::~Entity()
 }
 
 
+void Entity::setPhysicsParams(PhysicsParams in){
+    dragCoef(in.dragCoef);
+    logln(LOGLOW,"set %s -> %f",getName().c_str(),dragCoef());
+}
 vec3 Entity::setPosition(vec3 pos){
     // if(pos != this->position)
         //this->shouldSendUpdate = 1;
@@ -178,6 +182,7 @@ int Entity::onTick(float dt){
 
     // Calculate physics forces
     applyForce(getDrag());
+    applyTorque(getDragTorque());
     //Do we want some sort of bouyancy to restrict objects to underwater?
     
     // Apply Forces
@@ -201,6 +206,8 @@ int Entity::onTick(float dt){
         this->setOrientation(rotation * this->orientation); //Order matters!
     }
 
+    // logln(LOGLOW,"%s: %f",getName().c_str(),_dragCoef);
+
     // Reset
     forces = glm::vec3(0, 0, 0);
     torques = glm::vec3(0, 0, 0);
@@ -211,6 +218,13 @@ int Entity::onTick(float dt){
 // Some entites can have more complex drag functions
 vec3 Entity::getDrag() {
     return velocity * length(velocity) * (-_dragCoef);
+}
+
+// Some entites can have more complex drag functions
+vec3 Entity::getDragTorque() {
+    float l = length(angular_velocity);
+    // if(l < 0.01)return vec3();
+    return -10.f * l * angular_velocity;
 }
 
 //change object's status to spawned and place it in its intial position

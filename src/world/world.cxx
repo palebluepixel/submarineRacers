@@ -397,7 +397,8 @@ void World::worldInitalizeDefault(int isServer)
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
     /* Add tethered Camera */
-    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, NULL, vec3(0,3,0));
+    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, NULL, vec3(0.2,2,0));
+    camTeth->setYPR(4.4f, 0.13f, 0.0f);
 
     vec3 oceanColor = vec3(0,70,95) / 256.0;
     vec3 oceanBrightColor = vec3(70,241,245) / 256.0;
