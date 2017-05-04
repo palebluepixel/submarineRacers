@@ -295,8 +295,8 @@ int HeightmapMesh::loadFile(std::string filename){
   }
   if(!err){
     generator = [data,w,h](float x, float z){
-      int xind = (x+0.5f)*w;
-      int zind = (z+0.5f)*h;
+      int xind = (x+0.5)*w;
+      int zind = (z+0.5)*h;
       if(xind<0)xind=0;
       if(xind>=w)xind=w-1;
       if(zind<0)zind=0;
