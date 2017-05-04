@@ -9,6 +9,7 @@ public:
     Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein);
     void switchWeapons(uint8_t weapon);
+    vec3 getDrag();
 
     void initalizeTextures(const char* texfile);
     void initalizeVisualData();

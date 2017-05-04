@@ -2,6 +2,7 @@
 #include "Actuator.hxx"
 #include <util/log.hxx>
 
+#define SUB_AXIS_TEND_MULT 0.2f
 
 Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein) :
@@ -16,6 +17,12 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
 
 void Submarine::switchWeapons(uint8_t weapon) {
     //TODO
+}
+
+vec3 Submarine::getDrag() {
+    vec3 dir = this->getDirection();
+    vec3 axis_tend = (dot(this->velocity , dir) * SUB_AXIS_TEND_MULT) * normalize(dir);
+    return Entity::getDrag() + axis_tend;
 }
 
 void Submarine::initalizeTextures(const char* texfile)
