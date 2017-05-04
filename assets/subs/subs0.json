@@ -3,7 +3,7 @@
         {
             "name": "sub1",
             "position": [0.0, 0.0, 0.0],
-            "orientation": [1, 0, 0, 0],
+            "orientation": [1.74, 0, -1, 0],
             "tick-interval": 0.1,
             "color": [1.0, 1.0, 1.0],
             "model": "../assets/models/sub_3.obj",
