@@ -222,7 +222,6 @@ void World::addAllLevels(vector<const char*> levels)
 
 void World::addSub(int id, Submarine *sub)
 {
-    printf("Adding sub %d %p\n", id, sub);
     this->subs.insert(make_pair(id, sub));
 }
 
@@ -234,13 +233,10 @@ Submarine * World::getSub(int id)
 void World::addSubsToLevel()
 {
     if(!this->curLevel) return;
-    printf("Adding subs to level %p\n", this->curLevel);
 
     for (auto pair : subs){
-        printf("%d %d %p\n", pair.first, pair.second->getID(), pair.second);
         curLevel->addEntity(pair.second);
     }
-    printf("finsihed adding subs\n");
 }
 
 
@@ -409,7 +405,7 @@ void World::initalizeSubsDefault()
 
     Submarine * sub1 = new Submarine(6969,vec3(0,-26,38), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
     sub1->mass(2.0);
-    sub1->dragCoef(1.0);
+    sub1->dragCoef(0.2);
 
     this->addSub(id++, sub1);
 }
