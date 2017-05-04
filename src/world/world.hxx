@@ -84,10 +84,10 @@ public:
     /* Create all renderers, views, cameras, etc for the world, based off a 
     default. We may eventually want to write a function to load this stuff
     from a .config file instead of having it hard coded here. 
-    If isServer==1, then we initalize the world as a server, otherwise, as 
+    If isServer==1, then we initialize the world as a server, otherwise, as 
     a client. */
     void worldInitalizeDefault(int isServer);
-    void initalizeSubsDefault();
+    void initializeSubsDefault();
 
     //dispacth function for event handlers
     int handleEvent(EventType t, HANDLER_PARAMS);

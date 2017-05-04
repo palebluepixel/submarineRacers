@@ -1,5 +1,7 @@
-#include "json/json.hpp"
+#include <json/json.hpp>
 #include "world.hxx"
+#include <util/file.hxx>
+#include <util/conversion.hxx>
 
 #define SUBID_START (1 << 31)
 
@@ -185,13 +187,13 @@ int World::handleEventUSERFINISH(HANDLER_PARAMS)
 }
 
 
-quaternion quatFromSTDVec(std::vector<float> v) {
-    return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
-}
-
-vec3 vec3FromSTDVec(std::vector<float> v) {
-    return vec3(v.at(0), v.at(1), v.at(2));
-}
+//quaternion quatFromSTDVec(std::vector<float> v) {
+//    return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
+//}
+//
+//vec3 vec3FromSTDVec(std::vector<float> v) {
+//    return vec3(v.at(0), v.at(1), v.at(2));
+//}
 
 
 int World::loadLevel(int i)
@@ -218,6 +220,8 @@ int World::loadLevel(int i)
     // For now, tether our camera to the hard-coded sub
     this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(6969));
     logln(LOGMEDIUM, "Loading level %d completed.", i);
+
+    return 0;
 }
 
 void World::addLevel(const char*path)
@@ -425,20 +429,23 @@ void World::initializeSubsDefault()
     std::vector<json> subs = raw_j["submarines"];
 
     for (std::vector<json>::const_iterator it = subs.begin() ; it != subs.end(); ++it) {
-        std::vector<float> pos = (*it)["position"];
-        vec3 realpos = vec3FromSTDVec(pos);
-        std::vector<float> orientation = (*it)["orientation"];
-        quat realOrientation = quatFromSTDVec(orientation);
-        std::vector<float col = (*it)["color"];
-        vec3 realcol = vec3FromSTDVec(col);
-        string model_file = (*it)["model"];
+        json curSub = *it;
+        std::vector<float> pos = curSub["position"];
+        vec3 realpos = convert::vec3FromSTDVec(pos);
+        std::vector<float> orientation = curSub["orientation"];
+        quat realOrientation = convert::quatFromSTDVec(orientation);
+        std::vector<float> col = curSub["color"];
+        vec3 realcol = convert::vec3FromSTDVec(col);
+        string model_file = curSub["model"];
         char *real_mf = strdup(model_file.c_str());
-        string n= (*it)["name"];
+        string n= curSub["name"];
         char *real_name = strdup(n.c_str());
-        float mass = (*it)["mass"];
-        float drag = (*it)["drag"];
-        float tick_interval = (*it)["tick_interval"];
+        float mass = curSub["mass"];
+        float drag = curSub["drag"];
+        float tick_interval = curSub["tick-interval"];
         Submarine * next = new Submarine(subid++, realpos, realOrientation, real_name, TYPESUB, SPAWNED, tick_interval, realcol, real_mf);
+        next->setMass(mass);
+        next->dragCoef(drag);
         this->addSub(id++, next);
     }
 }
