@@ -30,8 +30,11 @@ public:
     Level(const char *path);
     ~Level();
 
-    /* Release all memory used by this level. Right now this causes seg faults LOL */
+    /* Release all memory used by this level.*/
     void unload();
+    /* Checks if the entity should be deleted on world unload. Some things, like
+    submarines, stick around across levels. */
+    int shouldDeleteOnUnload(Entity *entity);
 
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();

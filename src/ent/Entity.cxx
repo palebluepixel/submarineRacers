@@ -107,6 +107,11 @@ EntityType Entity::setEntityType(EntityType type){
     return old;
 }
 
+EntityType Entity::getEntityType()
+{
+    return this->type;
+}
+
 int Entity::setID(int id){
     int old = this->id;
     this->id = id;

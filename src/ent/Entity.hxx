@@ -23,11 +23,12 @@ using namespace std;
 enum EntityType {
     TYPE1=0,
     TYPE2,
-    TYPE3
+    TYPE3,
     //torpedo,
     //mine,
     //boost,
     //etc
+    TYPESUB //These don't get deleted when the world is free'd
 };
 
 //can be used to "turn an object off" or delay placing it in the world
@@ -57,6 +58,7 @@ public:
     std::string  getName();
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
+    EntityType   getEntityType(); 
 
     vec3         setPosition(vec3 pos);
     quaternion   setOrientation(quaternion ori);

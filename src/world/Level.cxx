@@ -83,12 +83,20 @@ Entity *entityFromJSON(int id, json j) {
     return retVal;
 }
 
+/* Checks if the entity should be deleted on world unload. Some things, like
+submarines, stick around across levels. */
+int Level::shouldDeleteOnUnload(Entity *entity)
+{
+    return !(entity->getEntityType() == TYPESUB);
+}
+
 /* Release all memeory associated with this level */
 void Level::unload()
 {
     for(auto ent : this->entities){
         //logln(LOGMEDIUM, "removing entity %d", ent.second->getID());
-        delete(ent.second);
+        if(this->shouldDeleteOnUnload(ent.second))
+            delete(ent.second);
     }
 }
 
@@ -131,11 +139,6 @@ void Level::buildDemoLevel()
     Entity * cubes[ncubes];
 
     int cur_id = 0;
-
-    Submarine * sub = new Submarine(cur_id++,vec3(0,0,0), quaternion(), strdup("sub1"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
-    sub->mass(2.0);
-    sub->dragCoef(1.0);
-    this->addEntity(sub);
 
     cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
     cubes[0]->setVolume(new CylinderVolume(vec3(0,0,0),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
