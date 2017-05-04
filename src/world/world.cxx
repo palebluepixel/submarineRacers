@@ -380,7 +380,8 @@ void World::worldInitalizeDefault(int isServer)
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
     /* Add tethered Camera */
-    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, NULL, vec3(0,3,0));
+    TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, NULL, vec3(0.2,2,0));
+    camTeth->setYPR(4.4f, 0.13f, 0.0f);
 
     vec3 oceanColor = vec3(0,70,95) / 256.0;
     vec3 oceanBrightColor = vec3(70,241,245) / 256.0;
@@ -406,7 +407,7 @@ void World::initalizeSubsDefault()
 {
     int id = 0;
 
-    Submarine * sub1 = new Submarine(6969,vec3(0,0,0), quaternion(), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
+    Submarine * sub1 = new Submarine(6969,vec3(0,-26,38), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
     sub1->mass(2.0);
     sub1->dragCoef(1.0);
 
