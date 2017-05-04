@@ -2,7 +2,7 @@
     "submarines": [
         {
             "name": "sub1",
-            "position": [0.0, 0.0, 0.0],
+            "position": [0, -26, 38],
             "orientation": [1.74, 0, -1, 0],
             "tick-interval": 0.1,
             "color": [1.0, 1.0, 1.0],
