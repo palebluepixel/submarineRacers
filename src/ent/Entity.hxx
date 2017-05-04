@@ -53,6 +53,10 @@ public:
 
     EntityStatus status;
 
+    struct PhysicsParams{
+        float dragCoef;
+    };
+
 public:
     std::string  setName(std::string name);
     std::string  getName();
@@ -66,6 +70,8 @@ public:
     float        setMass(float newmass);
 
     vec3         getPosition();
+
+    void         setPhysicsParams(PhysicsParams in);
 
     vec3         pos();
     vec3         pos(vec3 in);
@@ -102,6 +108,7 @@ public:
     /**     physics:        **/
     virtual int onTick(float dt);
     virtual vec3 getDrag();
+    virtual vec3 getDragTorque();
     void applyForce(vec3 force);
     void applyTorque(vec3 torque);
     void updatePhysicsVolume();
