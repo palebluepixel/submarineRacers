@@ -5,7 +5,8 @@
 
 class Submarine : public Agent {
 public:
-    Submarine(vec3 initial_position, quaternion initial_orientation, char*name, 
+
+    Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein);
     void switchWeapons(uint8_t weapon);
 

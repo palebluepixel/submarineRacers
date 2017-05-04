@@ -8,13 +8,14 @@
 #include <glm/gtx/string_cast.hpp>
 #include <stdio.h>
 #include <iostream>
+#include <vector>
 #include <graphics/texture.hxx>
 
 using namespace glm;
 
 //! the information needed to render a mesh
-struct Mesh {
-
+class Mesh {
+public:
     struct {
       GLuint vaoId;
       GLuint vbufId; //vertices
@@ -65,10 +66,44 @@ struct Mesh {
 
 };
 
-struct TransformedMesh{
-  TransformedMesh(Mesh *mesh);
-  Mesh *mesh;
-  mat4 transform;
+class HeightmapMesh : public Mesh{
+public:
+  HeightmapMesh();
+  void init(int w, int h, vec3 scale, float texscalex, float texscaley);
+  int loadDefaultGenerator();
+  int loadFile(std::string filename);
+  void loadFileOBJ(char *file);
+  void setGenerator(std::function<float(float,float)> in);
+
+  inline int getWidth() { return this->width; }
+  inline int getHeight() { return this->height; } 
+
+private:
+  std::function<float(float,float)> generator;
+  int width, height;
+};
+
+class TransformedMesh{
+public:
+  class MeshInfo{
+  public:
+    MeshInfo(Mesh *m, mat4 transform);
+    Mesh *mesh;
+    mat4 transform;
+    // additional rendering information
+    //  ....
+    ///
+  };
+public:
+  TransformedMesh(MeshInfo mesh);
+  std::vector<MeshInfo> meshes;
+
+
 };
 
 #endif // !_MESH_HXX_
+
+
+// a Mesh is a low-level aggregate of polygons.
+// a TransformedMesh is a Mesh coupled with transformation/rendering information (eg. mvp, back-face culling, shader effects)
+// a Model is a collection of TransformedMeshes

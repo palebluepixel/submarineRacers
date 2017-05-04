@@ -105,6 +105,11 @@ public:
                     this->oc.surfaceDepth = tdepth; this->oc.floorDepth = bdepth;}
 
 
+    //First and third person tethered cameras
+    inline void setFirstPersonCam(TetheredCamera *t) { this->firstp = t; }
+    inline void setThirdPersonCam(TetheredCamera *t) { this->thirdp = t; }
+    inline TetheredCamera *getFirstPersonCam() { return this->firstp; }
+    inline TetheredCamera *getThirdPersonCam() { return this->thirdp; }
 
 private:    
     GLFWwindow *win;
@@ -113,6 +118,10 @@ private:
     int nCameras;
     int maxCameras;
     int activeCamerai;
+
+    /* Pointers into our cameras array, used for quick access*/
+    TetheredCamera *firstp;
+    TetheredCamera *thirdp;
 
     int wid, ht; //window dimensions
     float aspect;

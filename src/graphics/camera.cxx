@@ -16,7 +16,7 @@ Camera::Camera ()
 void Camera::init(vec3 pos, vec3 ypr, vec3 up)
 {
     this->_pos = pos;
-    this->setYPR(ypr[0], ypr[1], ypr[2]);
+    this->setYPR(ypr.x,ypr.y,ypr.z);
     this->_up = up;
 
     this->setFOV(DEFAULTFOV);
@@ -179,6 +179,20 @@ void Camera::updateLookDirYPR(float yaw, float pitch, float roll)
 {
     vec3 lookAtPoint = vec3(cos(pitch)*sin(yaw), sin(pitch), cos(pitch)*cos(yaw));
     this->_dir = this->_pos+lookAtPoint;
+}
+
+/* Caclulate the YP for the given look point and set our YP */
+void Camera::updateYPRLookDir(vec3 lookPoint)
+{
+    float x = lookPoint[0];
+    float y = lookPoint[1];
+    float z = lookPoint[2];
+    vec3 lookVec = lookPoint-this->_pos;
+    vec3 ypr = vec3(atan(y/z), 
+                    atan(sqrt(x*x+y*y)/z),
+                    this->ypr[2]);
+    this->_dir = lookPoint;
+    this->ypr = ypr;
 }
 
 void Camera::setYPR(float yaw, float pitch, float roll){

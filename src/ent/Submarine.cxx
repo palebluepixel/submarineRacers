@@ -3,9 +3,9 @@
 #include <util/log.hxx>
 
 
-Submarine::Submarine(vec3 initial_position, quaternion initial_orientation, char*name, 
+Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein) :
-	Agent(initial_position, initial_orientation, name, type, status, tick_interval) {
+	Agent(ID, initial_position, initial_orientation, name, type, status, tick_interval) {
 	
     this->color = color;
     this->modelfile = modelfilein;
@@ -39,7 +39,7 @@ void Submarine::initalizeMeshes()
     mesh->loadOBJ(modelfile);
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
-    meshes.push_back(TransformedMesh(mesh));
+    meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh, mat4())));
 }
 
 

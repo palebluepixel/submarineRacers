@@ -23,25 +23,19 @@ void Renderer::enable (){
   _shader->use();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glEnable (GL_DEPTH_TEST);
-
-  // glEnable(GL_BLEND);
-  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // glEnable(GL_CULL_FACE);
-  // glCullFace(GL_BACK);
 }
 
-void Renderer::render(){
-  // do nothing.
-}
+void Renderer::render(){ }
 
 /* Given an entity, render each of its meshes */
 void Renderer::render(View *view, Entity *entity){
   mat4 modelMatrix = entity->modelMatrix();
-
   for (auto mesh : entity->getMeshes()){
-    if(mesh.mesh != NULL){
-      setUniform(modelLoc, modelMatrix * mesh.transform);
-      this->render(view, mesh);
+    for (auto meshinfo : mesh.meshes){
+      if(meshinfo.mesh != NULL){
+        setUniform(modelLoc, modelMatrix * meshinfo.transform);
+        this->render(view, meshinfo);
+      }
     }
   }
 }
@@ -55,14 +49,15 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
-void FlatShadingRenderer::render (View *view, TransformedMesh mesh)
-{
+void FlatShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh) {
 
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
+
+  // todo: this function DOES NOT RENDER CORRECTLY
   setUniform(colorLoc, mesh.mesh->data.color);
   mesh.mesh->draw();
 
@@ -73,8 +68,7 @@ void FlatShadingRenderer::render (View *view, TransformedMesh mesh)
 /*==================== class SunlightShadingRenderer member functions======================*/
 
 SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
-    : Renderer (sh)
-{ 
+    : Renderer (sh) { 
   lightDirLoc = _shader->getUniformLocation("lightDir");
   lightIntenLoc = _shader->getUniformLocation("lightInten");
   lightAmbLoc = _shader->getUniformLocation("lightAmb");
@@ -88,11 +82,9 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
   texSamplerLoc = _shader->getUniformLocation("texSampler");
 }
 
-SunlightShadingRenderer::~SunlightShadingRenderer()
-{ }
+SunlightShadingRenderer::~SunlightShadingRenderer() { }
 
-void SunlightShadingRenderer::render (View *view, TransformedMesh mesh)
-{
+void SunlightShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -107,6 +99,7 @@ void SunlightShadingRenderer::render (View *view, TransformedMesh mesh)
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
 
+  // todo: THIS FUNCTION DOES NOT TRANSFORM OBJECTS CORRECTLY
   setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
   texture2d *tex = mesh.mesh->data.tex;
   if(tex){
@@ -154,7 +147,7 @@ void UnderwaterRenderer::enable (){
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 }
-void UnderwaterRenderer::render(View *view, TransformedMesh mesh){
+void UnderwaterRenderer::render(View *view, TransformedMesh::MeshInfo mesh){
 
   if(!mesh.mesh->data.visible){
     return;
@@ -184,14 +177,14 @@ void UnderwaterRenderer::render(View *view, TransformedMesh mesh){
   setUniform(surfaceDepthLoc, oc.surfaceDepth);
   setUniform(floorDepthLoc, oc.floorDepth);
 
-  setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
+  setUniform(shouldTextureLoc, 1);
   texture2d *tex = mesh.mesh->data.tex;
   if(tex){
     tex->Bind();
     tex->Parameter(GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
     tex->Parameter(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
   }
-  setUniform(texSamplerLoc, 0);
+  // setUniform(texSamplerLoc, 0);
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
@@ -232,7 +225,7 @@ void SkyboxRenderer::enable (){
 }
 
 
-void SkyboxRenderer::render (View *view, TransformedMesh mesh){
+void SkyboxRenderer::render (View *view, TransformedMesh::MeshInfo mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 

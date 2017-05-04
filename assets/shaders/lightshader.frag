@@ -40,7 +40,7 @@ void main(){
 
     // Texture
     if(shouldTexture!=0){
-        colorLight = texture(texSampler, fragmentTexCoord);
+        colorLight = texture(texSampler, fragmentTexCoord) * color;
     } else {
         colorLight = color;
     }

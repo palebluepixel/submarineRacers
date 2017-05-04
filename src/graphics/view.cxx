@@ -35,7 +35,7 @@ void View::addCamera(Camera *cam)
 void View::nextCamera()
 {
     this->activeCamerai = (this->activeCamerai + 1) % this->nCameras;
-    log(LOGMEDIUM, "current camera: %d out of %d\n", this->activeCamerai, this->nCameras);
+    logln(LOGMEDIUM, "current camera: %d out of %d\n", this->activeCamerai, this->nCameras);
 }
 
 void View::switchCamera(int cami)

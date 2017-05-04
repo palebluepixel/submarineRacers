@@ -1,20 +1,22 @@
 #ifndef _ENTITY_HXX_
 #define _ENTITY_HXX_
 
-
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <physics/Volume.hxx>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
+// #include <physics/PhysicsEngine.hxx>
 #include <vector>
 #include <network/MessageProtocols.hxx>
 
 using namespace glm;
 using namespace Space;
+using namespace std;
 
 
 //not sure if we want this here
@@ -40,27 +42,48 @@ typedef glm::tquat<float> quaternion;
 
 class Entity {
 
+// friend class PhysicsEngine;
+
 public:
 
-    Entity(vec3 initial_position, quaternion initial_orientation, char*name, 
-        EntityType type, EntityStatus status, float tick_interval);
-    ~Entity();
+    Entity(int ID, vec3 initial_position, quaternion initial_orientation,
+        std::string name, EntityType type, EntityStatus status, float tick_interval);
+    virtual ~Entity();
 
     EntityStatus status;
 
 public:
-    char*        setName(char* name);
+    std::string  setName(std::string name);
+    std::string  getName();
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
 
     vec3         setPosition(vec3 pos);
     quaternion   setOrientation(quaternion ori);
     vec3         setVelocity(vec3 vel);
+    float        setMass(float newmass);
 
     vec3         getPosition();
+
+    vec3         pos();
+    vec3         pos(vec3 in);
+
+    vec3         vel();
+    vec3         vel(vec3 in);
+
+    float        mass();
+    float        mass(float in);
+
+    float        dragCoef();
+    void         dragCoef(float in);
+
     quaternion   getOrientation();
     vec3         getVelocity();
     int          getID();
+    float        getMass();
+
+    void         setVolume(Volume *vol);
+    Volume*      getVolume();
 
     inline bool  isCollidable()       { return this->collidable;       }
     inline bool  isDrawable()         { return this->drawable;         }
@@ -79,37 +102,32 @@ public:
     virtual vec3 getDrag();
     void applyForce(vec3 force);
     void applyTorque(vec3 torque);
+    void updatePhysicsVolume();
 
     /**     game state:     **/
     virtual EntityStatus spawn();     // set status to spawned, place in intial position
 
     /**     graphics:       **/
     mat4 modelMatrix();           // return transform matrix TO world space.
-    void drawEntity();            // render meshes to screen
 
     inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
-public:
-    Volume *volume;
-    quaternion orientation;
     std::vector<TransformedMesh> meshes;
 protected:
+    Volume *volume;
+    quaternion orientation;
     vec3 position;
-    vec3 initial_position;      // we should remove this field.
 
     vec3 velocity; // Used for interpolation
-    vec3 initial_velocity;
-
-    quaternion initial_orientation;
 
     vec3 angular_velocity;
 
-    float mass;
-    float dragCoef;
+    float _mass;
+    float _dragCoef; //
 
     int id;
-    char* name;
+    std::string name;
     EntityType type;
 
     float tick_interval;
@@ -125,6 +143,7 @@ protected:
 
     virtual void initalizeMeshes()=0;
 
+    std::string texfile;
     texture2d *tex;
     image2d *img;
     virtual void initalizeTextures(const char* texfile)=0;

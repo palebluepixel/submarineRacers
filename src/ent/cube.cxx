@@ -1,6 +1,8 @@
+/*
+
 #include "cube.hxx"
 
-Cube::Cube(vec3 initial_position, quaternion initial_orientation, char*name, 
+Cube::Cube(vec3 initial_position, quaternion initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color)
 : Entity(initial_position, initial_orientation, name, type, status, tick_interval)
 {
@@ -54,3 +56,5 @@ void Cube::initalizeMeshes()
         meshes.push_back(mesh);
     }
 }
+
+*/

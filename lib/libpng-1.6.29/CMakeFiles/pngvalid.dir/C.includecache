@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/libtests/pngvalid.c
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/libtests/pngvalid.c
 signal.h
 -
 stdio.h
@@ -18,7 +18,7 @@ fenv.h
 png.h
 -
 ../../png.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/png.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
 zlib.h
 -
 float.h
@@ -32,17 +32,17 @@ math.h
 cexcept.h
 -
 ../visupng/cexcept.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/visupng/cexcept.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/visupng/cexcept.h
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/visupng/cexcept.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/visupng/cexcept.h
 setjmp.h
 -
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/png.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
 pnglibconf.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pnglibconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pnglibconf.h
 pngconf.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pngconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngconf.h
 
 config.h
 

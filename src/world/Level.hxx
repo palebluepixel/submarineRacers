@@ -8,7 +8,7 @@
 #include <ent/gadget.hxx>
 #include <vector>
 #include <unordered_map>
-#include <util/log.hxx>
+//#include <util/log.hxx>
 #include <network/Server.hxx>
 #include <graphics/view.hxx>
 #include <graphics/renderer.hxx>
@@ -27,10 +27,15 @@ class Level {
 
 public:
     Level(); 
+    Level(const char *path);
     ~Level();
+
+    /* Release all memory used by this level. Right now this causes seg faults LOL */
+    void unload();
 
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();
+    void buildDemoLevel();
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);
@@ -77,12 +82,14 @@ public:
     void renderSkybox(View *view, Renderer *r);
 
     void updateLevel(float dt);
+    void interpolateLevel(float dt);
 
     /**** TODO ****/
     /* Color and camera information */
     /* heightmap */
 
 private:
+    const char *path;
     /* A list of every entity that exists in the level. For ease of finding 
     specific entities, we store them as a hash table (unordered map)*/
     unordered_map<int, Entity *> entities;
@@ -92,7 +99,6 @@ private:
 
     void physicsTick(float dt);
     void handleCollisions(float dt);
-    void updateEntities(float dt);
     void updateAIs(float dt);
 
 };

@@ -29,7 +29,7 @@ class Cube : public Entity {
 
 public:
 
-    Cube(vec3 initial_position, quaternion initial_orientation, char*name, 
+    Cube(vec3 initial_position, quaternion initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color);
     ~Cube();
 

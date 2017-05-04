@@ -1,22 +1,40 @@
 #ifndef _WORLD_HXX_
 #define _WORLD_HXX_
 
-#include <stdio.h>
+#include <glm/ext.hpp>
 #include <stdlib.h>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <stdio.h>
+#include <string>
+#include <iostream>
+
+#include <util/log.hxx>
+#include <error/error.hxx>
+#include <util/file.hxx>
+#include <graphics/shader.hxx>
+#include <graphics/TetheredCamera.hxx>
 #include <graphics/renderer.hxx>
+//#include <physics/PhysicsEngine.hxx>
 #include <network/MessageProtocols.hxx>
 #include <ent/Entity.hxx>
-#include <util/log.hxx>
-#include <world/Level.hxx>
+#include <ent/cube.hxx>
+#include <ent/gadget.hxx>
+#include <graphics/texture.hxx>
 #include <network/Server.hxx>
 #include <network/Client.hxx>
+#include <network/MessageProtocols.hxx>
+#include <world/Level.hxx>
+#include <cstring>
 
 using namespace glm;
+using namespace std;
 
 #define ALL_GOOD 0
 #define STATE_ENUM_START ALL_GOOD + 1
+
+#ifndef HANDLER_PARAMS
+#define HANDLER_PARAMS int i
+#define HANDLER_PARAMS_PASSED i
+#endif
 
 /**
 
@@ -50,6 +68,7 @@ enum EventType {
     ADVANCEMENU,
     BACKMENU, //moves between menus if multiple
     LOADLEVEL,
+    LEVELLOADEDBYALL, //all clients have loaded the level
     PAUSEGAME,
     EXIT, //returns to menu1
     USERDISCONNECT,
@@ -62,8 +81,16 @@ public:
     World(); //constructor
     ~World(); //destructor
 
+    /* Create all renderers, views, cameras, etc for the world, based off a 
+    default. We may eventually want to write a function to load this stuff
+    from a .config file instead of having it hard coded here. 
+    If isServer==1, then we initalize the world as a server, otherwise, as 
+    a client. */
+    void worldInitalizeDefault(int isServer);
+
+
     //dispacth function for event handlers
-    int handleEvent(EventType t);
+    int handleEvent(EventType t, HANDLER_PARAMS);
 
     // This is what gets called by the while loop in main.
     // Checks if enough time has passed for any ruinning clocks, e.g.
@@ -85,7 +112,14 @@ public:
     message before we finish processing the old one.*/
     int handleNetworksTick(float t, float dt, int mmax);
 
+    /* Handle one tick of the physics system. If we are a server, we handle
+    AI input (not decision-making) in this tick as well. If we are a client,
+    we run the physics engine just to interpolate the position of entities. */
+    int handlePhysicsTick(float t, float dt);
 
+    /* Quickly set up the given level so that you can skip all the menu stuff.
+    Mostly useful for testing in-game things. */
+    void quickSetup(int level);
 
 
     //View: rendering information, camera, skybox, ground, sun, etc
@@ -97,6 +131,9 @@ public:
     inline Renderer* getEntityRenderer() { return this->r; }
     inline Renderer* getSkyboxRenderer() { return this->rsky; }
 
+    //Physics:
+    //PhysicsEngine *physics;
+
     GLFWwindow *window;
 
     //reset
@@ -104,7 +141,10 @@ public:
     void quit(); 
 
     //level
-    int loadLevel();
+    int loadLevel(int i);
+    void addLevel(const char*path);
+    void addAllLevels(vector<const char*> levels);
+
     inline Level * getLevel() { return this->curLevel; }
     inline void setLevel(Level * level) { this->curLevel = level; }
 
@@ -118,6 +158,7 @@ public:
     inline Server* getServer() { return this->isServer() ? this->server : NULL; }
     inline Client* getClient() { return this->isClient() ? this->client : NULL; }
 
+    inline WorldState getState() { return this->state; }
 
     /* Functions for parsing the entity list and sending updates to the client */
     void sendAllUpdates();
@@ -125,6 +166,8 @@ public:
     /* Functions for setting position updates we recieve from server */
     void setEntData(posUpBuf* msg);
     Entity *moveable;
+    
+    View *view;
 
 
 
@@ -132,16 +175,16 @@ private:
     WorldState state;
 
     //event handlers
-    int handleEventSTARTCLIENT();
-    int handleEventSTARTSERVER();
-    int handleEventWEARECONNECTED();
-    int handleEventADVANCEMENU();
-    int handleEventBACKMENU();
-    int handleEventLOADLEVEL();
-    int handleEventPAUSEGAME();
-    int handleEventEXIT();
-    int handleEventUSERDISCONNECT();
-    int handleEventUSERFINISH();
+    int handleEventSTARTCLIENT(HANDLER_PARAMS);
+    int handleEventSTARTSERVER(HANDLER_PARAMS);
+    int handleEventADVANCEMENU(HANDLER_PARAMS);
+    int handleEventBACKMENU(HANDLER_PARAMS);
+    int handleEventLOADLEVEL(HANDLER_PARAMS);
+    int handleEventLEVELLOADEDBYALL(HANDLER_PARAMS);
+    int handleEventPAUSEGAME(HANDLER_PARAMS);
+    int handleEventEXIT(HANDLER_PARAMS);
+    int handleEventUSERDISCONNECT(HANDLER_PARAMS);
+    int handleEventUSERFINISH(HANDLER_PARAMS);
 
     void handleNetworksTickServer(float t, float dt, int mmax);
     void handleNetworksTickClient(float t, float dt, int mmax);
@@ -150,7 +193,6 @@ private:
 
     /* Uncomment stuff as it is implemented */
 
-    View *view;
     Renderer *r;
     Renderer *rsky;
 
@@ -162,6 +204,9 @@ private:
     //ActiveLevel * activeLevel;
         //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
         //Submarine ** subs;
+
+    /* A vector of filenames for levels. Whenever we load a level, we build it from scratch from the file. */
+    vector<const char*> levels;
     Level * curLevel;
 
     //Players

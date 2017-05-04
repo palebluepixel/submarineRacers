@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/libtests/pngvalid.c" "/home/amsadowski/submarineRacers/lib/libpng-1.6.29/CMakeFiles/pngvalid.dir/contrib/libtests/pngvalid.c.o"
+  "/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/libtests/pngvalid.c" "/home/ashwin/repo/submarines/lib/libpng-1.6.29/CMakeFiles/pngvalid.dir/contrib/libtests/pngvalid.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -15,7 +15,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/amsadowski/submarineRacers/lib/libpng-1.6.29/CMakeFiles/png.dir/DependInfo.cmake"
+  "/home/ashwin/repo/submarines/lib/libpng-1.6.29/CMakeFiles/png.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -3,6 +3,8 @@
 ServerNetworkManager::ServerNetworkManager(int id)
         : NetworkManager(/*other args*/) {
     this->id = id;
+    this->loadedLevel=0;
+    this->whichLevel=-1;
 }
 
 void ServerNetworkManager::bindToSub(Submarine *sub)

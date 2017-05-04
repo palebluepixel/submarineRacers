@@ -1,11 +1,11 @@
 #include "gadget.hxx"
 
-Gadget::Gadget(vec3 initial_position, quaternion initial_orientation, char*name, 
+Gadget::Gadget(int ID, vec3 initial_position, quaternion initial_orientation, std::string name, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein)
-: Entity(initial_position, initial_orientation, name, type, status, tick_interval){
+: Entity(ID, initial_position, initial_orientation, name, type, status, tick_interval){
     this->color = color;
 
-    this->modelfile = modelfilein;
+    this->modelfile = strdup(modelfilein);
     this->initalizeVisualData();
 }
 
@@ -13,7 +13,7 @@ Gadget::~Gadget()
 { }
 
 void Gadget::initalizeVisualData(){
-    this->initalizeTextures("../assets/textures/cubetex.png");
+    this->initalizeTextures("../assets/textures/wood1.png");
     this->initalizeMeshes();
 }
 
@@ -31,5 +31,5 @@ void Gadget::initalizeMeshes(){
     mesh->loadOBJ(modelfile);
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
-    meshes.push_back(TransformedMesh(mesh));
+    meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4())));
 }

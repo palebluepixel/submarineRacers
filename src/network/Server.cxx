@@ -29,7 +29,7 @@ int Server::createNewUDPSocket(short port)
     sock = socket(PF_INET, SOCK_DGRAM, 0);
     if(sock < 0)
     {
-        log(LOGERROR, "%s\n", "Could not open socket");
+        logln(LOGERROR, "%s\n", "Could not open socket");
         exit(-1);
     }
 
@@ -43,7 +43,7 @@ int Server::createNewUDPSocket(short port)
     /*bind the listening socket */
     if(bind(sock, (struct sockaddr *) &ourAddr, sizeof(ourAddr)) < 0)
     {
-        log(LOGERROR, "%s %d\n", "Socket bind() failed", sock);
+        logln(LOGERROR, "%s %d\n", "Socket bind() failed", sock);
         close(sock);
         exit(-1);
     }
@@ -64,8 +64,8 @@ void Server::initListeningSocket()
 
     this->initalizeListeningThread();
 
-    log(LOGLOW, "Began listening on socket %d. We are %s@%s\n", this->commSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
-    log(LOGLOW, "NOTE: 0.0.0.0 IS FINE, THATS THE WILDCARD ADDRESS IN THIS CASE\n"); 
+    logln(LOGLOW, "Began listening on socket %d. We are %s@%s\n", this->commSocket, this->hostname, inet_ntoa(this->serverAddr.sin_addr));
+    logln(LOGLOW, "NOTE: 0.0.0.0 IS FINE, THATS THE WILDCARD ADDRESS IN THIS CASE\n"); 
 }
 
 
@@ -208,12 +208,16 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
 
     this->clients.insert(make_pair(clientAddr, client));
 
-    log(LOGMEDIUM, "Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
+    logln(LOGMEDIUM, "Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
 
     uint8_t ar[4] = { '\0', '\0', '\0', '\0' };
     messageClient(client, 4, ar);
 
-    client->bindToSub((Submarine*)world->getLevel()->getEntityByID(1));
+    /* THIS OBVIOUSLY NEEDS TO BE MADE MORE COMPLEX */
+    /* We could have a player struct created when the client is created that
+    handles all in-level player things, like which submarine, laps completed,
+    checkpoints completed, etc */
+    client->bindToSub((Submarine*)world->getLevel()->getEntityByID(0));
 
     return client;
 }
@@ -229,4 +233,43 @@ int Server::getNextID()
 {
     static int ID = -1;
     return ++ID;
+}
+
+
+
+
+
+
+
+/* Resets the LoadedLevel flag for all clients and sends them a message
+telling them to load the level. The World should call the following function,
+clientsLoaded(), once every time we get a LEVELLOADED reply from a client. */
+void Server::sendLoadLevel(int level)
+{
+    message *msg = createLevelLoadMsg(level);
+
+    for(auto clientpair : this->clients){
+        ServerNetworkManager *client = clientpair.second;
+        client->setLoadedLevel(0);
+        messageClient(client, msg);
+    }
+
+    deleteMessage(msg);
+}
+
+int Server::clientsLoaded(int level)
+{
+    for(auto clientpair : this->clients) {
+        ServerNetworkManager *client = clientpair.second;
+        if(!(client->getLoadedLevel() && (client->getWhichLevel()==level)))
+            return 0;
+    }
+    return 1;
+}
+
+void Server::exitLevel()
+{
+    message * msg = createExitLevelMsg();
+    broadcast(msg);
+    deleteMessage(msg);
 }

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/contrib/libtests/pngimage.c
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/contrib/libtests/pngimage.c
 stdarg.h
 -
 stdlib.h
@@ -24,15 +24,15 @@ config.h
 png.h
 -
 ../../png.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/png.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
 setjmp.h
 -
 
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/png.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/png.h
 pnglibconf.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pnglibconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pnglibconf.h
 pngconf.h
-/home/amsadowski/submarineRacers/lib/libpng-1.6.29/pngconf.h
+/home/ashwin/repo/submarines/lib/libpng-1.6.29/pngconf.h
 
 config.h
 
