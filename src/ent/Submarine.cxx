@@ -12,6 +12,7 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
     this->initalizeVisualData();
 
     this->actuator = new SubmarineActuator(this);
+    this->angularDragCoef = 20.f;
 }
 
 void Submarine::switchWeapons(uint8_t weapon) {
@@ -57,10 +58,9 @@ SubmarineActuator::SubmarineActuator(Submarine *agent) {
 }
 
 void SubmarineActuator::doSteering(float dt) {
-    //printf("AGENT IS %p %p\n", agent, this->agent);
-    agent->applyTorque(vec3(0.0f, state.rotationChange * 2.f, 0.0f));
-    agent->applyForce(state.acceleration * 10.f * agent->getDirection());
-    agent->applyForce(vec3(0.0f, state.depthChange, 0.0f));
+    agent->applyTorque(vec3(0.0f, state.rotationChange * (0.2f + 0.5f * dot(agent->getDirection(), agent->getVelocity())), 0.0f));
+    agent->applyForce(state.acceleration * 20.f * agent->getDirection());
+    agent->applyForce(vec3(0.0f, state.depthChange * 3, 0.0f));
     if(state.fireWeapon) {
         //spawn(agent.weapon.missileType);
     }

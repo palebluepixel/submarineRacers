@@ -30,6 +30,7 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     this->volume = 0;
     _mass = 1.f;
     _dragCoef=0.f;
+    this->angularDragCoef = 5.f;
 }
 
 Entity::~Entity()
@@ -216,14 +217,14 @@ int Entity::onTick(float dt){
 
 // Some entites can have more complex drag functions
 vec3 Entity::getDrag() {
-    return velocity * length(velocity) * (-_dragCoef);
+    return velocity * (length(velocity) * (-_dragCoef) * 0.5f);
 }
 
 // Some entites can have more complex drag functions
 vec3 Entity::getDragTorque() {
     float l = length(angular_velocity);
     // if(l < 0.01)return vec3();
-    return -10.f * l * angular_velocity;
+    return -angularDragCoef * l * angular_velocity;
 }
 
 //change object's status to spawned and place it in its intial position
