@@ -253,7 +253,7 @@ void HeightmapMesh::init(int w, int h, vec2 texscale){
       vec3 v3 = verts[indices[ind+3]];
       vec3 norm = normalize(cross(v2-v1,v3-v1));
 
-      fprintf(stderr,"norm %d: %.3f,%.3f,%.3f\n",indices[ind+0],norm.x,norm.y,norm.z);
+      // fprintf(stderr,"norm %d: %.3f,%.3f,%.3f\n",indices[ind+0],norm.x,norm.y,norm.z);
 
       norms[indices[ind+0]] = norm;
       norms[indices[ind+1]] = norm;

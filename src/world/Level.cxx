@@ -72,7 +72,7 @@ Entity *entityFromJSON(int id, json j) {
             std::vector<float> spherePos = volume_data["position"];
             vec3 sphereCenter = vec3FromSTDVec(spherePos);
             float sphereRad = volume_data["radius"];
-            retVal->setVolume(new SphereVolume(sphereCenter, sphereRad));
+            retVal->setVolume(new SphereVolume(Volume::Pos(retVal), sphereRad));
         }
     }
 
@@ -121,6 +121,9 @@ void Level::buildLevelFromFile() {
     // todo: remove this. 
     Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     addEntity(cave);
+    // cave->vel(vec3(0,8,0));
+    cave->pos(vec3(-50,-20,-50));;
+    cave->mass(99999);
 
      //create skybox
     Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
@@ -132,32 +135,48 @@ void Level::buildLevelFromFile() {
 void Level::buildDemoLevel() 
 { 
 	//create test objects
-    vec3 cubePos[] = {vec3(5,6,5), vec3(4, 0, 5), vec3(1, -5, 5), vec3(5, -6, 5), vec3(3, -13, 5),
+    // works between (-2.5, -4.5)
+    vec3 cubePos[] = {vec3(0,14,0), vec3(5.f, 10, 5.5f), vec3(10,0,15), vec3(10,-3,15), vec3(3, -13, 5),
         vec3(5, -40, 5)}; 
-    vec3 cubeColor[] = {vec3(1,1,1), vec3(1,1,1), vec3(1,1,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
-    int ncubes = 4, i;
+    vec3 cubeColor[] = {vec3(0.8,1,0), vec3(1,0,1), vec3(1,0,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
+    int ncubes = 2, i;
     Entity * cubes[ncubes];
 
     int cur_id = 0;
 
     cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
-    cubes[0]->setVolume(new CylinderVolume(vec3(0,0,0),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
+    cubes[0]->setOrientation(angleAxis(3.1415f/2.f,vec3(0.f,1.f,0.f)));
+    cubes[0]->setVolume(new CylinderVolume(Volume::Pos(cubes[0]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
     cubes[0]->meshes.push_back(cubes[0]->getVolume()->collisionMesh());
-    cubes[0]->setVelocity(vec3(0,-1.5f,0));
+    cubes[0]->setVelocity(vec3(0,-6.5f,0));
     cubes[0]->setMass(1.f);
 
-    for(i=1; i<ncubes; i++){
-        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
-        cubes[i]->setVolume(new SphereVolume(vec3(0,0,0),1.414));
-        cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
-        cubes[i]->setVelocity(vec3());
-        cubes[i]->setMass(1.f);;
-    }
+    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/sub_3.obj");
+    cubes[1]->setVolume(new CylinderVolume(Volume::Pos(cubes[1]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,vec3(1,0,0))));
+    cubes[1]->meshes.push_back(cubes[1]->getVolume()->collisionMesh());
+    cubes[1]->setVelocity(vec3(0,-2,0));
+    cubes[1]->setMass(1.f);
+    cubes[1]->dragCoef(0.f);
 
-    for(i=0; i<ncubes; i++)
+    for(i=2; i<4; i++){
+        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+        cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
+        cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
+        // cubes[i]->setVelocity(vec3(0,-3,0));
+        cubes[i]->setMass(1.f);
+        cubes[i]->dragCoef(0.0f);
+    }
+    cubes[2]->setVelocity(vec3(0,-2,0));
+    cubes[2]->setMass(10);
+
+    cubes[3]->setVelocity(vec3(0,0,0));
+    cubes[3]->setMass(1);
+
+    for(i=1; i<4; i++)
     	this->addEntity(cubes[i]);
 
-    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/lap_2.hmp");
+    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    cave->mass(9999);
     addEntity(cave);
 
     //create skybox
@@ -354,7 +373,10 @@ void Level::handleCollisions(float dt) {
             // fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
             if(pushe1 != vec3()){
                 // there is a collision
-                e1.pos(e1.pos()-pushe1);
+                float weighting = e1.mass()/(e1.mass()+e2.mass());
+                e1.pos(e1.pos()-(1-weighting)*pushe1);
+                e2.pos(e2.pos()+weighting*pushe1);
+
                 // vec3 v1 = (e1.vel()*(e1.mass()-e2.mass()) + e2.vel()*2.f*e2.mass())/(e1.mass()+e2.mass());
                 // vec3 v2 = (e2.vel()*(e2.mass()-e1.mass()) + e1.vel()*2.f*e1.mass())/(e1.mass()+e2.mass());
 
@@ -372,27 +394,15 @@ void Level::handleCollisions(float dt) {
                 float o2_c_comp = (glm::dot(vc,v2));
                 vec3  o2_c_remd = v2 - o2_c_comp*vc;
 
-                o1_c_comp = fabsf(o1_c_comp);
-                o2_c_comp = fabsf(o2_c_comp);
+                // linear axis, e1->e2 positive direction.
+                o1_c_comp = (o1_c_comp);
+                o2_c_comp = (o2_c_comp);
                 
                 float magc1 = (o1_c_comp*(e1.mass()-e2.mass()) + o2_c_comp*2.f*e2.mass())/(e1.mass()+e2.mass());
                 float magc2 = (o2_c_comp*(e2.mass()-e1.mass()) + o1_c_comp*2.f*e1.mass())/(e1.mass()+e2.mass());
 
-                vec3 res1 = o1_c_remd - magc1*vc;
+                vec3 res1 = o1_c_remd + magc1*vc;
                 vec3 res2 = o2_c_remd + magc2*vc;
-
-                // float kq_a = v1.x*v1.x + v1.y*v1.y + v1.z*v1.z;
-                // float kq_b = 2*(v1.x*vd.x + v1.y*vd.y + v1.z*vd.z);
-                // float kq_c = vd.x*vd.x + vd.y*vd.y + vd.z*vd.z;
-                // float kq_d = sqrt(kq_b*kq_b - 4*kq_a*kq_c - m1*m1);
-
-                // float k = (-kq_b + kq_d)/(2*kq_a);
-                // if(k < 0)k= (-kq_b - kq_d)/(2*kq_a);
-
-                // fprintf(stderr,"k: %f\n",k);
-
-                // vec3 v1o = e1.vel() + k*vd;
-                // vec3 v2o = e2.vel() - k*vd;
 
                 e1.vel(res1);
                 e2.vel(res2);

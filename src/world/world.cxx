@@ -376,7 +376,7 @@ void World::worldInitalizeDefault(int isServer)
     //initalize camera
     Camera *camera = new Camera();
     //position, yaw-roll, up-vector
-    camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(0,4,-10),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
     /* Add tethered Camera */

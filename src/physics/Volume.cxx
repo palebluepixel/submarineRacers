@@ -300,7 +300,7 @@ vec3 HeightmapVolume::push(Volume *other){
     if(idxmax.y>=height)idxmax.y=height-1;
 
 
-    fprintf(stderr,"checking (%d,%d) to (%d,%d)\n",idxmin.x,idxmin.y,idxmax.x,idxmax.y);
+    // fprintf(stderr,"checking (%d,%d) to (%d,%d)\n",idxmin.x,idxmin.y,idxmax.x,idxmax.y);
     
     float lclHeight = fminf(localPos1.y,localPos2.y) - rad*mag_preimY;
 
