@@ -36,9 +36,9 @@ void Terrain::initalizeMeshes(){
     mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
 
-    TransformedMesh::MeshInfo tmi(mesh,glm::scale(glm::mat4(1),vec3(32,4,32)));
+    TransformedMesh::MeshInfo tmi(mesh,glm::scale(glm::mat4(1),vec3(32,16,32)));
     TransformedMesh tmesh(tmi);
     meshes.push_back(tmesh);
     pos(vec3(0,-20,0));
-    volume = new HeightmapVolume(Volume::Pos(this), tmi.transform, mesh->getWidth(), mesh->getHeight(), mesh->getValues());
+    volume = new HeightmapVolume(Volume::Pos(this), tmi.transform, mesh->getWidth(), mesh->getHeight(), mesh->getHmpData());
 }

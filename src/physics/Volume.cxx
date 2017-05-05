@@ -219,7 +219,7 @@ Mesh* CylinderVolume::meshcap = 0;
 /////////////////////////////////////////*/
 
 HeightmapVolume::HeightmapVolume(Pos posi, mat4 scale, int width, int height,
-  float *data) : Volume(posi){
+  HeightmapData data) : Volume(posi){
   // nothing yet.
   this->width = width;
   this->height=height;
@@ -253,27 +253,47 @@ vec3 HeightmapVolume::push(Volume *other){
     float m_preimZ = length(preimZ);
 
     float mag_preimY = length(preimY);
-    vec2 lcldelta(v->R()*m_preimX,v->R()*m_preimZ);
-    vec2 idxdelta((lcldelta.x)/this->width,(lcldelta.y)/this->height);
-    vec2 idxCenter((localPos.x+0.5f)*this->width,(localPos.z+0.5f)*this->height);
-    ivec2 idxminf(int(idxCenter.x-idxdelta.x), int(idxCenter.y-idxdelta.y));
-    ivec2 idxmaxf(int(idxCenter.x+idxdelta.x+1), int(idxCenter.y+idxdelta.y+1));
+    vec2 lcldelta(v->R()*m_preimX,v->R()*m_preimZ); // size of radius in local coordinates
+    vec2 idxdelta((lcldelta.x)*this->width,(lcldelta.y)*this->height);  // size of radius in index coordinates
+    vec2 idxCenter((localPos.x)*this->width,(localPos.z)*this->height); // center of object in index coords
 
-    if(idxCenter.x<0)idxCenter.x=0.001;
-    if(idxCenter.y<0)idxCenter.y=0.001;
-    if(idxCenter.x>width-1.001)idxCenter.x=width-1.001f;
-    if(idxCenter.y>height-1.001)idxCenter.y=height-1.001f;
-    float d =data[int(idxCenter.x) + int(idxCenter.y)*width];
-    // fprintf(stderr,"coords:(%.3f,%.3f,%.3f) : (%.3f,%.3f) = %.3f\n",
-      // localPos.x,localPos.y,localPos.z,idxCenter.x,idxCenter.y,d);
-    fprintf(stderr,"checking (%d,%d) to (%d,%d)\n",idxminf.x,idxminf.y,idxmaxf.x,idxmaxf.y);
+    // range of points to check, in index coordinates
+    ivec2 idxmin(int(idxCenter.x-idxdelta.x), int(idxCenter.y-idxdelta.y));
+    ivec2 idxmax(int(idxCenter.x+idxdelta.x+1), int(idxCenter.y+idxdelta.y+1));
 
-    float dist = d - localPos.y + v->R()*mag_preimY;
+    if(idxmin.x<0)idxmin.x=0;
+    if(idxmin.y<0)idxmin.y=0;
+    if(idxmin.x>=width)idxmin.x=width-1;
+    if(idxmin.y>=height)idxmin.y=height-1;
+    
+    if(idxmax.x<0)idxmax.x=0;
+    if(idxmax.y<0)idxmax.y=0;
+    if(idxmax.x>=width)idxmax.x=width-1;
+    if(idxmax.y>=height)idxmax.y=height-1;
 
-    if(dist>0){
-      vec4 pushed = ItoW * vec4(0,dist,0,0);
-      return vec3(pushed.x,pushed.y,pushed.z);
+
+    // fprintf(stderr,"checking (%d,%d) to (%d,%d)\n",idxmin.x,idxmin.y,idxmax.x,idxmax.y);
+    
+    float lclHeight = localPos.y - v->R()*mag_preimY;
+
+    for(int x=idxmin.x; x<idxmax.x-1; ++x){
+      for(int y=idxmin.y; y<idxmax.y-1; ++y){
+        int idx = x + y*width;
+        float d =data.values[idx];
+        float dist =  d - lclHeight;
+        if(dist>0){
+          vec3 p1=ItoW * vec4(data.verts[idx],1);
+          vec3 p2=ItoW * vec4(data.verts[idx+1],1);
+          vec3 p3=ItoW * vec4(data.verts[idx+width],1);
+          vec3 normal=-normalize(cross((p2-p1),(p3-p1)));
+          // float d = dot(normal,data.verts[])
+          fprintf(stderr,"normal %f (%f,%f,%f)\n",dist, normal.x,normal.y,normal.z);
+          vec4 pushed = ItoW * vec4(normal.x,normal.y,normal.z,0)*dist;
+          return vec3(pushed.x,pushed.y,pushed.z);
+        }
+      }
     }
+
     return vec3();
 
   }else if(other->type() == "cylinder"){

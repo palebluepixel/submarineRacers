@@ -174,7 +174,10 @@ vec3 getNorm(vec3 a, vec3 b, vec3 c)
 /////////////////////////////////////////*/
 
 static std::function<float(float,float)> canyon_generator = [](float x, float z){
-  return 32.f*x*x-18.f*z*z*z*z;
+  x=x-0.5f;
+  z=z-0.5f;
+  return 10.f*x*x-32.f*z*z*z*z;
+  // return -x;
 };
 
 /* A heightmap has three essential features:
@@ -227,9 +230,9 @@ void HeightmapMesh::init(int w, int h, vec2 texscale){
   int ind=0;
   for(int z=0;z<h;++z){
     for(int x=0;x<w;++x){
-      xp=-0.5f+x_inc*float(x);
-      zp=-0.5f+z_inc*float(z);
-      texcs[ind] = vec2(-0.0f+x_inc*float(x)/texscale.x, -0.0f+z_inc*float(z)/texscale.y);
+      xp=x_inc*float(x);
+      zp=z_inc*float(z);
+      texcs[ind] = vec2(x_inc*float(x)/texscale.x, z_inc*float(z)/texscale.y);
       // verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
       verts[ind] = vec3(xp,this->generator(xp,zp),zp);
       values[ind] = verts[ind].y;
@@ -247,8 +250,10 @@ void HeightmapMesh::init(int w, int h, vec2 texscale){
 
       vec3 v1 = verts[indices[ind+0]];
       vec3 v2 = verts[indices[ind+1]];
-      vec3 v3 = verts[indices[ind+2]];
+      vec3 v3 = verts[indices[ind+3]];
       vec3 norm = normalize(cross(v2-v1,v3-v1));
+
+      fprintf(stderr,"norm %d: %.3f,%.3f,%.3f\n",indices[ind+0],norm.x,norm.y,norm.z);
 
       norms[indices[ind+0]] = norm;
       norms[indices[ind+1]] = norm;
@@ -263,6 +268,8 @@ void HeightmapMesh::init(int w, int h, vec2 texscale){
   LoadTexCoords(w*h,texcs);
   loadVertices(w*h,verts);
   loadIndices(4*(w-1)*(h-1),indices);
+
+  hmpdata = HeightmapData{w,h,verts,norms,values,indices};
 
 }
 
@@ -310,8 +317,8 @@ int HeightmapMesh::loadFile(std::string filename){
   }
   if(!err){
     generator = [data,w,h](float x, float z){
-      float xind = (x+0.5)*w;
-      float zind = (z+0.5)*h;
+      float xind = x*w;
+      float zind = z*h;
       if(xind<0)xind=0.01f;
       if(xind>=w-1.01f)xind=w-1.01f;
       if(zind<0)zind=0.01f;
@@ -402,6 +409,9 @@ void HeightmapMesh::loadFileOBJ(char *file){
 
 float* HeightmapMesh::getValues(){
   return values;
+}
+HeightmapData HeightmapMesh::getHmpData(){
+  return hmpdata;
 }
 
 void HeightmapMesh::setGenerator(std::function<float(float,float)> in){

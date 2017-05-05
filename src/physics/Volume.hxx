@@ -119,7 +119,7 @@ protected:
 
 class HeightmapVolume : public Volume{
 public:
-    HeightmapVolume(Pos pos, mat4 scale, int width, int height, float *data);
+    HeightmapVolume(Pos pos, mat4 scale, int width, int height, HeightmapData data);
     const char *type();
 
     double distance(Volume *other);
@@ -135,7 +135,7 @@ protected:
     int height;
     mat4 scale;
     mat4 scaleInv;
-    float *data;
+    HeightmapData data;
 };
 
 class UnionVolume : public Volume{
