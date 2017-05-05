@@ -40,7 +40,6 @@ Entity::~Entity()
 
 void Entity::setPhysicsParams(PhysicsParams in){
     dragCoef(in.dragCoef);
-    logln(LOGLOW,"set %s -> %f",getName().c_str(),dragCoef());
 }
 vec3 Entity::setPosition(vec3 pos){
     // if(pos != this->position)

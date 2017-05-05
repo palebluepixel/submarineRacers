@@ -1,0 +1,14 @@
+{
+    "submarines": [
+        {
+            "name": "sub1",
+            "position": [0, -26, 38],
+            "orientation": [1.74, 0, -1, 0],
+            "tick-interval": 0.1,
+            "color": [1.0, 1.0, 1.0],
+            "model": "../assets/models/sub_3.obj",
+            "mass": 2.0,
+            "drag": 1.0
+        }
+    ]
+}

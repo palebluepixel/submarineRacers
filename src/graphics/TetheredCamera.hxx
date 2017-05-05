@@ -32,7 +32,7 @@ public:
 	a first person camera, we rotate in place using ypr. If we are a
 	third person camera, we move on the surface of a sphere of radius
 	this->dist surrounding our fixed point on the entity. */
-	void setYPR(float yaw, float pitch, float roll);
+	/*void setYPR(float yaw, float pitch, float roll);*/
 	
 	void setCameraDistance(float dist);
 	void translateCameraDistance(float delta);

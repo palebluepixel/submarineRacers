@@ -1,6 +1,7 @@
 #include <json/json.hpp>
 #include "Level.hxx"
 #include <util/file.hxx>
+#include <util/conversion.hxx>
 #include <graphics/mesh.hxx>
 #include <physics/Volume.hxx>
 #include <ent/terrain.hxx>
@@ -21,21 +22,21 @@ Level::~Level()
     this->unload();
 }
 
-quaternion quatFromSTDVec(std::vector<float> v) {
-    return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
-}
-
-vec3 vec3FromSTDVec(std::vector<float> v) {
-    return vec3(v.at(0), v.at(1), v.at(2));
-}
+//quaternion quatFromSTDVec(std::vector<float> v) {
+//    return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
+//}
+//
+//vec3 vec3FromSTDVec(std::vector<float> v) {
+//    return vec3(v.at(0), v.at(1), v.at(2));
+//}
 
 Entity *entityFromJSON(int id, json j) {
     /* copy over entity data */
     std::string name = j["name"];
     std::vector<float> position = j["position"];
-    vec3 real_position = vec3FromSTDVec(position);
+    vec3 real_position = convert::vec3FromSTDVec(position);
     std::vector<float> orientation = j["orientation"];
-    quaternion realOrientation = quatFromSTDVec(orientation);
+    quaternion realOrientation = convert::quatFromSTDVec(orientation);
     float tick_interval = j["tick_interval"];
     bool movable = j["movable"];
     bool drawable = j["drawable"];
@@ -44,7 +45,7 @@ Entity *entityFromJSON(int id, json j) {
 
     if (drawable) {
         std::vector<float> fakeColor = j["color"];
-        color = vec3FromSTDVec(fakeColor);
+        color = convert::vec3FromSTDVec(fakeColor);
         std::string model_file_str = j["model"];
         model_file = strdup(model_file_str.c_str());
     }
@@ -62,7 +63,7 @@ Entity *entityFromJSON(int id, json j) {
         float dragCoef = j["dragCoef"];
         retVal->setPhysicsParams({dragCoef});
         std::vector<float> velocity = j["velocity"];
-        retVal->vel(vec3FromSTDVec(velocity));
+        retVal->vel(convert::vec3FromSTDVec(velocity));
     }
     if (collidable) {
         volume_type = j["volume-type"];
@@ -70,7 +71,7 @@ Entity *entityFromJSON(int id, json j) {
         // initialize a sphere
         if (volume_type.compare("sphere") == 0) {
             std::vector<float> spherePos = volume_data["position"];
-            vec3 sphereCenter = vec3FromSTDVec(spherePos);
+            vec3 sphereCenter = convert::vec3FromSTDVec(spherePos);
             float sphereRad = volume_data["radius"];
             retVal->setVolume(new SphereVolume(Volume::Pos(retVal), sphereRad));
         }
