@@ -211,6 +211,13 @@ float CylinderVolume::R(){
   return r;
 }
 
+mat4 CylinderVolume::Rotation(){
+  return rotation;
+}
+float CylinderVolume::H(){
+  return h;
+}
+
 Mesh* CylinderVolume::meshcyl = 0;
 Mesh* CylinderVolume::meshcap = 0;
 
@@ -234,15 +241,28 @@ double HeightmapVolume::distance(Volume *other){
 }
 
 vec3 HeightmapVolume::push(Volume *other){
-  if(other->type() == "sphere"){
-    SphereVolume *v = static_cast<SphereVolume*>(other);
+  if(other->type() == "sphere" || other->type() == "cylinder"){
+    float rad=0;
+    vec4 p1,p2;
+    if(other->type() == "sphere"){
+      SphereVolume *v = static_cast<SphereVolume*>(other);
+      p1=vec4(v->pos.pos,1.f);
+      p2=p1;
+      rad = v->R();
+    }else{
+      CylinderVolume *v = static_cast<CylinderVolume*>(other);
+      p1 = v->pos.transform * v->Rotation() * vec4(0,0.5*v->H(),0,1);
+      p2 = v->pos.transform * v->Rotation() * vec4(0,-0.5*v->H(),0,1);
+      rad = v->R();
+    }
     if(!pos.transformInv_calc){
       pos.transformInv_calc=true;
       pos.transformInv = inverse(pos.transform);
     }
     mat4 WtoI = this->scaleInv * pos.transformInv;
     mat4 ItoW = pos.transformInv * this->scale;
-    vec4 localPos = WtoI * vec4(v->pos.pos.x,v->pos.pos.y,v->pos.pos.z,1);
+    vec4 localPos1 = WtoI * p1;
+    vec4 localPos2 = WtoI * p2;
     // do this faster by just looking at the matrix entries of scaleInv * pos.transformInv.
     vec4 preimX   = WtoI * vec4(1,0,0,0);
     vec4 preimY   = WtoI * vec4(0,1,0,0);
@@ -253,13 +273,21 @@ vec3 HeightmapVolume::push(Volume *other){
     float m_preimZ = length(preimZ);
 
     float mag_preimY = length(preimY);
-    vec2 lcldelta(v->R()*m_preimX,v->R()*m_preimZ); // size of radius in local coordinates
+    vec2 lcldelta(rad*m_preimX,rad*m_preimZ); // size of radius in local coordinates
     vec2 idxdelta((lcldelta.x)*this->width,(lcldelta.y)*this->height);  // size of radius in index coordinates
-    vec2 idxCenter((localPos.x)*this->width,(localPos.z)*this->height); // center of object in index coords
+    vec2 idxCenter1((localPos1.x)*this->width,(localPos1.z)*this->height); // center of object in index coords
+    vec2 idxCenter2((localPos2.x)*this->width,(localPos2.z)*this->height); // center of object in index coords
 
     // range of points to check, in index coordinates
-    ivec2 idxmin(int(idxCenter.x-idxdelta.x), int(idxCenter.y-idxdelta.y));
-    ivec2 idxmax(int(idxCenter.x+idxdelta.x+1), int(idxCenter.y+idxdelta.y+1));
+
+    ivec2 idxmin1(int(idxCenter1.x-idxdelta.x),   int(idxCenter1.y-idxdelta.y));
+    ivec2 idxmax1(int(idxCenter1.x+idxdelta.x+1), int(idxCenter1.y+idxdelta.y+1));
+
+    ivec2 idxmin2(int(idxCenter2.x-idxdelta.x),   int(idxCenter2.y-idxdelta.y));
+    ivec2 idxmax2(int(idxCenter2.x+idxdelta.x+1), int(idxCenter2.y+idxdelta.y+1));
+
+    ivec2 idxmin(idxmin1.x<idxmin2.x?idxmin1.x:idxmin2.x,idxmin1.y<idxmin2.y?idxmin1.y:idxmin2.y);
+    ivec2 idxmax(idxmax1.x>idxmax2.x?idxmax1.x:idxmax2.x,idxmax1.y>idxmax2.y?idxmax1.y:idxmax2.y);
 
     if(idxmin.x<0)idxmin.x=0;
     if(idxmin.y<0)idxmin.y=0;
@@ -272,9 +300,9 @@ vec3 HeightmapVolume::push(Volume *other){
     if(idxmax.y>=height)idxmax.y=height-1;
 
 
-    // fprintf(stderr,"checking (%d,%d) to (%d,%d)\n",idxmin.x,idxmin.y,idxmax.x,idxmax.y);
+    fprintf(stderr,"checking (%d,%d) to (%d,%d)\n",idxmin.x,idxmin.y,idxmax.x,idxmax.y);
     
-    float lclHeight = localPos.y - v->R()*mag_preimY;
+    float lclHeight = fminf(localPos1.y,localPos2.y) - rad*mag_preimY;
 
     for(int x=idxmin.x; x<idxmax.x-1; ++x){
       for(int y=idxmin.y; y<idxmax.y-1; ++y){
@@ -296,9 +324,6 @@ vec3 HeightmapVolume::push(Volume *other){
 
     return vec3();
 
-  }else if(other->type() == "cylinder"){
-    CylinderVolume *v = static_cast<CylinderVolume*>(other);
-    return vec3();
   }
   else{
     return vec3(0,0,0);

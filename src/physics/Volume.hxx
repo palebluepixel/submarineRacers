@@ -108,6 +108,8 @@ public:
     bool collision(Volume *other);
     bool containsPoint(vec3 pt);
     float R();
+    mat4 Rotation();
+    float H();
 
     TransformedMesh collisionMesh();
     static Mesh* meshcyl;
