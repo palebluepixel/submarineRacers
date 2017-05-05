@@ -40,5 +40,5 @@ void Terrain::initalizeMeshes(){
     TransformedMesh tmesh(tmi);
     meshes.push_back(tmesh);
     pos(vec3(0,-20,0));
-    volume = new HeightmapVolume(pos(), vec3(10,1,10), 32, 32, 0); //This is incorrect now
+    volume = new HeightmapVolume(Volume::Pos(this), vec3(10,1,10), 32, 32, 0); //This is incorrect now
 }

@@ -15,7 +15,6 @@
 #include <network/MessageProtocols.hxx>
 
 using namespace glm;
-using namespace Space;
 using namespace std;
 
 
@@ -40,6 +39,8 @@ enum EntityStatus {
 };
 
 typedef glm::tquat<float> quaternion;
+
+class Volume;
 
 class Entity {
 

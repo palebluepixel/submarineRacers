@@ -29,7 +29,7 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     this->shouldSendUpdate = 1;
     this->volume = 0;
     _mass = 1.f;
-    _dragCoef=0.f;
+    _dragCoef=1.f;
 }
 
 Entity::~Entity()
@@ -92,8 +92,7 @@ Volume* Entity::getVolume(){
 
 void Entity::updatePhysicsVolume(){
     if(volume){
-        volume->pos.pos = position;
-        volume->pos.orient = orientation;
+        volume->pos.set(this);
     }
 }
 

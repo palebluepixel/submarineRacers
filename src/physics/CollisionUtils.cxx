@@ -1,4 +1,5 @@
 #include "CollisionUtils.hxx"
+#include "stdio.h"
 
 enum PointStatus { IN, A, B };
 
@@ -10,28 +11,30 @@ PointStatus insideSegment(vec3 pt, Segment l) {
     float p;
     float la;
     float lb;
-    if(l.a.x != l.b.x) {
+    if(fabsf(l.a.x - l.b.x) > 0.0001f) {
         p = pt.x;
         la = l.a.x;
         lb = l.b.x;
-    } else if(l.a.y != l.b.y) {
+    } else if(fabsf(l.a.y - l.b.y) > 0.0001f) {
         p = pt.y;
         la = l.a.y;
         lb = l.b.y;
-    } else {
+    } else if(fabsf(l.a.z - l.b.z) > 0.0001f){
         p = pt.z;
         la = l.a.z;
         lb = l.b.z;
+    } else{
+        return IN;
     }
 
-    if(p - la <= lb - la) {
-        if(p - lb <= lb - la) {
-            return IN;
-        } else {
-            return A;
-        }
-    } else {
-        return B;
+    if ((la<p && p<lb) || (lb<p && p<la)){
+        return IN;
+    }else if(la<=p && lb<=p){
+        if(lb>la)return B;
+        else return A;
+    }else if(la>=p && lb>=p){
+        if(la>lb)return A;
+        else return B;
     }
 }
 
@@ -55,13 +58,19 @@ DistanceResult shortestDistance(vec3 p, Segment l) {
     vec3 b = l.b;
     vec3 n = normalize(b - a);
 
+    // fprintf(stderr,"\nshortestDistance (%.3f,%.3f,%.3f)/(%.3f,%.3f,%.3f) <-> (%.3f,%.3f,%.3f)\n",
+      // l.a.x,l.a.y,l.a.z,l.b.x,l.b.y,l.b.z,p.x,p.y,p.z);
+
     //Closest point
     vec3 c = a - (dot((a-p), n) * n);
+
+    // fprintf(stderr,"closest point: (%.3f,%.3f,%.3f)\n",c.x,c.y,c.z);
 
     vec3 p2;
 
     //Check if c in line segment from a to b.
     PointStatus stat = insideSegment(c, l);
+    // fprintf(stderr,"stat = %s\n",stat==IN?"in":stat==A?"A":"B");
     if(stat == IN) {
         p2 = c;
     } else if(stat == A) {
@@ -75,11 +84,16 @@ DistanceResult shortestDistance(vec3 p, Segment l) {
 
 //Math from https://en.wikipedia.org/wiki/Skew_lines#Nearest_Points
 DistanceResult shortestDistance(Segment l1, Segment l2) {
+
+    // fprintf(stderr,"\nshortestDistance (%.3f,%.3f,%.3f)/(%.3f,%.3f,%.3f) <-> (%.3f,%.3f,%.3f)/(%.3f,%.3f,%.3f)\n",
+    //   l1.a.x,l1.a.y,l1.a.z,l1.b.x,l1.b.y,l1.b.z,
+    //   l2.a.x,l2.a.y,l2.a.z,l2.b.x,l2.b.y,l2.b.z);
+
     vec3 p1 = l1.a;
     vec3 p2 = l2.a;
 
-    vec3 d1 = l1.b - l1.a;
-    vec3 d2 = l2.b - l2.a;
+    vec3 d1 = normalize(l1.b - l1.a);
+    vec3 d2 = normalize(l2.b - l2.a);
 
 
     // If parallel, perturb one end slightly =D
@@ -91,7 +105,6 @@ DistanceResult shortestDistance(Segment l1, Segment l2) {
         }
     }
 
-
     vec3 n = cross(d1, d2);
 
     vec3 n1 = cross(d1, n);
@@ -100,8 +113,12 @@ DistanceResult shortestDistance(Segment l1, Segment l2) {
     vec3 c1 = p1 + (dot((p2 - p1), n2) / dot(d1, n2)) * d1;
     vec3 c2 = p2 + (dot((p1 - p2), n1) / dot(d2, n1)) * d2;
 
+    // printf("c1: (%.3f,%.3f,%.3f)\n",c1.x,c1.y,c1.z);
+    // printf("c2: (%.3f,%.3f,%.3f)\n",c2.x,c2.y,c2.z);
+
     // If both of these points are inside our line segments, then we are done
-    if(insideSegment(c1, l1) && insideSegment(c2, l2)) {
+    if((insideSegment(c1, l1)==IN) &&
+       (insideSegment(c2, l2)==IN)) {
         return shortestDistance(c1, c2);
     }
 
@@ -120,6 +137,8 @@ DistanceResult shortestDistance(Segment l1, Segment l2) {
     if(bl1.distance < best.distance) {
         best = bl1;
     }
-    
+
+    DistanceResult dr = best;
+    // fprintf(stderr,"Result: (%.3f,%.3f,%.3f) (%.3f,%.3f%.3f) : %.3f",dr.a.x,dr.a.y,dr.a.z,dr.b.x,dr.b.y,dr.b.z,dr.distance);
     return best;
 }
