@@ -38,6 +38,8 @@ public:
         Pos(Entity *in);
         void set(Entity *in);
         mat4 transform;
+        mat4 transformInv;
+        bool transformInv_calc;
         vec3 pos;
         quaternion ori;
         float depth;
@@ -117,7 +119,7 @@ protected:
 
 class HeightmapVolume : public Volume{
 public:
-    HeightmapVolume(Pos pos, vec3 scale, int width, int height, float *data);
+    HeightmapVolume(Pos pos, mat4 scale, int width, int height, float *data);
     const char *type();
 
     double distance(Volume *other);
@@ -131,7 +133,9 @@ public:
 protected:
     int width;
     int height;
-    vec3 scale;
+    mat4 scale;
+    mat4 scaleInv;
+    float *data;
 };
 
 class UnionVolume : public Volume{

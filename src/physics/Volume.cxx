@@ -6,10 +6,12 @@
 
 using namespace Space;
 
-Volume::Volume(Pos p) : pos(p){ }
+Volume::Volume(Pos p) : pos(p){
+}
 
 Volume::Pos::Pos(Entity *e){
   set(e);
+  transformInv_calc = false;
 }
 void Volume::Pos::set(Entity *e){
   if(!e){
@@ -18,6 +20,7 @@ void Volume::Pos::set(Entity *e){
   transform = e->modelMatrix();
   pos = e->pos();
   ori = e->getOrientation();
+  transformInv_calc = false;
   // logln(LOGLOW,"making volume");
   // for(int i=0;i<4;i++){
   //   fprintf(stderr,"%.3f %.3f %.3f %.3f\n",transform[0][i],transform[1][i],transform[2][i],transform[3][i]);
@@ -68,9 +71,11 @@ vec3 SphereVolume::push(Volume *other){
     if(dist>0)return vec3();
 
     return (pos.pos - other->pos.pos)*dist;
-  }else 
-  if(!strcmp(other->type(),"cylinder")){
+  }else if(!strcmp(other->type(),"cylinder")){
     CylinderVolume* v = static_cast<CylinderVolume*>(other);
+    return -v->push(this);
+  }else if(!strcmp(other->type(),"heightmap")){
+    HeightmapVolume* v = static_cast<HeightmapVolume*>(other);
     return -v->push(this);
   }
   else{
@@ -128,8 +133,7 @@ double CylinderVolume::distance(Volume *other){
         
         return dr.distance;
 
-    }else
-    if(!strcmp(other->type(),"cylinder")){
+    }else if(!strcmp(other->type(),"cylinder")){
            // CylinderVolume* v = static_cast<CylinderVolume*>(other);
       return 0;
     }
@@ -166,8 +170,7 @@ vec3 CylinderVolume::push(Volume *other){
       return dr.distance*normalize(dr.b - dr.a);
     }
     else return vec3();
-  }else
-  if(other->type() == "cylinder"){
+  }else if(other->type() == "cylinder"){
     CylinderVolume *v = static_cast<CylinderVolume*>(other);
 
     // me
@@ -183,9 +186,12 @@ vec3 CylinderVolume::push(Volume *other){
     dr.distance -= (v->R() + r);
 
     if(dr.distance < 0){
-      return dr.distance*normalize(dr.a - dr.b);
+      return dr.distance*normalize(dr.b-dr.a);
     }
     else return vec3();
+  }else if(!strcmp(other->type(),"heightmap")){
+    HeightmapVolume* v = static_cast<HeightmapVolume*>(other);
+    return -v->push(this);
   }
   else{
     return vec3(0,0,0);
@@ -212,12 +218,14 @@ Mesh* CylinderVolume::meshcap = 0;
 //           Heightmap Volume
 /////////////////////////////////////////*/
 
-HeightmapVolume::HeightmapVolume(Pos posi, vec3 scale, int width, int height,
+HeightmapVolume::HeightmapVolume(Pos posi, mat4 scale, int width, int height,
   float *data) : Volume(posi){
   // nothing yet.
   this->width = width;
   this->height=height;
   this->scale = scale;
+  this->scaleInv = inverse(scale);
+  this->data = data;
 }
 const char *HeightmapVolume::type(){return "heightmap";}
 
@@ -226,7 +234,55 @@ double HeightmapVolume::distance(Volume *other){
 }
 
 vec3 HeightmapVolume::push(Volume *other){
-  return vec3();
+  if(other->type() == "sphere"){
+    SphereVolume *v = static_cast<SphereVolume*>(other);
+    if(!pos.transformInv_calc){
+      pos.transformInv_calc=true;
+      pos.transformInv = inverse(pos.transform);
+    }
+    mat4 WtoI = this->scaleInv * pos.transformInv;
+    mat4 ItoW = pos.transformInv * this->scale;
+    vec4 localPos = WtoI * vec4(v->pos.pos.x,v->pos.pos.y,v->pos.pos.z,1);
+    // do this faster by just looking at the matrix entries of scaleInv * pos.transformInv.
+    vec4 preimX   = WtoI * vec4(1,0,0,0);
+    vec4 preimY   = WtoI * vec4(0,1,0,0);
+    vec4 preimZ   = WtoI * vec4(0,0,1,0);
+
+    float m_preimX = length(preimX);
+    float m_preimY = length(preimY);
+    float m_preimZ = length(preimZ);
+
+    float mag_preimY = length(preimY);
+    vec2 lcldelta(v->R()*m_preimX,v->R()*m_preimZ);
+    vec2 idxdelta((lcldelta.x)/this->width,(lcldelta.y)/this->height);
+    vec2 idxCenter((localPos.x+0.5f)*this->width,(localPos.z+0.5f)*this->height);
+    ivec2 idxminf(int(idxCenter.x-idxdelta.x), int(idxCenter.y-idxdelta.y));
+    ivec2 idxmaxf(int(idxCenter.x+idxdelta.x+1), int(idxCenter.y+idxdelta.y+1));
+
+    if(idxCenter.x<0)idxCenter.x=0.001;
+    if(idxCenter.y<0)idxCenter.y=0.001;
+    if(idxCenter.x>width-1.001)idxCenter.x=width-1.001f;
+    if(idxCenter.y>height-1.001)idxCenter.y=height-1.001f;
+    float d =data[int(idxCenter.x) + int(idxCenter.y)*width];
+    // fprintf(stderr,"coords:(%.3f,%.3f,%.3f) : (%.3f,%.3f) = %.3f\n",
+      // localPos.x,localPos.y,localPos.z,idxCenter.x,idxCenter.y,d);
+    fprintf(stderr,"checking (%d,%d) to (%d,%d)\n",idxminf.x,idxminf.y,idxmaxf.x,idxmaxf.y);
+
+    float dist = d - localPos.y + v->R()*mag_preimY;
+
+    if(dist>0){
+      vec4 pushed = ItoW * vec4(0,dist,0,0);
+      return vec3(pushed.x,pushed.y,pushed.z);
+    }
+    return vec3();
+
+  }else if(other->type() == "cylinder"){
+    CylinderVolume *v = static_cast<CylinderVolume*>(other);
+    return vec3();
+  }
+  else{
+    return vec3(0,0,0);
+  }
 }
 vec3 HeightmapVolume::pushAlong(Volume *other, vec3 direction){
   return vec3();
