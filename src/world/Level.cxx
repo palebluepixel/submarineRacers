@@ -123,7 +123,7 @@ void Level::buildLevelFromFile() {
     Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     addEntity(cave);
     // cave->vel(vec3(0,8,0));
-    cave->pos(vec3(-50,-20,-50));;
+    cave->pos(vec3(-50,-40,-50));;
     cave->mass(99999);
 
      //create skybox
@@ -178,6 +178,7 @@ void Level::buildDemoLevel()
 
     Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     cave->mass(9999);
+    cave->pos(vec3(0,-20,0));
     addEntity(cave);
 
     //create skybox

@@ -160,9 +160,9 @@ vec3 CylinderVolume::push(Volume *other){
 
     // fprintf(stderr,"DR: %.4f\n",dr.distance);
 
-    fprintf(stderr,"(%.3f,%.3f,%.3f) - (%.3f,%.3f,%.3f) : (%.3f,%.3f,%.3f)\n",
-      bottom.x,bottom.y,bottom.z,top.x,top.y,top.z,other->pos.pos.x,other->pos.pos.y,other->pos.pos.z);
-    fprintf(stderr," -- (%.3f,%.3f,%.3f) (%.3f,%.3f%.3f) : %.3f\n",dr.a.x,dr.a.y,dr.a.z,dr.b.x,dr.b.y,dr.b.z,dr.distance);
+    // fprintf(stderr,"(%.3f,%.3f,%.3f) - (%.3f,%.3f,%.3f) : (%.3f,%.3f,%.3f)\n",
+    //   bottom.x,bottom.y,bottom.z,top.x,top.y,top.z,other->pos.pos.x,other->pos.pos.y,other->pos.pos.z);
+    // fprintf(stderr," -- (%.3f,%.3f,%.3f) (%.3f,%.3f%.3f) : %.3f\n",dr.a.x,dr.a.y,dr.a.z,dr.b.x,dr.b.y,dr.b.z,dr.distance);
 
     dr.distance -= (v->R() + r);
 
