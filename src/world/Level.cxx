@@ -137,7 +137,7 @@ void Level::buildDemoLevel()
 { 
 	//create test objects
     // works between (-2.5, -4.5)
-    vec3 cubePos[] = {vec3(0,14,0), vec3(5.f, 10, 5.5f), vec3(10,0,15), vec3(10,-3,15), vec3(3, -13, 5),
+    vec3 cubePos[] = {vec3(0,14,0), vec3(5.f, 10, 5.5f), vec3(10,10,15), vec3(10,7,15), vec3(3, -13, 5),
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(0.8,1,0), vec3(1,0,1), vec3(1,0,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 2, i;

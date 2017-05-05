@@ -192,7 +192,7 @@ int main(int argc, char*argv[]){
     vector<const char*> levels;
 
     levels.push_back((const char*)strdup("../assets/levels/level0.json"));
-    levels.push_back(0);
+    // levels.push_back(0);
     levels.push_back((const char*)strdup("../assets/levels/level1.json"));
 
     world->addAllLevels(levels);

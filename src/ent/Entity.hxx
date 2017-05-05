@@ -135,6 +135,7 @@ protected:
 
     float _mass;
     float _dragCoef; //
+    float angularDragCoef;
 
     int id;
     std::string name;

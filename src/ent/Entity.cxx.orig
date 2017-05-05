@@ -29,8 +29,12 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     this->shouldSendUpdate = 1;
     this->volume = 0;
     _mass = 1.f;
+<<<<<<< HEAD
     _dragCoef=1.f;
+=======
+    _dragCoef=0.f;
     this->angularDragCoef = 5.f;
+>>>>>>> 217516094b72a08f893d8ffef81b1a73e5ff503a
 }
 
 Entity::~Entity()
