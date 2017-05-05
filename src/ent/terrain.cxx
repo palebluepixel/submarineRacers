@@ -6,8 +6,8 @@ Terrain::Terrain(int ID, vec3 initial_position, quaternion initial_orientation, 
 : Entity(ID,initial_position, initial_orientation, name, type, status, tick_interval){
     this->color = color;
 
-    this->texfile = string(texfile);
-    this->hmpfile = string(hmpfile);
+    this->texfile = string(strdup(texfile));
+    this->hmpfile = string(strdup(hmpfile));
 
     this->initalizeVisualData();
 }
