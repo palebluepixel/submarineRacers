@@ -1,5 +1,6 @@
 #include "CollisionUtils.hxx"
 #include "stdio.h"
+#include <util/log.hxx>
 
 enum PointStatus { IN, A, B };
 
@@ -33,8 +34,8 @@ PointStatus insideSegment(vec3 pt, Segment l) {
         if(lb>la)return B;
         else return A;
     }else if(la>=p && lb>=p){
-        if(la>lb)return A;
-        else return B;
+        if(la>lb)return B;
+        else return A;
     }
 }
 
@@ -78,6 +79,8 @@ DistanceResult shortestDistance(vec3 p, Segment l) {
     } else {
         p2 = b;
     }
+
+    // logln(LOGHIGH,"result: %s\n",stat==IN?"in":stat==A?"A":"B");
 
     return shortestDistance(p, p2);
 }
