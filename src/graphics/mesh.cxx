@@ -324,8 +324,9 @@ int HeightmapMesh::loadFile(std::string filename){
       if(zind<0)zind=0.01f;
       if(zind>=h-1.01f)zind=h-1.01f;
 
-      float xoff = xind-(int)xind;
-      float zoff = zind-(int)zind;
+      float xoff = 1.f-(xind-(int)xind);
+      float zoff = (zind-(int)zind);
+      // fprintf(stderr,"off: %f,%f\n",xoff,zoff);
 
       int xlow = (int)xind;
       int zlow = (int)zind;
@@ -336,7 +337,10 @@ int HeightmapMesh::loadFile(std::string filename){
 
       float val = val1*zoff + val1*(1-zoff);
 
+      // return xoff;
+      // return data[xlow + zlow*w];
       return val;
+      // return (val - data[xlow + zlow*w])*10.f;
 
     };
   }
