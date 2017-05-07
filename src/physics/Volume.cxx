@@ -186,7 +186,7 @@ vec3 CylinderVolume::push(Volume *other){
     dr.distance -= (v->R() + r);
 
     if(dr.distance < 0){
-      return dr.distance*normalize(dr.b-dr.a);
+      return -dr.distance*normalize(dr.b-dr.a);
     }
     else return vec3();
   }else if(!strcmp(other->type(),"heightmap")){
