@@ -24,6 +24,7 @@
 #include <network/MessageProtocols.hxx>
 #include <world/Level.hxx>
 #include <cstring>
+#include <util/InputManager.hxx>
 
 using namespace glm;
 using namespace std;
@@ -35,6 +36,8 @@ using namespace std;
 #define HANDLER_PARAMS int i
 #define HANDLER_PARAMS_PASSED i
 #endif
+
+class InputManager;
 
 /**
 
@@ -173,6 +176,7 @@ public:
     Entity *moveable;
     
     View *view;
+    InputManager *in_man;
 
 
 

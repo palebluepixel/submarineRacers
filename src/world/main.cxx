@@ -24,6 +24,7 @@
 #include <network/Client.hxx>
 #include <network/MessageProtocols.hxx>
 #include <cstring>
+//#include <>
 
 #define PORT 8008
 
@@ -100,7 +101,10 @@ GLFWwindow *initializeGLFW(){
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
+
+    world->in_man = new InputManager(window, world);
     // glfwSetKeyCallback (window, KeyCallback);
+
     glfwMakeContextCurrent (window);
 
     // initialize GLEW
