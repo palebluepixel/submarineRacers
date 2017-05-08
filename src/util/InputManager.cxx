@@ -54,10 +54,10 @@ static void static_cursorpos_callback(GLFWwindow* window, double xpos, double yp
 
 
 InputManager::InputManager(GLFWwindow *window, World *world) {
-    glfwSetWindowUserPointer(window, world);
+    /*glfwSetWindowUserPointer(window, world);
     glfwSetKeyCallback(window, static_key_callback);
     glfwSetMouseButtonCallback(window, static_mouse_callback);
-    glfwSetCursorPosCallback(window, static_cursorpos_callback);
+    glfwSetCursorPosCallback(window, static_cursorpos_callback);*/
 }
 
 /*

@@ -49,6 +49,14 @@ FlatShadingRenderer::FlatShadingRenderer (Shader *sh)
 FlatShadingRenderer::~FlatShadingRenderer ()
 { }
 
+void FlatShadingRenderer::enable()
+{
+  _shader->use();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glLineWidth(CHECKPOINT_DISPLAY_WIDTH);
+  glDisable(GL_CULL_FACE);
+}
+
 void FlatShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh) {
 
   mat4 projectionMat = view->projectionMatrix();
@@ -57,10 +65,9 @@ void FlatShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh) {
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
 
-  // todo: this function DOES NOT RENDER CORRECTLY
   setUniform(colorLoc, mesh.mesh->data.color);
-  mesh.mesh->draw();
 
+  mesh.mesh->draw();
 }
 
 

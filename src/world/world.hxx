@@ -130,10 +130,12 @@ public:
     inline void setView(View *view) { this->view = view; }
     inline void setEntityRenderer(Renderer *r) { this->r = r; }
     inline void setSkyboxRenderer(Renderer *r) { this->rsky = r; }
+    inline void setFlatRenderer(Renderer *r) { this->rflat = r; }
 
     inline View* getView() { return this->view; }
     inline Renderer* getEntityRenderer() { return this->r; }
     inline Renderer* getSkyboxRenderer() { return this->rsky; }
+    inline Renderer* getFlatRenderer()   { return this->rflat; }
 
     //Physics:
     //PhysicsEngine *physics;
@@ -204,6 +206,7 @@ private:
 
     Renderer *r;
     Renderer *rsky;
+    Renderer *rflat;
 
     Server *server;
     Client *client;

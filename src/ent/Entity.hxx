@@ -27,7 +27,8 @@ enum EntityType {
     //mine,
     //boost,
     //etc
-    TYPESUB //These don't get deleted when the world is free'd
+    TYPESUB, //These don't get deleted when the world is free'd
+    TYPECHECK
 };
 
 //can be used to "turn an object off" or delay placing it in the world

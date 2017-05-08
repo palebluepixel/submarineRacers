@@ -12,6 +12,7 @@
 #include <network/Server.hxx>
 #include <graphics/view.hxx>
 #include <graphics/renderer.hxx>
+#include <ent/Checkpoint.hxx>
 
 using namespace std;
 
@@ -75,10 +76,10 @@ public:
     Right now we pass in two renderers, one for entities, and one for the skybox. 
     We may eventually want to change this to be a map <char*,renderer*> and allow
     entities to define the "name" of the renderer that is supposed to render them.*/
-    void renderAll(View *view, Renderer *r, Renderer *rsky);
+    void renderAll(View *view, Renderer *r, Renderer *rsky, Renderer *rflat);
 
     /* Using the given view and renderer, draw all entities in the level. */
-    void renderAllEnts(View *view, Renderer *r);
+    void renderAllEnts(View *view, Renderer *r, Renderer *rflat);
     
     /* Skybox */
     void setSkybox(Gadget *skybox);

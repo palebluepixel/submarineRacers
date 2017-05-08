@@ -14,6 +14,9 @@ typedef struct
 	vec3 Rb;
 } hexagon;
 
+vec3 hexCenter(hexagon hex);
+Mesh * hexMesh(hexagon hex);
+
 
 /* Class for checkpoints and used to represent the path
 of a track. Use of the word "Player" in this file can refer
@@ -21,7 +24,8 @@ to a human player or an AI.  */
 class Checkpoint : public Entity {
 
 public:
-	Checkpoint();
+	Checkpoint(int ID, vec3 initial_position, quaternion initial_orientation,
+        std::string name, EntityType type, EntityStatus status, float tick_interval);
 	~Checkpoint();
 
 	/* When a player collides with this checkpoint, set the player's
@@ -33,7 +37,7 @@ protected:
 	/* Some kind of mesh representation - for now we will use the hex
 	of seekpoints, but this may eventually be rings, etc */	
 
-}
+};
 
 
 
@@ -44,14 +48,15 @@ through. Currently we don't check the order of the checkpoints */
 class FinishLine : public Checkpoint {
 
 public:
-	FinishLine();
+	FinishLine(int ID, vec3 initial_position, quaternion initial_orientation,
+        std::string name, EntityType type, EntityStatus status, float tick_interval);
 	~FinishLine();
 
 	/* When the player collides with this finish line, call the finishLine()
 	function of the world, which will go to the current track and check if
 	the lap is valid. */
 	//onCollide();
-} 
+}; 
 
 
 
@@ -65,7 +70,9 @@ In the current implementation, we represent seekpoints as a hexagon. */
 class SeekPoint : public Entity {
 
 public:
-	SeekPoint(hexagon hex, int mandatory);
+	SeekPoint(int ID, vec3 initial_position, quaternion initial_orientation,
+        std::string name, EntityType type, EntityStatus status, float tick_interval,
+        hexagon hex, int mandatory);
 	~SeekPoint();
 
 
@@ -98,7 +105,14 @@ public:
 	and Rb at all costs, and to seek towards the middle. 
 	*/
 	hexagon hex;
-}
+
+	void initalizeTextures(const char* texfile);
+    void initalizeVisualData();
+    void initalizeMeshes();
+
+protected:
+
+};
 
 
 

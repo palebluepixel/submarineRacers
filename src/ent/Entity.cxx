@@ -18,7 +18,7 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     setOrientation(initial_orientation);
 
     this->velocity = glm::vec3(0, 0, 0);
-    //this->angular_velocity
+    this->angular_velocity = vec3();
     this->forces = glm::vec3(0, 0, 0);
     //this.>torques
 

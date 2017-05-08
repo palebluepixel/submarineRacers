@@ -176,6 +176,14 @@ void Level::buildDemoLevel()
     for(i=1; i<4; i++)
     	this->addEntity(cubes[i]);
 
+    //create checkpoints
+    hexagon hex1; hex1.Lt = vec3(-5,2,-3); hex1.Mt = vec3(0,5,0); hex1.Rt = vec3(5,2,3); 
+    hex1.Lb = vec3(-5,-2,-3); hex1.Mb = vec3(0,-5,0); hex1.Rb = vec3(5,-2,3);
+    SeekPoint *seek1 = new SeekPoint(cur_id++, vec3(5,6,5), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex1, 1);
+    seek1->setMass(1);
+    seek1->setVelocity(vec3(0,0,0));
+    this->addEntity(seek1);
+
     Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     cave->mass(9999);
     cave->pos(vec3(0,-20,0));
@@ -280,21 +288,27 @@ void Level::sendPosUps(Server *server){
 }
 
 /* Render all renderable entities, the skybox ... */
-void Level::renderAll(View *view, Renderer *r, Renderer *rsky)
+void Level::renderAll(View *view, Renderer *r, Renderer *rsky, Renderer *rflat)
 {
 	this->renderSkybox(view, rsky);
-	this->renderAllEnts(view, r);
+	this->renderAllEnts(view, r, rflat);
 }
 
 /* Using the given view and renderer, draw all entities in the level. */
-void Level::renderAllEnts(View *view, Renderer *r)
+void Level::renderAllEnts(View *view, Renderer *r, Renderer *rflat)
 {
 	r->enable();
 	for (auto entry : this->entities) {
         auto entity = entry.second;
         //logln(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
         if(entity->isDrawable())
-        	r->render(view, entity);
+            if(entity->getEntityType() == TYPECHECK){
+                rflat->enable();
+                rflat->render(view, entity);
+            } else {
+                r->enable();
+                r->render(view, entity);
+            }
     }
 }
 

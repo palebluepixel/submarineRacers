@@ -288,7 +288,7 @@ int World::handleGraphicsTick(float t, float dt)
 void World::renderAll()
 {
     this->getLevel()->renderAll(this->getView(), this->getEntityRenderer(), 
-        this->getSkyboxRenderer());
+        this->getSkyboxRenderer(), this->getFlatRenderer());
 }
 
 /* Handle one tick of the networks clock. This is where we handle communication
@@ -382,9 +382,15 @@ void World::worldInitalizeDefault(int isServer)
     skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
     skyboxShader->build();
 
+    Shader *flatShader = new Shader();
+    flatShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/shader.vert"));
+    flatShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/shader.frag"));
+    flatShader->build();
+
     //create renderer for the given shader
     Renderer *r = new UnderwaterRenderer(shader);  
     Renderer *rsky = new SkyboxRenderer(skyboxShader);
+    Renderer *rflat = new FlatShadingRenderer(flatShader);
 
     //initialize camera
     Camera *camera = new Camera();
@@ -413,6 +419,7 @@ void World::worldInitalizeDefault(int isServer)
     this->setView(view);
     this->setEntityRenderer(r);
     this->setSkyboxRenderer(rsky);
+    this->setFlatRenderer(rflat);
 
 }
 
