@@ -40,11 +40,11 @@ public:
 
     void doSteering(float dt);
 
-    void rise();
-    void dive();
-    void turnLeft();
-    void turnRight();
-    void accelerate();
+    void rise(float amount);
+    void dive(float amount);
+    void turnLeft(float amount);
+    void turnRight(float amount);
+    void accelerate(float amount);
     void fire();
     void switchWeapons(uint8_t weapon);
    

@@ -68,20 +68,20 @@ void SubmarineActuator::doSteering(float dt) {
 }
 
 
-void SubmarineActuator::rise() {
-    state.depthChange += 1;
+void SubmarineActuator::rise(float amount) {
+    state.depthChange += amount;
 }
-void SubmarineActuator::dive() {
-    state.depthChange -= 1;
+void SubmarineActuator::dive(float amount) {
+    state.depthChange -= amount;
 }
-void SubmarineActuator::turnLeft() {
-    state.rotationChange += 1;
+void SubmarineActuator::turnLeft(float amount) {
+    state.rotationChange += amount;
 }
-void SubmarineActuator::turnRight() {
-    state.rotationChange -= 1;
+void SubmarineActuator::turnRight(float amount) {
+    state.rotationChange -= amount;
 }
-void SubmarineActuator::accelerate() {
-    state.acceleration += 3;
+void SubmarineActuator::accelerate(float amount) {
+    state.acceleration += amount;
 }
 void SubmarineActuator::fire() {
     state.fireWeapon = true;
