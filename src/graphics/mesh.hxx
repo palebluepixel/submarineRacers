@@ -65,22 +65,34 @@ public:
     void loadOBJ(char *file);
 
 };
-
+struct HeightmapData{
+  int width;
+  int height;
+  vec3 *verts;
+  vec3 *norms;
+  float *values;
+  unsigned int *indices;
+};
 class HeightmapMesh : public Mesh{
 public:
   HeightmapMesh();
-  void init(int w, int h, vec3 scale, float texscalex, float texscaley);
+  void init(int w, int h, vec2 texscale);
   int loadDefaultGenerator();
   int loadFile(std::string filename);
   void loadFileOBJ(char *file);
   void setGenerator(std::function<float(float,float)> in);
 
+  HeightmapData getHmpData();
+
+  float* getValues();
   inline int getWidth() { return this->width; }
-  inline int getHeight() { return this->height; } 
+  inline int getHeight() { return this->height; }
 
 private:
   std::function<float(float,float)> generator;
   int width, height;
+  float* values;
+  HeightmapData hmpdata;
 };
 
 class TransformedMesh{

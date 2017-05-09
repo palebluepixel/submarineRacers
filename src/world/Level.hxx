@@ -12,6 +12,7 @@
 #include <network/Server.hxx>
 #include <graphics/view.hxx>
 #include <graphics/renderer.hxx>
+#include <ent/Checkpoint.hxx>
 
 using namespace std;
 
@@ -39,6 +40,9 @@ public:
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();
     void buildDemoLevel();
+
+    /* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
+    void generateDummyPath(float r, vec3 *centers, int n, int& cur_id);
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);
@@ -75,10 +79,10 @@ public:
     Right now we pass in two renderers, one for entities, and one for the skybox. 
     We may eventually want to change this to be a map <char*,renderer*> and allow
     entities to define the "name" of the renderer that is supposed to render them.*/
-    void renderAll(View *view, Renderer *r, Renderer *rsky);
+    void renderAll(View *view, Renderer *r, Renderer *rsky, Renderer *rflat);
 
     /* Using the given view and renderer, draw all entities in the level. */
-    void renderAllEnts(View *view, Renderer *r);
+    void renderAllEnts(View *view, Renderer *r, Renderer *rflat);
     
     /* Skybox */
     void setSkybox(Gadget *skybox);

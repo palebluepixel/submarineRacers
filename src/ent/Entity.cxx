@@ -18,7 +18,7 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     setOrientation(initial_orientation);
 
     this->velocity = glm::vec3(0, 0, 0);
-    //this->angular_velocity
+    this->angular_velocity = vec3();
     this->forces = glm::vec3(0, 0, 0);
     //this.>torques
 
@@ -29,7 +29,8 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     this->shouldSendUpdate = 1;
     this->volume = 0;
     _mass = 1.f;
-    _dragCoef=0.f;
+    _dragCoef=1.f;
+    this->angularDragCoef = 5.f;
 }
 
 Entity::~Entity()
@@ -40,7 +41,6 @@ Entity::~Entity()
 
 void Entity::setPhysicsParams(PhysicsParams in){
     dragCoef(in.dragCoef);
-    logln(LOGLOW,"set %s -> %f",getName().c_str(),dragCoef());
 }
 vec3 Entity::setPosition(vec3 pos){
     // if(pos != this->position)
@@ -92,8 +92,7 @@ Volume* Entity::getVolume(){
 
 void Entity::updatePhysicsVolume(){
     if(volume){
-        volume->pos.pos = position;
-        volume->pos.orient = orientation;
+        volume->pos.set(this);
     }
 }
 
@@ -217,14 +216,14 @@ int Entity::onTick(float dt){
 
 // Some entites can have more complex drag functions
 vec3 Entity::getDrag() {
-    return velocity * length(velocity) * (-_dragCoef);
+    return velocity * (length(velocity) * (-_dragCoef) * 0.5f);
 }
 
 // Some entites can have more complex drag functions
 vec3 Entity::getDragTorque() {
     float l = length(angular_velocity);
     // if(l < 0.01)return vec3();
-    return -10.f * l * angular_velocity;
+    return -angularDragCoef * l * angular_velocity;
 }
 
 //change object's status to spawned and place it in its intial position

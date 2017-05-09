@@ -1,5 +1,11 @@
+#include <json/json.hpp>
 #include "world.hxx"
+#include <util/file.hxx>
+#include <util/conversion.hxx>
 
+#define SUBID_START (1 << 31)
+
+using json = nlohmann::json;
 
 World::World() 
 {
@@ -181,6 +187,15 @@ int World::handleEventUSERFINISH(HANDLER_PARAMS)
 }
 
 
+//quaternion quatFromSTDVec(std::vector<float> v) {
+//    return quaternion(v.at(0), v.at(1), v.at(2), v.at(3));
+//}
+//
+//vec3 vec3FromSTDVec(std::vector<float> v) {
+//    return vec3(v.at(0), v.at(1), v.at(2));
+//}
+
+
 int World::loadLevel(int i)
 {
     if(i >= this->levels.size()){
@@ -203,8 +218,10 @@ int World::loadLevel(int i)
     this->addSubsToLevel();
 
     // For now, tether our camera to the hard-coded sub
-    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(6969));
+    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(SUBID_START));
     logln(LOGMEDIUM, "Loading level %d completed.", i);
+
+    return 0;
 }
 
 void World::addLevel(const char*path)
@@ -222,7 +239,6 @@ void World::addAllLevels(vector<const char*> levels)
 
 void World::addSub(int id, Submarine *sub)
 {
-    printf("Adding sub %d %p\n", id, sub);
     this->subs.insert(make_pair(id, sub));
 }
 
@@ -234,13 +250,10 @@ Submarine * World::getSub(int id)
 void World::addSubsToLevel()
 {
     if(!this->curLevel) return;
-    printf("Adding subs to level %p\n", this->curLevel);
 
     for (auto pair : subs){
-        printf("%d %d %p\n", pair.first, pair.second->getID(), pair.second);
         curLevel->addEntity(pair.second);
     }
-    printf("finsihed adding subs\n");
 }
 
 
@@ -275,7 +288,7 @@ int World::handleGraphicsTick(float t, float dt)
 void World::renderAll()
 {
     this->getLevel()->renderAll(this->getView(), this->getEntityRenderer(), 
-        this->getSkyboxRenderer());
+        this->getSkyboxRenderer(), this->getFlatRenderer());
 }
 
 /* Handle one tick of the networks clock. This is where we handle communication
@@ -356,7 +369,7 @@ default. We may eventually want to write a function to load this stuff
 from a .config file instead of having it hard coded here. */
 void World::worldInitalizeDefault(int isServer)
 {
-    this->initalizeSubsDefault();
+    this->initalizeSubsFromFile("../assets/subs/subs0.json");
 
     // set up shaders.
     Shader *shader = new Shader();
@@ -369,14 +382,20 @@ void World::worldInitalizeDefault(int isServer)
     skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
     skyboxShader->build();
 
+    Shader *flatShader = new Shader();
+    flatShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/shader.vert"));
+    flatShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/shader.frag"));
+    flatShader->build();
+
     //create renderer for the given shader
     Renderer *r = new UnderwaterRenderer(shader);  
     Renderer *rsky = new SkyboxRenderer(skyboxShader);
+    Renderer *rflat = new FlatShadingRenderer(flatShader);
 
-    //initalize camera
+    //initialize camera
     Camera *camera = new Camera();
     //position, yaw-roll, up-vector
-    camera->init(vec3(-2,0,-2),vec3(0.5,0,0),vec3(0,1,0)); //location, looking-at, up
+    camera->init(vec3(10,10,-10),vec3(0,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
     /* Add tethered Camera */
@@ -400,16 +419,47 @@ void World::worldInitalizeDefault(int isServer)
     this->setView(view);
     this->setEntityRenderer(r);
     this->setSkyboxRenderer(rsky);
+    this->setFlatRenderer(rflat);
 
 }
 
-void World::initalizeSubsDefault()
+void World::initalizeSubsFromFile(const char* path)
 {
     int id = 0;
+    int subid = SUBID_START;
+    char *raw = fileio::load_file(path);
+    json raw_j = json::parse(raw);
 
+    std::vector<json> subs = raw_j["submarines"];
+
+    for (std::vector<json>::const_iterator it = subs.begin() ; it != subs.end(); ++it) {
+        json curSub = *it;
+        std::vector<float> pos = curSub["position"];
+        vec3 realpos = convert::vec3FromSTDVec(pos);
+        std::vector<float> orientation = curSub["orientation"];
+        quat realOrientation = convert::quatFromSTDVec(orientation);
+        std::vector<float> col = curSub["color"];
+        vec3 realcol = convert::vec3FromSTDVec(col);
+        string model_file = curSub["model"];
+        char *real_mf = strdup(model_file.c_str());
+        string n= curSub["name"];
+        char *real_name = strdup(n.c_str());
+        float mass = curSub["mass"];
+        float drag = curSub["drag"];
+        float tick_interval = curSub["tick-interval"];
+        Submarine * next = new Submarine(subid++, realpos, realOrientation, real_name, TYPESUB, SPAWNED, tick_interval, realcol, real_mf);
+        next->setMass(mass);
+        next->dragCoef(drag);
+        this->addSub(id++, next);
+    }
+}
+
+void World::initializeSubsDefault()
+{
+    int id = 0;
     Submarine * sub1 = new Submarine(6969,vec3(0,-26,38), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
     sub1->mass(2.0);
-    sub1->dragCoef(1.0);
+    sub1->dragCoef(0.2);
 
     this->addSub(id++, sub1);
 }

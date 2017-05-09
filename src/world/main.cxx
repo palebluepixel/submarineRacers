@@ -24,6 +24,7 @@
 #include <network/Client.hxx>
 #include <network/MessageProtocols.hxx>
 #include <cstring>
+//#include <>
 
 #define PORT 8008
 
@@ -91,7 +92,7 @@ GLFWwindow *initializeGLFW(){
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    GLFWwindow* window = glfwCreateWindow(1280, 960, "Submarines!", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(960, 720, "Submarines!", NULL, NULL);
     if (!window){
         glfwTerminate();
         Error::error("glfwCreateWindow failed",1);
@@ -100,7 +101,10 @@ GLFWwindow *initializeGLFW(){
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_callback);
     glfwSetCursorPosCallback(window, cursorpos_callback);
+
+    world->in_man = new InputManager(window, world);
     // glfwSetKeyCallback (window, KeyCallback);
+
     glfwMakeContextCurrent (window);
 
     // initialize GLEW
@@ -167,10 +171,10 @@ void update(double elapsed){
     
     // cout << keyboard[GLFW_KEY_UP] <<" , " << keyboard[GLFW_KEY_DOWN] << endl;
 
-    if(keyboard[GLFW_KEY_W])           cam->translateCamViewAxis(tSpeed);
-    if(keyboard[GLFW_KEY_S])           cam->translateCamViewAxis(-tSpeed);
-    if(keyboard[GLFW_KEY_A])           cam->translateCamStrafeAxis(-tSpeed);
-    if(keyboard[GLFW_KEY_D])           cam->translateCamStrafeAxis(tSpeed);
+    if(keyboard[GLFW_KEY_I])           cam->translateCamViewAxis(tSpeed);
+    if(keyboard[GLFW_KEY_K])           cam->translateCamViewAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_J])           cam->translateCamStrafeAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_L])           cam->translateCamStrafeAxis(tSpeed);
     if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
     if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
 

@@ -7,6 +7,9 @@
 #include <ent/Entity.hxx>
 #include "shader.hxx"
 
+#define CHECKPOINT_DISPLAY_WIDTH 3
+#define VOLUME_MESH_DISPLAY_WIDTH 1
+
 using namespace glm;
 
 //! an abstract base class that wraps a renderer behavior
@@ -58,6 +61,8 @@ class FlatShadingRenderer : public Renderer {
   public:
     FlatShadingRenderer (Shader *sh);
     ~FlatShadingRenderer ();
+
+    void enable();
 
     void render (View *view, TransformedMesh::MeshInfo mesh);
 };

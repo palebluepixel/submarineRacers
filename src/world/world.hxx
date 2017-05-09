@@ -24,6 +24,7 @@
 #include <network/MessageProtocols.hxx>
 #include <world/Level.hxx>
 #include <cstring>
+#include <util/InputManager.hxx>
 
 using namespace glm;
 using namespace std;
@@ -35,6 +36,8 @@ using namespace std;
 #define HANDLER_PARAMS int i
 #define HANDLER_PARAMS_PASSED i
 #endif
+
+class InputManager;
 
 /**
 
@@ -84,10 +87,11 @@ public:
     /* Create all renderers, views, cameras, etc for the world, based off a 
     default. We may eventually want to write a function to load this stuff
     from a .config file instead of having it hard coded here. 
-    If isServer==1, then we initalize the world as a server, otherwise, as 
+    If isServer==1, then we initialize the world as a server, otherwise, as 
     a client. */
     void worldInitalizeDefault(int isServer);
-    void initalizeSubsDefault();
+    void initializeSubsDefault();
+    void initalizeSubsFromFile(const char* path);
 
     //dispacth function for event handlers
     int handleEvent(EventType t, HANDLER_PARAMS);
@@ -126,10 +130,12 @@ public:
     inline void setView(View *view) { this->view = view; }
     inline void setEntityRenderer(Renderer *r) { this->r = r; }
     inline void setSkyboxRenderer(Renderer *r) { this->rsky = r; }
+    inline void setFlatRenderer(Renderer *r) { this->rflat = r; }
 
     inline View* getView() { return this->view; }
     inline Renderer* getEntityRenderer() { return this->r; }
     inline Renderer* getSkyboxRenderer() { return this->rsky; }
+    inline Renderer* getFlatRenderer()   { return this->rflat; }
 
     //Physics:
     //PhysicsEngine *physics;
@@ -172,6 +178,7 @@ public:
     Entity *moveable;
     
     View *view;
+    InputManager *in_man;
 
 
 
@@ -199,6 +206,7 @@ private:
 
     Renderer *r;
     Renderer *rsky;
+    Renderer *rflat;
 
     Server *server;
     Client *client;

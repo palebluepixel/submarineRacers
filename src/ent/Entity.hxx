@@ -15,7 +15,6 @@
 #include <network/MessageProtocols.hxx>
 
 using namespace glm;
-using namespace Space;
 using namespace std;
 
 
@@ -28,7 +27,8 @@ enum EntityType {
     //mine,
     //boost,
     //etc
-    TYPESUB //These don't get deleted when the world is free'd
+    TYPESUB, //These don't get deleted when the world is free'd
+    TYPECHECK
 };
 
 //can be used to "turn an object off" or delay placing it in the world
@@ -40,6 +40,8 @@ enum EntityStatus {
 };
 
 typedef glm::tquat<float> quaternion;
+
+class Volume;
 
 class Entity {
 
@@ -134,6 +136,7 @@ protected:
 
     float _mass;
     float _dragCoef; //
+    float angularDragCoef;
 
     int id;
     std::string name;

@@ -174,9 +174,10 @@ vec3 getNorm(vec3 a, vec3 b, vec3 c)
 /////////////////////////////////////////*/
 
 static std::function<float(float,float)> canyon_generator = [](float x, float z){
-  x*=8;
-  z*=8;
-  return pow(x,4)+z*z*z;
+  x=x-0.5f;
+  z=z-0.5f;
+  return 10.f*x*x-32.f*z*z*z*z;
+  // return -x;
 };
 
 /* A heightmap has three essential features:
@@ -184,11 +185,13 @@ static std::function<float(float,float)> canyon_generator = [](float x, float z)
 be a function that reads a pre-loaded array such that x and z are psuedo-indicies
 into the array (using some rounding to snap (x,z) values to the integer indexed grid),
 or it can be a function like cos(x,z). 
-  2. Dimensions, a width (maximum x) and height (maximum z). For an array-reading
-generator, this should be the bounds of the array.
-  3. Scales for positions and textures. It might be the case that a heightmap file
+  2. Dimensions--maximum indices for each dimension of the array.
+  3. Texture scale.
+
+  Note: It might be the case that a heightmap file
 has values in [0:1], and we want to transform that to an arbitrary height. We do this
-by calculating the vertex coordinates using the genrator and then scaling them. 
+by calculating the vertex coordinates using the genrator and then scaling them USING THE
+TRANSFORMEDMESH structure. A HeightmapMesh represents the UNSCALED heightmap.
 
 In this implementation, you must first set the generator for the heightmap (which
 calling loadFile() or loadDefaultGenerator() does), then call init() with the given
@@ -205,7 +208,9 @@ be any value such that {(x,z) | x in [0:w], z in [0:h]} is in the domain of the 
   Scale is a 3-vector representing the scaling for the position of each vertex. 
   the two texscale coords set the resolution for the texturing of the heightmap. 
 */
-void HeightmapMesh::init(int w, int h, vec3 scale, float texscalex, float texscaley){
+void HeightmapMesh::init(int w, int h, vec2 texscale){
+  this->width = w;
+  this->height = h;
   if(w<2)w=2;
   if(h<2)h=2;
   data.prim=GL_QUADS;
@@ -215,6 +220,8 @@ void HeightmapMesh::init(int w, int h, vec3 scale, float texscalex, float texsca
   vec3 *norms = new vec3[w*h];
   unsigned int *indices =new unsigned int[4*(w-1)*(h-1)];
 
+  values = new float[w*h];
+
   float x_inc = 1.f/float(w);
   float z_inc = 1.f/float(h);
 
@@ -223,11 +230,12 @@ void HeightmapMesh::init(int w, int h, vec3 scale, float texscalex, float texsca
   int ind=0;
   for(int z=0;z<h;++z){
     for(int x=0;x<w;++x){
-      xp=-0.5f+x_inc*float(x);
-      zp=-0.5f+z_inc*float(z);
-      texcs[ind] = vec2(-0.0f+x_inc*float(x)/texscalex, -0.0f+z_inc*float(z)/texscaley);
+      xp=x_inc*float(x);
+      zp=z_inc*float(z);
+      texcs[ind] = vec2(x_inc*float(x)/texscale.x, z_inc*float(z)/texscale.y);
       // verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
-      verts[ind] = vec3(xp*scale[0],this->generator(xp,zp)*scale[1],zp*scale[2]); //scale as well
+      verts[ind] = vec3(xp,this->generator(xp,zp),zp);
+      values[ind] = verts[ind].y;
       norms[ind] = vec3(0,1,0);
       ++ind;
     }
@@ -239,6 +247,19 @@ void HeightmapMesh::init(int w, int h, vec3 scale, float texscalex, float texsca
       indices[ind+2]=i*w+(j+1);
       indices[ind+1]=(i+1)*w+(j+1);
       indices[ind+0]=(i+1)*w+j;
+
+      vec3 v1 = verts[indices[ind+0]];
+      vec3 v2 = verts[indices[ind+1]];
+      vec3 v3 = verts[indices[ind+3]];
+      vec3 norm = normalize(cross(v2-v1,v3-v1));
+
+      // fprintf(stderr,"norm %d: %.3f,%.3f,%.3f\n",indices[ind+0],norm.x,norm.y,norm.z);
+
+      norms[indices[ind+0]] = norm;
+      norms[indices[ind+1]] = norm;
+      norms[indices[ind+2]] = norm;
+      norms[indices[ind+3]] = norm;
+
       ind+=4;
     }
   }
@@ -247,6 +268,9 @@ void HeightmapMesh::init(int w, int h, vec3 scale, float texscalex, float texsca
   LoadTexCoords(w*h,texcs);
   loadVertices(w*h,verts);
   loadIndices(4*(w-1)*(h-1),indices);
+
+  hmpdata = HeightmapData{w,h,verts,norms,values,indices};
+
 }
 
 /* Load a functional generator which produces a canyon. */
@@ -278,8 +302,6 @@ int HeightmapMesh::loadFile(std::string filename){
       }
       w = atoi(tok);
       h = atoi(tok2);
-      this->width = w;
-      this->height = h;
       data = new float[w*h];
     }
     else{
@@ -295,14 +317,30 @@ int HeightmapMesh::loadFile(std::string filename){
   }
   if(!err){
     generator = [data,w,h](float x, float z){
-      int xind = (x+0.5)*w;
-      int zind = (z+0.5)*h;
-      if(xind<0)xind=0;
-      if(xind>=w)xind=w-1;
-      if(zind<0)zind=0;
-      if(zind>=h)zind=h-1;
+      float xind = x*w;
+      float zind = z*h;
+      if(xind<0)xind=0.01f;
+      if(xind>=w-1.01f)xind=w-1.01f;
+      if(zind<0)zind=0.01f;
+      if(zind>=h-1.01f)zind=h-1.01f;
 
-      return data[xind + zind*w];
+      float xoff = 1.f-(xind-(int)xind);
+      float zoff = (zind-(int)zind);
+      // fprintf(stderr,"off: %f,%f\n",xoff,zoff);
+
+      int xlow = (int)xind;
+      int zlow = (int)zind;
+
+      // bilinearly interpolate
+      float val1 = data[xlow + zlow*w]*xoff + data[xlow + zlow*w +1]*(1-xoff);
+      float val2 = data[xlow + (zlow+1)*w]*xoff + data[xlow + (zlow+1)*w +1]*(1-xoff);
+
+      float val = val1*zoff + val1*(1-zoff);
+
+      // return xoff;
+      // return data[xlow + zlow*w];
+      return val;
+      // return (val - data[xlow + zlow*w])*10.f;
 
     };
   }
@@ -370,59 +408,14 @@ void HeightmapMesh::loadFileOBJ(char *file){
     // STEP 5: 
   }
 
-
-
   free(loaded);
-  //            ^^^
+}
 
-  // OBJmodel *model = OBJReadOBJ (file);
-
-  // printf("texture: %s\n",model->mtllibname);
-
-  // vec3 *verts = new vec3[model->numtriangles*3];
-  // vec3 *norms = new vec3[model->numtriangles*3];
-  // vec2 *texcs = new vec2[model->numtriangles*3];
-
-  // // indices. for our purposes, it is {0,1,2, 3,4,5, ... n*3};
-  // unsigned int *indices =new unsigned int[model->numtriangles*3];
-  // for(int i=0;i<model->numtriangles*3;++i){
-  //   indices[i]=i;
-  // }
-
-  // OBJgroup *gp = model->groups;
-
-  // int ind=0;
-  // while(gp != 0){
-  //   // struct Material mat = model->Material(gp->material);
-  //   // printf("g texture: %s\n",mat.diffuseMap.c_str());
-  //   for(int i=0;i<gp->numtriangles;++i){
-  //     OBJtriangle &tri = model->triangles[gp->triangles[i]];
-  //     verts[ind+0]=model->vertices[tri.vindices[0]];
-  //     verts[ind+1]=model->vertices[tri.vindices[1]];
-  //     verts[ind+2]=model->vertices[tri.vindices[2]];
-
-  //     // printf("triangle with %d %d %d\n",tri.vindices[0],tri.vindices[1],tri.vindices[2]);
-  //     // printf("triangle starting (%.3f,%.3f,%.3f)\n",verts[ind].x,verts[ind].y,verts[ind].z);
-
-  //     norms[ind+0]=model->normals[tri.nindices[0]];
-  //     norms[ind+1]=model->normals[tri.nindices[1]];
-  //     norms[ind+2]=model->normals[tri.nindices[2]];
-
-  //     if(model->numtexcoords > 0){
-  //       texcs[ind+0]=model->texcoords[tri.tindices[0]];
-  //       texcs[ind+1]=model->texcoords[tri.tindices[1]];
-  //       texcs[ind+2]=model->texcoords[tri.tindices[2]];
-  //     }
-
-  //     ind+=3;
-  //   }
-  //   gp = gp->next;
-  // }
-
-  // loadNormals(model->numtriangles*3, norms);
-  // LoadTexCoords(model->numtriangles*3, texcs);
-  // loadVertices(model->numtriangles*3, verts);
-  // loadIndices(model->numtriangles*3, indices);
+float* HeightmapMesh::getValues(){
+  return values;
+}
+HeightmapData HeightmapMesh::getHmpData(){
+  return hmpdata;
 }
 
 void HeightmapMesh::setGenerator(std::function<float(float,float)> in){

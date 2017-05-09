@@ -4,7 +4,9 @@
 
 #include <glm/glm.hpp>
 #include <graphics/mesh.hxx>
+#include <ent/Entity.hxx>
 #include <vector>
+#include "CollisionUtils.hxx"
 
 
 namespace Space{
@@ -19,12 +21,8 @@ using namespace glm;
  *  submarine world: ie. depth (integer), 3D position
  *  in space, 3D orientation, etc...
  */
-typedef struct{
-    vec3 pos;
-    quaternion orient;
-    float depth;
-    float mass;
-}Pos;
+class Entity;
+
 
 /**
  *  abstract class Volume object representing an oriented
@@ -35,6 +33,17 @@ typedef struct{
 class Volume{
 protected:
 public:
+    class Pos{
+    public:
+        Pos(Entity *in);
+        void set(Entity *in);
+        mat4 transform;
+        mat4 transformInv;
+        bool transformInv_calc;
+        vec3 pos;
+        quaternion ori;
+        float depth;
+    };
     Volume(Pos ps);
     Pos pos;    // where is this object in space?
     virtual inline const char *type() =0;
@@ -71,7 +80,7 @@ public:
 
 class SphereVolume : public Volume{
 public:
-    SphereVolume(vec3 pp, double rad);
+    SphereVolume(Pos pos, double rad);
     const char *type();
     double distance(Volume *other);
 
@@ -90,7 +99,7 @@ protected:
 
 class CylinderVolume : public Volume{
 public:
-    CylinderVolume(vec3 pp, double rad, double height, glm::mat4 rotation);
+    CylinderVolume(Pos pos, double rad, double height, glm::mat4 rotation);
     const char *type();
     double distance(Volume *other);
 
@@ -98,6 +107,9 @@ public:
     vec3 pushAlong(Volume *other, vec3 direction);
     bool collision(Volume *other);
     bool containsPoint(vec3 pt);
+    float R();
+    mat4 Rotation();
+    float H();
 
     TransformedMesh collisionMesh();
     static Mesh* meshcyl;
@@ -109,7 +121,7 @@ protected:
 
 class HeightmapVolume : public Volume{
 public:
-    HeightmapVolume(vec3 pp, vec3 scale, int width, int height, float *data);
+    HeightmapVolume(Pos pos, mat4 scale, int width, int height, HeightmapData data);
     const char *type();
 
     double distance(Volume *other);
@@ -123,7 +135,26 @@ public:
 protected:
     int width;
     int height;
-    vec3 scale;
+    mat4 scale;
+    mat4 scaleInv;
+    HeightmapData data;
+};
+
+
+class FlatVolume : public Volume{
+public:
+    FlatVolume(Pos pos, Polygon polygon);
+
+    const char *type();
+    double distance(Volume *other);
+
+    vec3 push(Volume *other);
+    vec3 pushAlong(Volume *other, vec3 direction);
+    bool collision(Volume *other);
+    bool containsPoint(vec3 pt);
+    TransformedMesh collisionMesh();
+private:
+    Polygon polygon;
 };
 
 class UnionVolume : public Volume{
