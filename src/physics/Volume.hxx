@@ -140,6 +140,23 @@ protected:
     HeightmapData data;
 };
 
+
+class FlatVolume : public Volume{
+public:
+    FlatVolume(Pos pos, Polygon polygon);
+
+    const char *type();
+    double distance(Volume *other);
+
+    vec3 push(Volume *other);
+    vec3 pushAlong(Volume *other, vec3 direction);
+    bool collision(Volume *other);
+    bool containsPoint(vec3 pt);
+    TransformedMesh collisionMesh();
+private:
+    Polygon polygon;
+};
+
 class UnionVolume : public Volume{
     UnionVolume(std::vector<Volume> volumes);
     std::vector<Volume> volumes;
