@@ -6,6 +6,10 @@
 
 class Hexagon {
 public:
+	/* Constuct a regular hexagon at the given center with the given radius,
+	with a normal facing down the z-axis */
+	Hexagon(vec3 center, float r);
+
 	/* Construct a hexagon using the 6 corner points */
 	Hexagon(vec3 Lt, vec3 Lb, vec3 Mt, vec3 Mb, vec3 Rt, vec3 Rb);
 
@@ -117,6 +121,9 @@ public:
 	void initalizeTextures(const char* texfile);
     void initalizeVisualData();
     void initalizeMeshes();
+
+    /* Get AI seek info */
+    vec3 getCenter();
 
 protected:
 

@@ -1,5 +1,20 @@
 #include "Checkpoint.hxx"
 
+/* Constuct a regular hexagon at the given center with the given radius,
+with a normal facing down the z-axis */
+Hexagon::Hexagon(vec3 center, float r)
+{
+	this->Lt = r*vec3(-0.866,0.5,0)+center;
+	this->Lb = r*vec3(-0.866,-0.5,0)+center;
+	this->Mt = r*vec3(0,1,0)+center;
+	this->Mb = r*vec3(0,-1,0)+center;
+	this->Rt = r*vec3(0.866,0.5,0)+center;
+	this->Rb = r*vec3(0.866,-0.5,0)+center;
+
+	this->center = center;
+	this->normal = vec3(0,0,1);
+
+}
 
 /* Construct a hexagon using the 6 corner points */
 Hexagon::Hexagon(vec3 Lt, vec3 Lb, vec3 Mt, vec3 Mb, vec3 Rt, vec3 Rb)
@@ -93,7 +108,10 @@ SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientati
 	this->initalizeVisualData();
 }
 
-SeekPoint::~SeekPoint() {};
+SeekPoint::~SeekPoint() 
+{
+	delete(this->hex);
+};
 
 
 void SeekPoint::initalizeVisualData(){
@@ -119,4 +137,10 @@ void SeekPoint::initalizeTextures(const char* texfile)
     texture2d * cubetex = new texture2d(GL_TEXTURE_2D, image);
     this->tex = cubetex;
     this->img = image;
+}
+
+
+vec3 SeekPoint::getCenter()
+{
+	return this->hex->center;
 }

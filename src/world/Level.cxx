@@ -132,6 +132,21 @@ void Level::buildLevelFromFile() {
 
 }
 
+/* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
+void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
+{
+    int i;
+    Hexagon *hex;
+    SeekPoint *seek;
+    for(i=0; i<n; i++){
+        hex = new Hexagon(centers[i],r);
+        seek = new SeekPoint(cur_id++, centers[i], quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex, 1);
+        seek->setMass(1);
+        seek->setVelocity(vec3(0,0,0));
+        this->addEntity(seek);
+    }
+}
+
 /* DEMO LEVEL */
 void Level::buildDemoLevel() 
 { 
@@ -177,11 +192,15 @@ void Level::buildDemoLevel()
     	this->addEntity(cubes[i]);
 
     //create checkpoints
-    Hexagon * hex1 = new Hexagon(vec3(-5,2,-3), vec3(-5,-2,-3), vec3(0,5,0), vec3(0,-5,0), vec3(5,2,3), vec3(5,-2,3));
+    /*Hexagon * hex1 = new Hexagon(vec3(-5,2,-3), vec3(-5,-2,-3), vec3(0,5,0), vec3(0,-5,0), vec3(5,2,3), vec3(5,-2,3));
     SeekPoint *seek1 = new SeekPoint(cur_id++, vec3(5,6,5), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex1, 1);
     seek1->setMass(1);
     seek1->setVelocity(vec3(0,0,0));
-    this->addEntity(seek1);
+    this->addEntity(seek1);*/
+
+    int ncenters = 6;
+    vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,8,25)};
+    this->generateDummyPath(3, centers, ncenters, cur_id);
 
     Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     cave->mass(9999);
