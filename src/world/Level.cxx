@@ -177,8 +177,7 @@ void Level::buildDemoLevel()
     	this->addEntity(cubes[i]);
 
     //create checkpoints
-    hexagon hex1; hex1.Lt = vec3(-5,2,-3); hex1.Mt = vec3(0,5,0); hex1.Rt = vec3(5,2,3); 
-    hex1.Lb = vec3(-5,-2,-3); hex1.Mb = vec3(0,-5,0); hex1.Rb = vec3(5,-2,3);
+    Hexagon * hex1 = new Hexagon(vec3(-5,2,-3), vec3(-5,-2,-3), vec3(0,5,0), vec3(0,-5,0), vec3(5,2,3), vec3(5,-2,3));
     SeekPoint *seek1 = new SeekPoint(cur_id++, vec3(5,6,5), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex1, 1);
     seek1->setMass(1);
     seek1->setVelocity(vec3(0,0,0));
