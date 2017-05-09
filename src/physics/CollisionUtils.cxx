@@ -1,6 +1,7 @@
 #include "CollisionUtils.hxx"
 #include "stdio.h"
 #include <util/log.hxx>
+#include <limits>
 
 enum PointStatus { IN, A, B };
 
@@ -40,7 +41,22 @@ PointStatus insideSegment(vec3 pt, Segment l) {
 }
 
 bool parallel(vec3 a, vec3 b) {
-    return a * (length(b) / length(a)) == b;
+    /* Determine if parallel using three divisions,
+     * two subtractions, and twelve boolean operators.
+     */
+    float f1 = b.x/a.x;
+    float f2 = b.y/a.y;
+    float f3 = b.z/a.z;
+
+    // all three ratios are 0/0
+    if(f1!=f1 && f2!=f2 && f3!=f3)return true;
+
+    return fabsf(f1-f2)<0.0001f && fabsf(f2-f3)<0.0001f;
+
+    /* Uses two sqrts, seven multiplications, one
+     * division, four addditions, and one boolean op.
+     */
+    // return a * (length(b) / length(a)) == b;
 }
 
 
@@ -144,4 +160,117 @@ DistanceResult shortestDistance(Segment l1, Segment l2) {
     DistanceResult dr = best;
     // fprintf(stderr,"Result: (%.3f,%.3f,%.3f) (%.3f,%.3f%.3f) : %.3f",dr.a.x,dr.a.y,dr.a.z,dr.b.x,dr.b.y,dr.b.z,dr.distance);
     return best;
+}
+
+
+Polygon::Polygon(vec3 *pts, int n) : n(n){
+    points = new vec2[n];
+    points3 = new vec3[n];
+    vec3 avg;
+    for(int i=0;i<n;++i){
+        points3[i]=pts[i];
+        avg+=pts[i];
+    }
+    avg/=float(n);
+    locus=avg;
+    normal = normalize(cross(pts[1]-pts[0],pts[2]-pts[0]));
+    x=cross(normal,vec3(1,0,0));
+    if(length(x)<0.001){
+        x=cross(normal,vec3(0,1,0));
+    }
+    z=cross(normal,x);
+    for(int i=0;i<n;++i){
+        points[i]=vec2(dot(pts[i]-locus,x),dot(pts[i]-locus,z));
+    }
+}
+bool Polygon::pointInPolygon(vec3 pt){
+    // ray casting algorithm to test if
+    // point in polygon. refer to
+    // https://en.wikipedia.org/wiki/Point_in_polygon
+    // https://en.wikipedia.org/wiki/Even%E2%80%93odd_rule
+
+    // 1. reduce to 2D coordinates.
+    vec3 proj = (pt-locus) - dot(pt-locus,normal)*normal;
+    vec2 p(dot(proj,x),dot(proj,z));
+
+    fprintf(stderr,"testing: (%.3f,%.3f,%.3f)\n",proj.x,proj.y,proj.z);
+    fprintf(stderr,"testing: (%.3f,%.3f)\n",p.x,p.y);
+
+    // 2. intersect with ray {(0,0) along positive x axis}.
+    int ray_int =0;
+    for(int i=0;i<n;i++){
+        vec2 a = points[i]-p;
+        vec2 b = i==n?points[0]:points[i+1]-p;
+
+        // test ray intersection.
+        if((a.y<0 && b.y>0) || (a.y>0 && b.y<0)){
+            float zero = a.x+(b.x-a.x)*(-a.y/(b.y-a.y));
+            if(zero>0){
+                fprintf(stderr,"(%.3f,%.3f),(%.3f,%.3f)\n",a.x,a.y,b.x,b.y);
+                ++ray_int;
+            }
+        }
+    }
+
+    // return true if odd number of intersections.
+    return ray_int && (ray_int % 2);
+}
+DistanceResult Polygon::distance(vec3 pt){
+    if(pointInPolygon(pt)){
+        return DistanceResult{pt,(pt-locus) - (dot(pt-locus,normal)*normal),dot(pt-locus,normal)};
+    }
+    else{
+        DistanceResult mindr;
+        float mindist = std::numeric_limits<float>::infinity();
+
+        // check distance against each segment of edge.
+        for(int i=0;i<n;i++){
+            vec3 a = points3[i];
+            vec3 b = i==n?points3[0]:points3[i+1];
+            DistanceResult dr = shortestDistance(pt,Segment{a,b});
+            if(dr.distance<mindist){
+                mindist = dr.distance;
+                mindr=dr;
+            }
+        }
+        return mindr;
+    }
+}
+DistanceResult Polygon::distance(Segment line){
+    if(pointInPolygon(line.a) && pointInPolygon(line.b)){
+        // both points in polygon. test segment endpoints.
+        float distA = dot(line.a-locus,normal);
+        float distB = dot(line.b-locus,normal);
+
+        // check if line intersects plane.
+        bool intersection = (distA>0 && distB<0) || (distA<0 && distB>0);
+        float mul = (intersection)?(-1.f):(1.f);
+        if(fabsf(distA)<fabsf(distB)){
+            // line.a is closer to the plane than line.b
+            return DistanceResult{line.a,(line.a-normal*distA),distA*mul};
+        }else{
+            // line.b is closer to the plane than line.a
+            return DistanceResult{line.b,(line.b-normal*distB),distB*mul};
+        }
+    }
+    else{
+        // otherwise, return minimum distance from all segments.
+        DistanceResult mindr;
+        float mindist = std::numeric_limits<float>::infinity();
+
+        // check distance against each segment of edge.
+        for(int i=0;i<n;i++){
+            vec3 a = points3[i];
+            vec3 b = i==n?points3[0]:points3[i+1];
+            DistanceResult dr = shortestDistance(line,Segment{a,b});
+            if(dr.distance<mindist){
+                mindist = dr.distance;
+                mindr=dr;
+            }
+        }
+        return mindr;
+    }
+}
+Polygon::~Polygon(){
+    delete points;
 }

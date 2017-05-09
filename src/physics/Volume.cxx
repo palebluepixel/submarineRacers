@@ -341,3 +341,38 @@ bool HeightmapVolume::containsPoint(vec3 pt){
 TransformedMesh HeightmapVolume::collisionMesh(){
   return TransformedMesh(TransformedMesh::MeshInfo(0,glm::mat4()));
 }
+
+
+//////////////////////////////////////////*
+//           Flat Volume
+/////////////////////////////////////////*/
+
+FlatVolume::FlatVolume(Pos posi, Polygon polygon) : Volume(posi), polygon(polygon){
+
+}
+const char *FlatVolume::type(){return "flat";}
+
+double FlatVolume::distance(Volume *other){
+  return 1.f;
+}
+
+vec3 FlatVolume::push(Volume *other){
+  if(other->type() == "sphere" || other->type() == "cylinder"){
+    return vec3();
+  }
+  else{
+    return vec3(0,0,0);
+  }
+}
+vec3 FlatVolume::pushAlong(Volume *other, vec3 direction){
+  return vec3();
+}
+bool FlatVolume::collision(Volume *other){
+  return false;
+}
+bool FlatVolume::containsPoint(vec3 pt){
+  return false;
+}
+TransformedMesh FlatVolume::collisionMesh(){
+  return TransformedMesh(TransformedMesh::MeshInfo(0,glm::mat4()));
+}
