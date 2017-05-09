@@ -135,6 +135,9 @@ void Level::buildLevelFromFile() {
 /* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
 void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
 {
+    Track *track = new Track();
+    this->track = track;
+
     int i;
     Hexagon *hex;
     SeekPoint *seek;
@@ -143,6 +146,7 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
         seek = new SeekPoint(cur_id++, centers[i], quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex, 1);
         seek->setMass(1);
         seek->setVelocity(vec3(0,0,0));
+        track->addSeekPoint(seek);
         this->addEntity(seek);
     }
 }
@@ -175,7 +179,7 @@ void Level::buildDemoLevel()
     cubes[1]->dragCoef(0.f);
 
     for(i=2; i<4; i++){
-        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
+        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/in_any_case_heres_wonderwhale.obj");
         cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
         cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         // cubes[i]->setVelocity(vec3(0,-3,0));
@@ -198,6 +202,15 @@ void Level::buildDemoLevel()
     seek1->setVelocity(vec3(0,0,0));
     this->addEntity(seek1);*/
 
+    Submarine * sub = new Submarine(cur_id++,vec3(10,10,10), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
+    sub->mass(1.0);
+    sub->dragCoef(0.1); 
+    SubmarineAI * ai1 = new SubmarineAI();
+    ai1->bindToSubAct((SubmarineActuator*)sub->getActuator()); 
+    this->addEntity(sub);
+    this->addAI(ai1, 0.1);
+
+
     int ncenters = 6;
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,8,25)};
     this->generateDummyPath(3, centers, ncenters, cur_id);
@@ -212,7 +225,7 @@ void Level::buildDemoLevel()
     this->setSkybox(skybox);
 
     //logln(LOGHIGH,"built level.");
-
+//
 }
 
 /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
@@ -357,10 +370,10 @@ void Level::interpolateLevel(float dt) {
 void Level::updateAIs(float dt) {
     for(AI_entry en : ais) {
         en.time_left -= dt;
-        if(en.time_left <= 0) {
+        //if(en.time_left <= 0) {
             en.time_left = en.tickrate; //REMARK could be better with time_left += tickrate depending on behavior
             en.ai->updateAI();
-        }
+        //}
     }
 }
 
@@ -378,6 +391,7 @@ void Level::physicsTick(float dt) {
         //fprintf(stderr,"%s, %f, %f\n",en.second->getName().c_str(),dt,en.second->vel().y);
         en.second->onTick(dt);
         en.second->updatePhysicsVolume();
+        //printf("Doing physics tick for entity %p\n", en.second);
     }
     handleCollisions(dt);
 }

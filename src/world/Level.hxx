@@ -13,6 +13,7 @@
 #include <graphics/view.hxx>
 #include <graphics/renderer.hxx>
 #include <ent/Checkpoint.hxx>
+#include <world/Track.hxx>
 
 using namespace std;
 
@@ -88,6 +89,10 @@ public:
     void setSkybox(Gadget *skybox);
     void renderSkybox(View *view, Renderer *r);
 
+    /* Track */
+    inline void setTrack(Track *track) { this->track = track; }
+    inline Track * getTrack() { return this->track; }
+
     void updateLevel(float dt);
     void interpolateLevel(float dt);
 
@@ -103,6 +108,8 @@ private:
     std::vector<AI_entry> ais;  //REMARK this might need to become a list later if we start doing a lot of deleteions
 
     Gadget *skybox;
+
+    Track *track;
 
     void physicsTick(float dt);
     void handleCollisions(float dt);

@@ -4,6 +4,23 @@
 #include <util/log.hxx>
 #include <ent/Actuator.hxx>  
 
+AI::AI() {}
+
+AI::~AI() {}
+
+SubmarineAI::SubmarineAI()
+{
+    this->curSeekPoint = -1;
+}
+
+SubmarineAI::~SubmarineAI() {}
+
+
+void SubmarineAI::updateAI()
+{
+    this->subAct->accelerate();
+}
+
 // AI functions
 int return_0(int x){
 //what is a computer
@@ -13,8 +30,10 @@ int return_0(int x){
 struct ai_steer {
 	//should keep track of the forces 
 	// the ai is trying to apply
-	int x
+	int x;
 };
+
+
 
 //ai_steer follow_track(Checkpoint* track,entity sumbarine){
 //given a track, currect checkpoint index, and a submarine
