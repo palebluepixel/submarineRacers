@@ -18,8 +18,10 @@ SubmarineAI::~SubmarineAI() {}
 
 void SubmarineAI::updateAI()
 {
-    this->subAct->accelerate(3);
-    this->subAct->turnRight(3);
+    Submarine *sub = this->subAct->getSub();
+
+    this->subAct->accelerate(sub->getMaxAccel());
+    this->subAct->turnRight(sub->getMaxTurn());
 }
 
 // AI functions

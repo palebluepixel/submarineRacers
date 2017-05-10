@@ -13,6 +13,11 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
 
     this->actuator = new SubmarineActuator(this);
     this->angularDragCoef = 20.f;
+
+    this->maxAccel = 3;
+    this->maxTurn = 3;
+    this->maxRise = 3;
+    this->maxDive = 3;
 }
 
 void Submarine::switchWeapons(uint8_t weapon) {
@@ -42,6 +47,17 @@ void Submarine::initalizeMeshes()
     mesh->data.tex = this->tex;
     meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh, mat4())));
 }
+
+/* Return movement and handling parameters for this sub. These may eventually be
+more complicated, for example they may take into account status conditions and 
+powerups affecting this sub, and maximum acceleration may depend on depth. */
+float Submarine::getMaxAccel() { return this->maxAccel; }
+float Submarine::getMaxTurn() { return this->maxTurn; }
+float Submarine::getMaxRise() { return this->maxRise; }
+float Submarine::getMaxDive() { return this->maxDive; }
+
+
+
 
 
 void SubmarineSteeringState::reset() {
