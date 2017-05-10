@@ -15,7 +15,7 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
     this->angularDragCoef = 20.f;
 
     this->maxAccel = 3;
-    this->maxTurn = 3;
+    this->maxTurn = 10;
     this->maxRise = 3;
     this->maxDive = 3;
 }

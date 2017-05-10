@@ -202,9 +202,9 @@ void Level::buildDemoLevel()
     seek1->setVelocity(vec3(0,0,0));
     this->addEntity(seek1);*/
 
-    Submarine * sub = new Submarine(cur_id++,vec3(10,10,10), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sub_3.obj");
+    Submarine * sub = new Submarine(cur_id++,vec3(10,10,10), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
     sub->mass(1.0);
-    sub->dragCoef(0.1); 
+    sub->dragCoef(0.3); 
     SubmarineAI * ai1 = new SubmarineAI();
     ai1->bindToSubAct((SubmarineActuator*)sub->getActuator()); 
     this->addEntity(sub);

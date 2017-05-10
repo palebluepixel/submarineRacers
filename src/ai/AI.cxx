@@ -3,6 +3,11 @@
 #include <cmath>
 #include <util/log.hxx>
 #include <ent/Actuator.hxx>  
+#include <glm/gtx/vector_angle.hpp>
+#include <util/interpolate.hxx>
+#include <world/world.hxx>
+
+extern World *world;
 
 AI::AI() {}
 
@@ -18,10 +23,69 @@ SubmarineAI::~SubmarineAI() {}
 
 void SubmarineAI::updateAI()
 {
-    Submarine *sub = this->subAct->getSub();
+    /* Get our seek point as the next checkpoint in the track */
+    SeekPoint *seek = world->getLevel()->getTrack()->getNextSeekPoint(0,1);
+    vec2 point = seek->getCenter();
 
-    this->subAct->accelerate(sub->getMaxAccel());
-    this->subAct->turnRight(sub->getMaxTurn());
+    this->seekPoint(point);
+
+    //this->subAct->accelerate(sub->getMaxAccel());
+    //this->subAct->turnRight(sub->getMaxTurn());
+}
+
+/* Returns 1 if the target is on the left, 0 otherwise */
+int targetOnLeft(float angle)
+{
+    return angle > 0;
+}
+
+void SubmarineAI::turnTowards(float angle, float threshAny, float threshFull)
+{
+    Submarine *sub = this->getOurSub();
+    
+    float turnSpeed = LERP_FLOAT(abs(angle), threshAny, threshFull, 0, sub->getMaxTurn());
+    printf("Angle: %f Turn speed: %f\n", angle, turnSpeed);
+
+    if(targetOnLeft(angle)) {
+        this->subAct->turnLeft(turnSpeed);
+    } else {
+        this->subAct->turnRight(turnSpeed);
+    }
+}
+
+
+void SubmarineAI::accelerateBasedOn(float angle, float threshAny, float threshFull)
+{
+    Submarine *sub = this->getOurSub();
+
+    float accelerationSpeed = LERP_FLOAT(abs(angle), threshAny, threshFull, sub->getMaxAccel(), 0.1);
+
+    this->subAct->accelerate(accelerationSpeed);
+
+}
+
+void SubmarineAI::seekPoint(vec2 point)
+{
+    /* Get our current position and heading */
+    Submarine *sub = this->getOurSub();
+    vec3 facing3D = sub->getDirection();
+    vec2 facing = normalize(vec2(facing3D.x, facing3D.z));
+    vec3 pos3D = sub->getPosition();
+    vec2 pos = vec2(pos3D.x, pos3D.z);
+
+    // Get target direction
+    vec2 target = normalize(point-pos);
+    printf("Pos: %f %f Point: %f %f Target: %f %f\n", pos[0], pos[1], point[0], point[1], target[0], target[1]);
+
+    // Angle between our sub and our target direction. We compute it
+    // here because we will use it in multiple functions.  
+    float angle = orientedAngle(target, facing);
+
+    // Turn towards target
+    this->turnTowards(angle, 0.03, 0.2);
+
+    // Accelerate based on direction
+    this->accelerateBasedOn(angle, 0.05, 0.1);
 }
 
 // AI functions

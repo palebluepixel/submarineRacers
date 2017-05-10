@@ -22,8 +22,6 @@ void Track::addSeekPoint(SeekPoint *sp)
 of which seek point it is currently at */
 SeekPoint *Track::getNextSeekPoint(int cur, int howFar)
 {
-    int target = cur + howFar;
-    if(target >= this->seeks.size() || target < 0)
-        return NULL;
+    int target = (cur + howFar) % this->nSeeks();
     return seeks[target];
 }

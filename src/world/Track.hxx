@@ -17,6 +17,7 @@ public:
     of which seek point it is currently at */
     SeekPoint *getNextSeekPoint(int cur, int howFar);
 
+    inline int nSeeks() { return seeks.size(); }
 
 private:
 
