@@ -137,7 +137,7 @@ void Level::buildDemoLevel()
 { 
 	//create test objects
     // works between (-2.5, -4.5)
-    vec3 cubePos[] = {vec3(0,14,0), vec3(5.f, 10, 5.5f), vec3(10,10,15), vec3(10,7,15), vec3(3, -13, 5),
+    vec3 cubePos[] = {vec3(0,14,0), vec3(5.f, 10, 5.5f), vec3(0,0,15), vec3(10,7,15), vec3(3, -13, 5),
         vec3(5, -40, 5)}; 
     vec3 cubeColor[] = {vec3(0.8,1,0), vec3(1,0,1), vec3(1,0,0), vec3(1,0,1), vec3(0,1,1), vec3(0,0,1)};
     int ncubes = 2, i;
@@ -159,7 +159,7 @@ void Level::buildDemoLevel()
     cubes[1]->setMass(1.f);
     cubes[1]->dragCoef(0.f);
 
-    for(i=2; i<4; i++){
+    for(i=0; i<4; i++){
         cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
         cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
         cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
@@ -167,27 +167,36 @@ void Level::buildDemoLevel()
         cubes[i]->setMass(1.f);
         cubes[i]->dragCoef(0.0f);
     }
-    cubes[2]->setVelocity(vec3(0,-2,0));
-    cubes[2]->setMass(10);
+    cubes[2]->pos(vec3(0,9,15));
+    cubes[2]->setVelocity(vec3(0,0,-4));
+    cubes[2]->setMass(1);
 
     cubes[3]->setVelocity(vec3(0,0,0));
     cubes[3]->setMass(1);
+    cubes[3]->pos(vec3(0,14,15));
 
-    for(i=1; i<4; i++)
-    	this->addEntity(cubes[i]);
+    for(i=2; i<3; i++){
+        this->addEntity(cubes[i]);
+    }
 
     //create checkpoints
-    hexagon hex1; hex1.Lt = vec3(-5,2,-3); hex1.Mt = vec3(0,5,0); hex1.Rt = vec3(5,2,3); 
-    hex1.Lb = vec3(-5,-2,-3); hex1.Mb = vec3(0,-5,0); hex1.Rb = vec3(5,-2,3);
+    vec3 hexpts[6]={vec3(-3,3,0),vec3(0,3,0),vec3(3,3,0),vec3(3,-3,0),vec3(0,-3,0),vec3(-3,-3,0)};
+    Polygon phex(hexpts,6);
+
+    hexagon hex1; hex1.Lt = hexpts[0]; hex1.Mt = hexpts[1]; hex1.Rt = hexpts[2]; 
+    hex1.Rb = hexpts[3]; hex1.Mb = hexpts[4]; hex1.Lb = hexpts[5];
+    
     SeekPoint *seek1 = new SeekPoint(cur_id++, vec3(5,6,5), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex1, 1);
     seek1->setMass(1);
     seek1->setVelocity(vec3(0,0,0));
+    seek1->pos(vec3(0,5,0));
+    seek1->setVolume(new FlatVolume(Volume::Pos(seek1),phex));
     this->addEntity(seek1);
 
     Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     cave->mass(9999);
     cave->pos(vec3(0,-20,0));
-    addEntity(cave);
+    // addEntity(cave);
 
     //create skybox
     Gadget *skybox = new Gadget(cur_id++,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
@@ -300,7 +309,6 @@ void Level::renderAllEnts(View *view, Renderer *r, Renderer *rflat)
 	r->enable();
 	for (auto entry : this->entities) {
         auto entity = entry.second;
-        //logln(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
         if(entity->isDrawable())
             if(entity->getEntityType() == TYPECHECK){
                 rflat->enable();
@@ -370,12 +378,13 @@ void Level::handleCollisions(float dt) {
         processed[e.first]=false;
 
     for(std::pair<int, Entity *> en1 : entities) {
+        // fprintf(stderr,"collision check %s:%d\n",en1.second->getName().c_str(),en1.first);
         // fprintf(stderr,"col %d %d %s\n",en1.first, en1.second->getID(),en1.second->getName().c_str());
         for(std::pair<int, Entity *> en2 : entities) {
             if(processed[en2.first])continue;
             if(en1.first == en2.first)continue;
             if(!en2.second->getVolume() || !en1.second->getVolume())continue;
-            // fprintf(stderr,"check %d %d\n",en1.first,en2.first);
+            // fprintf(stderr,"  with %s:%d\n",en2.second->getName().c_str(),en2.first);
             Entity &e1 = *(en1.second);
             Entity &e2 = *(en2.second);
             vec3 e1p = e1.pos();

@@ -17,14 +17,35 @@ void Volume::Pos::set(Entity *e){
   if(!e){
     logln(LOGHIGH,"Error: Pos passed null argument.");
   }
-  transform = e->modelMatrix();
-  pos = e->pos();
-  ori = e->getOrientation();
-  transformInv_calc = false;
-  // logln(LOGLOW,"making volume");
-  // for(int i=0;i<4;i++){
-  //   fprintf(stderr,"%.3f %.3f %.3f %.3f\n",transform[0][i],transform[1][i],transform[2][i],transform[3][i]);
-  // }
+  mat4 tnew = e->modelMatrix();
+
+  // optimize this by not checking the bottom row
+  //   (which is always 0 0 0 1)
+  float delta = std::abs(tnew[0][0]-transform[0][0]) + 
+                std::abs(tnew[0][1]-transform[0][1]) + 
+                std::abs(tnew[0][2]-transform[0][2]) + 
+                std::abs(tnew[0][3]-transform[0][3]) + 
+                std::abs(tnew[1][0]-transform[1][0]) + 
+                std::abs(tnew[1][1]-transform[1][1]) + 
+                std::abs(tnew[1][2]-transform[1][2]) + 
+                std::abs(tnew[1][3]-transform[1][3]) + 
+                std::abs(tnew[2][0]-transform[2][0]) + 
+                std::abs(tnew[2][1]-transform[2][1]) + 
+                std::abs(tnew[2][2]-transform[2][2]) + 
+                std::abs(tnew[2][3]-transform[2][3]) + 
+                std::abs(tnew[3][0]-transform[3][0]) + 
+                std::abs(tnew[3][1]-transform[3][1]) + 
+                std::abs(tnew[3][2]-transform[3][2]) + 
+                std::abs(tnew[3][3]-transform[3][3]);
+  // update collision volume only if this entity has moved
+  // or rotated more than 1mm.
+  if(delta>0.001){
+    pos = e->pos();
+    ori = e->getOrientation();
+    transform = tnew;
+    transformInv_calc = false;
+    updated=1;
+  }
 }
 
 //////////////////////////////////////////*
@@ -37,7 +58,7 @@ SphereVolume::SphereVolume(Pos posi, double rad) : Volume(posi){
   if(SphereVolume::mesh == 0){
     SphereVolume::mesh = new Mesh(GL_TRIANGLES);
     SphereVolume::mesh->loadOBJ("../assets/models/sphere.obj");
-    SphereVolume::mesh->data.polygon_mode = GL_LINE;
+    // SphereVolume::mesh->data.polygon_mode = GL_LINE;
   }
 }
 double SphereVolume::distance(Volume *other){
@@ -56,11 +77,13 @@ double SphereVolume::distance(Volume *other){
     	return 0;
     }
 }
-TransformedMesh SphereVolume::collisionMesh(){
-  TransformedMesh tm(TransformedMesh::MeshInfo(mesh,glm::scale(glm::mat4(1),vec3(r,r,r))));
-  for(int i=0;i<4;i++){
-    // printf("%f,%f,%f,%f\n",tm.transform[i][0],tm.transform[i][1],tm.transform[i][2],tm.transform[i][3]);
-  }
+Model SphereVolume::collisionMesh(){
+  Model tm(
+    Model::FancyMesh(
+      mesh,
+      glm::scale(glm::mat4(1),vec3(r,r,r)),
+      Model::RenderState(true, vec4(1,1,1,1), GL_LINE, GL_BACK, 1)));
+
   return tm;
 }
 
@@ -72,11 +95,11 @@ vec3 SphereVolume::push(Volume *other){
 
     return (pos.pos - other->pos.pos)*dist;
   }else if(!strcmp(other->type(),"cylinder")){
-    CylinderVolume* v = static_cast<CylinderVolume*>(other);
-    return -v->push(this);
+    return -other->push(this);
   }else if(!strcmp(other->type(),"heightmap")){
-    HeightmapVolume* v = static_cast<HeightmapVolume*>(other);
-    return -v->push(this);
+    return -other->push(this);
+  }else if(!strcmp(other->type(),"flat")){
+    return -other->push(this);
   }
   else{
     return vec3(0,0,0);
@@ -112,12 +135,12 @@ CylinderVolume::CylinderVolume(Pos posi, double rad, double h, glm::mat4 rotatio
   if(!CylinderVolume::meshcyl){
     CylinderVolume::meshcyl = new Mesh(GL_TRIANGLES);
     CylinderVolume::meshcyl->loadOBJ("../assets/models/cylinder.obj");
-    CylinderVolume::meshcyl->data.polygon_mode = GL_LINE;
+    // CylinderVolume::meshcyl->data.polygon_mode = GL_LINE;
   }
   if(!CylinderVolume::meshcap){
     CylinderVolume::meshcap = new Mesh(GL_TRIANGLES);
     CylinderVolume::meshcap->loadOBJ("../assets/models/hemisphere.obj");
-    CylinderVolume::meshcap->data.polygon_mode = GL_LINE;
+    // CylinderVolume::meshcap->data.polygon_mode = GL_LINE;
   }
 }
 double CylinderVolume::distance(Volume *other){
@@ -138,12 +161,13 @@ double CylinderVolume::distance(Volume *other){
       return 0;
     }
 }
-TransformedMesh CylinderVolume::collisionMesh(){
-  TransformedMesh tm(TransformedMesh::MeshInfo(meshcyl,rotation*glm::scale(glm::mat4(1),vec3(r,h/2.f,r))));
+Model CylinderVolume::collisionMesh(){
+  Model::RenderState rs(true, vec4(1,1,1,1), GL_LINE, GL_BACK, 1);
+  Model tm(Model::FancyMesh(meshcyl,rotation*glm::scale(glm::mat4(1),vec3(r,h/2.f,r)),rs));
   glm::mat4 topcap = glm::translate(mat4(1),glm::vec3(0,h/2,0)) * glm::scale(mat4(1),glm::vec3(r,r,r));
   glm::mat4 botcap = glm::translate(mat4(1),glm::vec3(0,-h/2,0)) * glm::scale(mat4(1),glm::vec3(r,-r,r));
-  tm.meshes.push_back(TransformedMesh::MeshInfo(meshcap,rotation*topcap));
-  tm.meshes.push_back(TransformedMesh::MeshInfo(meshcap,rotation*botcap));
+  tm.meshes.push_back(Model::FancyMesh(meshcap,rotation*topcap,rs));
+  tm.meshes.push_back(Model::FancyMesh(meshcap,rotation*botcap,rs));
   for(int i=0;i<4;i++){
     // printf("%f,%f,%f,%f\n",tm.transform[i][0],tm.transform[i][1],tm.transform[i][2],tm.transform[i][3]);
   }
@@ -190,8 +214,9 @@ vec3 CylinderVolume::push(Volume *other){
     }
     else return vec3();
   }else if(!strcmp(other->type(),"heightmap")){
-    HeightmapVolume* v = static_cast<HeightmapVolume*>(other);
-    return -v->push(this);
+    return -other->push(this);
+  }else if(!strcmp(other->type(),"flat")){
+    return -other->push(this);
   }
   else{
     return vec3(0,0,0);
@@ -338,8 +363,8 @@ bool HeightmapVolume::collision(Volume *other){
 bool HeightmapVolume::containsPoint(vec3 pt){
   return false;
 }
-TransformedMesh HeightmapVolume::collisionMesh(){
-  return TransformedMesh(TransformedMesh::MeshInfo(0,glm::mat4()));
+Model HeightmapVolume::collisionMesh(){
+  return Model(Model::FancyMesh(0,glm::mat4(),Model::RenderState()));
 }
 
 
@@ -357,8 +382,25 @@ double FlatVolume::distance(Volume *other){
 }
 
 vec3 FlatVolume::push(Volume *other){
-  if(other->type() == "sphere" || other->type() == "cylinder"){
-    return vec3();
+  if(pos.updated){
+    // polygon.recalculate();
+    polygon.transform(pos.transform);
+    pos.updated=0;
+  }
+  if(other->type() == "sphere"){
+    SphereVolume *v = static_cast<SphereVolume*>(other);
+    DistanceResult dr = polygon.distance(v->pos.pos);
+    float dist = fabsf(dr.distance) - v->R();
+    // fprintf(stderr,"dist: %.3f | (%.3f,%.3f,%.3f)\n",dist,dr.b.x,dr.b.y,dr.b.z);
+    if(dist>0)return vec3();
+    return normalize(dr.b-dr.a)*dist;
+  }
+  else if(other->type() == "cylinder"){
+    CylinderVolume *v = static_cast<CylinderVolume*>(other);
+    vec4 p1 = v->pos.transform * v->Rotation() * vec4(0,0.5*v->H(),0,1);
+    vec4 p2 = v->pos.transform * v->Rotation() * vec4(0,-0.5*v->H(),0,1);
+    DistanceResult dist = polygon.distance(Segment{vec3(p1.x,p1.y,p1.z),vec3(p2.x,p2.y,p2.z)});
+    return normalize(dist.b-dist.a)*dist.distance;
   }
   else{
     return vec3(0,0,0);
@@ -373,6 +415,6 @@ bool FlatVolume::collision(Volume *other){
 bool FlatVolume::containsPoint(vec3 pt){
   return false;
 }
-TransformedMesh FlatVolume::collisionMesh(){
-  return TransformedMesh(TransformedMesh::MeshInfo(0,glm::mat4()));
+Model FlatVolume::collisionMesh(){
+  return Model(Model::FancyMesh(0,glm::mat4(),Model::RenderState()));
 }

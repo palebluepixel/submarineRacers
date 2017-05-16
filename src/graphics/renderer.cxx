@@ -31,10 +31,10 @@ void Renderer::render(){ }
 void Renderer::render(View *view, Entity *entity){
   mat4 modelMatrix = entity->modelMatrix();
   for (auto mesh : entity->getMeshes()){
-    for (auto meshinfo : mesh.meshes){
-      if(meshinfo.mesh != NULL){
-        setUniform(modelLoc, modelMatrix * meshinfo.transform);
-        this->render(view, meshinfo);
+    for (auto FancyMesh : mesh.meshes){
+      if(FancyMesh.mesh != NULL){
+        setUniform(modelLoc, modelMatrix * FancyMesh.transform);
+        this->render(view, FancyMesh);
       }
     }
   }
@@ -53,11 +53,11 @@ void FlatShadingRenderer::enable()
 {
   _shader->use();
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glLineWidth(CHECKPOINT_DISPLAY_WIDTH);
+  glLineWidth(4);
   glDisable(GL_CULL_FACE);
 }
 
-void FlatShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh) {
+void FlatShadingRenderer::render (View *view, Model::FancyMesh mesh) {
 
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
@@ -65,7 +65,7 @@ void FlatShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh) {
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
 
-  setUniform(colorLoc, mesh.mesh->data.color);
+  setUniform(colorLoc, mesh.glState.color);
 
   mesh.mesh->draw();
 }
@@ -91,7 +91,7 @@ SunlightShadingRenderer::SunlightShadingRenderer (Shader *sh)
 
 SunlightShadingRenderer::~SunlightShadingRenderer() { }
 
-void SunlightShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh){
+void SunlightShadingRenderer::render (View *view, Model::FancyMesh mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -118,7 +118,7 @@ void SunlightShadingRenderer::render (View *view, TransformedMesh::MeshInfo mesh
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh.mesh->data.color);
+  setUniform(colorLoc, mesh.glState.color);
   mesh.mesh->draw();
 
 }
@@ -154,9 +154,9 @@ void UnderwaterRenderer::enable (){
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 }
-void UnderwaterRenderer::render(View *view, TransformedMesh::MeshInfo mesh){
+void UnderwaterRenderer::render(View *view, Model::FancyMesh mesh){
 
-  if(!mesh.mesh->data.visible){
+  if(!mesh.glState.visible){
     return;
   }
  
@@ -195,9 +195,12 @@ void UnderwaterRenderer::render(View *view, TransformedMesh::MeshInfo mesh){
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh.mesh->data.color);
+  setUniform(colorLoc, mesh.glState.color);
 
-  glPolygonMode(GL_FRONT_AND_BACK, mesh.mesh->data.polygon_mode);
+  glPolygonMode(GL_FRONT_AND_BACK, mesh.glState.polymode);
+  glCullFace(mesh.glState.cullmode);
+  glLineWidth(mesh.glState.linewidth);
+
 
   mesh.mesh->draw();
 }
@@ -232,7 +235,7 @@ void SkyboxRenderer::enable (){
 }
 
 
-void SkyboxRenderer::render (View *view, TransformedMesh::MeshInfo mesh){
+void SkyboxRenderer::render (View *view, Model::FancyMesh mesh){
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
@@ -245,6 +248,6 @@ void SkyboxRenderer::render (View *view, TransformedMesh::MeshInfo mesh){
 
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh.mesh->data.color);
+  setUniform(colorLoc, mesh.glState.color);
   mesh.mesh->draw();
 }

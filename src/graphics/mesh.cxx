@@ -18,17 +18,15 @@ Mesh::Mesh(GLenum p) {
   data.ibufId=0;
   data.prim=p;
   data.nIndicies=0;
-  data.color=vec4 (1,1,1,0.5f);
+
   data.shouldTexture = 1;
 
-  data.polygon_mode=GL_FILL;
-  data.visible=1;
+  // data.polygon_mode=GL_FILL;
+  // data.visible=1;
   data.owner = this;
 
   data.tex = 0;
   data.vaoId = 0;
-
-
 }
 
 
@@ -128,9 +126,6 @@ void Mesh::loadOBJ(char *file){
       verts[ind+1]=model->vertices[tri.vindices[1]];
       verts[ind+2]=model->vertices[tri.vindices[2]];
 
-      // printf("triangle with %d %d %d\n",tri.vindices[0],tri.vindices[1],tri.vindices[2]);
-      // printf("triangle starting (%.3f,%.3f,%.3f)\n",verts[ind].x,verts[ind].y,verts[ind].z);
-
       norms[ind+0]=model->normals[tri.nindices[0]];
       norms[ind+1]=model->normals[tri.nindices[1]];
       norms[ind+2]=model->normals[tri.nindices[2]];
@@ -152,14 +147,26 @@ void Mesh::loadOBJ(char *file){
   loadIndices(model->numtriangles*3, indices);
 }
 
-TransformedMesh::TransformedMesh(TransformedMesh::MeshInfo in){
+Model::Model(Model::FancyMesh in){
   this->meshes.push_back(in);
 }
 
-TransformedMesh::MeshInfo::MeshInfo(Mesh *m, mat4 transform){
+Model::FancyMesh::FancyMesh(Mesh *m, mat4 transform, RenderState state) : glState(state){
   mesh = m;
   this->transform = transform;
 }
+
+Model::RenderState::RenderState(bool visible, vec4 color, int polymode, int cullmode, int linewidth){
+  this->visible=visible;
+  this->color=color;
+  this->polymode=polymode;
+  this->cullmode=cullmode;
+  this->linewidth=linewidth;
+}
+Model::RenderState::RenderState(vec4 color) : RenderState(true,color,GL_FILL,GL_BACK,1)
+  {  }
+Model::RenderState::RenderState() : RenderState(true,vec4(1.f,1.f,1.f,1.f),GL_FILL,GL_BACK,1)
+  {  }
 
 /* Given three points, return the normal vector of the plane which they define. */
 vec3 getNorm(vec3 a, vec3 b, vec3 c)
@@ -191,7 +198,7 @@ or it can be a function like cos(x,z).
   Note: It might be the case that a heightmap file
 has values in [0:1], and we want to transform that to an arbitrary height. We do this
 by calculating the vertex coordinates using the genrator and then scaling them USING THE
-TRANSFORMEDMESH structure. A HeightmapMesh represents the UNSCALED heightmap.
+Model structure. A HeightmapMesh represents the UNSCALED heightmap.
 
 In this implementation, you must first set the generator for the heightmap (which
 calling loadFile() or loadDefaultGenerator() does), then call init() with the given

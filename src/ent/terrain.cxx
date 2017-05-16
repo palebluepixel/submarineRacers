@@ -34,11 +34,10 @@ void Terrain::initalizeMeshes(){
     mesh->loadFile(hmpfile);
     // mesh->loadDefaultGenerator();
     mesh->init(300,300, vec2(0.5f, 0.5f));
-    mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
 
-    TransformedMesh::MeshInfo tmi(mesh,glm::scale(glm::mat4(1),vec3(100,16,100)));
-    TransformedMesh tmesh(tmi);
+    Model::FancyMesh tmi(mesh,glm::scale(glm::mat4(1),vec3(100,16,100)), Model::RenderState(vec4(color,1.f)));
+    Model tmesh(tmi);
     meshes.push_back(tmesh);
 
 
@@ -46,7 +45,7 @@ void Terrain::initalizeMeshes(){
     // monkey->loadOBJ("../assets/models/sphere.obj");
     // monkey->data.color = vec4(this->color,0.5);
     // monkey->data.tex = this->tex;
-    // meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(monkey,mat4())));
+    // meshes.push_back(Model(Model::FancyMesh(monkey,mat4())));
 
     // pos(vec3(-50,-20,-50));
     volume = new HeightmapVolume(Volume::Pos(this), tmi.transform, mesh->getWidth(), mesh->getHeight(), mesh->getHmpData());

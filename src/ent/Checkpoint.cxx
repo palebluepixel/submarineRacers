@@ -101,10 +101,12 @@ void SeekPoint::initalizeMeshes()
     Mesh *mesh = hexMesh(this->hex);
     //Mesh *mesh = new Mesh(GL_TRIANGLES);
     //mesh->loadOBJ("../assets/models/cube.obj");
-    vec3 col = vec3(1.0f, 0.5f, 0.5f);
-    mesh->data.color = vec4(col, 1.0); // transparent pink
+
+    vec3 col(1.0f, 0.5f, 0.5f);
     mesh->data.tex = this->tex;
-    this->meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4())));
+
+    Model::FancyMesh fmesh(mesh,mat4(),Model::RenderState(true,vec4(col,1.f),GL_FILL,GL_FRONT_AND_BACK,7));
+    this->meshes.push_back(Model(fmesh));
 }
 
 void SeekPoint::initalizeTextures(const char* texfile)

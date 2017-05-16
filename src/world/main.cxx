@@ -175,8 +175,8 @@ void update(double elapsed){
     if(keyboard[GLFW_KEY_K])           cam->translateCamViewAxis(-tSpeed);
     if(keyboard[GLFW_KEY_J])           cam->translateCamStrafeAxis(-tSpeed);
     if(keyboard[GLFW_KEY_L])           cam->translateCamStrafeAxis(tSpeed);
-    if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
-    if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_P])           cam->translateCamUpAxis(tSpeed);
+    if(keyboard[GLFW_KEY_SEMICOLON])           cam->translateCamUpAxis(-tSpeed);
 
     if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
     if(keyboard[GLFW_KEY_Q])           world->quit();

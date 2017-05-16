@@ -121,10 +121,10 @@ public:
     /**     graphics:       **/
     mat4 modelMatrix();           // return transform matrix TO world space.
 
-    inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
+    inline std::vector<Model> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
-    std::vector<TransformedMesh> meshes;
+    std::vector<Model> meshes;
 protected:
     Volume *volume;
     quaternion orientation;

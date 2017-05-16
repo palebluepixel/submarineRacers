@@ -22,6 +22,7 @@ using namespace glm;
  *  in space, 3D orientation, etc...
  */
 class Entity;
+class Model;
 
 
 /**
@@ -43,6 +44,7 @@ public:
         vec3 pos;
         quaternion ori;
         float depth;
+        int updated;
     };
     Volume(Pos ps);
     Pos pos;    // where is this object in space?
@@ -74,7 +76,7 @@ public:
 
     virtual bool containsPoint(vec3 pt) =0;
 
-    virtual TransformedMesh collisionMesh() = 0;
+    virtual Model collisionMesh() = 0;
 };
 
 
@@ -91,7 +93,7 @@ public:
 
     float R();
 
-    TransformedMesh collisionMesh();
+    Model collisionMesh();
     static Mesh* mesh;
 protected:
     double r;
@@ -111,7 +113,7 @@ public:
     mat4 Rotation();
     float H();
 
-    TransformedMesh collisionMesh();
+    Model collisionMesh();
     static Mesh* meshcyl;
     static Mesh* meshcap;
 protected:
@@ -131,7 +133,7 @@ public:
     bool collision(Volume *other);
     bool containsPoint(vec3 pt);
 
-    TransformedMesh collisionMesh();
+    Model collisionMesh();
 protected:
     int width;
     int height;
@@ -152,7 +154,7 @@ public:
     vec3 pushAlong(Volume *other, vec3 direction);
     bool collision(Volume *other);
     bool containsPoint(vec3 pt);
-    TransformedMesh collisionMesh();
+    Model collisionMesh();
 private:
     Polygon polygon;
 };

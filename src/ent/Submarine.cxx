@@ -38,9 +38,8 @@ void Submarine::initalizeMeshes()
 {
     Mesh *mesh = new Mesh(GL_TRIANGLES);
     mesh->loadOBJ(modelfile);
-    mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
-    meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh, mat4())));
+    meshes.push_back(Model(Model::FancyMesh(mesh, mat4(),Model::RenderState(vec4(color,1.f)))));
 }
 
 
