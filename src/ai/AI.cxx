@@ -15,7 +15,7 @@ AI::~AI() {}
 
 SubmarineAI::SubmarineAI()
 {
-    this->curSeekPoint = -1;
+    this->curSeekPoint = 1;
 }
 
 SubmarineAI::~SubmarineAI() {}
@@ -23,9 +23,12 @@ SubmarineAI::~SubmarineAI() {}
 
 void SubmarineAI::updateAI()
 {
+    Submarine *sub = this->getOurSub();
+
     /* Get our seek point as the next checkpoint in the track */
-    SeekPoint *seek = world->getLevel()->getTrack()->getNextSeekPoint(0,1);
-    vec2 point = seek->getCenter();
+    SeekPoint *seek = world->getLevel()->getTrack()->getNextSeekPoint(1,1);
+    vec3 point3d = seek->getCenter();
+    vec2 point = vec2(point3d.x, point3d.z);
 
     this->seekPoint(point);
 
@@ -44,7 +47,7 @@ void SubmarineAI::turnTowards(float angle, float threshAny, float threshFull)
     Submarine *sub = this->getOurSub();
     
     float turnSpeed = LERP_FLOAT(abs(angle), threshAny, threshFull, 0, sub->getMaxTurn());
-    printf("Angle: %f Turn speed: %f\n", angle, turnSpeed);
+    //printf("Angle: %f Turn speed: %f\n", angle, turnSpeed);
 
     if(targetOnLeft(angle)) {
         this->subAct->turnLeft(turnSpeed);
@@ -75,7 +78,7 @@ void SubmarineAI::seekPoint(vec2 point)
 
     // Get target direction
     vec2 target = normalize(point-pos);
-    printf("Pos: %f %f Point: %f %f Target: %f %f\n", pos[0], pos[1], point[0], point[1], target[0], target[1]);
+    //printf("Pos: %f %f Point: %f %f Target: %f %f\n", pos[0], pos[1], point[0], point[1], target[0], target[1]);
 
     // Angle between our sub and our target direction. We compute it
     // here because we will use it in multiple functions.  
@@ -84,8 +87,10 @@ void SubmarineAI::seekPoint(vec2 point)
     // Turn towards target
     this->turnTowards(angle, 0.03, 0.2);
 
-    // Accelerate based on direction
-    this->accelerateBasedOn(angle, 0.05, 0.1);
+    // Accelerate based on direction, but only if we aren't close enough
+    float dist = abs(length(point-pos));
+    if(dist > CLOSEENOUGH)
+        this->accelerateBasedOn(angle, 0.05, 0.1);
 }
 
 // AI functions

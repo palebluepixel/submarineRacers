@@ -4,6 +4,8 @@
 #include <ent/Submarine.hxx>
 #include <ent/Checkpoint.hxx>
 
+#define CLOSEENOUGH 4
+
 class AI {
 public:
     AI();

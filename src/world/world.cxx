@@ -215,7 +215,7 @@ int World::loadLevel(int i)
         delete(oldLevel);
 
     /* Add submarine entities */
-    this->addSubsToLevel();
+    //this->addSubsToLevel();
 
     // For now, tether our camera to the hard-coded sub
     this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(SUBID_START));

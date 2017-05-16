@@ -143,7 +143,7 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
     SeekPoint *seek;
     for(i=0; i<n; i++){
         hex = new Hexagon(centers[i],r);
-        seek = new SeekPoint(cur_id++, centers[i], quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex, 1);
+        seek = new SeekPoint(cur_id++, vec3(0,0,0), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex, 1);
         seek->setMass(1);
         seek->setVelocity(vec3(0,0,0));
         track->addSeekPoint(seek);
@@ -164,7 +164,7 @@ void Level::buildDemoLevel()
 
     int cur_id = 0;
 
-    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
+    /*cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
     cubes[0]->setOrientation(angleAxis(3.1415f/2.f,vec3(0.f,1.f,0.f)));
     cubes[0]->setVolume(new CylinderVolume(Volume::Pos(cubes[0]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
     cubes[0]->meshes.push_back(cubes[0]->getVolume()->collisionMesh());
@@ -193,7 +193,7 @@ void Level::buildDemoLevel()
     cubes[3]->setMass(1);
 
     for(i=1; i<4; i++)
-    	this->addEntity(cubes[i]);
+    	this->addEntity(cubes[i]);*/
 
     //create checkpoints
     /*Hexagon * hex1 = new Hexagon(vec3(-5,2,-3), vec3(-5,-2,-3), vec3(0,5,0), vec3(0,-5,0), vec3(5,2,3), vec3(5,-2,3));
@@ -202,7 +202,7 @@ void Level::buildDemoLevel()
     seek1->setVelocity(vec3(0,0,0));
     this->addEntity(seek1);*/
 
-    Submarine * sub = new Submarine(cur_id++,vec3(10,10,10), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
+    Submarine * sub = new Submarine(cur_id++,vec3(5,5,0), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
     sub->mass(1.0);
     sub->dragCoef(0.3); 
     SubmarineAI * ai1 = new SubmarineAI();
@@ -215,10 +215,10 @@ void Level::buildDemoLevel()
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,8,25)};
     this->generateDummyPath(3, centers, ncenters, cur_id);
 
-    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    /*Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     cave->mass(9999);
     cave->pos(vec3(0,-20,0));
-    addEntity(cave);
+    addEntity(cave);*/
 
     //create skybox
     Gadget *skybox = new Gadget(cur_id++,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");

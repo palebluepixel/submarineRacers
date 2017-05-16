@@ -127,7 +127,7 @@ void SeekPoint::initalizeMeshes()
     vec3 col = vec3(1.0f, 0.5f, 0.5f);
     mesh->data.color = vec4(col, 1.0); // transparent pink
     mesh->data.tex = this->tex;
-    this->meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4())));
+    this->meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4(1))));
 }
 
 void SeekPoint::initalizeTextures(const char* texfile)
