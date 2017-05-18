@@ -9,7 +9,7 @@ class Track {
 
 public:
 
-    Track();
+    Track(int lapsToWin);
     ~Track();
 
     void addSeekPoint(SeekPoint *sp);
@@ -26,6 +26,8 @@ public:
 
     inline int nSeeks() { return seeks.size(); }
 
+    inline int getLapsToWin() { return this->lapsToWin; }
+
 private:
 
     /* Returns an index into the seekpoint array such that the array wraps around */
@@ -33,6 +35,9 @@ private:
 
     /* Vector of all seekpoints in the order that they ought to be completed. */
     vector<SeekPoint*> seeks;
+
+    /* Number of levels needed to win the track */
+    int lapsToWin;
 
 };
 

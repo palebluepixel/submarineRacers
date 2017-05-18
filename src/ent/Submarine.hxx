@@ -35,6 +35,10 @@ public:
     void bindToAI(SubmarineAI *ai);
     void unbindFromAI();
 
+    /* Handles collision with track entities*/
+    void hitSeekPoint(int id);
+    void hitCheckPoint(int id);
+
 private:
     /* For now these are set to the same value for all subs (in the constructor),
     but eventually these may vary so subs have different "stats" for acceleration

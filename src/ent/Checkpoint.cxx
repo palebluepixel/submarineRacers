@@ -97,10 +97,9 @@ FinishLine::~FinishLine() { }
 
 SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientation,
 	    std::string name, EntityType type, EntityStatus status, float tick_interval,
-	    Hexagon *hex, int mandatory)
+	    Hexagon *hex)
 :Entity(ID, initial_position, initial_orientation, name, type, status, tick_interval)
 {
-	this->mandatory = mandatory;
 
 	/* TODO: check if hex is valid */
 	this->hex = hex;

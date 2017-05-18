@@ -3,9 +3,9 @@
 #include <util/mod.hxx>
 
 
-Track::Track()
+Track::Track(int lapsToWin)
 {
-
+    this->lapsToWin = lapsToWin;
 }
 
 Track::~Track()

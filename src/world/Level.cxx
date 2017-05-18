@@ -138,7 +138,7 @@ void Level::buildLevelFromFile() {
 /* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
 void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
 {
-    Track *track = new Track();
+    Track *track = new Track(3);
     this->track = track;
 
     int i;
@@ -146,7 +146,7 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
     SeekPoint *seek;
     for(i=0; i<n; i++){
         hex = new Hexagon(centers[i],r);
-        seek = new SeekPoint(cur_id++, vec3(0,0,0), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex, 1);
+        seek = new SeekPoint(cur_id++, vec3(0,0,0), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex);
         seek->setMass(1);
         seek->setVelocity(vec3(0,0,0));
         track->addSeekPoint(seek);

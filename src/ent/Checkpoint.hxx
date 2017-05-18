@@ -84,16 +84,8 @@ class SeekPoint : public Entity {
 public:
 	SeekPoint(int ID, vec3 initial_position, quaternion initial_orientation,
         std::string name, EntityType type, EntityStatus status, float tick_interval,
-        Hexagon *hex, int mandatory);
+        Hexagon *hex);
 	~SeekPoint();
-
-
-	/* Set to 1 if a submarine needs to clear this checkpoint for a 
-	lap to be considered valid. If we use checkpoints for AI pathfinding
-	behavior, then we may want to place some checkpoints in the world
-	which represent a good path for the AI, but which are not mandatory
-	(in case the player manages to find a legitimate shortcut) */
-	int mandatory;
 
 	/* The volume mesh for this entity is represented as a hexagon of
 	6 points:

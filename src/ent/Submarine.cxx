@@ -2,6 +2,9 @@
 #include "Actuator.hxx"
 #include <util/log.hxx>
 #include <ai/AI.hxx>
+#include <world/world.hxx>
+
+extern World *world;
 
 
 Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
@@ -76,6 +79,30 @@ void Submarine::unbindFromAI()
     this->ai->unbindFromSubAct();
     this->ai = NULL;
 }
+
+
+/* Handles collision with track entities*/
+void Submarine::hitSeekPoint(int id)
+{
+    ProgressTracker *pt = this->getPTSeek();
+    pt->clearPoint(id);
+    if(pt->isLapComplete()){
+        int laps = pt->completeLap();
+        if(laps == world->getLevel()->getTrack()->getLapsToWin())
+            printf("A WINNER IS YOU\n");
+    }
+}
+
+void Submarine::hitCheckPoint(int id)
+{
+
+}
+
+
+
+/* ==================================================
+   ===============    ACTUATOR     ==================
+   ================================================== */
 
 
 void SubmarineSteeringState::reset() {
