@@ -255,7 +255,11 @@ void World::addSubsToLevel()
         // pair.second is the submarine
 
         // Initalize the progress trackers
-        int n = curLevel->getTrack()->nSeeks();
+        int n;
+        if(!curLevel->getTrack())
+            n = 0;
+        else
+            n = curLevel->getTrack()->nSeeks();
         pair.second->getPTSeek()->initalizePoints(n);
         pair.second->getPTCheck()->initalizePoints(n);
 

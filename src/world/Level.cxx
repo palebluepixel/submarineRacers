@@ -107,6 +107,9 @@ void Level::buildLevelFromFile() {
         buildDemoLevel();
         return;
     }
+
+    this->track = NULL;
+
     int id =0;
     char *raw = fileio::load_file(this->path);
     json raw_j = json::parse(raw);

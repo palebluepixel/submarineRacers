@@ -15,7 +15,7 @@ AI::~AI() {}
 
 SubmarineAI::SubmarineAI()
 {
-    this->curSeekPoint = 1;
+    this->subAct = NULL;
 }
 
 SubmarineAI::~SubmarineAI() {}
@@ -23,9 +23,17 @@ SubmarineAI::~SubmarineAI() {}
 
 void SubmarineAI::updateAI()
 {
+    /* If actuator is null, we aren't bound to any submarine, so
+    don't try to do anything */
+    /* If track is null, this level has no seeking information, so
+    don't try to do anything*/
+    if(!subAct || !world->getLevel()->getTrack())
+        return;
+
     Submarine *sub = this->getOurSub();
 
-    /* Get our seek point as the next checkpoint in the track */
+    /* Get our seek point as the next checkpoint in the track*/
+
     int seekn = sub->getPTSeek()->getNextPoint(0);
     SeekPoint *seek = world->getLevel()->getTrack()->getNextSeekPoint(seekn,0);
     printf("Seeking %d\n", seek->getTrackID());

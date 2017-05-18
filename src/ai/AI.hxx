@@ -22,6 +22,7 @@ public:
     ~SubmarineAI();
 
     inline void bindToSubAct(SubmarineActuator *subAct) { this->subAct = subAct; }
+    inline void unbindFromSubAct() { this->subAct = NULL; }
 
     inline Submarine *getOurSub() { return this->subAct->getSub(); }
 
@@ -45,11 +46,10 @@ public:
     and our target facing direction */
     void accelerateBasedOn(float angle, float threshAny, float threshFull);
 
-    /* Very simple seekPoint, just turn towards the direction and then accelerate */
+    /* Very simple seek function, just turn towards the direction and then accelerate */
     void seekPoint(vec2 point);
 
 private:
-    int curSeekPoint;
 
     SubmarineActuator *subAct;
 

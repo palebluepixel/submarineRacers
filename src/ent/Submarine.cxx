@@ -70,6 +70,13 @@ void Submarine::bindToAI(SubmarineAI * ai)
     ai->bindToSubAct((SubmarineActuator*)this->getActuator());
 }
 
+void Submarine::unbindFromAI()
+{
+    this->isai = 0;
+    this->ai->unbindFromSubAct();
+    this->ai = NULL;
+}
+
 
 void SubmarineSteeringState::reset() {
     rotationChange = 0.0f; // + is left

@@ -33,6 +33,7 @@ public:
     inline SubmarineAI * getAI() { return this->ai; }
 
     void bindToAI(SubmarineAI *ai);
+    void unbindFromAI();
 
 private:
     /* For now these are set to the same value for all subs (in the constructor),
