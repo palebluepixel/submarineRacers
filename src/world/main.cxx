@@ -179,7 +179,11 @@ void update(double elapsed){
     if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
 
     if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
-    if(keyboard[GLFW_KEY_Q])           world->quit();
+
+
+    // if(keyboard[GLFW_KEY_Q])           world->quit();
+
+
 
 }
 

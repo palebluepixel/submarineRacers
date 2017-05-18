@@ -2,6 +2,7 @@
 #include <util/file.hxx>
 #include <obj/obj.hxx>
 #include <obj/obj-reader.hxx>
+#include <util/log.hxx>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -83,12 +84,14 @@ void Mesh::loadNormals (int nVerts, vec3 *norms){
 }
 
 void Mesh::draw (){
+  logln(LOGHIGH,"hi,");
     if(!data.vaoId)glGenVertexArrays(1, &data.vaoId);
     glBindVertexArray(data.vaoId);
     glBindBuffer(GL_ARRAY_BUFFER, data.vbufId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.ibufId);
 
     glDrawElements (data.prim, data.nIndicies, GL_UNSIGNED_INT, 0);
+  logln(LOGHIGH,"hello!");
 
 }
 
