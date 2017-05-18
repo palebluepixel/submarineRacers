@@ -31,9 +31,6 @@ void SubmarineAI::updateAI()
     vec2 point = vec2(point3d.x, point3d.z);
 
     this->seekPoint(point);
-
-    //this->subAct->accelerate(sub->getMaxAccel());
-    //this->subAct->turnRight(sub->getMaxTurn());
 }
 
 /* Returns 1 if the target is on the left, 0 otherwise */

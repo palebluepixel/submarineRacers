@@ -1,6 +1,7 @@
 #include "Submarine.hxx"
 #include "Actuator.hxx"
 #include <util/log.hxx>
+#include <ai/AI.hxx>
 
 
 Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
@@ -18,6 +19,11 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
     this->maxTurn = 10;
     this->maxRise = 3;
     this->maxDive = 3;
+
+    this->ptSeek = new ProgressTracker();
+    this->ptCheck = new ProgressTracker();
+
+    this->isai = 0;
 }
 
 void Submarine::switchWeapons(uint8_t weapon) {
@@ -57,7 +63,12 @@ float Submarine::getMaxRise() { return this->maxRise; }
 float Submarine::getMaxDive() { return this->maxDive; }
 
 
-
+void Submarine::bindToAI(SubmarineAI * ai)
+{
+    this->isai = 1;
+    this->ai = ai;
+    ai->bindToSubAct((SubmarineActuator*)this->getActuator());
+}
 
 
 void SubmarineSteeringState::reset() {

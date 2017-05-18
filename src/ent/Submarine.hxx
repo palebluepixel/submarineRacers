@@ -2,6 +2,9 @@
 #define _SUBMARINE_HXX_
 
 #include "Agent.hxx"
+#include <world/ProgressTracker.hxx>
+
+class SubmarineAI;
 
 class Submarine : public Agent {
 public:
@@ -23,6 +26,14 @@ public:
     vec3 color;
     char *modelfile;
 
+    inline ProgressTracker *getPTSeek()  { return this->ptSeek; }
+    inline ProgressTracker *getPTCheck() { return this->ptCheck; }
+
+    inline int isAI() { return this->isai; }
+    inline SubmarineAI * getAI() { return this->ai; }
+
+    void bindToAI(SubmarineAI *ai);
+
 private:
     /* For now these are set to the same value for all subs (in the constructor),
     but eventually these may vary so subs have different "stats" for acceleration
@@ -31,6 +42,17 @@ private:
     float maxTurn;
     float maxRise;
     float maxDive;
+
+    /* Tracks our progress through the level. On collision with a checkpoint or seekpoint,
+    update the appropriate tracker. This should be reset every time a new track is loaded. 
+    Seekpoints are only used by AI-controlled subs. Checkpoints are used to see if we have
+    actually completed the level. */
+    ProgressTracker *ptSeek;
+    ProgressTracker *ptCheck;
+
+    /* AI control */
+    int isai;
+    SubmarineAI *ai;
 };
 
 

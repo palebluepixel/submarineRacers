@@ -1,5 +1,6 @@
 #include "Track.hxx"
 #include <glm/gtx/vector_angle.hpp>
+#include <util/mod.hxx>
 
 
 Track::Track()
@@ -15,20 +16,17 @@ Track::~Track()
 
 void Track::addSeekPoint(SeekPoint *sp)
 {
+    /* Set the ID of the seekpoint to its position in the array */
+    sp->setTrackID(this->nSeeks());
+
+    /* Add to array */
     this->seeks.push_back(sp);
 }
 
 /* Returns an index into the seekpoint array such that the array wraps around */
 int Track::modularIndex(int i, int off)
 {
-    int index = i + off;
-    int negflag = 0;
-    if(index < 0){
-        index = -index;
-        negflag = 1;
-    }
-    int offset = index % this->nSeeks();
-    return (negflag) ? this->nSeeks() - offset : offset;
+    return modularIndexOffset(i, off, this->nSeeks());
 }
 
 /* Returns 1 if the given point is between two seekpoints, 0 otherwise */

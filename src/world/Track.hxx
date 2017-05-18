@@ -2,6 +2,7 @@
 #define _TRACK_HXX_ 
 
 #include <ent/Checkpoint.hxx>
+#include <unordered_map>
 
 /* Defines the path that players and AI must take through the level. */
 class Track {

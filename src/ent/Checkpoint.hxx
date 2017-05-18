@@ -125,7 +125,14 @@ public:
     /* Get AI seek info */
     vec3 getCenter();
 
+    /* Get and set our position in our containing track. The setter function
+    should be called only by the track, usually in the addToTrack function. */
+    inline int  getTrackID()      { return idInTrack; }
+    inline void setTrackID(int i) { idInTrack = i; }
+
 protected:
+
+	int idInTrack;  // Which # point we are. This is set by the track. */
 
 };
 

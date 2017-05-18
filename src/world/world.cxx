@@ -215,7 +215,7 @@ int World::loadLevel(int i)
         delete(oldLevel);
 
     /* Add submarine entities */
-    //this->addSubsToLevel();
+    this->addSubsToLevel();
 
     // For now, tether our camera to the hard-coded sub
     this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(SUBID_START));
@@ -252,6 +252,18 @@ void World::addSubsToLevel()
     if(!this->curLevel) return;
 
     for (auto pair : subs){
+        // pair.second is the submarine
+
+        // Initalize the progress trackers
+        int n = curLevel->getTrack()->nSeeks();
+        pair.second->getPTSeek()->initalizePoints(n);
+        pair.second->getPTCheck()->initalizePoints(n);
+
+        // If AI, also add AI to level
+        if(pair.second->isAI())
+            curLevel->addAI(pair.second->getAI(), 0.1);
+
+        // Add to level
         curLevel->addEntity(pair.second);
     }
 }
@@ -420,6 +432,13 @@ void World::worldInitalizeDefault(int isServer)
     this->setEntityRenderer(r);
     this->setSkyboxRenderer(rsky);
     this->setFlatRenderer(rflat);
+
+    /* Bind AIs to subs HARDCODED FOR NOW*/
+    if(this->subs.size() > 1)
+    {
+        SubmarineAI * ai1 = new SubmarineAI();
+        subs[1]->bindToAI(ai1);
+    }
 
 }
 
