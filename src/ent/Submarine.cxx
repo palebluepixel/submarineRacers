@@ -1,7 +1,10 @@
 #include "Submarine.hxx"
 #include "Actuator.hxx"
+#include "Torpedo.hxx"
 #include <util/log.hxx>
+#include <world/world.hxx>
 
+extern World *world;
 
 Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientation, char*name, 
         EntityType type, EntityStatus status, float tick_interval, vec3 color, char *modelfilein) :
@@ -78,7 +81,8 @@ void SubmarineActuator::doSteering(float dt) {
     agent->applyForce(state.acceleration * 20.f * agent->getDirection());
     agent->applyForce(vec3(0.0f, state.depthChange * 3, 0.0f));
     if(state.fireWeapon) {
-        //spawn(agent.weapon.missileType);
+        Torpedo *torp = new Torpedo(800,this->agent->getPosition(), this->agent->getDirection(), strdup("torp1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/torpedo_6.obj");
+        world->getLevel()->addEntity(torp);
     }
     state.reset();
 }

@@ -19,6 +19,8 @@ void ClientNetworkManager::sendControllerState() {
     state.riseKey = keyboard[GLFW_KEY_SPACE];
     state.diveKey = keyboard[GLFW_KEY_LEFT_SHIFT];
 
+    state.fireKey = keyboard[GLFW_KEY_Q];
+
     //TODO switchWeapon should probably be handled in central key manager, as we want most recent num key
 
 
