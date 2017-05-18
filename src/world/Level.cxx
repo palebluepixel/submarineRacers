@@ -202,13 +202,13 @@ void Level::buildDemoLevel()
     seek1->setVelocity(vec3(0,0,0));
     this->addEntity(seek1);*/
 
-    Submarine * sub = new Submarine(cur_id++,vec3(5,5,0), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
+    /*Submarine * sub = new Submarine(cur_id++,vec3(5,5,0), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
     sub->mass(1.0);
     sub->dragCoef(0.3); 
     SubmarineAI * ai1 = new SubmarineAI();
     ai1->bindToSubAct((SubmarineActuator*)sub->getActuator()); 
     this->addEntity(sub);
-    this->addAI(ai1, 0.1);
+    this->addAI(ai1, 0.1);*/
 
 
     int ncenters = 6;

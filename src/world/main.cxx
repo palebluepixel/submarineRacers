@@ -24,6 +24,7 @@
 #include <network/Client.hxx>
 #include <network/MessageProtocols.hxx>
 #include <cstring>
+#include <world/ProgressTracker.hxx>
 //#include <>
 
 #define PORT 8008
@@ -69,6 +70,12 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             world->getClient()->exitLevel(); 
         else
             world->getServer()->exitLevel();   
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
+        //hard-coded AI sub
+        ProgressTracker *pt = world->getSub(1)->getPTSeek(); 
+        pt->clearPoint(pt->getNextPoint(0));
     }
 
     /* Continous actions should go here */
