@@ -176,6 +176,10 @@ public:
     /* Functions for setting position updates we recieve from server */
     void setEntData(posUpBuf* msg);
     Entity *moveable;
+
+
+    /* End the race */
+    void win(Submarine *sub);
     
     View *view;
     InputManager *in_man;

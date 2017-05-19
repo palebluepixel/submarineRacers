@@ -60,6 +60,8 @@ int ProgressTracker::clearPoint(int p)
 
 int ProgressTracker::getNextPoint(int off) 
 {
+    if(points.size() <= 0)
+        return -1;
     return modularIndexOffset(curPoint, off, points.size());
 }
 

@@ -76,9 +76,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         //hard-coded AI sub
         Submarine *sub = world->getSub(1);
         ProgressTracker *pt = sub->getPTCheck();
+
+        Track *track = world->getLevel()->getTrack();
+
         int curi = pt->getNextPoint(0);
-        CheckPoint *cur = world->getLevel()->getTrack()->getNextCheckPoint(curi,0); 
-        cur->setMeshColor(0, vec4(0.5,1.0,0.5,1.0));
+        CheckPoint *cur = track->getNextCheckPoint(curi,0); 
         sub->hitCheckPoint(pt->getNextPoint(0),cur->isFinishLine());
     }
 

@@ -214,6 +214,11 @@ int World::loadLevel(int i)
     if(!(oldLevel==NULL))
         delete(oldLevel);
 
+    /* Initalize Track Visuals */
+    Track *track = this->getLevel()->getTrack();
+    if(track)
+        track->resetAllChecksVis();
+
     /* Add submarine entities */
     this->addSubsToLevel();
 
@@ -255,13 +260,16 @@ void World::addSubsToLevel()
         // pair.second is the submarine
 
         // Initalize the progress trackers
-        int n;
-        if(!curLevel->getTrack())
-            n = 0;
-        else
-            n = curLevel->getTrack()->nSeeks();
-        pair.second->getPTSeek()->initalizePoints(n);
-        pair.second->getPTCheck()->initalizePoints(n);
+        int nSeeks, nChecks;
+        if(!curLevel->getTrack()){
+            nSeeks = 0;
+            nChecks = 0;
+        } else  {
+            nSeeks = curLevel->getTrack()->nSeeks();
+            nChecks = curLevel->getTrack()->nChecks();
+        }
+        pair.second->getPTSeek()->initalizePoints(nSeeks);
+        pair.second->getPTCheck()->initalizePoints(nChecks);
 
         // If AI, also add AI to level
         if(pair.second->isAI())
@@ -376,7 +384,10 @@ void World::setEntData(posUpBuf* msg)
 
 
 
-
+void World::win(Submarine *sub)
+{
+    printf("A winner is you, %s!\n", sub->getName().c_str());
+}
 
 
 

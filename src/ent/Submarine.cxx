@@ -93,12 +93,27 @@ void Submarine::hitSeekPoint(int id)
 
 void Submarine::hitCheckPoint(int id, int isFinish)
 {
+    Track *track = world->getLevel()->getTrack();
     ProgressTracker *pt = this->getPTCheck();
+
+    /* Set progress tracker and visual info. Eventually, only the server
+    will track whether the submarine has hit the checkpoint and update the
+    relevant progress tracker, and the server will send the client a message
+    that tells it to update the visual info. */
     pt->clearPoint(id);
+    track->clearCheckVis(id);
+
+    /* Check if this is a complete lap. Again, eventually the server will
+    manage the progress tracker reset and simply send a message to the client
+    that it has completed a lap. */
     if(isFinish && pt->isLapComplete()){
         int laps = pt->completeLap();
-        if(laps >= world->getLevel()->getTrack()->getLapsToWin())
-            printf("A WINNER IS YOU\n");
+        track->resetAllChecksVis();
+
+        /* Check if we won! Again, server side only. */
+        if(laps >= track->getLapsToWin()){
+            world->win(this);
+        }
     }
 }
 

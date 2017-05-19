@@ -4,6 +4,12 @@
 #include <ent/Checkpoint.hxx>
 #include <unordered_map>
 
+/* Color of cleared and uncleared checkpoints */
+#define UNCLEAREDCOLOR vec4(1.0, 0.5, 0.5, 1.0)
+#define CLEAREDCOLOR vec4(0.5,1.0,0.5,1.0)
+#define FINISHLINECOLOR vec4(1.0,1.0,1.0,1.0)
+
+
 /* Defines the path that players and AI must take through the level. */
 class Track {
 
@@ -24,6 +30,19 @@ public:
     inline int nChecks() { return checks.size(); }
 
     inline int getLapsToWin() { return this->lapsToWin; }
+
+    /* Used for visual client-side changes to checkpoints as the player-controlled 
+    submarine makes progress. These should be called when the player recieves a 
+    message from the server indicating that they have cleared the given checkpoint.
+
+    Example behavior may include: changing the color, starting an animation, changing
+    the appearance as the player draws closer, etc */
+    void clearCheckVis(int id);
+    void clearCheckVis(CheckPoint *check);
+
+    void resetCheckVis(int id);
+    void resetCheckVis(CheckPoint *check);
+    void resetAllChecksVis();
 
 private:
 

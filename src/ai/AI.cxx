@@ -35,6 +35,8 @@ void SubmarineAI::updateAI()
     /* Get our seek point as the next checkpoint in the track*/
 
     int seekn = sub->getPTSeek()->getNextPoint(0);
+    if(seekn < 0)
+        return; //0 points to seek
     SeekPoint *seek = world->getLevel()->getTrack()->getNextSeekPoint(seekn,0);
     //printf("Seeking %d\n", seek->getTrackID());
     vec3 point3d = seek->getCenter();
