@@ -88,14 +88,18 @@ void Submarine::hitSeekPoint(int id)
     pt->clearPoint(id);
     if(pt->isLapComplete()){
         int laps = pt->completeLap();
-        if(laps == world->getLevel()->getTrack()->getLapsToWin())
-            printf("A WINNER IS YOU\n");
     }
 }
 
-void Submarine::hitCheckPoint(int id)
+void Submarine::hitCheckPoint(int id, int isFinish)
 {
-
+    ProgressTracker *pt = this->getPTCheck();
+    pt->clearPoint(id);
+    if(isFinish && pt->isLapComplete()){
+        int laps = pt->completeLap();
+        if(laps >= world->getLevel()->getTrack()->getLapsToWin())
+            printf("A WINNER IS YOU\n");
+    }
 }
 
 

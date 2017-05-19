@@ -43,7 +43,7 @@ public:
     void buildDemoLevel();
 
     /* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
-    void generateDummyPath(float r, vec3 *centers, int n, int& cur_id);
+    void generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck, int nCheck, int& cur_id);
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);

@@ -23,16 +23,22 @@ void Track::addSeekPoint(SeekPoint *sp)
     this->seeks.push_back(sp);
 }
 
-/* Returns an index into the seekpoint array such that the array wraps around */
-int Track::modularIndex(int i, int off)
+void Track::addCheckPoint(CheckPoint *cp)
 {
-    return modularIndexOffset(i, off, this->nSeeks());
+    cp->setTrackID(this->nChecks());
+    this->checks.push_back(cp);
 }
 
 /* Returns the seekpoint that is howFar ahead of cur. The AI should keep track
 of which seek point it is currently at */
 SeekPoint *Track::getNextSeekPoint(int cur, int howFar)
 {
-    int target = modularIndex(cur, howFar);
+    int target = modularIndexOffset(cur, howFar, this->nSeeks());
     return seeks[target];
+}
+
+CheckPoint *Track::getNextCheckPoint(int cur, int howFar)
+{
+    int target = modularIndexOffset(cur, howFar, this->nChecks());
+    return checks[target];
 }

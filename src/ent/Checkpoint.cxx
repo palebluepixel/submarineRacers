@@ -79,22 +79,6 @@ Mesh* Hexagon::getMesh(float length)
 }
 
 
-Checkpoint::Checkpoint(int ID, vec3 initial_position, quaternion initial_orientation,
-        std::string name, EntityType type, EntityStatus status, float tick_interval)
-:Entity(ID, initial_position, initial_orientation, name, type, status, tick_interval)
-{ }
-
-Checkpoint::~Checkpoint() { }
-
-
-FinishLine::FinishLine(int ID, vec3 initial_position, quaternion initial_orientation,
-        std::string name, EntityType type, EntityStatus status, float tick_interval)
-:Checkpoint(ID, initial_position, initial_orientation, name, type, status, tick_interval)
-{ }
-
-FinishLine::~FinishLine() { }
-
-
 SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientation,
 	    std::string name, EntityType type, EntityStatus status, float tick_interval,
 	    Hexagon *hex)
@@ -103,6 +87,7 @@ SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientati
 
 	/* TODO: check if hex is valid */
 	this->hex = hex;
+    this->color = vec3(1.0f, 0.5f, 0.5f);
 
 	this->initalizeVisualData();
 }
@@ -123,8 +108,7 @@ void SeekPoint::initalizeMeshes()
     Mesh *mesh = this->hex->getMesh(0.2);
     //Mesh *mesh = new Mesh(GL_TRIANGLES);
     //mesh->loadOBJ("../assets/models/cube.obj");
-    vec3 col = vec3(1.0f, 0.5f, 0.5f);
-    mesh->data.color = vec4(col, 1.0); // transparent pink
+    mesh->data.color = vec4(this->color, 1.0); // transparent pink
     mesh->data.tex = this->tex;
     this->meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4(1))));
 }
@@ -143,3 +127,18 @@ vec3 SeekPoint::getCenter()
 {
 	return this->hex->center;
 }
+
+
+
+
+CheckPoint::CheckPoint(int ID, vec3 initial_position, quaternion initial_orientation,
+std::string name, EntityType type, EntityStatus status, float tick_interval, 
+Hexagon *hex, int isFinishLine)
+:SeekPoint(ID, initial_position, initial_orientation, name, type, status, tick_interval, hex)
+{
+    this->fl = isFinishLine;
+}
+
+
+
+CheckPoint::~CheckPoint() {}

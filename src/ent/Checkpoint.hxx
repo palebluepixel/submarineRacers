@@ -30,46 +30,6 @@ public:
 };
 
 
-/* Class for checkpoints and used to represent the path
-of a track. Use of the word "Player" in this file can refer
-to a human player or an AI.  */
-class Checkpoint : public Entity {
-
-public:
-	Checkpoint(int ID, vec3 initial_position, quaternion initial_orientation,
-        std::string name, EntityType type, EntityStatus status, float tick_interval);
-	~Checkpoint();
-
-	/* When a player collides with this checkpoint, set the player's
-	info to indicate they have passed through it. */
-	//onCollide(Entity *)
-
-protected:
-
-	/* Some kind of mesh representation - for now we will use the hex
-	of seekpoints, but this may eventually be rings, etc */	
-
-};
-
-
-
-/* Finish line. The player must pass through this some number of times
-to fin the race, but only if all associated Checkpoints have been passed
-through. Currently we don't check the order of the checkpoints */
-
-class FinishLine : public Checkpoint {
-
-public:
-	FinishLine(int ID, vec3 initial_position, quaternion initial_orientation,
-        std::string name, EntityType type, EntityStatus status, float tick_interval);
-	~FinishLine();
-
-	/* When the player collides with this finish line, call the finishLine()
-	function of the world, which will go to the current track and check if
-	the lap is valid. */
-	//onCollide();
-}; 
-
 
 
 /* A seekpoint is used for AI pathfinding behavior. A track contains an
@@ -126,10 +86,29 @@ protected:
 
 	int idInTrack;  // Which # point we are. This is set by the track. */
 
+	vec3 color;
+
 };
 
 
+/* Class for checkpoints and used to represent the path
+of a track. Use of the word "Player" in this file can refer
+to a human player or an AI.  */
+class CheckPoint : public SeekPoint {
 
+public:
+	CheckPoint(int ID, vec3 initial_position, quaternion initial_orientation,
+        std::string name, EntityType type, EntityStatus status, float tick_interval, 
+        Hexagon *hex, int isFinishLine);
+	~CheckPoint();
+
+	inline int isFinishLine() { return this->fl; }
+
+protected:
+
+	int fl; //1 if we are the finish line
+
+};
 
 
 

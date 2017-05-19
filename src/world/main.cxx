@@ -74,8 +74,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
     if(glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
         //hard-coded AI sub
-        ProgressTracker *pt = world->getSub(1)->getPTSeek(); 
-        pt->clearPoint(pt->getNextPoint(0));
+        Submarine *sub = world->getSub(1);
+        ProgressTracker *pt = sub->getPTCheck();
+        int curi = pt->getNextPoint(0);
+        CheckPoint *cur = world->getLevel()->getTrack()->getNextCheckPoint(curi,0); 
+        sub->hitCheckPoint(pt->getNextPoint(0),cur->isFinishLine());
     }
 
     /* Continous actions should go here */

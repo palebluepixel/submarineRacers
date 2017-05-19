@@ -36,7 +36,7 @@ void SubmarineAI::updateAI()
 
     int seekn = sub->getPTSeek()->getNextPoint(0);
     SeekPoint *seek = world->getLevel()->getTrack()->getNextSeekPoint(seekn,0);
-    printf("Seeking %d\n", seek->getTrackID());
+    //printf("Seeking %d\n", seek->getTrackID());
     vec3 point3d = seek->getCenter();
     vec2 point = vec2(point3d.x, point3d.z);
 
