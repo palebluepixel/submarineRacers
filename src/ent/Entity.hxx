@@ -124,6 +124,9 @@ public:
     inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
+    /* change the color of the ith mesh in meshes, if it exists */
+    void setMeshColor(int i, vec4 newCol);
+
     std::vector<TransformedMesh> meshes;
 protected:
     Volume *volume;

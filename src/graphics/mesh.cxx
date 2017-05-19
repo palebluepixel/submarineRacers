@@ -161,6 +161,13 @@ TransformedMesh::MeshInfo::MeshInfo(Mesh *m, mat4 transform){
   this->transform = transform;
 }
 
+void TransformedMesh::setMeshColor(int i, vec4 newCol)
+{
+  if(i<0 || i>this->meshes.size())
+    return;
+  this->meshes[i].mesh->data.color = newCol;
+}
+
 /* Given three points, return the normal vector of the plane which they define. */
 vec3 getNorm(vec3 a, vec3 b, vec3 c)
 {

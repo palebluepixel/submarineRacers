@@ -267,3 +267,12 @@ void Entity::applyTorque(vec3 torque) {
 vec3 Entity::getDirection() {
     return orientation * glm::vec3(0, 0, 1);
 }
+
+
+/* change the color of the ith mesh in meshes, if it exists */
+void Entity::setMeshColor(int i, vec4 newCol)
+{
+    if(i<0 || i>this->meshes.size())
+        return;
+    this->meshes[i].setMeshColor(i,newCol);
+}

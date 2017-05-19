@@ -110,6 +110,9 @@ public:
   TransformedMesh(MeshInfo mesh);
   std::vector<MeshInfo> meshes;
 
+  /* Change the color of the ith mesh */
+  void setMeshColor(int i, vec4 newCol);
+
 
 };
 
