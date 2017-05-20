@@ -143,10 +143,14 @@ DistanceResult shortestDistance(Segment l1, Segment l2) {
     }
 
     // TODO Check point line against each of the four endpoints, returning minimum
+    vec3 t;
     DistanceResult best = shortestDistance(l1.a, l2);
     DistanceResult bl2 = shortestDistance(l1.b, l2);
     DistanceResult al1 = shortestDistance(l2.a, l1);
+    t=al1.a; al1.a=al1.b; al1.b=t;
     DistanceResult bl1 = shortestDistance(l2.b, l1);
+    t=bl1.a; bl1.a=bl1.b; bl1.b=t;
+
 
     if(bl2.distance < best.distance) {
         best = bl2;
@@ -194,34 +198,34 @@ void Polygon::transform(mat4 in){
     normal = orient[1];
     z = orient[2];
     locus = orient[3];
-    printmatrix("base",base);
-    printmatrix("in",in);
-    printmatrix("orient",orient);
+    // printmatrix("base",base);
+    // printmatrix("in",in);
+    // printmatrix("orient",orient);
     for(int i=0;i<n;++i){
         vec4 t(points3[i],1);
         t=in*t;
         points3t[i]=vec3(t.x,t.y,t.z);
         points[i]= vec2(dot(points3t[i]-locus,x),dot(points3t[i]-locus,z));
-        fprintf(stderr,"v[%d]:\n",i);
-        fprintf(stderr,"  p : (%.3f,%.3f,%.3f)\n",points3[i].x,points3[i].y,points3[i].z);
-        fprintf(stderr,"  t : (%.3f,%.3f,%.3f)\n",points3t[i].x,points3t[i].y,points3t[i].z);
-        fprintf(stderr,"  o : (%.3f,%.3f)\n",points[i].x,points[i].y);
+        // fprintf(stderr,"v[%d]:\n",i);
+        // fprintf(stderr,"  p : (%.3f,%.3f,%.3f)\n",points3[i].x,points3[i].y,points3[i].z);
+        // fprintf(stderr,"  t : (%.3f,%.3f,%.3f)\n",points3t[i].x,points3t[i].y,points3t[i].z);
+        // fprintf(stderr,"  o : (%.3f,%.3f)\n",points[i].x,points[i].y);
     }
     // fprintf(stderr,"points: ");
     // for(int i=0;i<n;++i)fprintf(stderr,"(%.3f,%.3f) ",points[i].x,points[i].y);
     // fprintf(stderr,"\n");
-    fprintf(stderr,
-        "transform to\n  x=(%.3f, %.3f, %.3f)"
-                    "\n  n=(%.3f, %.3f, %.3f)"
-                    "\n  z=(%.3f, %.3f, %.3f)"
-                    "\n  l=(%.3f, %.3f, %.3f)\n",x[0],x[1],x[2],normal[0],normal[1],normal[2],z[0],z[1],z[2],locus[0],locus[1],locus[2]);
+    // fprintf(stderr,
+    //     "transform to\n  x=(%.3f, %.3f, %.3f)"
+    //                 "\n  n=(%.3f, %.3f, %.3f)"
+    //                 "\n  z=(%.3f, %.3f, %.3f)"
+    //                 "\n  l=(%.3f, %.3f, %.3f)\n",x[0],x[1],x[2],normal[0],normal[1],normal[2],z[0],z[1],z[2],locus[0],locus[1],locus[2]);
 
 }
 mat4 Polygon::transform(){
     return orient;
 }
 void Polygon::recalculate(){
-    fprintf(stderr," > Recalculating\n");
+    // fprintf(stderr," > Recalculating\n");
     vec3 avg;
     for(int i=0;i<n;++i){
         points3t[i]=points3[i];
@@ -290,9 +294,9 @@ bool Polygon::pointInPolygon(vec3 pt){
     //                 "\n  n=(%.3f, %.3f, %.3f)"
     //                 "\n  z=(%.3f, %.3f, %.3f)"
     //                 "\n  l=(%.3f, %.3f, %.3f)\n",x[0],x[1],x[2],normal[0],normal[1],normal[2],z[0],z[1],z[2],locus[0],locus[1],locus[2]);
-    fprintf(stderr,"testing:  (%.3f,%.3f,%.3f)\n",pt.x,pt.y,pt.z);
-    fprintf(stderr,"project: (%.3f,%.3f,%.3f)\n",proj.x,proj.y,proj.z);
-    fprintf(stderr,"in 2d  : (%.3f,%.3f)\n",p.x,p.y);
+    // fprintf(stderr,"testing:  (%.3f,%.3f,%.3f)\n",pt.x,pt.y,pt.z);
+    // fprintf(stderr,"project: (%.3f,%.3f,%.3f)\n",proj.x,proj.y,proj.z);
+    // fprintf(stderr,"in 2d  : (%.3f,%.3f)\n",p.x,p.y);
 
     // 2. intersect with ray {p along positive x axis}.
     int ray_int =0;
@@ -302,14 +306,14 @@ bool Polygon::pointInPolygon(vec3 pt){
         vec2 a = points[i]-p;
         vec2 b = (i==n-1?points[0]:points[i+1])-p;
         // fprintf(stderr,"Points[%d]: (%.3f,%.3f)\n",i,points[i].x,points[i].y);
-        fprintf(stderr," > with: (%.3f,%.3f)\n",a.x,a.y);
-        fprintf(stderr,"       | (%.3f,%.3f)\n",b.x,b.y);
+        // fprintf(stderr," > with: (%.3f,%.3f)\n",a.x,a.y);
+        // fprintf(stderr,"       | (%.3f,%.3f)\n",b.x,b.y);
 
         // test ray intersection.
         if((a.y<=0 && b.y>0) || (a.y>0 && b.y<=0)){
             float zero = a.x+(b.x-a.x)*(-a.y/(b.y-a.y));
             if(zero>=0){
-                fprintf(stderr,"(%.3f,%.3f),(%.3f,%.3f) INT\n",a.x,a.y,b.x,b.y);
+                // fprintf(stderr,"(%.3f,%.3f),(%.3f,%.3f) INT\n",a.x,a.y,b.x,b.y);
                 ++ray_int;
             }
         }
@@ -321,7 +325,7 @@ bool Polygon::pointInPolygon(vec3 pt){
 }
 DistanceResult Polygon::distance(vec3 pt){
     if(pointInPolygon(pt)){
-        fprintf(stderr, "dist1: %.3f\n",fabsf(dot(pt-locus,normal)));
+        // fprintf(stderr, "dist1: %.3f\n",fabsf(dot(pt-locus,normal)));
         return DistanceResult{pt,(pt) - (dot(pt,normal)*normal),fabsf(dot(pt-locus,normal))};
     }
     else{
@@ -331,36 +335,73 @@ DistanceResult Polygon::distance(vec3 pt){
         // check distance against each segment of edge.
         for(int i=0;i<n;i++){
             vec3 a = points3t[i];
-            vec3 b = i==n?points3t[0]:points3t[i+1];
+            vec3 b = i==n-1?points3t[0]:points3t[i+1];
             DistanceResult dr = shortestDistance(pt,Segment{a,b});
             if(dr.distance<mindist){
                 mindist = dr.distance;
                 mindr=dr;
             }
         }
-        fprintf(stderr, "dist2: %.3f\n",mindist);
+        // fprintf(stderr, "dist2: %.3f\n",mindist);
         return mindr;
     }
 }
 DistanceResult Polygon::distance(Segment line){
-    if(pointInPolygon(line.a) && pointInPolygon(line.b)){
-        // both points in polygon. test segment endpoints.
-        float distA = dot(line.a-locus,normal);
-        float distB = dot(line.b-locus,normal);
+    // fprintf(stderr,"dist (%.3f,%.3f,%.3f)\n",line.a.x,line.a.y,line.a.z);
+    // // fprintf(stderr,"testing (%.3f,%.3f,%.3f) (%.3f,%.3f,%.3f)\n",)
+    // return distance(line.a);
 
-        // check if line intersects plane.
-        bool intersection = (distA>0 && distB<0) || (distA<0 && distB>0);
-        float mul = (intersection)?(-1.f):(1.f);
-        if(fabsf(distA)<fabsf(distB)){
-            // line.a is closer to the plane than line.b
-            return DistanceResult{line.a,(line.a-normal*distA),distA*mul};
+    float distA = (dot(line.a-locus,normal));
+    float distB = (dot(line.b-locus,normal));
+
+    // line is fully to one side of the plane.
+    if(distA>0 && distB>0){
+        // fprintf(stderr," case I : >0\n");
+        if(distA<distB){
+            return distance(line.a);
         }else{
-            // line.b is closer to the plane than line.a
-            return DistanceResult{line.b,(line.b-normal*distB),distB*mul};
+            return distance(line.b);
         }
     }
-    else{
-        // otherwise, return minimum distance from all segments.
+    if(distA<0 && distB<0){
+        // fprintf(stderr," case I : <0\n");
+        if(distA<distB){
+            return distance(line.b);
+        }else{
+            return distance(line.a);
+        }
+    }
+
+    // determine intersection of plane and line (https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection)
+    float num = dot((points3t[0]-line.a),normal);
+    float den = dot((line.b-line.a),normal);
+
+    if(fabsf(den) <= 0.00000001){
+        // fprintf(stderr," case II : fully in plane\n");
+        // line is completely contained within the plane.
+        return DistanceResult{line.a,line.a,0};
+        // the other case (ie. no intersection) is not possible at this point. because
+        // we know that the line is not fully to one side of the plane.
+    }
+
+    float d = num/den;  // distance.
+    vec3 intersection = d*(line.b-line.a) + line.a;
+    bool hits_polygon = pointInPolygon(intersection);
+    if(hits_polygon){
+        // fprintf(stderr," case II : hits polygon\n");
+        // intersection point is on the polygon.
+        if(fabsf(distA)<fabsf(distB)){
+            // line.a is closer to the plane than line.b
+            float distA = dot(line.a-locus,normal);
+            return DistanceResult{(line.a-normal*distA), line.a,-fabsf(distA)};
+        }else{
+            // line.b is closer to the plane than line.a
+            float distB = dot(line.b-locus,normal);
+            return DistanceResult{(line.b-normal*distB),line.b,-fabsf(distB)};
+        }
+    }else{
+        // fprintf(stderr," case II : misses polygon\n");
+        // does not intersect polygon. test boundary edges.
         DistanceResult mindr;
         float mindist = std::numeric_limits<float>::infinity();
 
@@ -374,8 +415,62 @@ DistanceResult Polygon::distance(Segment line){
                 mindr=dr;
             }
         }
-        return mindr;
+        return DistanceResult{mindr.a,mindr.b,mindist};
     }
+
+
+    // bool inA = pointInPolygon(line.a);
+    // bool inB = pointInPolygon(line.b);
+    // if(inA && inB){
+    //     fprintf(stderr,"both in poly\n");
+    //     // both points in polygon. test segment endpoints.
+    //     float distA = dot(line.a-locus,normal);
+    //     float distB = dot(line.b-locus,normal);
+
+    //     // check if line intersects plane.
+    //     bool intersection = (distA>0 && distB<0) || (distA<0 && distB>0);
+    //     float mul = (intersection)?(-1.f):(1.f);
+    //     if(fabsf(distA)<fabsf(distB)){
+    //         // line.a is closer to the plane than line.b
+    //         return DistanceResult{line.a,(line.a-normal*distA),distA*mul};
+    //     }else{
+    //         // line.b is closer to the plane than line.a
+    //         return DistanceResult{line.b,(line.b-normal*distB),distB*mul};
+    //     }
+    // }
+    // else if(!inA && !inB){
+    //     fprintf(stderr,"noot in poly\n");
+    //     // otherwise, return minimum distance from all segments.
+    //     DistanceResult mindr;
+    //     float mindist = std::numeric_limits<float>::infinity();
+
+    //     // check distance against each segment of edge.
+    //     for(int i=0;i<n;i++){
+    //         vec3 a = points3t[i];
+    //         vec3 b = i==n?points3t[0]:points3t[i+1];
+    //         DistanceResult dr = shortestDistance(line,Segment{a,b});
+    //         if(dr.distance<mindist){
+    //             mindist = dr.distance;
+    //             mindr=dr;
+    //         }
+    //     }
+    //     return mindr;
+    // }else{
+        
+    // }
+    //     DistanceResult dr1 = distance(line.a);
+    //     if(dr1.distance<mindist){
+    //         mindist = dr1.distance;
+    //         mindr=dr1;
+    //     }
+    //     DistanceResult dr2 = distance(line.b);
+    //     if(dr2.distance<mindist){
+    //         mindist = dr2.distance;
+    //         mindr=dr2;
+    //     }
+
+    //     return mindr;
+    // }
 }
 Polygon::~Polygon(){
     // delete points;

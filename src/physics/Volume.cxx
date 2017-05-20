@@ -399,8 +399,14 @@ vec3 FlatVolume::push(Volume *other){
     CylinderVolume *v = static_cast<CylinderVolume*>(other);
     vec4 p1 = v->pos.transform * v->Rotation() * vec4(0,0.5*v->H(),0,1);
     vec4 p2 = v->pos.transform * v->Rotation() * vec4(0,-0.5*v->H(),0,1);
-    DistanceResult dist = polygon.distance(Segment{vec3(p1.x,p1.y,p1.z),vec3(p2.x,p2.y,p2.z)});
-    return normalize(dist.b-dist.a)*dist.distance;
+    DistanceResult dr = polygon.distance(Segment{vec3(p1.x,p1.y,p1.z),vec3(p2.x,p2.y,p2.z)});
+    // fprintf(stderr,"(%.3f,%.3f,%.3f) - (%.3f,%.3f,%.3f) : (%.3f,%.3f,%.3f)\n",
+      // p1.x,p1.y,p1.z,p2.x,p2.y,p2.z,other->pos.pos.x,other->pos.pos.y,other->pos.pos.z);
+    fprintf(stderr," >      >   d: %.3f\n",dr.distance);
+    float dist = dr.distance - v->R();
+    if(dist>0)return vec3();
+    return normalize(dr.b-dr.a)*dist;
+
   }
   else{
     return vec3(0,0,0);
