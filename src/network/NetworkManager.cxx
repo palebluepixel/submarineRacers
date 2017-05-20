@@ -186,21 +186,21 @@ void NetworkManager::controllerStateCommand(COMMAND_PARAMS) {
     }
 
     if(state.riseKey) {
-        actuator->rise();
+        actuator->rise(1);
     }
     if(state.diveKey) {
-        actuator->dive();
+        actuator->dive(1);
     }
 
     if(state.leftKey && !state.rightKey) {
-        actuator->turnLeft();
+        actuator->turnLeft(1);
     }
     if(state.rightKey && !state.leftKey) {
-        actuator->turnRight();
+        actuator->turnRight(1);
     }
 
     if(state.forwardKey) {
-        actuator->accelerate();
+        actuator->accelerate(3);
     }
     if(state.fireKey) {
         actuator->fire();

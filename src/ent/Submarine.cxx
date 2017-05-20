@@ -13,6 +13,11 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
 
     this->actuator = new SubmarineActuator(this);
     this->angularDragCoef = 20.f;
+
+    this->maxAccel = 3;
+    this->maxTurn = 10;
+    this->maxRise = 3;
+    this->maxDive = 3;
 }
 
 void Submarine::switchWeapons(uint8_t weapon) {
@@ -42,6 +47,17 @@ void Submarine::initalizeMeshes()
     meshes.push_back(Model(Model::FancyMesh(mesh, mat4(),Model::RenderState(vec4(color,1.f)))));
 }
 
+/* Return movement and handling parameters for this sub. These may eventually be
+more complicated, for example they may take into account status conditions and 
+powerups affecting this sub, and maximum acceleration may depend on depth. */
+float Submarine::getMaxAccel() { return this->maxAccel; }
+float Submarine::getMaxTurn() { return this->maxTurn; }
+float Submarine::getMaxRise() { return this->maxRise; }
+float Submarine::getMaxDive() { return this->maxDive; }
+
+
+
+
 
 void SubmarineSteeringState::reset() {
     rotationChange = 0.0f; // + is left
@@ -67,20 +83,20 @@ void SubmarineActuator::doSteering(float dt) {
 }
 
 
-void SubmarineActuator::rise() {
-    state.depthChange += 1;
+void SubmarineActuator::rise(float amount) {
+    state.depthChange += amount;
 }
-void SubmarineActuator::dive() {
-    state.depthChange -= 1;
+void SubmarineActuator::dive(float amount) {
+    state.depthChange -= amount;
 }
-void SubmarineActuator::turnLeft() {
-    state.rotationChange += 1;
+void SubmarineActuator::turnLeft(float amount) {
+    state.rotationChange += amount;
 }
-void SubmarineActuator::turnRight() {
-    state.rotationChange -= 1;
+void SubmarineActuator::turnRight(float amount) {
+    state.rotationChange -= amount;
 }
-void SubmarineActuator::accelerate() {
-    state.acceleration += 3;
+void SubmarineActuator::accelerate(float amount) {
+    state.acceleration += amount;
 }
 void SubmarineActuator::fire() {
     state.fireWeapon = true;

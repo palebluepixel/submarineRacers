@@ -14,8 +14,23 @@ public:
     void initalizeVisualData();
     void initalizeMeshes();
 
+    /* Return movement and handling parameters for this sub */
+    float getMaxAccel();
+    float getMaxTurn();
+    float getMaxRise();
+    float getMaxDive();
+
     vec3 color;
     char *modelfile;
+
+private:
+    /* For now these are set to the same value for all subs (in the constructor),
+    but eventually these may vary so subs have different "stats" for acceleration
+    and handling. */
+    float maxAccel;
+    float maxTurn;
+    float maxRise;
+    float maxDive;
 };
 
 
@@ -40,13 +55,15 @@ public:
 
     void doSteering(float dt);
 
-    void rise();
-    void dive();
-    void turnLeft();
-    void turnRight();
-    void accelerate();
+    void rise(float amount);
+    void dive(float amount);
+    void turnLeft(float amount);
+    void turnRight(float amount);
+    void accelerate(float amount);
     void fire();
     void switchWeapons(uint8_t weapon);
+
+    inline Submarine *getSub() { return this->agent; }
    
 protected:
     Submarine *agent;

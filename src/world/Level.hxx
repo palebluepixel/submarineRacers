@@ -13,6 +13,7 @@
 #include <graphics/view.hxx>
 #include <graphics/renderer.hxx>
 #include <ent/Checkpoint.hxx>
+#include <world/Track.hxx>
 
 using namespace std;
 
@@ -40,6 +41,9 @@ public:
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();
     void buildDemoLevel();
+
+    /* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
+    void generateDummyPath(float r, vec3 *centers, int n, int& cur_id);
 
     /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
     void upEntData(posUpBuf *info);
@@ -85,6 +89,10 @@ public:
     void setSkybox(Gadget *skybox);
     void renderSkybox(View *view, Renderer *r);
 
+    /* Track */
+    inline void setTrack(Track *track) { this->track = track; }
+    inline Track * getTrack() { return this->track; }
+
     void updateLevel(float dt);
     void interpolateLevel(float dt);
 
@@ -100,6 +108,8 @@ private:
     std::vector<AI_entry> ais;  //REMARK this might need to become a list later if we start doing a lot of deleteions
 
     Gadget *skybox;
+
+    Track *track;
 
     void physicsTick(float dt);
     void handleCollisions(float dt);

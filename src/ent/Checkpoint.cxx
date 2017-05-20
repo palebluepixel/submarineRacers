@@ -1,43 +1,63 @@
 #include "Checkpoint.hxx"
 
-vec3 hexCenter(hexagon hex)
+/* Constuct a regular hexagon at the given center with the given radius,
+with a normal facing down the z-axis */
+Hexagon::Hexagon(vec3 center, float r)
 {
-	return (hex.Lt + hex.Lb + hex.Mt + hex.Mb + hex.Rt + hex.Rb) / 6.0f;
+	this->Lt = r*vec3(-0.866,0.5,0)+center;
+	this->Lb = r*vec3(-0.866,-0.5,0)+center;
+	this->Mt = r*vec3(0,1,0)+center;
+	this->Mb = r*vec3(0,-1,0)+center;
+	this->Rt = r*vec3(0.866,0.5,0)+center;
+	this->Rb = r*vec3(0.866,-0.5,0)+center;
+
+	this->center = center;
+	this->normal = vec3(0,0,1);
+
 }
 
+/* Construct a hexagon using the 6 corner points */
+Hexagon::Hexagon(vec3 Lt, vec3 Lb, vec3 Mt, vec3 Mb, vec3 Rt, vec3 Rb)
+{
+	this->Lt = Lt; this->Lb = Lb; this->Mt = Mt; this->Mb = Mb;
+	this->Rt = Rt; this->Rb = Rb;
+
+	this->center = (Lt + Lb + Mt + Mb + Rt + Rb) / 6.0f;
+	this->normal = normalize(cross(normalize(Lt - this->center),
+		normalize(Lb - this->center)));
+}
+
+/* Translate a point by distance along the given axis */
 vec3 displace(vec3 point, vec3 axis, float displace)
 {
 	vec3 result = point + (axis * displace);
 	return result;
 }
 
-Mesh * hexMesh(hexagon hex)
+/* Return a mesh representation of the hexagon as a hexagonal
+prism with the given length. */
+Mesh* Hexagon::getMesh(float length)
 {
-	/* Get the normal for the first triangle of the hex */
-	vec3 center = hexCenter(hex);;
-	vec3 v1 = normalize(hex.Lt - center);
-	vec3 v2 = normalize(hex.Mt - center);
-	vec3 normal = normalize(cross(v1, v2));
 
-	float width = 0.2;
+	/* Use of the "this" keyword omitted for clarity */
 
 	/* Iinitalize Vertex and Index array for flat hex */
 	int nVecs = 14;
 	vec3 *v = (vec3*)malloc(nVecs*sizeof(vec3));
-	v[0] = displace(center, normal, width);
-	v[1] = displace(hex.Lt, normal, width);
-	v[2] = displace(hex.Mt, normal, width);
-	v[3] = displace(hex.Rt, normal, width);
-	v[4] = displace(hex.Rb, normal, width);
-	v[5] = displace(hex.Mb, normal, width);
-	v[6] = displace(hex.Lb, normal, width);
-	v[7] = displace(center, normal, -width);
-	v[8] = displace(hex.Lt, normal, -width);
-	v[9] = displace(hex.Mt, normal, -width);
-	v[10] = displace(hex.Rt, normal, -width);
-	v[11] = displace(hex.Rb, normal, -width);
-	v[12] = displace(hex.Mb, normal, -width);
-	v[13] = displace(hex.Lb, normal, -width);
+	v[0] = displace(center, normal, length);
+	v[1] = displace(Lt, normal, length);
+	v[2] = displace(Mt, normal, length);
+	v[3] = displace(Rt, normal, length);
+	v[4] = displace(Rb, normal, length);
+	v[5] = displace(Mb, normal, length);
+	v[6] = displace(Lb, normal, length);
+	v[7] = displace(center, normal, -length);
+	v[8] = displace(Lt, normal, -length);
+	v[9] = displace(Mt, normal, -length);
+	v[10] = displace(Rt, normal, -length);
+	v[11] = displace(Rb, normal, -length);
+	v[12] = displace(Mb, normal, -length);
+	v[13] = displace(Lb, normal, -length);
 
 	int j, nIndices = 96;
 	uint32_t stack_i[nIndices] = 
@@ -77,7 +97,7 @@ FinishLine::~FinishLine() { }
 
 SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientation,
 	    std::string name, EntityType type, EntityStatus status, float tick_interval,
-	    hexagon hex, int mandatory)
+	    Hexagon *hex, int mandatory)
 :Entity(ID, initial_position, initial_orientation, name, type, status, tick_interval)
 {
 	this->mandatory = mandatory;
@@ -88,7 +108,10 @@ SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientati
 	this->initalizeVisualData();
 }
 
-SeekPoint::~SeekPoint() {};
+SeekPoint::~SeekPoint() 
+{
+	delete(this->hex);
+};
 
 
 void SeekPoint::initalizeVisualData(){
@@ -98,7 +121,7 @@ void SeekPoint::initalizeVisualData(){
 
 void SeekPoint::initalizeMeshes()
 {
-    Mesh *mesh = hexMesh(this->hex);
+    Mesh *mesh = this->hex->getMesh(0.2);
     //Mesh *mesh = new Mesh(GL_TRIANGLES);
     //mesh->loadOBJ("../assets/models/cube.obj");
 
@@ -116,4 +139,10 @@ void SeekPoint::initalizeTextures(const char* texfile)
     texture2d * cubetex = new texture2d(GL_TEXTURE_2D, image);
     this->tex = cubetex;
     this->img = image;
+}
+
+
+vec3 SeekPoint::getCenter()
+{
+	return this->hex->center;
 }

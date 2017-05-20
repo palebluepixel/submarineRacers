@@ -4,18 +4,30 @@
 #include <ent/Entity.hxx>
 
 
-typedef struct 
-{
+class Hexagon {
+public:
+	/* Constuct a regular hexagon at the given center with the given radius,
+	with a normal facing down the z-axis */
+	Hexagon(vec3 center, float r);
+
+	/* Construct a hexagon using the 6 corner points */
+	Hexagon(vec3 Lt, vec3 Lb, vec3 Mt, vec3 Mb, vec3 Rt, vec3 Rb);
+
+	/* Return a mesh representation of the hexagon as a hexagonal
+	prism with the given length. */
+	Mesh* getMesh(float length);
+
 	vec3 Lt;
 	vec3 Lb;
 	vec3 Mt;
 	vec3 Mb;
 	vec3 Rt;
 	vec3 Rb;
-} hexagon;
 
-vec3 hexCenter(hexagon hex);
-Mesh * hexMesh(hexagon hex);
+	vec3 center;
+	vec3 normal;
+
+};
 
 
 /* Class for checkpoints and used to represent the path
@@ -72,7 +84,7 @@ class SeekPoint : public Entity {
 public:
 	SeekPoint(int ID, vec3 initial_position, quaternion initial_orientation,
         std::string name, EntityType type, EntityStatus status, float tick_interval,
-        hexagon hex, int mandatory);
+        Hexagon *hex, int mandatory);
 	~SeekPoint();
 
 
@@ -104,11 +116,14 @@ public:
 	avoid going left of Lt and Lb at all costs, to avoid going right of Rt
 	and Rb at all costs, and to seek towards the middle. 
 	*/
-	hexagon hex;
+	Hexagon *hex;
 
 	void initalizeTextures(const char* texfile);
     void initalizeVisualData();
     void initalizeMeshes();
+
+    /* Get AI seek info */
+    vec3 getCenter();
 
 protected:
 
