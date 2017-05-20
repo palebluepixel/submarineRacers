@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
+#include <physics/physics.hxx>
 // #include <physics/PhysicsEngine.hxx>
 #include <vector>
 #include <network/MessageProtocols.hxx>
@@ -114,6 +115,7 @@ public:
     void applyForce(vec3 force);
     void applyTorque(vec3 torque);
     void updatePhysicsVolume();
+    virtual Physics::CollisionMode onCollide(Entity *other);
 
     /**     game state:     **/
     virtual EntityStatus spawn();     // set status to spawned, place in intial position

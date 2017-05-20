@@ -6,6 +6,7 @@
 #include <physics/Volume.hxx>
 #include <ent/terrain.hxx>
 #include <world/world.hxx>
+#include <physics/physics.hxx>
 
 extern World* world;
 
@@ -413,47 +414,48 @@ void Level::handleCollisions(float dt) {
             vec3 e1p = e1.pos();
             vec3 pushe1 = e1.getVolume()->push(e2.getVolume());
 
-
-
-
-
             // fprintf(stderr,"(%.3f,%.3f,%.3f)\n",e1p.x,e1p.y,e1p.z);
             // fprintf(stderr,"(%.3f,%.3f,%.3f)\n",pushe1.x,pushe1.y,pushe1.z);
             if(pushe1 != vec3()){
-                // there is a collision
-                float weighting = e1.mass()/(e1.mass()+e2.mass());
-                e1.pos(e1.pos()-(1-weighting)*pushe1);
-                e2.pos(e2.pos()+weighting*pushe1);
+                Physics::CollisionMode cm1 = e1.onCollide(en2.second);
+                Physics::CollisionMode cm2 = e2.onCollide(en1.second);
 
-                // vec3 v1 = (e1.vel()*(e1.mass()-e2.mass()) + e2.vel()*2.f*e2.mass())/(e1.mass()+e2.mass());
-                // vec3 v2 = (e2.vel()*(e2.mass()-e1.mass()) + e1.vel()*2.f*e1.mass())/(e1.mass()+e2.mass());
+                if(cm1.hardness != 0 && cm2.hardness != 0){
+                    // there is a collision, and we have to handle it.
+                    float weighting = e1.mass()/(e1.mass()+e2.mass());
+                    e1.pos(e1.pos()-(1-weighting)*pushe1);
+                    e2.pos(e2.pos()+weighting*pushe1);
 
-                // normalized direction from e1 to e2.
-                vec3 vc = glm::normalize(pushe1);
+                    // vec3 v1 = (e1.vel()*(e1.mass()-e2.mass()) + e2.vel()*2.f*e2.mass())/(e1.mass()+e2.mass());
+                    // vec3 v2 = (e2.vel()*(e2.mass()-e1.mass()) + e1.vel()*2.f*e1.mass())/(e1.mass()+e2.mass());
 
-                // object velocities
-                vec3 v1 = e1.vel();
-                vec3 v2 = e2.vel();
+                    // normalized direction from e1 to e2.
+                    vec3 vc = glm::normalize(pushe1);
 
-                // components in collision vector coordinate system.
-                float o1_c_comp = (glm::dot(vc,v1));
-                vec3  o1_c_remd = v1 - o1_c_comp*vc;
+                    // object velocities
+                    vec3 v1 = e1.vel();
+                    vec3 v2 = e2.vel();
 
-                float o2_c_comp = (glm::dot(vc,v2));
-                vec3  o2_c_remd = v2 - o2_c_comp*vc;
+                    // components in collision vector coordinate system.
+                    float o1_c_comp = (glm::dot(vc,v1));
+                    vec3  o1_c_remd = v1 - o1_c_comp*vc;
 
-                // linear axis, e1->e2 positive direction.
-                o1_c_comp = (o1_c_comp);
-                o2_c_comp = (o2_c_comp);
-                
-                float magc1 = (o1_c_comp*(e1.mass()-e2.mass()) + o2_c_comp*2.f*e2.mass())/(e1.mass()+e2.mass());
-                float magc2 = (o2_c_comp*(e2.mass()-e1.mass()) + o1_c_comp*2.f*e1.mass())/(e1.mass()+e2.mass());
+                    float o2_c_comp = (glm::dot(vc,v2));
+                    vec3  o2_c_remd = v2 - o2_c_comp*vc;
 
-                vec3 res1 = o1_c_remd + magc1*vc;
-                vec3 res2 = o2_c_remd + magc2*vc;
+                    // linear axis, e1->e2 positive direction.
+                    o1_c_comp = (o1_c_comp);
+                    o2_c_comp = (o2_c_comp);
+                    
+                    float magc1 = (o1_c_comp*(e1.mass()-e2.mass()) + o2_c_comp*2.f*e2.mass())/(e1.mass()+e2.mass());
+                    float magc2 = (o2_c_comp*(e2.mass()-e1.mass()) + o1_c_comp*2.f*e1.mass())/(e1.mass()+e2.mass());
 
-                e1.vel(res1);
-                e2.vel(res2);
+                    vec3 res1 = o1_c_remd + magc1*vc;
+                    vec3 res2 = o2_c_remd + magc2*vc;
+
+                    e1.vel(res1);
+                    e2.vel(res2);
+                }
             }
             vec3 np = e1.pos();
             // fprintf(stderr,"(%.3f,%.3f,%.3f)\n\n",np.x,np.y,np.z);

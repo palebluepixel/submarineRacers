@@ -38,7 +38,9 @@ Entity::~Entity()
     
 }
 
-
+Physics::CollisionMode Entity::onCollide(Entity *other){
+    return Physics::ELASTIC;
+}
 void Entity::setPhysicsParams(PhysicsParams in){
     dragCoef(in.dragCoef);
 }
