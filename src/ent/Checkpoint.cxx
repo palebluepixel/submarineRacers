@@ -124,7 +124,6 @@ void SeekPoint::initalizeMeshes()
     Mesh *mesh = this->hex->getMesh(0.2);
     //Mesh *mesh = new Mesh(GL_TRIANGLES);
     //mesh->loadOBJ("../assets/models/cube.obj");
-
     vec3 col(1.0f, 0.5f, 0.5f);
     mesh->data.tex = this->tex;
 
