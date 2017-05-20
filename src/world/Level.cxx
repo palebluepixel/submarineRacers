@@ -152,17 +152,19 @@ void Level::buildDemoLevel()
     cubes[0]->setVelocity(vec3(0,-6.5f,0));
     cubes[0]->setMass(1.f);
 
-    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/sub_3.obj");
+    cubes[1] = new Gadget(cur_id++,cubePos[1], angleAxis(3.1415f/6.f,vec3(1,0,0)), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/sub_3.obj");
     cubes[1]->setVolume(new CylinderVolume(Volume::Pos(cubes[1]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,vec3(1,0,0))));
     cubes[1]->meshes.push_back(cubes[1]->getVolume()->collisionMesh());
-    cubes[1]->setVelocity(vec3(0,-2,0));
+
     cubes[1]->setMass(1.f);
     cubes[1]->dragCoef(0.f);
+    // addEntity(cubes[0]);
+    addEntity(cubes[1]);
 
-    for(i=0; i<4; i++){
+    for(i=2; i<4; i++){
         cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/cube.obj");
-        cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
-        cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
+        // cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
+        // cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         // cubes[i]->setVelocity(vec3(0,-3,0));
         cubes[i]->setMass(1.f);
         cubes[i]->dragCoef(0.0f);
@@ -173,12 +175,12 @@ void Level::buildDemoLevel()
 
     cubes[3]->setVelocity(vec3(0,0,0));
     cubes[3]->setMass(1);
-    cubes[3]->pos(vec3(0,14,15));
+    cubes[3]->pos(vec3(0,0,0));
+    // addEntity(cubes[3]);
 
-    for(i=2; i<3; i++){
-        this->addEntity(cubes[i]);
-    }
-
+    cubes[1]->pos(vec3(0,2,6));
+    cubes[1]->setVelocity(vec3(0,0,-4));
+    
     //create checkpoints
     vec3 hexpts[6]={vec3(-3,3,0),vec3(0,3,0),vec3(3,3,0),vec3(3,-3,0),vec3(0,-3,0),vec3(-3,-3,0)};
     Polygon phex(hexpts,6);
@@ -186,10 +188,10 @@ void Level::buildDemoLevel()
     hexagon hex1; hex1.Lt = hexpts[0]; hex1.Mt = hexpts[1]; hex1.Rt = hexpts[2]; 
     hex1.Rb = hexpts[3]; hex1.Mb = hexpts[4]; hex1.Lb = hexpts[5];
     
-    SeekPoint *seek1 = new SeekPoint(cur_id++, vec3(5,6,5), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex1, 1);
+    SeekPoint *seek1 = new SeekPoint(cur_id++, vec3(), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex1, 1);
     seek1->setMass(1);
     seek1->setVelocity(vec3(0,0,0));
-    seek1->pos(vec3(0,5,0));
+    seek1->pos(vec3(0,-3,0));
     seek1->setVolume(new FlatVolume(Volume::Pos(seek1),phex));
     this->addEntity(seek1);
 
