@@ -398,7 +398,7 @@ void Level::physicsTick(float dt) {
 }
 
 void Level::handleCollisions(float dt) {
-    map<int, bool> processed;
+    static map<int, bool> processed;
     for(std::pair<int, Entity *> e : entities)
         processed[e.first]=false;
 

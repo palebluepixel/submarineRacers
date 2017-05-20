@@ -402,7 +402,7 @@ vec3 FlatVolume::push(Volume *other){
     DistanceResult dr = polygon.distance(Segment{vec3(p1.x,p1.y,p1.z),vec3(p2.x,p2.y,p2.z)});
     // fprintf(stderr,"(%.3f,%.3f,%.3f) - (%.3f,%.3f,%.3f) : (%.3f,%.3f,%.3f)\n",
       // p1.x,p1.y,p1.z,p2.x,p2.y,p2.z,other->pos.pos.x,other->pos.pos.y,other->pos.pos.z);
-    fprintf(stderr," >      >   d: %.3f\n",dr.distance);
+    // fprintf(stderr," >      >   d: %.3f\n",dr.distance);
     float dist = dr.distance - v->R();
     if(dist>0)return vec3();
     return normalize(dr.b-dr.a)*dist;

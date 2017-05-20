@@ -63,6 +63,7 @@ public:
 public:
     std::string  setName(std::string name);
     std::string  getName();
+    
     int          setID(int id);
     EntityType   setEntityType(EntityType type);
     EntityType   getEntityType(); 
