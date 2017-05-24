@@ -64,7 +64,7 @@ GLint Shader::getAttributeLocation (const char *name)
     GLint id = glGetAttribLocation (this->ID(), name);
     if (id < 0) {
     std::cerr << "Error: shader attribute \"" << name << "\" is invalid\n" << std::endl;
-    exit (1);
+    // exit (1);
     }
     return id;
 }
@@ -75,8 +75,8 @@ GLint Shader::getUniformLocation (const char *name)
 {
     GLint id = glGetUniformLocation (this->ID(), name);
     if (id < 0) {
-    std::cerr << "Error: shader uniform \"" << name << "\" is invalid\n" << std::endl;
-    exit (1);
+    std::cerr << "Error: shader uniform \"" << name << "\" is invalid "<< id << "\n" << std::endl;
+    // exit (1);
     }
     return id;
 }

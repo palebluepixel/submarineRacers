@@ -106,7 +106,6 @@ void SunlightShadingRenderer::render (View *view, Model::FancyMesh mesh){
   setUniform(fogDensityLoc, fog.fogDensity);
   setUniform(fogStartLoc, fog.fogStart);
 
-  // todo: THIS FUNCTION DOES NOT TRANSFORM OBJECTS CORRECTLY
   setUniform(shouldTextureLoc, mesh.mesh->data.shouldTexture);
   texture2d *tex = mesh.mesh->data.tex;
   if(tex){
@@ -249,5 +248,43 @@ void SkyboxRenderer::render (View *view, Model::FancyMesh mesh){
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
   setUniform(colorLoc, mesh.glState.color);
+  mesh.mesh->draw();
+}
+
+
+WaterRenderer::WaterRenderer (Shader *sh)
+    : Renderer (sh){
+
+  utime = _shader->getUniformLocation("time");
+}
+
+WaterRenderer::~WaterRenderer ()
+{ }
+
+void WaterRenderer::enable()
+{
+  _shader->use();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glEnable(GL_DEPTH_TEST);
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_CULL_FACE);
+  // glCullFace(GL_BACK);
+}
+
+void WaterRenderer::render (View *view, Model::FancyMesh mesh) {
+  static float time=0.f;
+  time+=0.04f;
+
+  mat4 projectionMat = view->projectionMatrix();
+  mat4 viewMat = view->viewMatrix();
+
+  setUniform(utime, time);
+  setUniform(modelViewLoc, viewMat);
+  setUniform(projectionLoc, projectionMat);
+
+  setUniform(colorLoc, mesh.glState.color);
+
   mesh.mesh->draw();
 }

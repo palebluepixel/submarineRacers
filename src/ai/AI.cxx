@@ -44,7 +44,7 @@ void SubmarineAI::turnTowards(float angle, float threshAny, float threshFull)
     Submarine *sub = this->getOurSub();
     
     float turnSpeed = LERP_FLOAT(abs(angle), threshAny, threshFull, 0, sub->getMaxTurn());
-    printf("Angle: %f Turn speed: %f\n", angle, turnSpeed);
+    // printf("Angle: %f Turn speed: %f\n", angle, turnSpeed);
 
     if(targetOnLeft(angle)) {
         this->subAct->turnLeft(turnSpeed);
@@ -75,7 +75,7 @@ void SubmarineAI::seekPoint(vec2 point)
 
     // Get target direction
     vec2 target = normalize(point-pos);
-    printf("Pos: %f %f Point: %f %f Target: %f %f\n", pos[0], pos[1], point[0], point[1], target[0], target[1]);
+    // printf("Pos: %f %f Point: %f %f Target: %f %f\n", pos[0], pos[1], point[0], point[1], target[0], target[1]);
 
     // Angle between our sub and our target direction. We compute it
     // here because we will use it in multiple functions.  

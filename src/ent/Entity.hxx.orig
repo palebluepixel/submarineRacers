@@ -29,8 +29,7 @@ enum EntityType {
     //boost,
     //etc
     TYPESUB, //These don't get deleted when the world is free'd
-    TYPECHECK,
-    WATER
+    TYPECHECK
 };
 
 //can be used to "turn an object off" or delay placing it in the world
@@ -128,7 +127,14 @@ public:
     inline std::vector<Model> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
+<<<<<<< HEAD
     std::vector<Model> meshes;
+=======
+    /* change the color of the ith mesh in meshes, if it exists */
+    void setMeshColor(int i, vec4 newCol);
+
+    std::vector<TransformedMesh> meshes;
+>>>>>>> AI
 protected:
     Volume *volume;
     quaternion orientation;

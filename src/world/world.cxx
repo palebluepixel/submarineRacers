@@ -287,8 +287,7 @@ int World::handleGraphicsTick(float t, float dt)
 
 void World::renderAll()
 {
-    this->getLevel()->renderAll(this->getView(), this->getEntityRenderer(), 
-        this->getSkyboxRenderer(), this->getFlatRenderer());
+    this->getLevel()->renderAll(this->getView(), renderers,1);
 }
 
 /* Handle one tick of the networks clock. This is where we handle communication
@@ -382,22 +381,28 @@ void World::worldInitalizeDefault(int isServer)
     skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
     skyboxShader->build();
 
+    Shader *waterShader = new Shader();
+    waterShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/watershader.vert"));
+    waterShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/watershader.frag"));
+    waterShader->build();
+
     Shader *flatShader = new Shader();
     flatShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/shader.vert"));
     flatShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/shader.frag"));
     flatShader->build();
 
     //create renderer for the given shader
-    Renderer *r = new UnderwaterRenderer(shader);  
-    Renderer *rsky = new SkyboxRenderer(skyboxShader);
-    Renderer *rflat = new FlatShadingRenderer(flatShader);
+    renderers.ent = new UnderwaterRenderer(shader);  
+    renderers.sky = new SkyboxRenderer(skyboxShader);
+    renderers.flat = new FlatShadingRenderer(flatShader);
+    renderers.water = new WaterRenderer(waterShader);
 
     //initialize camera
     Camera *camera = new Camera();
     //position, yaw-roll, up-vector
-    camera->init(vec3(0,100,0),vec3(0,-100,0),vec3(0,0,1)); //location, looking-at, up
-//  camera->init(vec3(15,10,-3),vec3(-3.14159264f/2.f,0,0),vec3(0,1,0)); //location, looking-at, up
-    camera->setFOV(90.0);
+    // camera->init(vec3(0,100,0),vec3(0,-100,0),vec3(0,0,1)); //location, looking-at, up
+    camera->init(vec3(15,10,-3),vec3(0.2,-0.2,0),vec3(0,1,0)); //location, looking-at, up
+    camera->setFOV(180.0);
     camera->setNearFar(0.1, 1000.0);
     /* Add tethered Camera */
     TetheredCamera * camTeth = new TetheredCamera(FIRSTPERSON, NULL, vec3(0.2,2,0));
@@ -418,9 +423,7 @@ void World::worldInitalizeDefault(int isServer)
     view->setFirstPersonCam(camTeth);
 
     this->setView(view);
-    this->setEntityRenderer(r);
-    this->setSkyboxRenderer(rsky);
-    this->setFlatRenderer(rflat);
+
 
 }
 

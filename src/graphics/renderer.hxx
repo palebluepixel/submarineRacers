@@ -120,8 +120,19 @@ class SkyboxRenderer : public Renderer {
     GLint oceanTopBrightnessLoc;
     GLint oceanBottomBrightnessLoc;
     GLint oceanBottomColorLoc;
-    //GLint surfaceDepth;  //everything above this is max bright
-    //GLint floorDepth;    //everything below this is max dark
+};
+
+class WaterRenderer : public Renderer {
+  public:
+    WaterRenderer(Shader *sh);
+    ~WaterRenderer();
+
+    void enable();
+    void render(View *view, Model::FancyMesh mesh);
+    
+  protected:
+    GLint utime;
+
 };
 
 #endif // !_RENDER_HXX_

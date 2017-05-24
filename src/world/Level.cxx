@@ -5,6 +5,7 @@
 #include <graphics/mesh.hxx>
 #include <physics/Volume.hxx>
 #include <ent/terrain.hxx>
+#include <ent/water.hxx>
 #include <world/world.hxx>
 #include <physics/physics.hxx>
 
@@ -155,7 +156,7 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
 /* DEMO LEVEL */
 void Level::buildDemoLevel() 
 { 
-	//create test objects
+  //create test objects
     // works between (-2.5, -4.5)
     vec3 cubePos[] = {vec3(0,14,0), vec3(5.f, 10, 5.5f), vec3(10,10,15), vec3(10,7,15), vec3(3, -13, 5),
         vec3(5, -40, 5)}; 
@@ -165,14 +166,14 @@ void Level::buildDemoLevel()
 
     int cur_id = 0;
 
-    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/sub_3.obj");
+    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/crate.obj");
     cubes[0]->setOrientation(angleAxis(3.1415f/2.f,vec3(0.f,1.f,0.f)));
     cubes[0]->setVolume(new CylinderVolume(Volume::Pos(cubes[0]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
     cubes[0]->meshes.push_back(cubes[0]->getVolume()->collisionMesh());
     cubes[0]->setVelocity(vec3(0,-6.5f,0));
     cubes[0]->setMass(1.f);
 
-    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/sub_3.obj");
+    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/crate.obj");
     cubes[1]->setVolume(new CylinderVolume(Volume::Pos(cubes[1]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,vec3(1,0,0))));
     cubes[1]->meshes.push_back(cubes[1]->getVolume()->collisionMesh());
     cubes[1]->setVelocity(vec3(0,-2,0));
@@ -180,7 +181,7 @@ void Level::buildDemoLevel()
     cubes[1]->dragCoef(0.f);
 
     for(i=2; i<4; i++){
-        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/in_any_case_heres_wonderwhale.obj");
+        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/crate.obj");
         cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
         cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         // cubes[i]->setVelocity(vec3(0,-3,0));
@@ -194,7 +195,7 @@ void Level::buildDemoLevel()
     cubes[3]->setMass(1);
 
     for(i=1; i<4; i++)
-    	this->addEntity(cubes[i]);
+      this->addEntity(cubes[i]);
 
     //create checkpoints
     /*Hexagon * hex1 = new Hexagon(vec3(-5,2,-3), vec3(-5,-2,-3), vec3(0,5,0), vec3(0,-5,0), vec3(5,2,3), vec3(5,-2,3));
@@ -203,22 +204,26 @@ void Level::buildDemoLevel()
     seek1->setVelocity(vec3(0,0,0));
     this->addEntity(seek1);*/
 
-    Submarine * sub = new Submarine(cur_id++,vec3(10,10,10), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
-    sub->mass(1.0);
-    sub->dragCoef(0.3); 
-    SubmarineAI * ai1 = new SubmarineAI();
-    ai1->bindToSubAct((SubmarineActuator*)sub->getActuator()); 
-    this->addEntity(sub);
-    this->addAI(ai1, 0.1);
+    // Submarine * sub = new Submarine(cur_id++,vec3(10,10,10), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
+    // sub->mass(1.0);
+    // sub->dragCoef(0.3); 
+    // SubmarineAI * ai1 = new SubmarineAI();
+    // ai1->bindToSubAct((SubmarineActuator*)sub->getActuator()); 
+    // this->addEntity(sub);
+    // this->addAI(ai1, 0.1);
 
 
     int ncenters = 6;
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,8,25)};
     this->generateDummyPath(3, centers, ncenters, cur_id);
 
-    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
-    cave->mass(9999);
+    Entity *cave = new Water(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     cave->pos(vec3(0,-20,0));
+    addEntity(cave);
+
+    cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon2", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    cave->mass(9999);
+    cave->pos(vec3(0,-40,0));
     addEntity(cave);
 
     //create skybox
@@ -232,14 +237,14 @@ void Level::buildDemoLevel()
 /* Update the data for an entity based on a CODE_OBJECT_CHANGE message */
 void Level::upEntData(posUpBuf *info)
 {
-	// Get the entity for this ID
-	Entity *ent = this->getEntityByID(info->id);
-	if(ent == NULL){
-		//logln(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
-		return;
-	}
+  // Get the entity for this ID
+  Entity *ent = this->getEntityByID(info->id);
+  if(ent == NULL){
+    //logln(LOGERROR, "%s %d\n", "Null entity in upEntData", info->id);
+    return;
+  }
 
-	ent->overwrite(info);
+  ent->overwrite(info);
 }
 
 /* Spawn or despawn an object. Returns the old EntityStatus */
@@ -249,16 +254,16 @@ EntityStatus Level::changeObjectSpawn(int id, EntityStatus n) { /*TODO*/return S
 /* Get the entity with the given ID */
 Entity * Level::getEntityByID(int id)
 {
-	if(!this->entityExists(id))
-		return NULL;
-	return this->entities[id];
+  if(!this->entityExists(id))
+    return NULL;
+  return this->entities[id];
 }
 
 /* Returns 1 if an entity with id exists in our entity list,
 0 otherwise */
 int Level::entityExists(int id)
 {
-	return this->entities.find(id) != entities.end();
+  return this->entities.find(id) != entities.end();
 }
 
 /* Add this entity to the entity list. This function checks that an entity
@@ -266,11 +271,11 @@ with the current ID does not already exist. Returns 1 if the entity was
 added, 0 if it couldn't due to the ID already being taken. Since we
 identify entities by ID, we can't let one entity "overwrite" another. */
 int Level::addEntity(Entity *entity)
-{	
-	if(this->entityExists(entity->getID()))
-		return 0;
-	this->entities[entity->getID()] = entity;
-	return 1;
+{ 
+  if(this->entityExists(entity->getID()))
+    return 0;
+  this->entities[entity->getID()] = entity;
+  return 1;
 }
 
 //Returns 0 if successful, -1 if the element can't be found
@@ -307,7 +312,7 @@ int Level::removeAI(AI *ai)
 
 /* Using the given server, broadcast position updates to all clients. */
 void Level::sendPosUps(Server *server){
-	for (auto entry : this->entities){
+  for (auto entry : this->entities){
         auto entity = entry.second;
         bool should = entity->isShouldSendUpdate();
         if(should){
@@ -319,43 +324,77 @@ void Level::sendPosUps(Server *server){
     }
 }
 
-/* Render all renderable entities, the skybox ... */
-void Level::renderAll(View *view, Renderer *r, Renderer *rsky, Renderer *rflat)
-{
-	this->renderSkybox(view, rsky);
-	this->renderAllEnts(view, r, rflat);
-}
 
-/* Using the given view and renderer, draw all entities in the level. */
-void Level::renderAllEnts(View *view, Renderer *r, Renderer *rflat)
-{
-	r->enable();
-	for (auto entry : this->entities) {
+void Level::renderAll(View *view, RendererList rs, int passes){
+    // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
+    static GLuint framebuffer = 0;
+    if(!framebuffer){
+        glGenFramebuffers(1, &framebuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+        GLuint out_texture;
+        glGenTextures(1, &out_texture);
+        // "Bind" the newly created texture : all future texture functions will modify this texture
+        glBindTexture(GL_TEXTURE_2D, out_texture);
+
+        // Give an empty image to OpenGL ( the last "0" )
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1024, 768, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+        // Poor filtering. Needed !
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+        // The depth buffer
+        GLuint depthrenderbuffer;
+        glGenRenderbuffers(1, &depthrenderbuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
+        // Set "out_texture" as our colour attachement #0
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, out_texture, 0);
+
+        // Set the list of draw buffers.
+        GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+        glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+
+        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            logln(LOGHIGH,"Error in Framebuffer creation");
+
+    }
+    if(passes==1){
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        renderAll(view,rs,0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+    rs.sky->enable();
+    rs.sky->render(view, this->skybox);
+    rs.ent->enable();
+    for (auto entry : this->entities) {
         auto entity = entry.second;
         //logln(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);
-        if(entity->isDrawable())
-            if(entity->getEntityType() == TYPECHECK){
-                rflat->enable();
-                rflat->render(view, entity);
-            } else {
-                r->enable();
-                r->render(view, entity);
+        if(entity->isDrawable()){
+            switch (entity->getEntityType()){
+                case WATER:
+                    if(passes){
+                        rs.water->enable();
+                        rs.water->render(view, entity);
+                    }
+                    break;
+                default:
+                    rs.ent->enable();
+                    rs.ent->render(view, entity);
+
             }
+        }
     }
 }
 
 /* Skybox */
 void Level::setSkybox(Gadget *skybox)
 {
-	this->skybox = skybox;
+    this->skybox = skybox;
 }
-
-void Level::renderSkybox(View *view, Renderer *r)
-{
-	r->enable();
-	r->render(view, this->skybox);
-}
-
 
 
 void Level::updateLevel(float dt) {

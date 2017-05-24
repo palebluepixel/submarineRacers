@@ -25,6 +25,13 @@ struct AI_entry {
 };
 
 
+typedef struct{
+    Renderer *ent;
+    Renderer *sky;
+    Renderer *flat;
+    Renderer *water;
+}RendererList;
+
 class Level {
 
 public:
@@ -80,14 +87,10 @@ public:
     Right now we pass in two renderers, one for entities, and one for the skybox. 
     We may eventually want to change this to be a map <char*,renderer*> and allow
     entities to define the "name" of the renderer that is supposed to render them.*/
-    void renderAll(View *view, Renderer *r, Renderer *rsky, Renderer *rflat);
-
-    /* Using the given view and renderer, draw all entities in the level. */
-    void renderAllEnts(View *view, Renderer *r, Renderer *rflat);
+    void renderAll(View *view, RendererList renderers, int passes=1);
     
     /* Skybox */
     void setSkybox(Gadget *skybox);
-    void renderSkybox(View *view, Renderer *r);
 
     /* Track */
     inline void setTrack(Track *track) { this->track = track; }

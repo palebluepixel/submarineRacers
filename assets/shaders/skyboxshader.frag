@@ -5,6 +5,8 @@ uniform vec4 color;
 uniform vec3 oceanTopBrightness;
 uniform vec3 oceanBottomBrightness;
 uniform vec3 oceanBottomColor;
+
+varying vec2 fragmentTexCoord;
 //uniform float surfaceDepth; 
 //uniform float floorDepth;  
 

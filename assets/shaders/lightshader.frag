@@ -39,11 +39,13 @@ void main(){
 
 
     // Texture
-    if(shouldTexture!=0){
+    // if(shouldTexture!=0){
         colorLight = texture(texSampler, fragmentTexCoord) * color;
-    } else {
-        colorLight = color;
-    }
+
+        // colorLight = vec4(0,1,0,0);
+    // } else {
+        // colorLight = color;
+    // }
 
 
     // Diffuse and Directed Sunlight Lighting

@@ -91,7 +91,7 @@ GLFWwindow *initializeGLFW(){
         Error::error("glfwInit failed",1);
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     GLFWwindow* window = glfwCreateWindow(960, 720, "Submarines!", NULL, NULL);
     if (!window){
         glfwTerminate();
