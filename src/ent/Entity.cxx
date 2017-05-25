@@ -174,7 +174,6 @@ message * Entity::prepareMessageSegment(){
 
 //physics tick behavior
 int Entity::onTick(float dt){
-
     // update server position every second.
     static float serverupdatetick=0;
     serverupdatetick+=dt;

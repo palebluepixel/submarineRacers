@@ -37,6 +37,7 @@ varying float distToCam;
 varying float depth;
 
 varying vec4 pixpos;
+varying mat4 modelViewB;
 
 vec3 displace(vec3 p, vec3 dir, float phase,
   float A, float omega, float t){
@@ -91,18 +92,22 @@ void main(){
 
     vec3 pixpos3 = vec3(pixpos.x/pixpos.w,pixpos.y/pixpos.w,pixpos.z/pixpos.w);
     vec3 campos3 = vec3(campos.x/campos.w,campos.y/campos.w,campos.z/campos.w);
+    // campos3 = vec3(0,campos.y/campos.w,0);
+    // campos3=vec3(0);
 
     vec3 camToPt = normalize(pixpos3-campos3);
     vec3 ptToImg = (camToPt.xyz - 2 * norm * dot(camToPt.xyz,norm));
-    vec3 imgPos  = pixpos3+(4)*ptToImg;  // position of image.
+    vec3 imgPos  = pixpos3+(5)*ptToImg;  // position of image.
     vec3 imgPosR =  vec3(imgPos.x,-imgPos.y,imgPos.z);  // reflect across water.
 
     // todo: remove;
-    // imgPosR = pixpos3+camToPt;
+    // imgPosR = pixpos3;
+    // imgPosR = pixpos3-camToPt*100
 
     mat4 mp = projection * modelView;
     vec4 outpos =  mp * vec4(imgPosR,1);
     vec2 texpos =  (1 + outpos.xy / outpos.w)/2;
+    // texpos.xy*=0.7;
     if(texpos.x<0)texpos.x=0;
     if(texpos.y<0)texpos.y=0;
     if(texpos.x>1)texpos.x=1;
@@ -113,7 +118,7 @@ void main(){
 
     // note: vec4(0.2,0.8,0.5,1.0) is a good ocean-water color.
 
-    colorLight=vec4(1,1,1,1)/* *(0.5+((pixpos.y+40)*0.02))*0.4 */ + 0.8*max(0.0, light);
+    colorLight= vec4(1,1,1,1) + 0.8*max(0.0, light);
 
     // if(light<0)colorLight.xyz*=(1,0.5,0.5);
 
@@ -134,7 +139,20 @@ void main(){
     // gl_FragColor=vec4(campos.x-15.3,campos.y+9.8,campos.z-1.6,1);
     
     // if(gl_FragCoord.y <0)mult=0;
-    gl_FragColor = colorTex* vec4(colorLight.xyz,1.0);
+
+    //formula
+    //finalColor = (1.0 - f)*fogColor + f * lightColor
+
+    float fragdist = length(pixpos3-campos3);
+    vec3 fogcolor  = vec3(0.8,0.6,0.6);
+    gl_FragColor = mix(colorTex* vec4(colorLight.xyz,1.0),vec4(fogcolor,1), min(1,(fragdist)/800.0));
+
+    // finalColor = mix(fogColor, lightColor, fogFactor);
+
+    // gl_FragColor = colorTex* vec4(colorLight.xyz,1.0);
+    // gl_FragColor = vec4(vec3(length(pixpos3-campos3)*0.1),1);
+    // gl_FragColor = vec4(pixpos3,1);
+    // gl_FragColor = vec4(1,1,0,1) * 0.5*max(0.0, light);
     // gl_FragColor = vec4(abs(camToPt.x),abs(camToPt.y),abs(camToPt.z),1);
     // gl_FragColor=vec4(abs(norm.x),abs(norm.y),abs(norm.z),1);
     // gl_FragColor = colorTex * depth * mult;

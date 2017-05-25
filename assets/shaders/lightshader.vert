@@ -15,11 +15,14 @@ varying vec2 fragmentTexCoord;
 varying float distToCam;
 varying float depth;
 
+varying vec4 worldpos;
+
 
 void main (void){
     // Transform vertex from model space to camera space
     vec4 positionModel = model * vec4(position,1.0);
-    vec4 positionModelView = projection * modelView * positionModel;
+    worldpos = positionModel;
+    vec4 positionModelView = projection * modelView * worldpos;
     fragmentNormal = (model * vec4(normal,0.0)).xyz;
     fragmentTexCoord = texCoord;
 

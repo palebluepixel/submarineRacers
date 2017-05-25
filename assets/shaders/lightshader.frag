@@ -30,6 +30,8 @@ varying vec2 fragmentTexCoord;
 varying float distToCam;
 varying float depth;
 
+varying vec4 worldpos;
+
 void main(){
 
     if(mode == 1){
@@ -37,7 +39,9 @@ void main(){
         vec4 colorLight = vec4(0.0,0.0,0.0,0.0);
         colorLight = texture(texSampler, fragmentTexCoord);
 
-        vec4 sunlightMod = vec4((lightAmb + 0.5) + max(0, dot(-lightDir, norm)) * lightInten,1.0);  // phong
+        vec3 lightDirn = vec3(-0.707,-0.707,0);
+
+        vec4 sunlightMod = vec4((lightAmb + 0.5) + max(0, dot(-lightDirn, norm)) * lightInten,1.0);  // phong
 
         // Fog
         if(fogOn != 0 && -distToCam > fogStart){
@@ -86,6 +90,12 @@ void main(){
         gl_FragColor = colorLight;
     }
     else if(mode == 2){
-        gl_FragColor = texture(texSampler,fragmentTexCoord);
+        vec3 fogcolor  = vec3(0.8,0.6,0.6);
+        vec3 worldpos3 = vec3(worldpos.x/worldpos.w,worldpos.y/worldpos.w,worldpos.z/worldpos.w);
+        vec4 texcol = texture(texSampler,fragmentTexCoord);
+        if(worldpos3.y<0.2){
+            gl_FragColor = mix(texcol,vec4(fogcolor,1), min((0.2-worldpos3.y)*5.0,1.0));
+        }
+        else gl_FragColor = texcol;
     }
 }

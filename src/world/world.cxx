@@ -451,10 +451,10 @@ void World::initalizeSubsFromFile(const char* path)
         float mass = curSub["mass"];
         float drag = curSub["drag"];
         float tick_interval = curSub["tick-interval"];
-        Submarine * next = new Submarine(subid++, realpos, realOrientation, real_name, TYPESUB, SPAWNED, tick_interval, realcol, real_mf);
-        next->setMass(mass);
-        next->dragCoef(drag);
-        this->addSub(id++, next);
+        // Submarine * next = new Submarine(subid++, realpos, realOrientation, real_name, TYPESUB, SPAWNED, tick_interval, realcol, real_mf);
+        // next->setMass(mass);
+        // next->dragCoef(drag);
+        // this->addSub(id++, next);
     }
 }
 

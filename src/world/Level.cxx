@@ -6,6 +6,7 @@
 #include <physics/Volume.hxx>
 #include <ent/terrain.hxx>
 #include <ent/water.hxx>
+#include <ent/plane.hxx>
 #include <world/world.hxx>
 #include <physics/physics.hxx>
 
@@ -153,6 +154,9 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, int& cur_id)
     }
 }
 
+static Entity *planes[4];
+static int nplanes =0;
+
 /* DEMO LEVEL */
 void Level::buildDemoLevel() 
 { 
@@ -181,21 +185,35 @@ void Level::buildDemoLevel()
     cubes[1]->dragCoef(0.f);
 
     for(i=2; i<4; i++){
-        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/boxes.obj","../assets/textures/wood1.png");
+        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(angleAxis(-1.f,normalize(vec3(0.2f,1,0.2)))), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/boxes.obj","../assets/textures/wood1.png");
         cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
-        cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
+        // cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         // cubes[i]->setVelocity(vec3(0,-3,0));
         cubes[i]->setMass(1.f);
         cubes[i]->dragCoef(0.0f);
     }
+
+
+    Entity *e;
+    e = new Gadget(cur_id++,vec3(-30,17,0), quaternion(angleAxis(1.f,normalize(vec3(0.4f,1,0.4)))), "monkey", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/plane-low-3.obj","../assets/textures/marble.png");
+    addEntity(e);
+
+    planes[0] = new Gadget(cur_id++,vec3(0,17,0), quaternion(), "box", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/plane-low-3.obj","../assets/textures/piper_diffuse.png");
+    // planes[0]->setVolume(new SphereVolume(Volume::Pos(planes[0]),1.0));
+    // planes[0]->vel(vec3(0,0,-15));
+
+    nplanes = 1;
+    // e->meshes.push_back(e->getVolume()->collisionMesh());
+    addEntity(planes[0]);
+
     // cubes[2]->setVelocity(vec3(0,-2,0));
     cubes[2]->setMass(10);
 
     cubes[3]->setVelocity(vec3(0,0,0));
     cubes[3]->setMass(1);
 
-    for(i=1; i<4; i++)
-      this->addEntity(cubes[i]);
+    for(i=1; i<4; i++);
+      // this->addEntity(cubes[i]);
 
 
     // for(int i=0;i<1;i++){
@@ -222,11 +240,11 @@ void Level::buildDemoLevel()
 
     int ncenters = 6;
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,8,25)};
-    this->generateDummyPath(3, centers, ncenters, cur_id);
+    // this->generateDummyPath(3, centers, ncenters, cur_id);
 
     Entity *water;
 
-    water = new Water(cur_id++, "water1", vec3(-250,0,-250), vec2(100,100), vec3(500,1,500),vec3(1.f,0.8f,0.5f));
+    water = new Water(cur_id++, "water1", vec3(-800,0,-800), vec2(150,150), vec3(1600,1,1600),vec3(1.f,0.8f,0.5f));
     addEntity(water);
     // water = new Water(cur_id++, "water2", vec3(-100,0,0), vec2(100,100), vec3(1.f,0.8f,0.5f));
     // addEntity(water);
@@ -235,7 +253,7 @@ void Level::buildDemoLevel()
     Entity *cave = new Gadget(cur_id++,vec3(0,-40,0), quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/crate.obj","../assets/textures/wood1.png");
     cave->mass(9999);
     cave->pos(vec3(0,-40,0));
-    this->addEntity(cave);
+    // this->addEntity(cave);
 
     //create skybox
     Gadget *skybox = new Gadget(cur_id++,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/skydome.obj","../assets/textures/sky_redsunset.png");
@@ -464,6 +482,12 @@ void Level::interpolateLevel(float dt) {
 }
 
 void Level::updateAIs(float dt) {
+    for(int i=0;i<nplanes;++i){
+        vec3 p = planes[i]->pos();
+        if(p.z>300)p.z-=600;
+        p.z += dt*30;
+        planes[0]->pos(p);
+    }
     for(AI_entry en : ais) {
         en.time_left -= dt;
         //if(en.time_left <= 0) {
