@@ -113,7 +113,7 @@ void main(){
 
     // note: vec4(0.2,0.8,0.5,1.0) is a good ocean-water color.
 
-    colorLight=colorTex * vec4(0.2,0.8,0.5,1.0)/* *(0.5+((pixpos.y+40)*0.02))*0.4 */ + 0.2*max(0.0, light);
+    colorLight=vec4(1,1,1,1)/* *(0.5+((pixpos.y+40)*0.02))*0.4 */ + 0.8*max(0.0, light);
 
     // if(light<0)colorLight.xyz*=(1,0.5,0.5);
 
