@@ -2,14 +2,14 @@
 #include <physics/Volume.hxx>
 #include <util/file.hxx>
 
-Water::Water(int ID, vec3 initial_position, quaternion initial_orientation, std::string name, 
-    EntityType type, EntityStatus status, float tick_interval, vec3 color, const char* texfile, const char* hmpfile)
-: Entity(ID,initial_position, initial_orientation, name, WATER, status, tick_interval){
+Water::Water(int ID, std::string name, vec3 initial_position, vec2 size, vec3 color)
+: Entity(ID,initial_position, quaternion(), name, WATER, SPAWNED, 0.1f){
     this->color = color;
 
-    this->texfile = string(strdup(texfile));
-    this->hmpfile = string(strdup(hmpfile));
+    this->texfile = "../assets/textures/moss1.png";
+    this->hmpfile = "../assets/heightmaps/bump_bump.hmp";
 
+    this->size = size;
     this->initalizeVisualData();
 }
 
@@ -34,10 +34,10 @@ void Water::initalizeMeshes(){
     //mesh->loadFileOBJ("../assets/levels/bumps.obj");
     mesh->loadFile(hmpfile);
     // mesh->loadDefaultGenerator();
-    mesh->init(100,100, vec2(0.5f, 0.5f));
+    mesh->init(size.x,size.y, vec2(0.5f, 0.5f));
     mesh->data.tex = this->tex;
 
-    Model::FancyMesh tmi(mesh,glm::scale(glm::mat4(1),vec3(100,16,100)), Model::RenderState(vec4(color,1.f)));
+    Model::FancyMesh tmi(mesh,glm::scale(glm::mat4(1),vec3(size.x,16,size.y)), Model::RenderState(vec4(color,1.f)));
     Model tmesh(tmi);
     meshes.push_back(tmesh);
 
@@ -49,7 +49,7 @@ void Water::initalizeMeshes(){
     // meshes.push_back(Model(Model::FancyMesh(monkey,mat4())));
 
     // pos(vec3(-50,-20,-50));
-    volume = new HeightmapVolume(Volume::Pos(this), tmi.transform, mesh->getWidth(), mesh->getHeight(), mesh->getHmpData());
+    // volume = new HeightmapVolume(Volume::Pos(this), tmi.transform, mesh->getWidth(), mesh->getHeight(), mesh->getHmpData());
 }
 
 int Water::onTick(float dt){

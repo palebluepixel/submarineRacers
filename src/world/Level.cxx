@@ -58,7 +58,7 @@ Entity *entityFromJSON(int id, json j) {
 
     /* Create entity */
     // this line probably should be edited in the future to reflect "not all entities are gadgets"
-    Entity *retVal = new Gadget(id, real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, model_file);
+    Entity *retVal = new Gadget(id, real_position, realOrientation, name.c_str(), TYPE1, SPAWNED, tick_interval, color, model_file,"../assets/textures/wood1.png");
     if (movable) {
         float mass = j["mass"];
         retVal->setMass(mass);
@@ -129,7 +129,7 @@ void Level::buildLevelFromFile() {
     cave->mass(99999);
 
      //create skybox
-    Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj","../assets/textures/wood1.png");
     this->setSkybox(skybox);
 
 }
@@ -166,14 +166,14 @@ void Level::buildDemoLevel()
 
     int cur_id = 0;
 
-    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/crate.obj");
+    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/crate.obj","../assets/textures/wood1.png");
     cubes[0]->setOrientation(angleAxis(3.1415f/2.f,vec3(0.f,1.f,0.f)));
     cubes[0]->setVolume(new CylinderVolume(Volume::Pos(cubes[0]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
     cubes[0]->meshes.push_back(cubes[0]->getVolume()->collisionMesh());
     cubes[0]->setVelocity(vec3(0,-6.5f,0));
     cubes[0]->setMass(1.f);
 
-    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/crate.obj");
+    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/crate.obj","../assets/textures/wood1.png");
     cubes[1]->setVolume(new CylinderVolume(Volume::Pos(cubes[1]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,vec3(1,0,0))));
     cubes[1]->meshes.push_back(cubes[1]->getVolume()->collisionMesh());
     cubes[1]->setVelocity(vec3(0,-2,0));
@@ -181,7 +181,7 @@ void Level::buildDemoLevel()
     cubes[1]->dragCoef(0.f);
 
     for(i=2; i<4; i++){
-        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/crate.obj");
+        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/crate.obj","../assets/textures/wood1.png");
         cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
         cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         // cubes[i]->setVelocity(vec3(0,-3,0));
@@ -196,6 +196,13 @@ void Level::buildDemoLevel()
 
     for(i=1; i<4; i++)
       this->addEntity(cubes[i]);
+
+
+    // for(int i=0;i<1;i++){
+    //   Entity *e = new Terrain(cur_id++, vec3(), quaternion(), "canyon2", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    //   e->mass(9999);
+    //   addEntity(e);
+    // }
 
     //create checkpoints
     /*Hexagon * hex1 = new Hexagon(vec3(-5,2,-3), vec3(-5,-2,-3), vec3(0,5,0), vec3(0,-5,0), vec3(5,2,3), vec3(5,-2,3));
@@ -217,17 +224,21 @@ void Level::buildDemoLevel()
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,8,25)};
     this->generateDummyPath(3, centers, ncenters, cur_id);
 
-    Entity *cave = new Water(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
-    cave->pos(vec3(0,-20,0));
-    addEntity(cave);
+    Entity *water;
 
-    cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon2", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    water = new Water(cur_id++, "water1", vec3(0,-20,0), vec2(100,100), vec3(1.f,0.8f,0.5f));
+    addEntity(water);
+    water = new Water(cur_id++, "water2", vec3(-99,-20,0), vec2(100,100), vec3(1.f,0.8f,0.5f));
+    addEntity(water);
+
+    // Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon2", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    Entity *cave = new Gadget(cur_id++,vec3(0,-40,0), quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/crate.obj","../assets/textures/wood1.png");
     cave->mass(9999);
     cave->pos(vec3(0,-40,0));
-    addEntity(cave);
+    this->addEntity(cave);
 
     //create skybox
-    Gadget *skybox = new Gadget(cur_id++,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
+    Gadget *skybox = new Gadget(cur_id++,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/skydome.obj","../assets/textures/sky_redsunset.png");
     this->setSkybox(skybox);
 
     //logln(LOGHIGH,"built level.");
@@ -326,6 +337,18 @@ void Level::sendPosUps(Server *server){
 
 
 void Level::renderAll(View *view, RendererList rs, int passes){
+    WaterRenderer* ws = (WaterRenderer*)rs.water;
+    int width, height;
+
+    // todo which one do we choose?
+    // glfwGetWindowSize(world->window, &width, &height);
+    glfwGetFramebufferSize(world->window, &width, &height);
+
+    // ^^^^ todo 
+
+    ws->screensize=vec2(width,height);
+
+    ws->time += 0.04f;
     // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
     static GLuint framebuffer = 0;
     if(!framebuffer){
@@ -335,10 +358,11 @@ void Level::renderAll(View *view, RendererList rs, int passes){
         GLuint out_texture;
         glGenTextures(1, &out_texture);
         // "Bind" the newly created texture : all future texture functions will modify this texture
+        glActiveTexture(GL_TEXTURE0 + 0);
         glBindTexture(GL_TEXTURE_2D, out_texture);
 
         // Give an empty image to OpenGL ( the last "0" )
-        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1024, 768, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1600, 1200, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
 
         // Poor filtering. Needed !
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -348,7 +372,7 @@ void Level::renderAll(View *view, RendererList rs, int passes){
         GLuint depthrenderbuffer;
         glGenRenderbuffers(1, &depthrenderbuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1600, 1200);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
 
         // Set "out_texture" as our colour attachement #0
@@ -360,16 +384,25 @@ void Level::renderAll(View *view, RendererList rs, int passes){
 
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
             logln(LOGHIGH,"Error in Framebuffer creation");
+        ((WaterRenderer*)(rs.water))->reflection_texture = out_texture;
 
     }
     if(passes==1){
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        rs.ent->reflectY = true;
         renderAll(view,rs,0);
+        rs.ent->reflectY = false;
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
-    rs.sky->enable();
-    rs.sky->render(view, this->skybox);
+    else{
+      glClearColor(1,1,1,1);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+      // return;
+    }
     rs.ent->enable();
+    rs.ent->modeSkybox();
+    rs.ent->render(view, this->skybox);
+    rs.ent->modeNormal();
     for (auto entry : this->entities) {
         auto entity = entry.second;
         //logln(LOGMEDIUM, "rendering entity %d with %p\n", entity->getID(), r);

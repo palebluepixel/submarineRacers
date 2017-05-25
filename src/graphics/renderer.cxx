@@ -12,6 +12,7 @@ Renderer::Renderer (Shader *sh)
   modelViewLoc = _shader->getUniformLocation ("modelView");
   colorLoc = _shader->getUniformLocation("color");
   modelLoc = _shader->getUniformLocation("model");
+
 }
 
 Renderer::~Renderer ()
@@ -139,10 +140,32 @@ UnderwaterRenderer::UnderwaterRenderer (Shader *sh)
   oceanDensityLoc = _shader->getUniformLocation("oceanDensity");
   surfaceDepthLoc = _shader->getUniformLocation("surfaceDepth");
   floorDepthLoc = _shader->getUniformLocation("floorDepth");
+  umode = _shader->getUniformLocation("mode");
 }
 
 UnderwaterRenderer::~UnderwaterRenderer()
 { }
+
+void UnderwaterRenderer::modeSkybox(){
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glDisable(GL_DEPTH_TEST);
+  glDisable(GL_CULL_FACE);
+  _mode=skybox;
+  setUniform(umode, 2);
+}
+void UnderwaterRenderer::modeNormal(){
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glEnable(GL_DEPTH_TEST);
+  glDisable(GL_CULL_FACE);
+  _mode=normal;
+  setUniform(umode, 1);
+}
+
+void UnderwaterRenderer::setMode(Mode m){
+  if(m == skybox)modeSkybox();
+  if(m == normal)modeNormal();
+  _mode=m;
+}
 
 void UnderwaterRenderer::enable (){
   _shader->use();
@@ -150,8 +173,9 @@ void UnderwaterRenderer::enable (){
   glEnable(GL_DEPTH_TEST);
   // glEnable(GL_BLEND);
   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
+  // todo: enable cull face
+  glDisable(GL_CULL_FACE);
+  // glCullFace(GL_BACK);
 }
 void UnderwaterRenderer::render(View *view, Model::FancyMesh mesh){
 
@@ -159,8 +183,21 @@ void UnderwaterRenderer::render(View *view, Model::FancyMesh mesh){
     return;
   }
  
-  mat4 projectionMat = view->projectionMatrix();
-  mat4 viewMat = view->viewMatrix();
+  mat4 projectionMat;
+  mat4 viewMat;
+  projectionMat = view->projectionMatrix();
+  viewMat= view->viewMatrix();
+  if(_mode == skybox){
+    viewMat[3][0]=0;
+    viewMat[3][1]=0;
+    viewMat[3][2]=0;
+  }
+  if(reflectY){
+    viewMat[1][0] *= -1;
+    viewMat[1][1] *= -1;
+    viewMat[1][2] *= -1;
+    // viewMat[3][1] *= -1;
+  }
 
   Sunlight sun = view->getSunlight();
   setUniform(lightDirLoc,   sun.lightDir);
@@ -208,54 +245,14 @@ void UnderwaterRenderer::render(View *view, Model::FancyMesh mesh){
 
 
 
-
-/*==================== class SkyboxRenderer member functions======================*/
-
-SkyboxRenderer::SkyboxRenderer (Shader *sh)
-    : Renderer (sh)
-{ 
-  camPosLoc = _shader->getUniformLocation("camPos");
-
-  oceanTopBrightnessLoc = _shader->getUniformLocation("oceanTopBrightness");
-  oceanBottomBrightnessLoc = _shader->getUniformLocation("oceanBottomBrightness");
-  oceanBottomColorLoc = _shader->getUniformLocation("oceanBottomColor");
-}
-
-SkyboxRenderer::~SkyboxRenderer(){}
-
-void SkyboxRenderer::enable (){
-  _shader->use();
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  glDisable(GL_DEPTH_TEST);
-  // glEnable(GL_BLEND);
-  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glDisable(GL_CULL_FACE);
-  // glCullFace(GL_BACK);
-}
-
-
-void SkyboxRenderer::render (View *view, Model::FancyMesh mesh){
-  mat4 projectionMat = view->projectionMatrix();
-  mat4 viewMat = view->viewMatrix();
-
-  OceanColoring oc = view->getColoring();
-  setUniform(oceanTopBrightnessLoc, oc.oceanTopBrightness);
-  setUniform(oceanBottomBrightnessLoc, oc.oceanBottomBrightness);
-  setUniform(oceanBottomColorLoc, oc.oceanBottomColor);
-
-  setUniform(camPosLoc, view->activeCamera()->position());
-
-  setUniform(modelViewLoc, viewMat);
-  setUniform(projectionLoc, projectionMat);
-  setUniform(colorLoc, mesh.glState.color);
-  mesh.mesh->draw();
-}
-
-
 WaterRenderer::WaterRenderer (Shader *sh)
     : Renderer (sh){
 
   utime = _shader->getUniformLocation("time");
+  uscreensize = _shader->getUniformLocation("screensize");
+  reflection_texture = 0;
+  time = 0;
+  screensize=vec2(100,100);
 }
 
 WaterRenderer::~WaterRenderer ()
@@ -274,17 +271,19 @@ void WaterRenderer::enable()
 }
 
 void WaterRenderer::render (View *view, Model::FancyMesh mesh) {
-  static float time=0.f;
-  time+=0.04f;
-
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
 
   setUniform(utime, time);
+  setUniform(uscreensize, screensize);
   setUniform(modelViewLoc, viewMat);
   setUniform(projectionLoc, projectionMat);
 
   setUniform(colorLoc, mesh.glState.color);
+
+  glBindTexture(GL_TEXTURE_2D,reflection_texture);
+  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   mesh.mesh->draw();
 }

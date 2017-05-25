@@ -4,6 +4,8 @@ uniform mat4 modelView;
 uniform mat4 projection;
 uniform mat4 model;
 
+uniform vec2 screensize;
+
 uniform float time;
 
 in vec3 position;
@@ -70,12 +72,28 @@ void main (void)
 
     vec4 pModelView = projection * modelView * pModel;
     // fragmentNormal = (model * vec4(normal,0.0)).xyz;
-    fragmentTexCoord = texCoord;
+
+    // todo: use provided texture coords.
+    // fragmentTexCoord = texCoord;
+    depth=1;
+    float x = pModelView.x;
+    float y = pModelView.y;
+    float z = pModelView.z;
+
+
+
+    // if (x<-100)depth=0;
+    // if (y<-100)depth=0;
+    // if(x>100)depth=0;
+    // if(y>100)depth=0;
+    // depth = x/100;
+    // if(z<20)depth=0;
+    // fragmentTexCoord = vec2(x,y);
 
 
     distToCam = -pModelView.z;
-    depth = pModel.y;
-    gl_Position = pModelView;
+    // depth = 1;
+    gl_Position = vec4(pModelView.x,pModelView.y,pModelView.z,pModelView.w);
 }
 
 

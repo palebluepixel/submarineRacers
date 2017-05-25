@@ -31,18 +31,12 @@ class Gadget : public Entity {
 public:
 
     Gadget(int ID, vec3 initial_position, quaternion initial_orientation, std::string name, 
-    EntityType type, EntityStatus status, float tick_interval, vec3 color, char* modelfile);
+    EntityType type, EntityStatus status, float tick_interval, vec3 color, char* modelfile, char* texfile);
     ~Gadget();
 
-    void initalizeVisualData();
-
 protected:
-
     vec3 color;
     char *modelfile;
-
-    void initalizeTextures(const char* texfile);
-    void initalizeMeshes();
 };
 
 

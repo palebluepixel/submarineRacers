@@ -22,8 +22,10 @@ uniform float floorDepth;
 
 uniform int shouldTexture;
 uniform sampler2D texSampler;
+uniform sampler2D mapReflDepth;
 
 uniform float time;
+uniform vec2 screensize;
 
 varying vec3 fragmentNormal;
 varying vec2 fragmentTexCoord;
@@ -53,6 +55,7 @@ vec4 displace(vec3 p, float t){
 void main(){
     // Make sure its normalized
     vec3 norm = normalize(fragmentNormal+displace(pixpos.xyz,time).xyz);
+    vec2 relscrpos = vec2(gl_FragCoord.x/screensize.x, gl_FragCoord.y/screensize.y);
 
 
     // colorLight will hold the color of this fragment as we apply various
@@ -60,7 +63,7 @@ void main(){
     vec4 colorLight = vec4(0.0,0.0,0.0,0.0);
 
     // Texture
-    vec4 colorTex = texture(texSampler, fragmentTexCoord);
+    vec4 colorTex = texture(texSampler, relscrpos.xy+vec2(gl_FragCoord.z,gl_FragCoord.z));
     vec3 lightDirm=vec3(0.707,-0.707,0);
 
     float light = pow(abs(dot(-lightDirm, norm)),5);
@@ -77,7 +80,11 @@ void main(){
     // gl_FragColor = vec4(0.5+0.25*fragmentNormal.x,0.5+0.25*fragmentNormal.y,0.5+0.25*fragmentNormal.z,1.0);
     // gl_FragColor = vec4(fragmentNormal.x,fragmentNormal.y,fragmentNormal.z,1.0);
     // Out
-    gl_FragColor = vec4(colorLight.xyz,0.8);
-    // gl_FragColor = vec4(1,0,0,1);
+
+    float mult = 1;
+    // if(gl_FragCoord.y <0)mult=0;
+    gl_FragColor = colorTex* vec4(colorLight.xyz,0.8);
+    // gl_FragColor = colorTex * depth * mult;
+    // gl_FragColor = vec4(depth);
 
 }

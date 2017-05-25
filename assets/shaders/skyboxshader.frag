@@ -12,6 +12,8 @@ varying vec2 fragmentTexCoord;
 
 varying vec4 spaceCoords;
 
+uniform sampler2D texSampler;
+
 void main(){
     vec3 finalColor = oceanBottomColor; 
     float darkCoord = -0.5; //screen coord below which everything should be dark
@@ -30,5 +32,7 @@ void main(){
 
     vec4 fc = vec4(finalColor, 1.0);
 
-    gl_FragColor = fc + color - color;
+    vec4 pxcol = texture(texSampler,fragmentTexCoord);
+
+    gl_FragColor = (fc + color - color)*0.001 + pxcol*0.999;
 }

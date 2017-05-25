@@ -33,18 +33,17 @@ class Water : public Entity {
 
 public:
 
-    Water(int ID,vec3 initial_position, quaternion initial_orientation, std::string name, 
-    EntityType type, EntityStatus status, float tick_interval, vec3 color, const char* texfile,
-    const char* hmpfile);
-    ~Water();
+  Water(int ID, std::string name, vec3 initial_position, vec2 size, vec3 color);
+  ~Water();
 
-    void initalizeVisualData();
-    virtual int onTick(float dt);
+  void initalizeVisualData();
+  virtual int onTick(float dt);
 
 protected:
 
   std::string hmpfile;
   vec3 color;
+  vec2 size;
 
   void initalizeTextures(const char* texfile);
   void initalizeMeshes();

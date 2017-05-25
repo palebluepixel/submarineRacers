@@ -126,7 +126,7 @@ public:
     mat4 modelMatrix();           // return transform matrix TO world space.
 
     inline std::vector<Model> getMeshes() {return this->meshes;}
-    virtual void initalizeVisualData() = 0; //load meshes and textures
+    virtual void initalizeVisualData(){} //load meshes and textures
 
     std::vector<Model> meshes;
 protected:
@@ -157,12 +157,12 @@ protected:
     It should be set to FALSE when we call prepareMessageSegment. */
     bool shouldSendUpdate;
 
-    virtual void initalizeMeshes()=0;
+    virtual void initalizeMeshes(){}
+    virtual void initalizeTextures(const char* texfile){}
 
     std::string texfile;
     texture2d *tex;
     image2d *img;
-    virtual void initalizeTextures(const char* texfile)=0;
 
     //per tick quantities
     vec3 forces;    // Sum of all forces on this object

@@ -376,10 +376,10 @@ void World::worldInitalizeDefault(int isServer)
     shader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/lightshader.frag"));
     shader->build();
 
-    Shader *skyboxShader = new Shader();
-    skyboxShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/skyboxshader.vert"));
-    skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
-    skyboxShader->build();
+    // Shader *skyboxShader = new Shader();
+    // skyboxShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/skyboxshader.vert"));
+    // skyboxShader->addShader(GL_FRAGMENT_SHADER,fileio::load_file("../assets/shaders/skyboxshader.frag"));
+    // skyboxShader->build();
 
     Shader *waterShader = new Shader();
     waterShader->addShader(GL_VERTEX_SHADER,fileio::load_file("../assets/shaders/watershader.vert"));
@@ -393,7 +393,7 @@ void World::worldInitalizeDefault(int isServer)
 
     //create renderer for the given shader
     renderers.ent = new UnderwaterRenderer(shader);  
-    renderers.sky = new SkyboxRenderer(skyboxShader);
+    // renderers.sky = new SkyboxRenderer(skyboxShader);
     renderers.flat = new FlatShadingRenderer(flatShader);
     renderers.water = new WaterRenderer(waterShader);
 

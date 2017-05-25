@@ -91,10 +91,19 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
     UnderwaterRenderer(Shader *sh);
     ~UnderwaterRenderer();
 
+    using Renderer::render;
+
     void enable();
     void render(View *view, Model::FancyMesh mesh);
+    void modeSkybox();
+    void modeNormal();
+    enum Mode {skybox, normal};
+    void setMode(Mode m);
+    bool reflectY;
+    Mode _mode;
 
   protected:
+    GLint umode;
     GLint oceanColoringOnLoc;
     GLint oceanTopBrightnessLoc;
     GLint oceanBottomBrightnessLoc;
@@ -106,32 +115,19 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
 
 };
 
-class SkyboxRenderer : public Renderer {
-  public:
-    SkyboxRenderer(Shader *sh);
-    ~SkyboxRenderer();
-
-    void enable();
-    void render(View *view, Model::FancyMesh mesh);
-
-  protected:
-    GLint camPosLoc; 
-
-    GLint oceanTopBrightnessLoc;
-    GLint oceanBottomBrightnessLoc;
-    GLint oceanBottomColorLoc;
-};
-
 class WaterRenderer : public Renderer {
-  public:
-    WaterRenderer(Shader *sh);
-    ~WaterRenderer();
+public:
+  WaterRenderer(Shader *sh);
+  ~WaterRenderer();
 
-    void enable();
-    void render(View *view, Model::FancyMesh mesh);
-    
-  protected:
-    GLint utime;
+  void enable();
+  void render(View *view, Model::FancyMesh mesh);
+  vec2 screensize;
+
+  GLuint reflection_texture;
+  GLint utime;
+  GLint uscreensize;
+  GLfloat time;
 
 };
 

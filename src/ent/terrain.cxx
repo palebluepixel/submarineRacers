@@ -32,7 +32,7 @@ void Terrain::initalizeMeshes(){
     HeightmapMesh *mesh = new HeightmapMesh();
     //mesh->loadFileOBJ("../assets/levels/bumps.obj");
     mesh->loadFile(hmpfile);
-    // mesh->loadDefaultGenerator();
+    mesh->loadDefaultGenerator();
     mesh->init(300,300, vec2(0.5f, 0.5f));
     mesh->data.tex = this->tex;
 
@@ -41,12 +41,14 @@ void Terrain::initalizeMeshes(){
     meshes.push_back(tmesh);
 
 
-    // Mesh *monkey = new Mesh(GL_TRIANGLES);
-    // monkey->loadOBJ("../assets/models/sphere.obj");
+    Mesh *monkey = new Mesh(GL_TRIANGLES);
+    monkey->loadOBJ("../assets/models/monkey.obj");
     // monkey->data.color = vec4(this->color,0.5);
-    // monkey->data.tex = this->tex;
+    monkey->data.tex = this->tex;
+    
+    meshes.push_back(Model(Model::FancyMesh(monkey,mat4(),Model::RenderState(vec4(color,1.f)))));
     // meshes.push_back(Model(Model::FancyMesh(monkey,mat4())));
 
     // pos(vec3(-50,-20,-50));
-    volume = new HeightmapVolume(Volume::Pos(this), tmi.transform, mesh->getWidth(), mesh->getHeight(), mesh->getHmpData());
+    // volume = new HeightmapVolume(Volume::Pos(this), tmi.transform, mesh->getWidth(), mesh->getHeight(), mesh->getHmpData());
 }

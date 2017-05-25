@@ -13,6 +13,8 @@ varying vec2 fragmentTexCoord;
 
 varying vec4 spaceCoords;
 
+uniform sampler2D texSampler;
+
 
 void main (void)
 {

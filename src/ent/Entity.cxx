@@ -38,6 +38,10 @@ Entity::~Entity()
     
 }
 
+// void Entity::initializeTextures(const char* texfile){}
+// void Entity::initializeVisualData(){}
+// void Entity::initializeMeshes(){}
+
 Physics::CollisionMode Entity::onCollide(Entity *other){
     return Physics::ELASTIC;
 }

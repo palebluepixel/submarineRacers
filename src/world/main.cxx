@@ -92,7 +92,7 @@ GLFWwindow *initializeGLFW(){
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    GLFWwindow* window = glfwCreateWindow(960, 720, "Submarines!", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1600, 1200, "Submarines!", NULL, NULL);
     if (!window){
         glfwTerminate();
         Error::error("glfwCreateWindow failed",1);
@@ -232,7 +232,7 @@ int main(int argc, char*argv[]){
         glfwGetFramebufferSize(world->window, &width, &height);
         glViewport(0, 0, width, height); //allows us to adjust window size
         //glClearColor(oceanColor[0], oceanColor[1], oceanColor[2], 1.0);
-        glClearColor(1.0, 0.5, 0.5, 1.0);
+        glClearColor(0.4, 0.6, 0.8, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         world->handleNetworksTick(time_total.count(),elapsed,20);

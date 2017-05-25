@@ -8,14 +8,15 @@ in vec3 position;
 in vec3 normal;
 in vec2 texCoord;
 
+uniform int mode;
+
 varying vec3 fragmentNormal; 
 varying vec2 fragmentTexCoord;
 varying float distToCam;
 varying float depth;
 
 
-void main (void)
-{
+void main (void){
     // Transform vertex from model space to camera space
     vec4 positionModel = model * vec4(position,1.0);
     vec4 positionModelView = projection * modelView * positionModel;
