@@ -120,11 +120,17 @@ public:
   WaterRenderer(Shader *sh);
   ~WaterRenderer();
 
+  using Renderer::render;
+
   void enable();
   void render(View *view, Model::FancyMesh mesh);
   vec2 screensize;
 
   GLuint reflection_texture;
+  GLuint texReflDepth;
+  GLint uTexReflDepth;
+  GLint ucampos;
+  GLint uTexReflColor;
   GLint utime;
   GLint uscreensize;
   GLfloat time;

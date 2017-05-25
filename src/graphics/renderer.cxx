@@ -54,7 +54,7 @@ void FlatShadingRenderer::enable()
 {
   _shader->use();
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glLineWidth(4);
+  glLineWidth(1);
   glDisable(GL_CULL_FACE);
 }
 
@@ -250,6 +250,9 @@ WaterRenderer::WaterRenderer (Shader *sh)
 
   utime = _shader->getUniformLocation("time");
   uscreensize = _shader->getUniformLocation("screensize");
+  uTexReflDepth = _shader->getUniformLocation("mapReflDepth");
+  uTexReflColor = _shader->getUniformLocation("texSampler");
+  ucampos = _shader->getUniformLocation("campos");
   reflection_texture = 0;
   time = 0;
   screensize=vec2(100,100);
@@ -263,17 +266,21 @@ void WaterRenderer::enable()
   _shader->use();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glLineWidth(1);
   glEnable(GL_DEPTH_TEST);
   // glEnable(GL_BLEND);
   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glDisable(GL_CULL_FACE);
   // glCullFace(GL_BACK);
+
+  glUniform1i(uTexReflColor,  0);
+  glUniform1i(uTexReflDepth,  1);
 }
 
 void WaterRenderer::render (View *view, Model::FancyMesh mesh) {
   mat4 projectionMat = view->projectionMatrix();
   mat4 viewMat = view->viewMatrix();
-
+  setUniform(ucampos,vec4(view->activeCamera()->position(),1));
   setUniform(utime, time);
   setUniform(uscreensize, screensize);
   setUniform(modelViewLoc, viewMat);
@@ -281,7 +288,10 @@ void WaterRenderer::render (View *view, Model::FancyMesh mesh) {
 
   setUniform(colorLoc, mesh.glState.color);
 
+  glActiveTexture(GL_TEXTURE0 + 0);
   glBindTexture(GL_TEXTURE_2D,reflection_texture);
+  glActiveTexture(GL_TEXTURE0 + 1);
+  glBindTexture(GL_TEXTURE_2D,texReflDepth);
   glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

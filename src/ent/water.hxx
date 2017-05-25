@@ -33,7 +33,7 @@ class Water : public Entity {
 
 public:
 
-  Water(int ID, std::string name, vec3 initial_position, vec2 size, vec3 color);
+  Water(int ID, std::string name, vec3 initial_position, vec2 size, vec3 scale,vec3 color);
   ~Water();
 
   void initalizeVisualData();
@@ -44,6 +44,7 @@ protected:
   std::string hmpfile;
   vec3 color;
   vec2 size;
+  vec3 scale;
 
   void initalizeTextures(const char* texfile);
   void initalizeMeshes();

@@ -166,29 +166,29 @@ void Level::buildDemoLevel()
 
     int cur_id = 0;
 
-    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/crate.obj","../assets/textures/wood1.png");
+    cubes[0] = new Gadget(cur_id++,cubePos[0], quaternion(), "sub", TYPE1, SPAWNED, 0.1f, cubeColor[0], "../assets/models/boxes.obj","../assets/textures/wood1.png");
     cubes[0]->setOrientation(angleAxis(3.1415f/2.f,vec3(0.f,1.f,0.f)));
     cubes[0]->setVolume(new CylinderVolume(Volume::Pos(cubes[0]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
     cubes[0]->meshes.push_back(cubes[0]->getVolume()->collisionMesh());
-    cubes[0]->setVelocity(vec3(0,-6.5f,0));
+    // cubes[0]->setVelocity(vec3(0,-6.5f,0));
     cubes[0]->setMass(1.f);
 
-    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/crate.obj","../assets/textures/wood1.png");
+    cubes[1] = new Gadget(cur_id++,cubePos[1], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[1], "../assets/models/boxes.obj","../assets/textures/wood1.png");
     cubes[1]->setVolume(new CylinderVolume(Volume::Pos(cubes[1]),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,vec3(1,0,0))));
     cubes[1]->meshes.push_back(cubes[1]->getVolume()->collisionMesh());
-    cubes[1]->setVelocity(vec3(0,-2,0));
+    // cubes[1]->setVelocity(vec3(0,-2,0));
     cubes[1]->setMass(1.f);
     cubes[1]->dragCoef(0.f);
 
     for(i=2; i<4; i++){
-        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/crate.obj","../assets/textures/wood1.png");
+        cubes[i] = new Gadget(cur_id++,cubePos[i], quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, cubeColor[i], "../assets/models/boxes.obj","../assets/textures/wood1.png");
         cubes[i]->setVolume(new SphereVolume(Volume::Pos(cubes[i]),1.414));
         cubes[i]->meshes.push_back(cubes[i]->getVolume()->collisionMesh());
         // cubes[i]->setVelocity(vec3(0,-3,0));
         cubes[i]->setMass(1.f);
         cubes[i]->dragCoef(0.0f);
     }
-    cubes[2]->setVelocity(vec3(0,-2,0));
+    // cubes[2]->setVelocity(vec3(0,-2,0));
     cubes[2]->setMass(10);
 
     cubes[3]->setVelocity(vec3(0,0,0));
@@ -226,10 +226,10 @@ void Level::buildDemoLevel()
 
     Entity *water;
 
-    water = new Water(cur_id++, "water1", vec3(0,-20,0), vec2(100,100), vec3(1.f,0.8f,0.5f));
+    water = new Water(cur_id++, "water1", vec3(-250,0,-250), vec2(100,100), vec3(500,1,500),vec3(1.f,0.8f,0.5f));
     addEntity(water);
-    water = new Water(cur_id++, "water2", vec3(-99,-20,0), vec2(100,100), vec3(1.f,0.8f,0.5f));
-    addEntity(water);
+    // water = new Water(cur_id++, "water2", vec3(-100,0,0), vec2(100,100), vec3(1.f,0.8f,0.5f));
+    // addEntity(water);
 
     // Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon2", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     Entity *cave = new Gadget(cur_id++,vec3(0,-40,0), quaternion(), "cube"+std::to_string(i), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/crate.obj","../assets/textures/wood1.png");
@@ -352,21 +352,16 @@ void Level::renderAll(View *view, RendererList rs, int passes){
     // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
     static GLuint framebuffer = 0;
     if(!framebuffer){
+        GLenum err;
+        glActiveTexture(GL_TEXTURE0 + 0);
         glGenFramebuffers(1, &framebuffer);
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-        GLuint out_texture;
-        glGenTextures(1, &out_texture);
+
         // "Bind" the newly created texture : all future texture functions will modify this texture
-        glActiveTexture(GL_TEXTURE0 + 0);
-        glBindTexture(GL_TEXTURE_2D, out_texture);
 
-        // Give an empty image to OpenGL ( the last "0" )
-        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1600, 1200, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+        // Give an empty image to OpenGL ( the last "0" ). Poor filtering (needed!)
 
-        // Poor filtering. Needed !
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
         // The depth buffer
         GLuint depthrenderbuffer;
@@ -375,16 +370,39 @@ void Level::renderAll(View *view, RendererList rs, int passes){
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1600, 1200);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
 
+// texReflDepth
         // Set "out_texture" as our colour attachement #0
+        while((err = glGetError()) != GL_NO_ERROR){
+          logln(LOGHIGH,"OpenGL Error 0: %d %s",err,"");
+        }
+        GLuint out_texture;
+        glGenTextures(1, &out_texture);
+        glBindTexture(GL_TEXTURE_2D, out_texture);
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1600, 1200, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, out_texture, 0);
-
+        while((err = glGetError()) != GL_NO_ERROR){
+          logln(LOGHIGH,"OpenGL Error 1: %d %s",err,"");
+        }
+        glGenTextures(1, &(rs.water->texReflDepth));
+        glBindTexture(GL_TEXTURE_2D, rs.water->texReflDepth);
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1600, 1200, 0,GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, rs.water->texReflDepth, 0);
+        while((err = glGetError()) != GL_NO_ERROR){
+          logln(LOGHIGH,"OpenGL Error: %d %s",err,"");
+        }
         // Set the list of draw buffers.
-        GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-        glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+        GLenum DrawBuffers[2] = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
+        glDrawBuffers(2, DrawBuffers); // "1" is the size of DrawBuffers
 
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
             logln(LOGHIGH,"Error in Framebuffer creation");
-        ((WaterRenderer*)(rs.water))->reflection_texture = out_texture;
+        rs.water->reflection_texture = out_texture;
+
+        glBindTexture(GL_TEXTURE_2D,out_texture);
 
     }
     if(passes==1){
@@ -410,8 +428,13 @@ void Level::renderAll(View *view, RendererList rs, int passes){
             switch (entity->getEntityType()){
                 case WATER:
                     if(passes){
+                        glActiveTexture(GL_TEXTURE0 + 1);
+                        glBindTexture(GL_TEXTURE_2D,rs.water->reflection_texture);
+                        glActiveTexture(GL_TEXTURE0 + 0);
+                        glBindTexture(GL_TEXTURE_2D,rs.water->texReflDepth);
                         rs.water->enable();
                         rs.water->render(view, entity);
+                        glActiveTexture(GL_TEXTURE0 + 0);
                     }
                     break;
                 default:

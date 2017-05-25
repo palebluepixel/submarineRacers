@@ -28,7 +28,7 @@ struct AI_entry {
 typedef struct{
     UnderwaterRenderer *ent;
     Renderer *flat;
-    Renderer *water;
+    WaterRenderer *water;
 }RendererList;
 
 class Level {

@@ -1,5 +1,8 @@
 #version 130
 
+uniform mat4 modelView; 
+uniform mat4 projection;
+
 uniform vec4 color;
 
 uniform vec3 lightDir;
@@ -26,6 +29,7 @@ uniform sampler2D mapReflDepth;
 
 uniform float time;
 uniform vec2 screensize;
+uniform vec4 campos;
 
 varying vec3 fragmentNormal;
 varying vec2 fragmentTexCoord;
@@ -51,10 +55,20 @@ vec4 displace(vec3 p, float t){
       // +  vec4(displace(p,vec3(1.0,5.0,5.0),  0.0, 0.3, 15.0,t),0)
       ;
 }
+// depthSample from depthTexture.r, for instance
+float linearDepth(float depthSample){
+    // todo: make this a uniform which is pulled from code.
+    float zNear = 0.1;
+    float zFar = 1000.0;
+    // ^^^^
+    depthSample = 2.0 * depthSample - 1.0;
+    float zLinear = 2.0 * zNear * zFar / (zFar + zNear - depthSample * (zFar - zNear));
+    return zLinear;
+}
 
 void main(){
     // Make sure its normalized
-    vec3 norm = normalize(fragmentNormal+displace(pixpos.xyz,time).xyz);
+    vec3 norm = normalize(fragmentNormal);
     vec2 relscrpos = vec2(gl_FragCoord.x/screensize.x, gl_FragCoord.y/screensize.y);
 
 
@@ -63,12 +77,43 @@ void main(){
     vec4 colorLight = vec4(0.0,0.0,0.0,0.0);
 
     // Texture
-    vec4 colorTex = texture(texSampler, relscrpos.xy+vec2(gl_FragCoord.z,gl_FragCoord.z));
-    vec3 lightDirm=vec3(0.707,-0.707,0);
+    float fragd = gl_FragCoord.z / gl_FragCoord.w;
+    float zdist = linearDepth(texture(mapReflDepth, relscrpos.xy).x) - fragd; // distance from pixel to image point.
 
+    vec4 colorTex = texture(texSampler, relscrpos.xy/* +vec2(gl_FragCoord.z,gl_FragCoord.z) */) ;
+    
+
+    vec3 lightDirm=vec3(0.707,-0.707,0);
     float light = pow(abs(dot(-lightDirm, norm)),5);
 
-    colorLight=colorTex * vec4(0.2,0.8,0.5,1.0)*(0.5+((pixpos.y+40)*0.02))*0.4 + 0.2*max(0.0, light);
+    // todo: remove
+    // norm = vec3(0,1,0);
+
+    vec3 pixpos3 = vec3(pixpos.x/pixpos.w,pixpos.y/pixpos.w,pixpos.z/pixpos.w);
+    vec3 campos3 = vec3(campos.x/campos.w,campos.y/campos.w,campos.z/campos.w);
+
+    vec3 camToPt = normalize(pixpos3-campos3);
+    vec3 ptToImg = (camToPt.xyz - 2 * norm * dot(camToPt.xyz,norm));
+    vec3 imgPos  = pixpos3+(4)*ptToImg;  // position of image.
+    vec3 imgPosR =  vec3(imgPos.x,-imgPos.y,imgPos.z);  // reflect across water.
+
+    // todo: remove;
+    // imgPosR = pixpos3+camToPt;
+
+    mat4 mp = projection * modelView;
+    vec4 outpos =  mp * vec4(imgPosR,1);
+    vec2 texpos =  (1 + outpos.xy / outpos.w)/2;
+    if(texpos.x<0)texpos.x=0;
+    if(texpos.y<0)texpos.y=0;
+    if(texpos.x>1)texpos.x=1;
+    if(texpos.y>1)texpos.y=1;
+
+    colorTex = texture(texSampler,texpos);
+
+
+    // note: vec4(0.2,0.8,0.5,1.0) is a good ocean-water color.
+
+    colorLight=colorTex * vec4(0.2,0.8,0.5,1.0)/* *(0.5+((pixpos.y+40)*0.02))*0.4 */ + 0.2*max(0.0, light);
 
     // if(light<0)colorLight.xyz*=(1,0.5,0.5);
 
@@ -81,9 +126,17 @@ void main(){
     // gl_FragColor = vec4(fragmentNormal.x,fragmentNormal.y,fragmentNormal.z,1.0);
     // Out
 
-    float mult = 1;
+    // float mult = (-campos.z)+-1;
+
+
+    // gl_FragColor=vec4(campos.x-15.3,campos.y+9.8,campos.z+2.1,1);
+    
+    // gl_FragColor=vec4(campos.x-15.3,campos.y+9.8,campos.z-1.6,1);
+    
     // if(gl_FragCoord.y <0)mult=0;
-    gl_FragColor = colorTex* vec4(colorLight.xyz,0.8);
+    gl_FragColor = colorTex* vec4(colorLight.xyz,1.0);
+    // gl_FragColor = vec4(abs(camToPt.x),abs(camToPt.y),abs(camToPt.z),1);
+    // gl_FragColor=vec4(abs(norm.x),abs(norm.y),abs(norm.z),1);
     // gl_FragColor = colorTex * depth * mult;
     // gl_FragColor = vec4(depth);
 

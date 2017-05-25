@@ -2,7 +2,7 @@
 #include <physics/Volume.hxx>
 #include <util/file.hxx>
 
-Water::Water(int ID, std::string name, vec3 initial_position, vec2 size, vec3 color)
+Water::Water(int ID, std::string name, vec3 initial_position, vec2 size, vec3 scale, vec3 color)
 : Entity(ID,initial_position, quaternion(), name, WATER, SPAWNED, 0.1f){
     this->color = color;
 
@@ -10,6 +10,7 @@ Water::Water(int ID, std::string name, vec3 initial_position, vec2 size, vec3 co
     this->hmpfile = "../assets/heightmaps/bump_bump.hmp";
 
     this->size = size;
+    this->scale = scale;
     this->initalizeVisualData();
 }
 
@@ -37,7 +38,7 @@ void Water::initalizeMeshes(){
     mesh->init(size.x,size.y, vec2(0.5f, 0.5f));
     mesh->data.tex = this->tex;
 
-    Model::FancyMesh tmi(mesh,glm::scale(glm::mat4(1),vec3(size.x,16,size.y)), Model::RenderState(vec4(color,1.f)));
+    Model::FancyMesh tmi(mesh,glm::scale(glm::mat4(1),scale), Model::RenderState(vec4(color,1.f)));
     Model tmesh(tmi);
     meshes.push_back(tmesh);
 
@@ -88,10 +89,19 @@ void WaterMesh::init(int w, int h, vec2 texscale){
   float xp,zp;
 
   int ind=0;
+  float stepsw[w];
+  float stepsh[h];
+
+  float fw = w-1;
+  float fh = h-1;
+
   for(int z=0;z<h;++z){
     for(int x=0;x<w;++x){
       xp=x_inc*float(x);
       zp=z_inc*float(z);
+
+      xp = 0.5+(2.f/(fw*fw))*fabsf(x-fw/2.f)*(x-fw/2.f);
+      zp = 0.5+(2.f/(fh*fh))*fabsf(z-fh/2.f)*(z-fh/2.f);
       texcs[ind] = vec2(x_inc*float(x)/texscale.x, z_inc*float(z)/texscale.y);
       // verts[ind] = vec3(xp, sin(x*2.f/3.14f)*cos(z*2.f/3.14f) - xp*xp*30 - zp*zp*20, zp);
       verts[ind] = vec3(xp,0,zp);
