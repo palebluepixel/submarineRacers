@@ -25,5 +25,7 @@
 
 //Race running and finishing
 #define CODE_EXIT_LEVEL 40
+#define CODE_CHECK_CLEAR 41
+#define CODE_LAP_CLEAR 42
 
 #endif

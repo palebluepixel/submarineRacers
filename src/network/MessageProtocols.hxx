@@ -65,6 +65,14 @@ inline message *createExitLevelMsg() {return createMessage(CODE_EXIT_LEVEL, 0, N
 
 
 
+/* ============== TRACK PROGRESS ============= */
+
+/* Tells a client that the have cleared a given checkpoint and should update visual info */
+inline message *createCheckClearMsg(int check) {return createMessageIntPayload(CODE_CHECK_CLEAR, check);}
+
+/* Tells a client that they have cleared a lap and should update visual info */
+inline message *createLapClearMsg() {return createMessage(CODE_LAP_CLEAR, 0, NULL);}
+
 
 
 /* ========== SERVER POSITION UPDATES ======== */

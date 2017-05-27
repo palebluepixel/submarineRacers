@@ -4,7 +4,9 @@
 #include "Agent.hxx"
 #include <world/ProgressTracker.hxx>
 
+class ServerNetworkManager;
 class SubmarineAI;
+
 
 class Submarine : public Agent {
 public:
@@ -35,7 +37,7 @@ public:
     void bindToAI(SubmarineAI *ai);
     void unbindFromAI();
 
-    /* Handles collision with track entities*/
+    /* Handles collision with track entities. These should only be called by the server. */
     void hitSeekPoint(int id);
     void hitCheckPoint(int id, int isFinish);
 
@@ -91,10 +93,18 @@ public:
     void switchWeapons(uint8_t weapon);
 
     inline Submarine *getSub() { return this->agent; }
+
+    inline void bindToClient(ServerNetworkManager *client) {this->controllingClient = client;}
+    inline void unbindFromClient() {this->controllingClient = NULL;}
+    inline ServerNetworkManager *getControllingClient() {return this->controllingClient;}
    
 protected:
     Submarine *agent;
     SubmarineSteeringState state;
+
+    /* ServerNetworkManager node for the client that is bound to this actuator.
+    This will be NULL if no client is bound to this actuator.*/
+    ServerNetworkManager *controllingClient;
 };
 
 

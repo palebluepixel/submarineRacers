@@ -5,7 +5,7 @@
 class World;
 extern World* world; //global 
 
-handler NetworkManager::table[10] = {{ CODE_PING,         &NetworkManager::pingCommand }, 
+handler NetworkManager::table[12] = {{ CODE_PING,         &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },
                                     { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand },
@@ -14,7 +14,9 @@ handler NetworkManager::table[10] = {{ CODE_PING,         &NetworkManager::pingC
                                     { CODE_LOAD_LEVEL,    &NetworkManager::levelLoadCommand },
                                     { CODE_LEVEL_LOADED,  &NetworkManager::levelLoadedCommand },
                                     { CODE_EXIT_LEVEL,    &NetworkManager::exitLevelCommand },
-                                    { CODE_LEVEL_START,   &NetworkManager::startLevelCommand }};
+                                    { CODE_LEVEL_START,   &NetworkManager::startLevelCommand },
+                                    { CODE_CHECK_CLEAR,   &NetworkManager::checkClearCommand },
+                                    { CODE_LAP_CLEAR,     &NetworkManager::lapClearCommand }};
 
 NetworkManager::NetworkManager() 
 {}
@@ -173,36 +175,66 @@ void NetworkManager::objectChangeCommand(COMMAND_PARAMS)
 }
 
 void NetworkManager::controllerStateCommand(COMMAND_PARAMS) {
-    if(world->isClient())
-        return;
-    SubmarineActuator *actuator = ((ServerNetworkManager*)this)->actuator;
+    if(world->isServer()){
+        SubmarineActuator *actuator = ((ServerNetworkManager*)this)->actuator;
 
-    ControllerState state;
-    memcpy(&state, mes, len);
-    //state->moude = ntoh(state->mouse)
+        ControllerState state;
+        memcpy(&state, mes, len);
+        //state->moude = ntoh(state->mouse)
 
-    if(state.switchWeaponsKey != 0) {
-        actuator->switchWeapons(state.switchWeaponsKey);
+        if(state.switchWeaponsKey != 0) {
+            actuator->switchWeapons(state.switchWeaponsKey);
+        }
+
+        if(state.riseKey) {
+            actuator->rise(1);
+        }
+        if(state.diveKey) {
+            actuator->dive(1);
+        }
+
+        if(state.leftKey && !state.rightKey) {
+            actuator->turnLeft(1);
+        }
+        if(state.rightKey && !state.leftKey) {
+            actuator->turnRight(1);
+        }
+
+        if(state.forwardKey) {
+            actuator->accelerate(3);
+        }
+        if(state.fireKey) {
+            actuator->fire();
+        }
+    }
+}
+
+
+/* Track progress visualization */
+
+/* TODO: a good abstraction to have here would be to give the world (or level 
+or track) a clearCheck and clearLevel function that would be called by these
+handlers, so that checkpoint and finishline clearing behavior wouldn't assume
+a client-server connection. */
+
+/* If we are a client, update the visual information for the given checkpoint */
+void NetworkManager::checkClearCommand(COMMAND_PARAMS)
+{
+    if(world->isClient()){
+
+        Track * track = world->getLevel()->getTrack();
+        int id = bufToInt(mes); //get int from message
+        track->clearCheckVis(id);
+    }
+}
+
+/* If we are a client,update the visual information for all checkpoints */
+void NetworkManager::lapClearCommand(COMMAND_PARAMS)
+{
+    if(world->isClient()){
+
+        Track * track = world->getLevel()->getTrack();
+        track->resetAllChecksVis();
     }
 
-    if(state.riseKey) {
-        actuator->rise(1);
-    }
-    if(state.diveKey) {
-        actuator->dive(1);
-    }
-
-    if(state.leftKey && !state.rightKey) {
-        actuator->turnLeft(1);
-    }
-    if(state.rightKey && !state.leftKey) {
-        actuator->turnRight(1);
-    }
-
-    if(state.forwardKey) {
-        actuator->accelerate(3);
-    }
-    if(state.fireKey) {
-        actuator->fire();
-    }
 }

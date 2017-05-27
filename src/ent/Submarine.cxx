@@ -3,6 +3,7 @@
 #include <util/log.hxx>
 #include <ai/AI.hxx>
 #include <world/world.hxx>
+#include <network/ServerNetworkManager.hxx>
 
 extern World *world;
 
@@ -87,7 +88,7 @@ void Submarine::hitSeekPoint(int id)
     ProgressTracker *pt = this->getPTSeek();
     pt->clearPoint(id);
     if(pt->isLapComplete()){
-        int laps = pt->completeLap();
+        pt->completeLap();
     }
 }
 
@@ -96,25 +97,41 @@ void Submarine::hitCheckPoint(int id, int isFinish)
     Track *track = world->getLevel()->getTrack();
     ProgressTracker *pt = this->getPTCheck();
 
-    /* Set progress tracker and visual info. Eventually, only the server
-    will track whether the submarine has hit the checkpoint and update the
-    relevant progress tracker, and the server will send the client a message
-    that tells it to update the visual info. */
-    pt->clearPoint(id);
-    track->clearCheckVis(id);
+    /* We will send a message to this client, indicating that we have either:
+        1) won the game
+        2) cleared the finish line (not for a win), or
+        3) cleared a non-finishline checkpoint 
+    in that order of precedence. We send only one message. If the client does 
+    not exist, we send no message. */
+    SubmarineActuator *act = (SubmarineActuator*)this->getActuator();
+    ServerNetworkManager *client = act->getControllingClient();
 
-    /* Check if this is a complete lap. Again, eventually the server will
-    manage the progress tracker reset and simply send a message to the client
-    that it has completed a lap. */
+    /* Set progress tracker for this submarine. */
+    pt->clearPoint(id);
+
+
+    /* Check if this is a complete lap. Reset the progress tracker, 
+    check if we won the race, and inform the client. */
     if(isFinish && pt->isLapComplete()){
         int laps = pt->completeLap();
-        track->resetAllChecksVis();
+        
 
-        /* Check if we won! Again, server side only. */
+        /* Check if we won!*/
         if(laps >= track->getLapsToWin()){
+            //win handles the message sending that the client won
             world->win(this);
+        } else if(!this->isai && client){ //if we are AI or client is null, no message
+            message *msg = createLapClearMsg();
+            world->getServer()->messageClient(client, msg);
+            delete(msg);
         }
+
+    } else if(!this->isai && client){ //if we are AI or client is null, no message
+        message *msg = createCheckClearMsg(id);
+        world->getServer()->messageClient(client, msg);
+        delete(msg);
     }
+
 }
 
 
@@ -133,6 +150,7 @@ void SubmarineSteeringState::reset() {
 
 
 SubmarineActuator::SubmarineActuator(Submarine *agent) {
+    this->controllingClient = NULL;
     this->agent = agent;
     state.reset();
 }

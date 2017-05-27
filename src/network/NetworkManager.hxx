@@ -16,6 +16,7 @@
 #include <network/MessageQueue.hxx>
 #include <functional>
 #include <network/MessageProtocols.hxx>
+#include <world/Track.hxx>
 
 #include <network/CommandCodes.hxx>
 
@@ -58,8 +59,10 @@ protected:
     void levelLoadedCommand(COMMAND_PARAMS);
     void exitLevelCommand(COMMAND_PARAMS);
     void startLevelCommand(COMMAND_PARAMS);
+    void checkClearCommand(COMMAND_PARAMS);
+    void lapClearCommand(COMMAND_PARAMS);
 
-    static handler table[10];
+    static handler table[12];
 
     bool virtual processCommand(short code, short len, uint8_t *message);
     bool checkDispatch(short code, short len, uint8_t *message);

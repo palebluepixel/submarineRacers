@@ -73,15 +73,18 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 
     if(glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
-        //hard-coded AI sub
-        Submarine *sub = world->getSub(1);
-        ProgressTracker *pt = sub->getPTCheck();
+        if(world->isServer()){
+        
+            //hard-coded client sub at index 0
+            Submarine *sub = world->getSub(0);
+            ProgressTracker *pt = sub->getPTCheck();
 
-        Track *track = world->getLevel()->getTrack();
+            Track *track = world->getLevel()->getTrack();
 
-        int curi = pt->getNextPoint(0);
-        CheckPoint *cur = track->getNextCheckPoint(curi,0); 
-        sub->hitCheckPoint(pt->getNextPoint(0),cur->isFinishLine());
+            int curi = pt->getNextPoint(0);
+            CheckPoint *cur = track->getNextCheckPoint(curi,0); 
+            sub->hitCheckPoint(pt->getNextPoint(0),cur->isFinishLine());
+        }
     }
 
     /* Continous actions should go here */
