@@ -56,6 +56,7 @@ private:
     actually completed the level. */
     ProgressTracker *ptSeek;
     ProgressTracker *ptCheck;
+    int finishedRace; //1 if we finished already, 0 otherwise
 
     /* AI control */
     int isai;

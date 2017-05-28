@@ -6,6 +6,7 @@
 Track::Track(int lapsToWin)
 {
     this->lapsToWin = lapsToWin;
+    this->nextPosition = 0;
 }
 
 Track::~Track()
@@ -81,4 +82,18 @@ void Track::resetAllChecksVis()
 {
     for(CheckPoint *check : this->checks)
         this->resetCheckVis(check);
+}
+
+
+/* Tells the track that player p has finished the race. Returns the integer of
+the position the player finished the race in, e.g. 1st, 2nd, ... 
+Returns -1 after this function is called more times than the maximum number
+of players. */
+int Track::playerFinish(int pno)
+{
+    if(this->nextPosition >= WORLD_MAX_PLAYERS || this->nextPosition < 0)
+        return -1;
+
+    this->positions[this->nextPosition++] = pno;
+    return this->nextPosition;
 }

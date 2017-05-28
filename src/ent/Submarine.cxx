@@ -26,6 +26,7 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
 
     this->ptSeek = new ProgressTracker();
     this->ptCheck = new ProgressTracker();
+    this->finishedRace = 0;
 
     this->isai = 0;
 }
@@ -105,6 +106,7 @@ void Submarine::hitCheckPoint(int id, int isFinish)
     not exist, we send no message. */
     SubmarineActuator *act = (SubmarineActuator*)this->getActuator();
     ServerNetworkManager *client = act->getControllingClient();
+    int playerNo = client->getID();
 
     /* Set progress tracker for this submarine. */
     pt->clearPoint(id);
@@ -116,9 +118,12 @@ void Submarine::hitCheckPoint(int id, int isFinish)
         int laps = pt->completeLap();
         
 
-        /* Check if we won!*/
+        /* Check if we completed the race. If we did, check which position we came in. */
         if(laps >= track->getLapsToWin()){
-            //win handles the message sending that the client won
+            int position = track->playerFinish(playerNo);
+            message *msg = createPlayerFinishMessage(playerNo, position);
+            world->getServer()->broadcast(msg);
+            delete(msg);
             world->win(this);
         } else if(!this->isai && client){ //if we are AI or client is null, no message
             message *msg = createLapClearMsg();

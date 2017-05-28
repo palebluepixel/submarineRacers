@@ -3,6 +3,7 @@
 
 #include <ent/Checkpoint.hxx>
 #include <unordered_map>
+#include <world/defines.hxx>
 
 /* Color of cleared and uncleared checkpoints */
 #define UNCLEAREDCOLOR vec4(1.0, 0.5, 0.5, 1.0)
@@ -44,6 +45,18 @@ public:
     void resetCheckVis(CheckPoint *check);
     void resetAllChecksVis();
 
+    /* Tells the track that player p has finished the race. Returns the integer of
+    the position the player finished the race in, e.g. 1st, 2nd, ... 
+    Returns -1 after this function is called more times than the maximum number
+    of players. */
+    int playerFinish(int pno);
+
+    /* A map of positions in the race to the player number who finished in
+    that position. Each client is informed every time a player finishes the
+    race, but we also maintain that data here for the server in case we
+    want to do anything with it. */
+    int positions[WORLD_MAX_PLAYERS];
+
 private:
 
     /* Vector of all seekpoints in the order that they ought to be completed. 
@@ -56,6 +69,10 @@ private:
 
     /* Number of levels needed to win the track */
     int lapsToWin;
+
+    /* Position of next submarine to finish in the race - 1*/
+    int nextPosition;
+
 
 };
 
