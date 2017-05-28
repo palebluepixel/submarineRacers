@@ -423,6 +423,7 @@ void World::worldInitalizeDefault(int isServer)
     Camera *camera = new Camera();
     //position, yaw-roll, up-vector
     camera->init(vec3(0,100,0),vec3(0,-100,0),vec3(0,0,1)); //location, looking-at, up
+//  camera->init(vec3(15,10,-3),vec3(-3.14159264f/2.f,0,0),vec3(0,1,0)); //location, looking-at, up
     camera->setFOV(90.0);
     camera->setNearFar(0.1, 1000.0);
     /* Add tethered Camera */
@@ -482,6 +483,7 @@ void World::initalizeSubsFromFile(const char* path)
         float drag = curSub["drag"];
         float tick_interval = curSub["tick-interval"];
         Submarine * next = new Submarine(subid++, realpos, realOrientation, real_name, TYPESUB, SPAWNED, tick_interval, realcol, real_mf);
+        next->setVolume(new CylinderVolume(Volume::Pos(next),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
         next->setMass(mass);
         next->dragCoef(drag);
         this->addSub(id++, next);

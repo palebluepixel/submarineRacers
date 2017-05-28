@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <graphics/mesh.hxx>
 #include <graphics/texture.hxx>
+#include <physics/physics.hxx>
 // #include <physics/PhysicsEngine.hxx>
 #include <vector>
 #include <network/MessageProtocols.hxx>
@@ -114,6 +115,7 @@ public:
     void applyForce(vec3 force);
     void applyTorque(vec3 torque);
     void updatePhysicsVolume();
+    virtual Physics::CollisionMode onCollide(Entity *other);
 
     /**     game state:     **/
     virtual EntityStatus spawn();     // set status to spawned, place in intial position
@@ -121,13 +123,14 @@ public:
     /**     graphics:       **/
     mat4 modelMatrix();           // return transform matrix TO world space.
 
-    inline std::vector<TransformedMesh> getMeshes() {return this->meshes;}
+    inline std::vector<Model> getMeshes() {return this->meshes;}
     virtual void initalizeVisualData() = 0; //load meshes and textures
 
-    /* change the color of the ith mesh in meshes, if it exists */
+    /* change the color of the ith model in meshes, if it exists */
     void setMeshColor(int i, vec4 newCol);
 
-    std::vector<TransformedMesh> meshes;
+    std::vector<Model> meshes;
+
 protected:
     Volume *volume;
     quaternion orientation;

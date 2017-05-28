@@ -83,6 +83,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
             int curi = pt->getNextPoint(0);
             CheckPoint *cur = track->getNextCheckPoint(curi,0); 
+            logln(LOGMEDIUM, "hitting check point %d", curi);
             sub->hitCheckPoint(pt->getNextPoint(0),cur->isFinishLine());
         }
     }
@@ -191,8 +192,8 @@ void update(double elapsed){
     if(keyboard[GLFW_KEY_K])           cam->translateCamViewAxis(-tSpeed);
     if(keyboard[GLFW_KEY_J])           cam->translateCamStrafeAxis(-tSpeed);
     if(keyboard[GLFW_KEY_L])           cam->translateCamStrafeAxis(tSpeed);
-    if(keyboard[GLFW_KEY_R])           cam->translateCamUpAxis(tSpeed);
-    if(keyboard[GLFW_KEY_F])           cam->translateCamUpAxis(-tSpeed);
+    if(keyboard[GLFW_KEY_P])           cam->translateCamUpAxis(tSpeed);
+    if(keyboard[GLFW_KEY_SEMICOLON])           cam->translateCamUpAxis(-tSpeed);
 
     if(keyboard[GLFW_KEY_ESCAPE])      world->quit();
     if(keyboard[GLFW_KEY_Q])           world->quit();

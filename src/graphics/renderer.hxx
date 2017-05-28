@@ -7,9 +7,6 @@
 #include <ent/Entity.hxx>
 #include "shader.hxx"
 
-#define CHECKPOINT_DISPLAY_WIDTH 3
-#define VOLUME_MESH_DISPLAY_WIDTH 1
-
 using namespace glm;
 
 //! an abstract base class that wraps a renderer behavior
@@ -39,7 +36,7 @@ class Renderer {
     /**
      * render a single mesh
      */
-    virtual void render (View *view, TransformedMesh::MeshInfo mesh) = 0;
+    virtual void render (View *view, Model::FancyMesh mesh) = 0;
 
 
   protected:
@@ -64,7 +61,7 @@ class FlatShadingRenderer : public Renderer {
 
     void enable();
 
-    void render (View *view, TransformedMesh::MeshInfo mesh);
+    void render (View *view, Model::FancyMesh mesh);
 };
 
 
@@ -73,7 +70,7 @@ class SunlightShadingRenderer : public Renderer {
     SunlightShadingRenderer(Shader *sh);
     ~SunlightShadingRenderer();
 
-    void render (View *view, TransformedMesh::MeshInfo mesh);
+    void render (View *view, Model::FancyMesh mesh);
 
   protected:
     GLint lightDirLoc;
@@ -95,7 +92,7 @@ class UnderwaterRenderer : public SunlightShadingRenderer {
     ~UnderwaterRenderer();
 
     void enable();
-    void render(View *view, TransformedMesh::MeshInfo mesh);
+    void render(View *view, Model::FancyMesh mesh);
 
   protected:
     GLint oceanColoringOnLoc;
@@ -115,7 +112,7 @@ class SkyboxRenderer : public Renderer {
     ~SkyboxRenderer();
 
     void enable();
-    void render(View *view, TransformedMesh::MeshInfo mesh);
+    void render(View *view, Model::FancyMesh mesh);
 
   protected:
     GLint camPosLoc; 

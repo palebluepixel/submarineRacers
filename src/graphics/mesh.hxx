@@ -28,14 +28,10 @@ public:
 
       Mesh *owner;
 
-      int polygon_mode;
-      int visible;
-
       int shouldTexture;
 
       texture2d *tex;
-
-      vec4 color; //R,G,B,Alpha
+      
     }data;
 
     Mesh (GLenum p);
@@ -95,22 +91,36 @@ private:
   HeightmapData hmpdata;
 };
 
-class TransformedMesh{
+
+
+class Model{
 public:
-  class MeshInfo{
+
+  class RenderState{
   public:
-    MeshInfo(Mesh *m, mat4 transform);
-    Mesh *mesh;
-    mat4 transform;
-    // additional rendering information
-    //  ....
-    ///
+    // RenderState();
+    RenderState(bool visible, vec4 color, int polymode, int cullmode, int linewidth);
+    RenderState(vec4 color);
+    RenderState();
+    bool visible;
+    int polymode;
+    int cullmode;
+    int linewidth;
+    vec4 color;
+  };
+
+  class FancyMesh{
+  public:
+    FancyMesh(Mesh *m, mat4 transform, RenderState state);
+    Mesh *mesh;             // mesh to be rendered
+    mat4 transform;         // how do we transform the mesh?
+    RenderState glState;    // how do we render the mesh?
   };
 public:
-  TransformedMesh(MeshInfo mesh);
-  std::vector<MeshInfo> meshes;
+  Model(FancyMesh mesh);
+  std::vector<FancyMesh> meshes;
 
-  /* Change the color of the ith mesh */
+  /* Change the color of the RenderState of the ith mesh*/
   void setMeshColor(int i, vec4 newCol);
 
 
@@ -120,5 +130,5 @@ public:
 
 
 // a Mesh is a low-level aggregate of polygons.
-// a TransformedMesh is a Mesh coupled with transformation/rendering information (eg. mvp, back-face culling, shader effects)
-// a Model is a collection of TransformedMeshes
+// a Model is a Mesh coupled with transformation/rendering information (eg. mvp, back-face culling, shader effects)
+// a Model is a collection of Modeles

@@ -38,7 +38,9 @@ Entity::~Entity()
     
 }
 
-
+Physics::CollisionMode Entity::onCollide(Entity *other){
+    return Physics::ELASTIC;
+}
 void Entity::setPhysicsParams(PhysicsParams in){
     dragCoef(in.dragCoef);
 }
@@ -192,6 +194,11 @@ int Entity::onTick(float dt){
 
     this->setPosition(position + (velocity + acceleration * (dt/2)) * dt);
     this->setVelocity(velocity + acceleration * dt);
+
+    if(fabsf(velocity.x) + fabsf(velocity.y) + fabsf(velocity.z) < 0.0001f){
+        // velocity is less than 0.1mm per second. 
+        velocity=vec3();
+    }
 
     // Apply rotations
     vec3 angular_accel = torques / this->_mass;

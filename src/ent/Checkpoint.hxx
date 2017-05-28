@@ -2,6 +2,7 @@
 #define _CHECKPOINT_HXX_
 
 #include <ent/Entity.hxx>
+#include <physics/Volume.hxx>
 
 
 class Hexagon {
@@ -13,9 +14,19 @@ public:
 	/* Construct a hexagon using the 6 corner points */
 	Hexagon(vec3 Lt, vec3 Lb, vec3 Mt, vec3 Mb, vec3 Rt, vec3 Rb);
 
+	/* Return the points of the hexagon as a vec3 array, starting with 
+	top-left and going in clockwise order. */
+	vec3* getPointsAsArray();
+
 	/* Return a mesh representation of the hexagon as a hexagonal
 	prism with the given length. */
 	Mesh* getMesh(float length);
+
+	/* Return a polygon struct representation of this hexagon */
+	Polygon getPolygon();
+
+	/* Return a flatVolume collision mesh of this hexagon as a planar polygon */
+	FlatVolume *getPlanarVolumeMesh();
 
 	vec3 Lt;
 	vec3 Lb;
@@ -70,9 +81,13 @@ public:
 	*/
 	Hexagon *hex;
 
+	/* Create and push back visual mesh for this hexagon. */
 	void initalizeTextures(const char* texfile);
     void initalizeVisualData();
     void initalizeMeshes();
+
+    /* Create and set the collision mesh for this hexagon. */
+    void initalizeVolumeMesh();
 
     /* Get AI seek info */
     vec3 getCenter();
@@ -81,6 +96,10 @@ public:
     should be called only by the track, usually in the addToTrack function. */
     inline int  getTrackID()      { return idInTrack; }
     inline void setTrackID(int i) { idInTrack = i; }
+
+    /* On collision, update the progress tracker info if this submarine is
+    AI controlled. */
+    virtual Physics::CollisionMode onCollide(Entity *other);
 
 protected:
 
@@ -103,6 +122,9 @@ public:
 	~CheckPoint();
 
 	inline int isFinishLine() { return this->fl; }
+
+	/* On collision, update the progress tracker info of this submarine. */
+	Physics::CollisionMode onCollide(Entity *other);
 
 protected:
 

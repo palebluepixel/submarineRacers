@@ -54,9 +54,8 @@ void Submarine::initalizeMeshes()
 {
     Mesh *mesh = new Mesh(GL_TRIANGLES);
     mesh->loadOBJ(modelfile);
-    mesh->data.color = vec4(this->color,0.5);
     mesh->data.tex = this->tex;
-    meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh, mat4())));
+    meshes.push_back(Model(Model::FancyMesh(mesh, mat4(),Model::RenderState(vec4(color,1.f)))));
 }
 
 /* Return movement and handling parameters for this sub. These may eventually be
@@ -110,6 +109,12 @@ void Submarine::hitCheckPoint(int id, int isFinish)
     not exist, we send no message. */
     SubmarineActuator *act = (SubmarineActuator*)this->getActuator();
     ServerNetworkManager *client = act->getControllingClient();
+
+    /* If our controlling client is NULL, then we haven't been bound yet,
+    and should do nothing */
+    if(!client)
+        return;
+
     int playerNo = client->getID();
 
     /* Set progress tracker for this submarine. */

@@ -1,4 +1,5 @@
 #include "Checkpoint.hxx"
+#include <ent/Submarine.hxx>
 
 /* Constuct a regular hexagon at the given center with the given radius,
 with a normal facing down the z-axis */
@@ -25,6 +26,20 @@ Hexagon::Hexagon(vec3 Lt, vec3 Lb, vec3 Mt, vec3 Mb, vec3 Rt, vec3 Rb)
 	this->center = (Lt + Lb + Mt + Mb + Rt + Rb) / 6.0f;
 	this->normal = normalize(cross(normalize(Lt - this->center),
 		normalize(Lb - this->center)));
+}
+
+/* Return the points of the hexagon as a vec3 array, starting with 
+top-left and going in clockwise order. */
+vec3* Hexagon::getPointsAsArray()
+{
+    vec3 *points = (vec3*)malloc(sizeof(vec3)*6);
+    points[0] = Lt;
+    points[1] = Mt;
+    points[2] = Rt;
+    points[3] = Rb;
+    points[4] = Mb;
+    points[5] = Rb;
+    return points;
 }
 
 /* Translate a point by distance along the given axis */
@@ -78,6 +93,21 @@ Mesh* Hexagon::getMesh(float length)
     return m;
 }
 
+/* Return a polygon struct representation of this hexagon */
+Polygon Hexagon::getPolygon()
+{
+    vec3 *points = this->getPointsAsArray();
+    return Polygon(points, 6);
+    delete(points);
+}
+
+/* Return a flatVolume collision mesh of this hexagon as a planar polygon */
+FlatVolume *Hexagon::getPlanarVolumeMesh()
+{
+    return new FlatVolume(this->getPolygon());
+}
+
+
 
 SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientation,
 	    std::string name, EntityType type, EntityStatus status, float tick_interval,
@@ -90,6 +120,7 @@ SeekPoint::SeekPoint(int ID, vec3 initial_position, quaternion initial_orientati
     this->color = vec3(1.0f, 0.5f, 0.5f);
 
 	this->initalizeVisualData();
+    this->initalizeVolumeMesh();
 }
 
 SeekPoint::~SeekPoint() 
@@ -108,9 +139,24 @@ void SeekPoint::initalizeMeshes()
     Mesh *mesh = this->hex->getMesh(0.2);
     //Mesh *mesh = new Mesh(GL_TRIANGLES);
     //mesh->loadOBJ("../assets/models/cube.obj");
+
+    /* OLD MESH WAY
     mesh->data.color = vec4(this->color, 1.0); // transparent pink
     mesh->data.tex = this->tex;
     this->meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4(1))));
+    */
+
+    vec3 col(1.0f, 0.5f, 0.5f);
+    mesh->data.tex = this->tex;
+
+    Model::FancyMesh fmesh(mesh,mat4(),Model::RenderState(true,vec4(col,1.f),GL_FILL,GL_FRONT_AND_BACK,7));
+    this->meshes.push_back(Model(fmesh));
+}
+
+/* Create and set the collision mesh for this hexagon. */
+void SeekPoint::initalizeVolumeMesh()
+{
+    this->setVolume(this->hex->getPlanarVolumeMesh());
 }
 
 void SeekPoint::initalizeTextures(const char* texfile)
@@ -129,6 +175,25 @@ vec3 SeekPoint::getCenter()
 }
 
 
+Physics::CollisionMode SeekPoint::onCollide(Entity *other)
+{   
+    Submarine *sub;
+    /* No behavior for non-submarines */
+    if(other->getEntityType() != TYPESUB)
+        goto doneSeekOnCollide;
+
+    sub = (Submarine*) other;
+
+    /* Only perform behavior for AI*/
+    if(!sub->isAI())
+        goto doneSeekOnCollide;
+
+    sub->hitSeekPoint(this->getTrackID());
+
+doneSeekOnCollide:
+    return Physics::NONE;
+}
+
 
 
 CheckPoint::CheckPoint(int ID, vec3 initial_position, quaternion initial_orientation,
@@ -142,3 +207,19 @@ Hexagon *hex, int isFinishLine)
 
 
 CheckPoint::~CheckPoint() {}
+
+
+
+Physics::CollisionMode CheckPoint::onCollide(Entity *other)
+{   
+    Submarine *sub;
+    /* No behavior for non-submarines */
+    if(other->getEntityType() != TYPESUB)
+        goto doneCheckOnCollide;
+
+   sub = (Submarine*) other;
+    sub->hitCheckPoint(this->getTrackID(), this->isFinishLine());
+
+doneCheckOnCollide:
+    return Physics::NONE;
+}
