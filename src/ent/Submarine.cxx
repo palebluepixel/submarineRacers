@@ -95,6 +95,10 @@ void Submarine::hitSeekPoint(int id)
 
 void Submarine::hitCheckPoint(int id, int isFinish)
 {
+    /* If we already finished the race, don't track checkpoints any more */
+    if(this->finishedRace == 1)
+        return;
+
     Track *track = world->getLevel()->getTrack();
     ProgressTracker *pt = this->getPTCheck();
 
