@@ -15,8 +15,28 @@
             "position": [5, 10, 0],
             "orientation": [1.74, 0, -1, 0],
             "tick-interval": 0.1,
-            "color": [1.0, 1.0, 1.0],
-            "model": "../assets/models/cube.obj",
+            "color": [1.0, 0.0, 0.0],
+            "model": "../assets/models/sub_3.obj",
+            "mass": 2.0,
+            "drag": 1.0
+        },
+        {
+            "name": "sub3",
+            "position": [0, 0, 0],
+            "orientation": [1.74, 0, -1, 0],
+            "tick-interval": 0.1,
+            "color": [0.0, 1.0, 0.0],
+            "model": "../assets/models/sub_3.obj",
+            "mass": 2.0,
+            "drag": 1.0
+        },
+        {
+            "name": "sub4",
+            "position": [-5, -10, 0],
+            "orientation": [1.74, 0, -1, 0],
+            "tick-interval": 0.1,
+            "color": [0.0, 0.0, 1.0],
+            "model": "../assets/models/sub_3.obj",
             "mass": 2.0,
             "drag": 1.0
         }

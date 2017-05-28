@@ -156,6 +156,12 @@ int Submarine::finish()
     return position;
 }
 
+/* Reset submarine information to prepare for the next race */
+void Submarine::resetForRace()
+{
+    this->finishedRace = 0;
+}
+
 
 
 /* ==================================================

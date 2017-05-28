@@ -44,6 +44,9 @@ public:
     /* Finish the race. Returns the position we finished in. */
     int finish();
 
+    /* Reset submarine information to prepare for the next race */
+    void resetForRace();
+
 private:
     /* For now these are set to the same value for all subs (in the constructor),
     but eventually these may vary so subs have different "stats" for acceleration

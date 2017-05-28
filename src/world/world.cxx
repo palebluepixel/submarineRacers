@@ -449,11 +449,11 @@ void World::worldInitalizeDefault(int isServer)
     this->setFlatRenderer(rflat);
 
     /* Bind AIs to subs HARDCODED FOR NOW*/
-    if(this->subs.size() > 1)
+    /*if(this->subs.size() > 1)
     {
         SubmarineAI * ai1 = new SubmarineAI();
         subs[1]->bindToAI(ai1);
-    }
+    }*/
 
 }
 
