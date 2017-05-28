@@ -120,11 +120,9 @@ void Submarine::hitCheckPoint(int id, int isFinish)
 
         /* Check if we completed the race. If we did, check which position we came in. */
         if(laps >= track->getLapsToWin()){
-            int position = track->playerFinish(playerNo);
-            message *msg = createPlayerFinishMessage(playerNo, position);
-            world->getServer()->broadcast(msg);
-            delete(msg);
-            world->win(this);
+            int position = this->finish();
+            if(position == 1)
+                world->win(this);
         } else if(!this->isai && client){ //if we are AI or client is null, no message
             message *msg = createLapClearMsg();
             world->getServer()->messageClient(client, msg);
@@ -137,6 +135,21 @@ void Submarine::hitCheckPoint(int id, int isFinish)
         delete(msg);
     }
 
+}
+
+/* Finish the race. Returns the position we finished in. */
+int Submarine::finish()
+{
+    SubmarineActuator *act = (SubmarineActuator*)this->getActuator();
+    ServerNetworkManager *client = act->getControllingClient();
+    int playerNo = client->getID();
+
+    this->finishedRace = 1;
+    int position = world->getLevel()->getTrack()->playerFinish(playerNo);
+    message *msg = createPlayerFinishMessage(playerNo, position);
+    world->getServer()->broadcast(msg);
+    delete(msg); 
+    return position;
 }
 
 
