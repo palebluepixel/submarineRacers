@@ -230,7 +230,7 @@ void Level::buildDemoLevel()
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,5,25), vec3(7, 5, 30), vec3(3, 5, 35), vec3(0, 5, 35),
         vec3(-2, 5, 32), vec3(-5, 5, 30), vec3(-5,5,25), vec3(-5,5,20),vec3(-5,5,15), vec3(-5,5,10), vec3(-3,5,7), vec3(-3,5,5), vec3(0,5,5)};*/
     int ncenters = 3;
-    vec3 centers[ncenters] = {vec3(5,5,5),vec3(5,5,10),vec3(5,5,15)};
+    vec3 centers[ncenters] = {vec3(5,5,5),vec3(5,5,15),vec3(5,5,25)};
     this->generateDummyPath(3, centers, ncenters, centers, ncenters, cur_id);
 
     /*Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");

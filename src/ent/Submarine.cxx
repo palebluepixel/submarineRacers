@@ -118,6 +118,7 @@ void Submarine::hitCheckPoint(int id, int isFinish)
     int playerNo = client->getID();
 
     /* Set progress tracker for this submarine. */
+    //logln(LOGMEDIUM, "clearing point %d", id);
     pt->clearPoint(id);
 
 
@@ -125,6 +126,7 @@ void Submarine::hitCheckPoint(int id, int isFinish)
     check if we won the race, and inform the client. */
     if(isFinish && pt->isLapComplete()){
         int laps = pt->completeLap();
+        //logln(LOGMEDIUM, "finished lap %d", laps);
         
 
         /* Check if we completed the race. If we did, check which position we came in. */
