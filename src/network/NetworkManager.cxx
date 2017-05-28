@@ -5,9 +5,10 @@
 class World;
 extern World* world; //global 
 
-handler NetworkManager::table[12] = {{ CODE_PING,         &NetworkManager::pingCommand }, 
+handler NetworkManager::table[14] = {{ CODE_PING,         &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },
+                                    { CODE_PLAYER_NO,     &NetworkManager::playerNoCommand },
                                     { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand },
                                     { CODE_CONTROLLER,    &NetworkManager::controllerStateCommand },
                                     { CODE_LEVEL_SELECT,  &NetworkManager::levelSelectCommand },
@@ -16,7 +17,8 @@ handler NetworkManager::table[12] = {{ CODE_PING,         &NetworkManager::pingC
                                     { CODE_EXIT_LEVEL,    &NetworkManager::exitLevelCommand },
                                     { CODE_LEVEL_START,   &NetworkManager::startLevelCommand },
                                     { CODE_CHECK_CLEAR,   &NetworkManager::checkClearCommand },
-                                    { CODE_LAP_CLEAR,     &NetworkManager::lapClearCommand }};
+                                    { CODE_LAP_CLEAR,     &NetworkManager::lapClearCommand },
+                                    { CODE_PLAYER_FINISH, &NetworkManager::playerFinishCommand }};
 
 NetworkManager::NetworkManager() 
 {}
@@ -101,6 +103,34 @@ void NetworkManager::pongCommand(COMMAND_PARAMS) {
     //this->sendCommand(CODE_PING, 0, nullptr);
 }
 
+/* Inform the player of their unique player number (created when
+we created this network manager)*/
+void NetworkManager::initCommand(COMMAND_PARAMS) 
+{
+    logln(LOGLOW, "%s", "recieved initCommand");
+    if(!world->isServer())
+        return;
+
+    ServerNetworkManager *nm = (ServerNetworkManager*)this;
+    message *msg = createPlayerNoMessage(nm->getID());
+    world->getServer()->messageClient(nm, msg);
+
+    logln(LOGMEDIUM, "assigning player id %d", nm->getID());
+
+}
+
+/* Set our player number for future reference. */
+void NetworkManager::playerNoCommand(COMMAND_PARAMS)
+{
+    if(!world->isClient())
+        return;
+
+    int no = bufToInt(mes);
+    world->getClient()->setPlayerNumber(no);
+
+    logln(LOGMEDIUM, "given player id %d", no);
+}
+
 /* If we are a server, broadcast the selected level to all clients and begin
 loading the level ourselves. If we are a client, ignore the message. */
 void NetworkManager::levelSelectCommand(COMMAND_PARAMS)
@@ -158,12 +188,6 @@ void NetworkManager::exitLevelCommand(COMMAND_PARAMS)
     if(world->isServer())
         world->getServer()->exitLevel();
 }
-
-/* This doesn't require any actual processing because just getting
-the message from a new client means we will add them to our 
-connection list. */
-void NetworkManager::initCommand(COMMAND_PARAMS) 
-{}
 
 
 void NetworkManager::objectChangeCommand(COMMAND_PARAMS) 
@@ -228,7 +252,7 @@ void NetworkManager::checkClearCommand(COMMAND_PARAMS)
     }
 }
 
-/* If we are a client,update the visual information for all checkpoints */
+/* If we are a client, update the visual information for all checkpoints */
 void NetworkManager::lapClearCommand(COMMAND_PARAMS)
 {
     if(world->isClient()){
@@ -237,4 +261,24 @@ void NetworkManager::lapClearCommand(COMMAND_PARAMS)
         track->resetAllChecksVis();
     }
 
+}
+
+
+/* If we are a client, do something to display to the user that player p
+came in place n. */
+void NetworkManager::playerFinishCommand(COMMAND_PARAMS)
+{
+    if(world->isServer())
+        return;
+
+    int p;
+    int n;
+    memcpy(&p, mes, sizeof(int));
+    memcpy(&n, mes+sizeof(int), sizeof(int));
+
+    if(p == world->getClient()->getPlayerNumber()){
+        logln(LOGMEDIUM, "%s", "we won!");
+    } else {
+        logln(LOGMEDIUM, "player %d came in place %d", p, n);
+    }
 }

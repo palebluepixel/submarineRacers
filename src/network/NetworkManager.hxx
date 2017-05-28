@@ -51,6 +51,7 @@ protected:
     void pingCommand(COMMAND_PARAMS);
     void pongCommand(COMMAND_PARAMS);
     void initCommand(COMMAND_PARAMS);
+    void playerNoCommand(COMMAND_PARAMS); //
     void disconnectCommand(COMMAND_PARAMS);
     void objectChangeCommand(COMMAND_PARAMS);
     void controllerStateCommand(COMMAND_PARAMS);
@@ -61,8 +62,9 @@ protected:
     void startLevelCommand(COMMAND_PARAMS);
     void checkClearCommand(COMMAND_PARAMS);
     void lapClearCommand(COMMAND_PARAMS);
+    void playerFinishCommand(COMMAND_PARAMS); //
 
-    static handler table[12];
+    static handler table[14];
 
     bool virtual processCommand(short code, short len, uint8_t *message);
     bool checkDispatch(short code, short len, uint8_t *message);

@@ -228,9 +228,6 @@ private:
     /* All playable submarines which are currently in the world. These will be bound to clients */
     map<int, Submarine *> subs;
 
-    //Players
-    //Player ** players; 
-
 };
 
 

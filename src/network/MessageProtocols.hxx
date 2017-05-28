@@ -43,6 +43,21 @@ void deleteMessage(message *m);
 /* Message for client initating connection with server */
 inline message *createInitMsg() { return createMessage(CODE_INIT, 0, NULL); }
 
+/* Message for server to send back to client telling them their player number */
+inline message *createPlayerNoMessage(int p) {return createMessageIntPayload(CODE_PLAYER_NO, p);}
+
+
+
+/* =========== SUBMARINE SELECTION =========== */
+
+/* Tell the server we want to select the submarine with the given index */
+inline message *createSubSelectMessage(int sub) {return createMessageIntPayload(CODE_SUB_SELECT, sub);}
+
+/* Tell the client the submarine is already taken, so they have to choose another one */
+inline message *createSubTakenMessage() {return createMessage(CODE_SUB_TAKEN, 0, NULL);}
+
+/* Tell the client they have successfully chosen the given sub */
+inline message *createSubSelectedMessage(int sub) {return createMessageIntPayload(CODE_SUB_SELECTED, sub);}
 
 
 
@@ -73,6 +88,8 @@ inline message *createCheckClearMsg(int check) {return createMessageIntPayload(C
 /* Tells a client that they have cleared a lap and should update visual info */
 inline message *createLapClearMsg() {return createMessage(CODE_LAP_CLEAR, 0, NULL);}
 
+/* Tell a client that a player p has finished the race and come in position n */
+message *createPlayerFinishMessage(int p, int n);
 
 
 /* ========== SERVER POSITION UPDATES ======== */

@@ -42,6 +42,9 @@ public:
     int readOneMessage();
     void sendControllerState();
 
+    inline void setPlayerNumber(int n) {this->playerNumber = n;}
+    inline int getPlayerNumber() {return this->playerNumber;}
+
     inline short getPort() { return this->port; }
     inline char* getHost() { return strdup(this->hostname); }
 
@@ -51,6 +54,9 @@ private:
 
     struct hostent * serverInfo;
     ClientNetworkManager *nm;
+
+    /* Sent to us by the server */
+    int playerNumber;
 
 };
 

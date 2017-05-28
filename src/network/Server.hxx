@@ -76,7 +76,6 @@ public:
     /* Unloads the current level, and tells all clients to do the same. */
     void exitLevel();
 
-
     inline int getPort() { return this->port; }
 
 private:
@@ -101,7 +100,7 @@ private:
     ServerNetworkManager *findClientByAddr(struct sockaddr_in addr);
 
     /* Generate a unique ID. Call this when creating a new ServerNetworkManager
-    for a client. */
+    for a client. This ID is the number of the associated player. */
     int getNextID();
 };
 
