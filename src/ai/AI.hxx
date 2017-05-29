@@ -5,7 +5,7 @@
 #include <ent/Checkpoint.hxx>
 #include <world/Racer.hxx>
 
-#define CLOSEENOUGH 4
+#define CLOSEENOUGH 0
 
 class AI {
 public:

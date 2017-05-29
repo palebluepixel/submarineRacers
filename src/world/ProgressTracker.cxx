@@ -46,7 +46,8 @@ int ProgressTracker::pointCleared(int p)
 }
 
 /* Sets the status of the given point to CLEARED and updates curPoint
-to be the next point in the array. returns the updated curPoint */
+to be the next point in the array. returns the updated curPoint.
+If we have already cleared this point, instead does nothing. */
 int ProgressTracker::clearPoint(int p)
 {
     if(p < 0 || p > this->nPoints()){
@@ -54,11 +55,13 @@ int ProgressTracker::clearPoint(int p)
         return 0;
     }
 
-    this->points[p] = CLEARED;
-    curPoint = this->getNextPoint(1);
+    if(this->points[p] == NOTCLEARED)
+        this->points[p] = CLEARED;
+    curPoint = modularIndexOffset(p, 1, points.size());
+    return curPoint;
 }
 
-int ProgressTracker::getNextPoint(int off) 
+int ProgressTracker::getNextPoint(int off)
 {
     if(points.size() <= 0)
         return -1;
