@@ -140,7 +140,7 @@ void Submarine::hitCheckPoint(int id, int isFinish)
             delete(msg);
         }
 
-    } else if(!this->isai && client){ //if we are AI or client is null, no message
+    } else if(!this->isai && client && !isFinish){ //if we are AI or client is null or this was finish line, no message
         message *msg = createCheckClearMsg(id);
         world->getServer()->messageClient(client, msg);
         delete(msg);
