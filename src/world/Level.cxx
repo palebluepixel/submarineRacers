@@ -7,6 +7,7 @@
 #include <ent/terrain.hxx>
 #include <world/world.hxx>
 #include <physics/physics.hxx>
+#include <world/defines.hxx>
 
 extern World* world;
 
@@ -139,7 +140,7 @@ void Level::buildLevelFromFile() {
 /* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
 void Level::generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck, int nCheck, int& cur_id)
 {
-    Track *track = new Track(3);
+    Track *track = new Track(1);
     this->track = track;
 
     int i;
@@ -147,7 +148,7 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck,
     SeekPoint *seek;
     for(i=0; i<n; i++){
         hex = new Hexagon(centers[i],r);
-        seek = new SeekPoint(cur_id++, vec3(0,0,0), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex);
+        seek = new SeekPoint(cur_id++, vec3(0,0,0), quaternion(), "seek", TYPECHECK, SPAWNED, 0.1f, hex);
         seek->setMass(1);
         seek->setVelocity(vec3(0,0,0));
         track->addSeekPoint(seek);
@@ -216,15 +217,6 @@ void Level::buildDemoLevel()
     seek1->setMass(1);
     seek1->setVelocity(vec3(0,0,0));
     this->addEntity(seek1);*/
-
-    /*Submarine * sub = new Submarine(cur_id++,vec3(5,5,0), glm::angleAxis(1.74f, vec3(0, -1, 0)), strdup("sub1"), TYPESUB, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/cube.obj");
-    sub->mass(1.0);
-    sub->dragCoef(0.3); 
-    SubmarineAI * ai1 = new SubmarineAI();
-    ai1->bindToSubAct((SubmarineActuator*)sub->getActuator()); 
-    this->addEntity(sub);
-    this->addAI(ai1, 0.1);*/
-
 
     /*int ncenters = 18;
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,5,25), vec3(7, 5, 30), vec3(3, 5, 35), vec3(0, 5, 35),
@@ -376,7 +368,8 @@ void Level::renderSkybox(View *view, Renderer *r)
 
 
 void Level::updateLevel(float dt) {
-    updateAIs(dt);
+    if(ENABLEAI)
+        updateAIs(dt);
     //printf("Done updating AIs");
     physicsTick(dt);
     //printf("Done updating level\n");

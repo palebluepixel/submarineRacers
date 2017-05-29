@@ -1,5 +1,6 @@
 #include "Checkpoint.hxx"
 #include <ent/Submarine.hxx>
+#include <util/log.hxx>
 
 /* Constuct a regular hexagon at the given center with the given radius,
 with a normal facing down the z-axis */
@@ -177,6 +178,7 @@ vec3 SeekPoint::getCenter()
 
 Physics::CollisionMode SeekPoint::onCollide(Entity *other)
 {   
+    //logln(LOGMEDIUM, "Seekpoint %d hit", this->getTrackID());
     Submarine *sub;
     /* No behavior for non-submarines */
     if(other->getEntityType() != TYPESUB)
@@ -212,6 +214,7 @@ CheckPoint::~CheckPoint() {}
 
 Physics::CollisionMode CheckPoint::onCollide(Entity *other)
 {   
+    //logln(LOGMEDIUM, "CheckPoint %d hit", this->getTrackID());
     Submarine *sub;
     /* No behavior for non-submarines */
     if(other->getEntityType() != TYPESUB)

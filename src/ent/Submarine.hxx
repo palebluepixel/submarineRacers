@@ -3,6 +3,7 @@
 
 #include "Agent.hxx"
 #include <world/ProgressTracker.hxx>
+#include <world/Racer.hxx>
 
 class ServerNetworkManager;
 class SubmarineAI;
@@ -31,11 +32,12 @@ public:
     inline ProgressTracker *getPTSeek()  { return this->ptSeek; }
     inline ProgressTracker *getPTCheck() { return this->ptCheck; }
 
-    inline int isAI() { return this->isai; }
-    inline SubmarineAI * getAI() { return this->ai; }
+    inline int isAI() { return !this->racer ? 0 : this->racer->getType()==AI_CONTROLLED; }
+    inline SubmarineAI * getAI() { return !this->isAI() ? NULL : this->racer->getAI(); }
 
-    void bindToAI(SubmarineAI *ai);
-    void unbindFromAI();
+    void bindToRacer(Racer *racer);
+    void unbindFromRacer();
+    inline Racer *getRacer() {return this->racer;}
 
     /* Handles collision with track entities. These should only be called by the server. */
     void hitSeekPoint(int id);
@@ -64,9 +66,8 @@ private:
     ProgressTracker *ptCheck;
     int finishedRace; //1 if we finished already, 0 otherwise
 
-    /* AI control */
-    int isai;
-    SubmarineAI *ai;
+    /* Controlling entity, either a human or AI */
+    Racer *racer;
 };
 
 
@@ -101,9 +102,9 @@ public:
 
     inline Submarine *getSub() { return this->agent; }
 
-    inline void bindToClient(ServerNetworkManager *client) {this->controllingClient = client;}
-    inline void unbindFromClient() {this->controllingClient = NULL;}
-    inline ServerNetworkManager *getControllingClient() {return this->controllingClient;}
+    //inline void bindToClient(ServerNetworkManager *client) {this->controllingClient = client;}
+    //inline void unbindFromClient() {this->controllingClient = NULL;}
+    //inline ServerNetworkManager *getControllingClient() {return this->controllingClient;}
    
 protected:
     Submarine *agent;
@@ -111,7 +112,7 @@ protected:
 
     /* ServerNetworkManager node for the client that is bound to this actuator.
     This will be NULL if no client is bound to this actuator.*/
-    ServerNetworkManager *controllingClient;
+    //ServerNetworkManager *controllingClient;
 };
 
 

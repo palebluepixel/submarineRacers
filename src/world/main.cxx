@@ -75,16 +75,16 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if(glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
         if(world->isServer()){
         
-            //hard-coded client sub at index 0
-            Submarine *sub = world->getSub(0);
-            ProgressTracker *pt = sub->getPTCheck();
+            //hard-coded AI sub at index 1
+            Submarine *sub = world->getSub(3);
+            ProgressTracker *pt = sub->getPTSeek();
 
             Track *track = world->getLevel()->getTrack();
 
             int curi = pt->getNextPoint(0);
-            CheckPoint *cur = track->getNextCheckPoint(curi,0); 
-            logln(LOGMEDIUM, "hitting check point %d", curi);
-            sub->hitCheckPoint(pt->getNextPoint(0),cur->isFinishLine());
+            SeekPoint *cur = track->getNextSeekPoint(curi,0); 
+            logln(LOGMEDIUM, "hitting seek point %d", curi);
+            sub->hitSeekPoint(pt->getNextPoint(0));
         }
     }
 

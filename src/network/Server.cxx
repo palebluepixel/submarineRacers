@@ -202,7 +202,7 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
     if(clientExists(clientAddr))
         return this->clients[clientAddr];
 
-    ServerNetworkManager *client = new ServerNetworkManager(this->getNextID());
+    ServerNetworkManager *client = new ServerNetworkManager();
     client->setTargetAddr(clientAddr);
     client->setTargetSocket(this->commSocket);
 
@@ -213,11 +213,8 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
     uint8_t ar[4] = { '\0', '\0', '\0', '\0' };
     messageClient(client, 4, ar);
 
-    /* THIS OBVIOUSLY NEEDS TO BE MADE MORE COMPLEX */
-    /* We could have a player struct created when the client is created that
-    handles all in-level player things, like which submarine, laps completed,
-    checkpoints completed, etc */
-    client->bindToSub((Submarine*)world->getSub(client->getID()));
+    /* TODO: change from hardcoding to clients requesting to bind to a specific submarine */
+    client->getRacer()->bindToSub((Submarine*)world->getSub(client->getRacer()->getID()));
 
     return client;
 }

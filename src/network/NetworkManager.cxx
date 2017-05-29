@@ -112,10 +112,10 @@ void NetworkManager::initCommand(COMMAND_PARAMS)
         return;
 
     ServerNetworkManager *nm = (ServerNetworkManager*)this;
-    message *msg = createPlayerNoMessage(nm->getID());
+    message *msg = createPlayerNoMessage(nm->getRacer()->getID());
     world->getServer()->messageClient(nm, msg);
 
-    logln(LOGMEDIUM, "assigning player id %d", nm->getID());
+    logln(LOGMEDIUM, "assigning player id %d", nm->getRacer()->getID());
 
 }
 
@@ -200,7 +200,11 @@ void NetworkManager::objectChangeCommand(COMMAND_PARAMS)
 
 void NetworkManager::controllerStateCommand(COMMAND_PARAMS) {
     if(world->isServer()){
-        SubmarineActuator *actuator = ((ServerNetworkManager*)this)->actuator;
+        SubmarineActuator *actuator = ((ServerNetworkManager*)this)->getActuator();
+        if(!actuator){
+            logln(LOGERROR, "%s", "Error: NULL actuator in controllerStateCommand");
+            return;
+        }
 
         ControllerState state;
         memcpy(&state, mes, len);
@@ -276,7 +280,7 @@ void NetworkManager::playerFinishCommand(COMMAND_PARAMS)
     memcpy(&p, mes, sizeof(int));
     memcpy(&n, mes+sizeof(int), sizeof(int));
 
-    if(p == world->getClient()->getPlayerNumber()){
+    if(p == world->getClient()->getPlayerNumber() && n ==1){
         logln(LOGMEDIUM, "%s", "we won!");
     } else {
         logln(LOGMEDIUM, "player %d came in place %d", p, n);

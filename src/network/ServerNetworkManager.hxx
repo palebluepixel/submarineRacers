@@ -9,16 +9,16 @@
 
 class ServerNetworkManager : public NetworkManager {
 public:
-	ServerNetworkManager(int id);
-	void sendWorldDeltas(/*TODO: args?*/);
+	ServerNetworkManager();
 
-    void bindToSub(Submarine *sub);
+    void bindToRacer(Racer *racer);
+    void unbindFromRacer();
+    inline Racer *getRacer() {return this->racer;}
+
+    Submarine *getSubmarine();
+    SubmarineActuator *getActuator();
 
     inline int getID() { return this->id; }
-
-
-    SubmarineActuator *actuator;
-    Submarine *sub;
 
     inline void setLoadedLevel(int s) { this->loadedLevel = s;}
     inline int  getLoadedLevel() {return this->loadedLevel;}
@@ -29,6 +29,9 @@ public:
 protected:
     int id;
 
+    /* Racer struct for this ServerNetworkManager. Contains information on 
+    which submarine we are bound to, if any. */
+    Racer *racer;
 
 	void controllerStateCommand(COMMAND_PARAMS);
 

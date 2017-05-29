@@ -28,7 +28,8 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
     this->ptCheck = new ProgressTracker();
     this->finishedRace = 0;
 
-    this->isai = 0;
+    //this->isai = 0;
+    this->racer = NULL;
 }
 
 void Submarine::switchWeapons(uint8_t weapon) {
@@ -67,19 +68,26 @@ float Submarine::getMaxRise() { return this->maxRise; }
 float Submarine::getMaxDive() { return this->maxDive; }
 
 
-void Submarine::bindToAI(SubmarineAI * ai)
+void Submarine::bindToRacer(Racer *racer)
 {
-    this->isai = 1;
-    this->ai = ai;
-    ai->bindToSubAct((SubmarineActuator*)this->getActuator());
+    this->racer = racer;
+    /*if(this->racer->getType() == AI_CONTROLLED){
+        this->racer->getAI()->bindToSubAct((SubmarineActuator*)this->getActuator());
+    } else if(this->racer->getType() == HUMAN_CONTROLLED){
+        this->racer->getClient()->bindToSub(this);
+    }*/
 }
 
-void Submarine::unbindFromAI()
+void Submarine::unbindFromRacer()
 {
-    this->isai = 0;
-    this->ai->unbindFromSubAct();
-    this->ai = NULL;
+    /*if(this->racer->getType() == AI_CONTROLLED){
+        this->racer->getAI()->unbindFromSubAct();
+    } else if(this->racer->getType() == HUMAN_CONTROLLED){
+        this->racer->getClient()->unbindFromSub();
+    }*/
+    this->racer = NULL;
 }
+
 
 
 /* Handles collision with track entities*/
@@ -100,47 +108,57 @@ void Submarine::hitCheckPoint(int id, int isFinish)
 
     Track *track = world->getLevel()->getTrack();
     ProgressTracker *pt = this->getPTCheck();
+    Racer *racer = this->getRacer();
 
-    /* We will send a message to this client, indicating that we have either:
-        1) won the game
-        2) cleared the finish line (not for a win), or
-        3) cleared a non-finishline checkpoint 
-    in that order of precedence. We send only one message. If the client does 
-    not exist, we send no message. */
-    SubmarineActuator *act = (SubmarineActuator*)this->getActuator();
-    ServerNetworkManager *client = act->getControllingClient();
-
-    /* If our controlling client is NULL, then we haven't been bound yet,
-    and should do nothing */
-    if(!client)
+    /* If our racer is NULL, we haven't been bound yet, so we shouldn't do anything */
+    if(!racer)
         return;
 
-    int playerNo = client->getID();
+    int playerNo = racer->getID();
 
     /* Set progress tracker for this submarine. */
     //logln(LOGMEDIUM, "clearing point %d", id);
     pt->clearPoint(id);
 
+    /* Flag for which message type to send:
+        * 0 : send no message
+        * 1 : send lap clear message
+        * 2 : send check clear message
+    */
+    int flag = 0; 
 
     /* Check if this is a complete lap. Reset the progress tracker, 
     check if we won the race, and inform the client. */
     if(isFinish && pt->isLapComplete()){
         int laps = pt->completeLap();
-        //logln(LOGMEDIUM, "finished lap %d", laps);
-        
+        //logln(LOGMEDIUM, "finished lap %d", laps); 
 
         /* Check if we completed the race. If we did, check which position we came in. */
         if(laps >= track->getLapsToWin()){
             int position = this->finish();
             if(position == 1)
                 world->win(this);
-        } else if(!this->isai && client){ //if we are AI or client is null, no message
-            message *msg = createLapClearMsg();
-            world->getServer()->messageClient(client, msg);
-            delete(msg);
-        }
+        } else { flag = 1; }//cleared finish line and valid lap}
 
-    } else if(!this->isai && client && !isFinish){ //if we are AI or client is null or this was finish line, no message
+    } else if(!isFinish) { flag = 2; } //cleared check, not finish line}
+
+    /* If this submarine was controlled by a human, we will send a message to the client, 
+    indicating that we have either:
+        1) cleared the finish line (not for a win), or
+        2) cleared a non-finishline checkpoint 
+    in that order of precedence. We send only one message. If the client does 
+    not exist, we send no message. */
+    if(!racer->getType() == HUMAN_CONTROLLED)
+        return;
+    ServerNetworkManager *client = racer->getClient();
+    if(!client)
+        return;
+
+    if(flag == 1){
+        message *msg = createLapClearMsg();
+        world->getServer()->messageClient(client, msg);
+        delete(msg);
+    } else if (flag == 2){
         message *msg = createCheckClearMsg(id);
         world->getServer()->messageClient(client, msg);
         delete(msg);
@@ -151,9 +169,10 @@ void Submarine::hitCheckPoint(int id, int isFinish)
 /* Finish the race. Returns the position we finished in. */
 int Submarine::finish()
 {
-    SubmarineActuator *act = (SubmarineActuator*)this->getActuator();
-    ServerNetworkManager *client = act->getControllingClient();
-    int playerNo = client->getID();
+    Racer *racer = this->getRacer();
+    if(!racer)
+        return -1;
+    int playerNo = racer->getID();
 
     this->finishedRace = 1;
     int position = world->getLevel()->getTrack()->playerFinish(playerNo);
@@ -185,7 +204,7 @@ void SubmarineSteeringState::reset() {
 
 
 SubmarineActuator::SubmarineActuator(Submarine *agent) {
-    this->controllingClient = NULL;
+    //this->controllingClient = NULL;
     this->agent = agent;
     state.reset();
 }

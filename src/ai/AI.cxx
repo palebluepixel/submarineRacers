@@ -15,7 +15,7 @@ AI::~AI() {}
 
 SubmarineAI::SubmarineAI()
 {
-    this->subAct = NULL;
+    this->racer = NULL;
 }
 
 SubmarineAI::~SubmarineAI() {}
@@ -23,11 +23,10 @@ SubmarineAI::~SubmarineAI() {}
 
 void SubmarineAI::updateAI()
 {
-    /* If actuator is null, we aren't bound to any submarine, so
-    don't try to do anything */
-    /* If track is null, this level has no seeking information, so
-    don't try to do anything*/
-    if(!subAct || !world->getLevel()->getTrack())
+    /* If racer is null or unbound , we aren't bound to any submarine
+    so don't try to do anything. If track is null, this level has no 
+    seeking information, so don't try to do anything. */
+    if(!racer || !racer->isBound() || !world->getLevel()->getTrack())
         return;
 
     Submarine *sub = this->getOurSub();
@@ -35,6 +34,7 @@ void SubmarineAI::updateAI()
     /* Get our seek point as the next checkpoint in the track*/
 
     int seekn = sub->getPTSeek()->getNextPoint(0);
+    //logln(LOGMEDIUM, "Seeking %d", seekn);
     if(seekn < 0)
         return; //0 points to seek
     SeekPoint *seek = world->getLevel()->getTrack()->getNextSeekPoint(seekn,0);
@@ -59,9 +59,9 @@ void SubmarineAI::turnTowards(float angle, float threshAny, float threshFull)
     //printf("Angle: %f Turn speed: %f\n", angle, turnSpeed);
 
     if(targetOnLeft(angle)) {
-        this->subAct->turnLeft(turnSpeed);
+        this->getOurSubAct()->turnLeft(turnSpeed);
     } else {
-        this->subAct->turnRight(turnSpeed);
+        this->getOurSubAct()->turnRight(turnSpeed);
     }
 }
 
@@ -72,7 +72,7 @@ void SubmarineAI::accelerateBasedOn(float angle, float threshAny, float threshFu
 
     float accelerationSpeed = LERP_FLOAT(abs(angle), threshAny, threshFull, sub->getMaxAccel(), 0.1);
 
-    this->subAct->accelerate(accelerationSpeed);
+    this->getOurSubAct()->accelerate(accelerationSpeed);
 
 }
 

@@ -3,6 +3,7 @@
 
 #include <ent/Submarine.hxx>
 #include <ent/Checkpoint.hxx>
+#include <world/Racer.hxx>
 
 #define CLOSEENOUGH 4
 
@@ -21,10 +22,13 @@ public:
     SubmarineAI();
     ~SubmarineAI();
 
-    inline void bindToSubAct(SubmarineActuator *subAct) { this->subAct = subAct; }
-    inline void unbindFromSubAct() { this->subAct = NULL; }
+    inline void bindToRacer(Racer * racer) {this->racer = racer;}
+    inline void unbindFromRacer() {this->racer = NULL;}
+    inline Racer *getRacer() {return this->racer;}
 
-    inline Submarine *getOurSub() { return this->subAct->getSub(); }
+    inline Submarine *getOurSub() { return !this->racer ? NULL : this->racer->getSub(); }
+    inline SubmarineActuator *getOurSubAct() 
+        { return (SubmarineActuator*)this->getOurSub()->getActuator(); }
 
     /* Called every AI tick.*/
     void updateAI();
@@ -51,7 +55,7 @@ public:
 
 private:
 
-    SubmarineActuator *subAct;
+    Racer *racer;
 
 };
 
