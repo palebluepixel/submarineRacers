@@ -256,20 +256,29 @@ void World::addSubsToLevel()
 {
     if(!this->curLevel) return;
 
+    int nSubsAdded = 0;
+
     for (auto pair : subs){
         // pair.second is the submarine
 
-        // Initalize the progress trackers
+        // Initalize the progress trackers and get starting position
         int nSeeks, nChecks;
+        startInfo start;
         if(!curLevel->getTrack()){
+            // Defaults if no track exists
             nSeeks = 0;
             nChecks = 0;
+            start = startInfo(pair.second->getOriginalPosition(), 
+                pair.second->getOriginalOrientation(), vec3(0,0,0));
         } else  {
             nSeeks = curLevel->getTrack()->nSeeks();
             nChecks = curLevel->getTrack()->nChecks();
+            logln(LOGMEDIUM, "loading sub start for sub %d", nSubsAdded);
+            start = curLevel->getTrack()->getStartInfoi(nSubsAdded);
         }
         pair.second->getPTSeek()->initalizePoints(nSeeks);
         pair.second->getPTCheck()->initalizePoints(nChecks);
+        pair.second->setStartInfo(start);
 
         // If AI, also add AI to level
         if(pair.second->isAI()){
@@ -278,6 +287,7 @@ void World::addSubsToLevel()
 
         // Add to level
         curLevel->addEntity(pair.second);
+        nSubsAdded++;
     }
 }
 

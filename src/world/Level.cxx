@@ -164,6 +164,13 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck,
         track->addCheckPoint(check);
         this->addEntity(check);
     }
+    int nStarts = 4;
+    vec3 starts[nStarts] = {vec3(4,5,-10),vec3(6,5,0),vec3(0,5,-10),vec3(-5,5,-10)};
+    startInfo startInfos[nStarts];
+    for(i=0; i<nStarts; i++){
+        startInfos[i] = startInfo(starts[i], quaternion(), vec3(0,0,0));
+    }
+    track->addStartingInfo(startInfos, nStarts);
 }
 
 /* DEMO LEVEL */
@@ -225,7 +232,7 @@ void Level::buildDemoLevel()
     vec3 centers[ncenters] = {vec3(5,5,5),vec3(5,5,15),vec3(5,5,25)};
     this->generateDummyPath(3, centers, ncenters, centers, ncenters, cur_id);
 
-    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/galaxy.png", "../assets/heightmaps/bump_bump.hmp");
     cave->mass(9999);
     cave->pos(vec3(0,-20,0));
     addEntity(cave);

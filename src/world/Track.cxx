@@ -2,6 +2,20 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <util/mod.hxx>
 
+startInfo::startInfo()
+{
+    this->pos = vec3(0,0,0);
+    this->ori = quaternion();
+    this->vel = vec3(0,0,0);
+}
+
+startInfo::startInfo(vec3 pos, quaternion ori, vec3 vel)
+{
+    this->pos = pos;
+    this->ori = ori;
+    this->vel = vel;
+}
+
 
 Track::Track(int lapsToWin)
 {
@@ -45,7 +59,22 @@ CheckPoint *Track::getNextCheckPoint(int cur, int howFar)
 }
 
 
+/* Add player starting positions to our vector */
+void Track::addStartingInfo(startInfo *starts, int n)
+{
+    int i;
+    for(i=0; i<n; i++)
+        this->startPoints.push_back(starts[i]);
+}
 
+/* Get the ith player start position. Returns a default start if i is beyond the
+bounds of the starting positions vector */
+startInfo Track::getStartInfoi(int i)
+{
+    if(i < 0 || i >=this->startPoints.size())
+        return startInfo(vec3(0,0,0), quaternion(), vec3(0,0,0));
+    return this->startPoints[i];
+}
 
 /* Used for visual client-side changes to checkpoints as the player-controlled 
 submarine makes progress. These should be called when the player recieves a 

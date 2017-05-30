@@ -10,6 +10,14 @@
 #define CLEAREDCOLOR vec4(0.5,1.0,0.5,1.0)
 #define FINISHLINECOLOR vec4(1.0,1.0,1.0,1.0)
 
+class startInfo {
+public:
+    startInfo();
+    startInfo(vec3 pos, quaternion ori, vec3 vel);
+    vec3 pos;
+    quaternion ori;
+    vec3 vel;
+};
 
 /* Defines the path that players and AI must take through the level. */
 class Track {
@@ -31,6 +39,15 @@ public:
     inline int nChecks() { return checks.size(); }
 
     inline int getLapsToWin() { return this->lapsToWin; }
+
+    /* Add player starting positions to our vector */
+    void addStartingInfo(startInfo *starts, int n);
+
+    /* Get the ith player start position. Returns vec3(0,0,0) if i is beyond the
+    bounds of the starting positions vector */
+    startInfo getStartInfoi(int i);
+
+
 
     /* Used for visual client-side changes to checkpoints as the player-controlled 
     submarine makes progress. These should be called when the player recieves a 
@@ -66,6 +83,10 @@ private:
     /* Vector of all checkpoints in the order they ought to be completed. Used by
     both player and AI to verify that they have completed the lap. */
     vector<CheckPoint*> checks;
+
+    /* Vector of player start positions and orientations. Each sub should start 
+    at a unique position.*/
+    vector<startInfo> startPoints;
 
     /* Number of levels needed to win the track */
     int lapsToWin;

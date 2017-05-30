@@ -18,6 +18,7 @@
 using namespace glm;
 using namespace std;
 
+class startInfo;
 
 //not sure if we want this here
 enum EntityType {
@@ -67,12 +68,15 @@ public:
     EntityType   setEntityType(EntityType type);
     EntityType   getEntityType(); 
 
+    void         setStartInfo(startInfo start);
+
     vec3         setPosition(vec3 pos);
     quaternion   setOrientation(quaternion ori);
     vec3         setVelocity(vec3 vel);
     float        setMass(float newmass);
 
     vec3         getPosition();
+    vec3         getOriginalPosition();
 
     void         setPhysicsParams(PhysicsParams in);
 
@@ -89,6 +93,7 @@ public:
     void         dragCoef(float in);
 
     quaternion   getOrientation();
+    quaternion   getOriginalOrientation();
     vec3         getVelocity();
     int          getID();
     float        getMass();
@@ -134,7 +139,9 @@ public:
 protected:
     Volume *volume;
     quaternion orientation;
+    quaternion originalOrientation;
     vec3 position;
+    vec3 originalPosition; //position when created
 
     vec3 velocity; // Used for interpolation
 

@@ -1,6 +1,7 @@
 #include "Entity.hxx"
 #include <cmath>
 #include <util/log.hxx>
+#include <world/Track.hxx>
 
 using namespace glm;
 
@@ -15,7 +16,9 @@ Entity::Entity(int ID, vec3 initial_position, tquat<float> initial_orientation, 
     this->tick_interval = tick_interval;
 
     setPosition(initial_position);
+    this->originalPosition = initial_position;
     setOrientation(initial_orientation);
+    this->originalOrientation = initial_orientation;
 
     this->velocity = glm::vec3(0, 0, 0);
     this->angular_velocity = vec3();
@@ -55,6 +58,9 @@ vec3 Entity::setPosition(vec3 pos){
 vec3 Entity::getPosition(){
     return this->position;
 }
+vec3 Entity::getOriginalPosition(){
+    return this->originalPosition;
+}
 vec3 Entity::pos(){return getPosition();}
 vec3 Entity::pos(vec3 in){return setPosition(in);};
 
@@ -66,6 +72,10 @@ float Entity::mass(float in){return setMass(in);};
 
 float Entity::dragCoef(){return _dragCoef;}
 void Entity::dragCoef(float in){_dragCoef = in;}
+
+void Entity::setStartInfo(startInfo start) {
+    this->overwrite(start.pos, start.ori, start.vel);
+}
 
 vec3 Entity::setVelocity(vec3 vel) {
     if(vel != this->velocity)
@@ -130,6 +140,10 @@ int Entity::getID(){
 quaternion Entity::getOrientation(){
     return this->orientation;
 }    
+
+quaternion Entity::getOriginalOrientation(){
+    return this->originalOrientation;
+}
 
 vec3 Entity::getVelocity()
 {
