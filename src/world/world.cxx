@@ -286,6 +286,7 @@ void World::addSubsToLevel()
         }
 
         // Add to level
+        pair.second->resetForRace();
         curLevel->addEntity(pair.second);
         nSubsAdded++;
     }
