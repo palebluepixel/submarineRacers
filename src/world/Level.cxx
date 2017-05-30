@@ -225,10 +225,10 @@ void Level::buildDemoLevel()
     vec3 centers[ncenters] = {vec3(5,5,5),vec3(5,5,15),vec3(5,5,25)};
     this->generateDummyPath(3, centers, ncenters, centers, ncenters, cur_id);
 
-    /*Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
     cave->mass(9999);
     cave->pos(vec3(0,-20,0));
-    addEntity(cave);*/
+    addEntity(cave);
 
     //create skybox
     Gadget *skybox = new Gadget(cur_id++,vec3(0,0,0), quaternion(), "sky", TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");

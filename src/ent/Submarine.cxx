@@ -131,7 +131,6 @@ void Submarine::hitCheckPoint(int id, int isFinish)
     check if we won the race, and inform the client. */
     if(isFinish && pt->isLapComplete()){
         int laps = pt->completeLap();
-        //logln(LOGMEDIUM, "finished lap %d", laps); 
 
         /* Check if we completed the race. If we did, check which position we came in. */
         if(laps >= track->getLapsToWin()){
