@@ -222,10 +222,6 @@ int World::loadLevel(int i)
     /* Add submarine entities */
     this->addSubsToLevel();
 
-    // For now, tether our camera to the hard-coded sub
-    this->getView()->getFirstPersonCam()->changeTether(newLevel->getEntityByID(SUBID_START));
-    logln(LOGMEDIUM, "Loading level %d completed.", i);
-
     return 0;
 }
 
@@ -468,6 +464,9 @@ void World::worldInitalizeDefault(int isServer)
         Racer *loneAIracer = new Racer(ai1); //only one rn
         loneAIracer->bindToSub(subs[0]);
     }
+
+    // Bind first person camera to 0-th sub by default
+    this->getView()->getFirstPersonCam()->changeTether(subs[0]);
 
 }
 
