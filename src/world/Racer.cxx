@@ -1,6 +1,7 @@
 #include "Racer.hxx"
 #include <ent/Submarine.hxx>
 #include <ai/AI.hxx>
+#include <util/log.hxx>
 
 void Racer::initRacer()
 {
@@ -33,12 +34,18 @@ Racer::Racer(SubmarineAI *ai)
 
 void Racer::bindToSub(Submarine *sub)
 {
+    if(!sub){
+        logln(LOGERROR, "Error: null sub in bindToSub, racer %d", this->getID());
+        return;
+    }
     this->sub = sub;
     this->sub->bindToRacer(this);
 }
 
 void Racer::unbindFromSub()
 {
+    if(!this->sub)
+        return;
     this->sub->unbindFromRacer();
     this->sub = NULL;
 }

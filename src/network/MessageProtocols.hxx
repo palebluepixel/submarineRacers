@@ -53,11 +53,14 @@ inline message *createPlayerNoMessage(int p) {return createMessageIntPayload(COD
 /* Tell the server we want to select the submarine with the given index */
 inline message *createSubSelectMessage(int sub) {return createMessageIntPayload(CODE_SUB_SELECT, sub);}
 
+/* Tell the server to unbind our sub */
+inline message *createUnbindSubMessage() {return createMessage(CODE_UNBIND_SUB, 0, NULL);}
+
 /* Tell the client the submarine is already taken, so they have to choose another one */
 inline message *createSubTakenMessage() {return createMessage(CODE_SUB_TAKEN, 0, NULL);}
 
-/* Tell the client they have successfully chosen the given sub */
-inline message *createSubSelectedMessage(int sub) {return createMessageIntPayload(CODE_SUB_SELECTED, sub);}
+/* Tell all clients who has chosen the given sub */
+message *createSubSelectedMessage(int player, int sub);
 
 
 

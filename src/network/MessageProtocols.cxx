@@ -26,6 +26,21 @@ message *createMessageIntPayload(short code, int payload)
 	return createMessage(code, sizeof(int), buf);
 }
 
+
+/* TODO: if I wanted to do this the long but more extensible way, I would make a
+function that takes varargs and copies them all into a uint8_t buffer in order */
+message *createMessageTwoIntPayload(short code, int p1, int p2)
+{
+	int pcopy = p1;
+	int ncopy = p2;
+	uint8_t *buf = (uint8_t*)malloc(sizeof(int)*2);
+	if(!buf) exit(-1);
+	memcpy(buf, &pcopy, sizeof(int));
+	memcpy(buf+sizeof(int), &ncopy, sizeof(int));
+
+	return createMessage(code, sizeof(int)*2, buf);
+}
+
 void deleteMessage(message *m)
 {
 	if(m->msg != NULL)
@@ -34,18 +49,15 @@ void deleteMessage(message *m)
 }
 
 /* Tell a client that a player p has finished the race and come in position n */
-/* TODO: if I wanted to do this the long but more extensible way, I would make a
-function that takes varargs and copies them all into a uint8_t buffer in order */
 message *createPlayerFinishMessage(int p, int n)
 {
-	int pcopy = p;
-	int ncopy = n;
-	uint8_t *buf = (uint8_t*)malloc(sizeof(int)*2);
-	if(!buf) exit(-1);
-	memcpy(buf, &pcopy, sizeof(int));
-	memcpy(buf+sizeof(int), &ncopy, sizeof(int));
+	return createMessageTwoIntPayload(CODE_PLAYER_FINISH, p, n);
+}
 
-	return createMessage(CODE_PLAYER_FINISH, sizeof(int)*2, buf);
+/* Tell all clients who has chosen the given sub */
+message *createSubSelectedMessage(int player, int sub)
+{
+	return createMessageTwoIntPayload(CODE_SUB_SELECTED, player, sub);
 }
 
 posUpBuf *getPosUpBuf(uint8_t*msg)

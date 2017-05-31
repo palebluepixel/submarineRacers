@@ -3,6 +3,7 @@
 
 #include <network/Connectable.hxx>
 #include "ClientNetworkManager.hxx"
+#include <ent/Submarine.hxx>
 
 /* Wrapper class for network manager. Stores information about the server
 we are connected to and contains functions for connecting. */
@@ -45,6 +46,11 @@ public:
     inline void setPlayerNumber(int n) {this->playerNumber = n;}
     inline int getPlayerNumber() {return this->playerNumber;}
 
+    inline void bindToSub(Submarine *s) {this->ourSub = s;}
+    inline void unbindFromSub() {this->ourSub = NULL;}
+    inline Submarine* getOurSub() {return this->ourSub;}
+    inline int isBound() {return !!this->ourSub;}
+
     inline short getPort() { return this->port; }
     inline char* getHost() { return strdup(this->hostname); }
 
@@ -57,6 +63,10 @@ private:
 
     /* Sent to us by the server */
     int playerNumber;
+
+    /* Client has to know which sub is ours so it knows where to tether the
+    camera and do any other graphics stuff */
+    Submarine *ourSub; //null if unbound
 
 };
 

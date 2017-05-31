@@ -1,7 +1,6 @@
 #ifndef _RACER_HXX_
 #define _RACER_HXX_ 
 
-
 class ServerNetworkManager;
 class SubmarineAI;
 class Submarine;

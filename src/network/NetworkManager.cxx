@@ -5,10 +5,13 @@
 class World;
 extern World* world; //global 
 
-handler NetworkManager::table[14] = {{ CODE_PING,         &NetworkManager::pingCommand }, 
+handler NetworkManager::table[18] = {{ CODE_PING,         &NetworkManager::pingCommand }, 
                                     { CODE_PONG,          &NetworkManager::pongCommand }, 
                                     { CODE_INIT,          &NetworkManager::initCommand },
                                     { CODE_PLAYER_NO,     &NetworkManager::playerNoCommand },
+                                    { CODE_SUB_SELECT,    &NetworkManager::subSelectCommand },
+                                    { CODE_SUB_TAKEN,     &NetworkManager::subTakenCommand },
+                                    { CODE_SUB_SELECTED,  &NetworkManager::subSelectedCommand },
                                     { CODE_OBJECT_CHANGE, &NetworkManager::objectChangeCommand },
                                     { CODE_CONTROLLER,    &NetworkManager::controllerStateCommand },
                                     { CODE_LEVEL_SELECT,  &NetworkManager::levelSelectCommand },
@@ -130,6 +133,68 @@ void NetworkManager::playerNoCommand(COMMAND_PARAMS)
 
     logln(LOGMEDIUM, "given player id %d", no);
 }
+
+/* If we are a server, check if the submarine is already bound to a
+racer. If it is, return a subTaken message. If not, bind the client's
+racer to that sub and broadcast a subSelected message.*/
+void NetworkManager::subSelectCommand(COMMAND_PARAMS)
+{
+    if(world->isClient())
+        return;
+
+    ServerNetworkManager *nm = (ServerNetworkManager*)this;
+    message *msg;
+
+    int subn = bufToInt(mes);
+    Submarine *sub = world->getSub(subn);
+    if(!sub || sub->isBound()){
+        msg = createSubTakenMessage();
+        world->getServer()->messageClient(nm, msg);
+    } else {
+        nm->getRacer()->bindToSub(sub);
+        msg = createSubSelectedMessage(nm->getRacer()->getID(), subn);
+        world->getServer()->broadcast(msg);
+    }
+
+}
+
+/* If we are a server, unbind the racer from it's current submarine, if
+it is bound. */
+void NetworkManager::unbindSubCommand(COMMAND_PARAMS)
+{
+    if(world->isClient())
+        return;
+
+    ((ServerNetworkManager*)this)->getRacer()->unbindFromSub();
+}
+
+/* If we are a client, inform the player that this sub is taken. */
+void NetworkManager::subTakenCommand(COMMAND_PARAMS)
+{
+    logln(LOGMEDIUM, "%s", "That submarine was already taken. Try a different sub.");
+}
+
+/* If we are a client, update out binding information to reflect
+that player p now is bound to submarine number n (right now this 
+just affects camera location. )*/
+void NetworkManager::subSelectedCommand(COMMAND_PARAMS)
+{
+    if(world->isServer())
+        return;
+
+    int p; //player
+    int n; //sub number
+    memcpy(&p, mes, sizeof(int));
+    memcpy(&n, mes+sizeof(int), sizeof(int));
+
+    /* If the player number matches our ID */
+    if(p == world->getClient()->getPlayerNumber()){
+        Submarine *sub = world->getSub(n);
+        world->getClient()->bindToSub(sub);
+        world->getView()->getFirstPersonCam()->changeTether(sub);
+    }
+}
+
 
 /* If we are a server, broadcast the selected level to all clients and begin
 loading the level ourselves. If we are a client, ignore the message. */

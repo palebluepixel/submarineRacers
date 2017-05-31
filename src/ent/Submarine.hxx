@@ -38,6 +38,7 @@ public:
     void bindToRacer(Racer *racer);
     void unbindFromRacer();
     inline Racer *getRacer() {return this->racer;}
+    inline int isBound() {return !!this->racer;}
 
     /* Handles collision with track entities. These should only be called by the server. */
     void hitSeekPoint(int id);

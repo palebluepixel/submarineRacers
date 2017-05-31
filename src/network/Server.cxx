@@ -214,7 +214,9 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
     messageClient(client, 4, ar);
 
     /* TODO: change from hardcoding to clients requesting to bind to a specific submarine */
-    client->getRacer()->bindToSub((Submarine*)world->getSub(client->getRacer()->getID()));
+    int id = client->getRacer()->getID();
+    client->getRacer()->bindToSub((Submarine*)world->getSub(id));
+    this->messageClient(client, createSubSelectedMessage(id,id));
 
     return client;
 }
