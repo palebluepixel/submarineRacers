@@ -1,4 +1,3 @@
-#include <json/json.hpp>
 #include "Level.hxx"
 #include <util/file.hxx>
 #include <util/conversion.hxx>
@@ -125,15 +124,88 @@ void Level::buildLevelFromFile() {
         ++it;
     }
     // todo: remove this. 
-    Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
-    addEntity(cave);
+    //Entity *cave = new Terrain(++id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/moss1.png", "../assets/heightmaps/bump_bump.hmp");
+    //addEntity(cave);
     // cave->vel(vec3(0,8,0));
-    cave->pos(vec3(-50,-40,-50));;
-    cave->mass(99999);
+    //cave->pos(vec3(-50,-40,-50));
+    //cave->mass(99999);
+
+    this->loadTrackFromJson(raw_j["trackData"], id);
 
      //create skybox
     Gadget *skybox = new Gadget(++id,vec3(0,0,0), quaternion(), strdup("sky"), TYPE1, SPAWNED, 0.1f, vec3(1,1,1), "../assets/models/sphere.obj");
     this->setSkybox(skybox);
+
+}
+
+/* Load a track from a file */
+void Level::loadTrackFromJson(json raw_j, int& cur_id)
+{
+    logln(LOGMEDIUM, "%s", "starting to load");
+    vector<json> seeks = raw_j["seekpoints"];
+    //vector<json> checks = raw_j["checkpoints"];
+    vector<json> starts = raw_j["starts"];
+
+    json hmpData = raw_j["hmpData"];
+    std::string hmpTexFile = hmpData["hmpTex"];
+    std::string hmpFile = hmpData["hmpFile"];
+    int laps = raw_j["laps"];
+
+
+    Track *track = new Track(laps);
+
+    Terrain *cave;
+    Hexagon *hex;
+    SeekPoint *seek;
+    CheckPoint *check;
+    startInfo info;
+
+    cave = new Terrain(++cur_id, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.0f, 1.0f, 1.0f), hmpTexFile.c_str(), hmpFile.c_str());
+    cave->mass(99999);
+    this->addEntity(cave);
+
+    vec3 scale = cave->getScale();
+
+    for(auto it : seeks){
+        json seekInfo = it;
+        hex = new Hexagon(vec3(0,0,0),seekInfo["r"].get<float>()*0.5f);
+        seek = new SeekPoint(++cur_id, scale*convert::vec3FromSTDVec(seekInfo["center"]), 
+            angleAxis(seekInfo["angle"].get<float>(), convert::vec3FromSTDVec(seekInfo["axis"])), 
+            "seek", TYPECHECK, SPAWNED, 0.1f, hex);
+        seek->setMass(1);
+        seek->setVelocity(vec3(0,0,0));
+        track->addSeekPoint(seek);
+        this->addEntity(seek);
+    }
+
+    for(auto it : seeks){
+        json checkInfo = it;
+        hex = new Hexagon(vec3(0,0,0),checkInfo["r"]);
+        check = new CheckPoint(++cur_id, scale*convert::vec3FromSTDVec(checkInfo["center"]), 
+            angleAxis(checkInfo["angle"].get<float>(), convert::vec3FromSTDVec(checkInfo["axis"])), 
+            "seek", TYPECHECK, SPAWNED, 0.1f, hex, 0);
+        check->setMass(1);
+        check->setVelocity(vec3(0,0,0));
+        track->addCheckPoint(check);
+        this->addEntity(check);
+    }
+
+    /* Set the last checkpoint to be the finish line */
+    CheckPoint *finish = track->getNextCheckPoint(0, track->nChecks()-1);
+    finish->setFinishLine(1);
+
+
+    for(auto it : starts){
+        json sInfo = it;
+        info = startInfo(scale*convert::vec3FromSTDVec(sInfo["pos"]), 
+            angleAxis(sInfo["angle"].get<float>(), convert::vec3FromSTDVec(sInfo["axis"])),
+            convert::vec3FromSTDVec(sInfo["velocity"]));
+        track->addStartingInfo(info);
+    }
+
+    track->resetAllChecksVis();
+
+    this->track = track;
 
 }
 
@@ -164,6 +236,7 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck,
         track->addCheckPoint(check);
         this->addEntity(check);
     }
+
     int nStarts = 4;
     vec3 starts[nStarts] = {vec3(4,5,-10),vec3(6,5,0),vec3(0,5,-10),vec3(-5,5,-10)};
     startInfo startInfos[nStarts];

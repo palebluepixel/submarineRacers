@@ -58,6 +58,10 @@ CheckPoint *Track::getNextCheckPoint(int cur, int howFar)
     return checks[target];
 }
 
+void Track::addStartingInfo(startInfo start)
+{
+    this->startPoints.push_back(start);
+}
 
 /* Add player starting positions to our vector */
 void Track::addStartingInfo(startInfo *starts, int n)

@@ -140,7 +140,7 @@ void SeekPoint::initalizeVisualData(){
 
 void SeekPoint::initalizeMeshes()
 {
-    Mesh *mesh = this->hex->getMesh(0.2);
+    Mesh *mesh = this->hex->getMesh(0.1);
     //Mesh *mesh = new Mesh(GL_TRIANGLES);
     //mesh->loadOBJ("../assets/models/cube.obj");
 
@@ -150,7 +150,7 @@ void SeekPoint::initalizeMeshes()
     this->meshes.push_back(TransformedMesh(TransformedMesh::MeshInfo(mesh,mat4(1))));
     */
 
-    vec3 col(1.0f, 0.5f, 0.5f);
+    vec3 col(1.0f, 0.8f, 0.8f);
     mesh->data.tex = this->tex;
 
     Model::FancyMesh fmesh(mesh,mat4(),Model::RenderState(true,vec4(col,1.f),GL_FILL,GL_FRONT_AND_BACK,7));

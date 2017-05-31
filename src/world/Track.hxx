@@ -41,6 +41,7 @@ public:
     inline int getLapsToWin() { return this->lapsToWin; }
 
     /* Add player starting positions to our vector */
+    void addStartingInfo(startInfo start);
     void addStartingInfo(startInfo *starts, int n);
 
     /* Get the ith player start position. Returns vec3(0,0,0) if i is beyond the
@@ -93,6 +94,9 @@ private:
 
     /* Position of next submarine to finish in the race - 1*/
     int nextPosition;
+
+    /* Scaling info */
+    vec3 scale;
 
 
 };

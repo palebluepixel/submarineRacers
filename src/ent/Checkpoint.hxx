@@ -122,6 +122,7 @@ public:
 	~CheckPoint();
 
 	inline int isFinishLine() { return this->fl; }
+    inline void setFinishLine(int fl) {this->fl = fl;}
 
 	/* On collision, update the progress tracker info of this submarine. */
 	Physics::CollisionMode onCollide(Entity *other);

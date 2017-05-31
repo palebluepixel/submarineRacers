@@ -1,6 +1,7 @@
 #ifndef _LEVEL_HXX_
 #define _LEVEL_HXX_
 
+#include <json/json.hpp>
 #include <stdlib.h>
 #include <network/MessageProtocols.hxx>
 #include <ent/Entity.hxx>
@@ -16,7 +17,7 @@
 #include <world/Track.hxx>
 
 using namespace std;
-
+using json = nlohmann::json;
 
 struct AI_entry {
     AI* ai;
@@ -41,6 +42,9 @@ public:
     /* Populate all fields of the class by loading them from a file. */
     void buildLevelFromFile();
     void buildDemoLevel();
+
+    /* Load a track from a file */
+    void loadTrackFromJson(json raw_j, int& cur_id);
 
     /* Generate a sequence of n regular hexagons with radius r, centered at center[i] for every i in [0,n]. */
     void generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck, int nCheck, int& cur_id);
