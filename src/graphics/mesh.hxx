@@ -77,6 +77,7 @@ public:
   int loadFile(std::string filename);
   void loadFileOBJ(char *file);
   void setGenerator(std::function<float(float,float)> in);
+  vec3 getScale();
 
   HeightmapData getHmpData();
 
@@ -87,6 +88,7 @@ public:
 private:
   std::function<float(float,float)> generator;
   int width, height;
+  vec3 scale;
   float* values;
   HeightmapData hmpdata;
 };

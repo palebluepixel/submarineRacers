@@ -5,6 +5,7 @@ Terrain::Terrain(int ID, vec3 initial_position, quaternion initial_orientation, 
     EntityType type, EntityStatus status, float tick_interval, vec3 color, const char* texfile, const char* hmpfile)
 : Entity(ID,initial_position, initial_orientation, name, type, status, tick_interval){
     this->color = color;
+    this->scale = vec3(1,1,1);
 
     this->texfile = string(strdup(texfile));
     this->hmpfile = string(strdup(hmpfile));
@@ -34,9 +35,10 @@ void Terrain::initalizeMeshes(){
     mesh->loadFile(hmpfile);
     // mesh->loadDefaultGenerator();
     mesh->init(300,300, vec2(0.5f, 0.5f));
+    this->scale = mesh->getScale();
     mesh->data.tex = this->tex;
 
-    Model::FancyMesh tmi(mesh,glm::scale(glm::mat4(1),vec3(100,16,100)), Model::RenderState(vec4(color,1.f)));
+    Model::FancyMesh tmi(mesh,glm::scale(glm::mat4(1),this->scale), Model::RenderState(vec4(color,1.f)));
     Model tmesh(tmi);
     meshes.push_back(tmesh);
 

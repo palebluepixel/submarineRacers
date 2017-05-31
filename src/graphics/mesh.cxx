@@ -212,9 +212,10 @@ calling loadFile() or loadDefaultGenerator() does), then call init() with the gi
 dimensions and scaling. 
 */ 
 HeightmapMesh::HeightmapMesh() : Mesh(GL_QUADS){
+  this->scale = vec3(1,1,1); //Default no scaling
 }
 
-/* Call this after setting the generator. Initalize the verte mesh representation of a heightmap
+/* Call this after setting the generator. Initalize the vertex mesh representation of a heightmap
 using the given information. 
   If we loaded the generator from a file, w and h should be the width
 and height of the heightmap as specified in that file. If the generator is functional, they can
@@ -291,6 +292,7 @@ void HeightmapMesh::init(int w, int h, vec2 texscale){
 int HeightmapMesh::loadDefaultGenerator()
 {
   this->generator = canyon_generator;
+  this->scale = vec3(1,1,1);
   return 0;
 }
 
@@ -299,11 +301,11 @@ int HeightmapMesh::loadFile(std::string filename){
   char *file = fileio::load_file(filename.c_str());
   float *data = 0;
   int data_ind=0;
-  char *tok;
-  char *tok2;
+  char *tok,*tok2,*tok3;
   char *delim = "\n\t ";
   int err =0;
   int w=-1, h=-1;
+  float xscale=-1,yscale=-1,zscale=-1;
 
   tok = strtok(file,delim);
   while((tok = strtok(NULL,delim)) != 0){
@@ -319,11 +321,25 @@ int HeightmapMesh::loadFile(std::string filename){
       data = new float[w*h];
     }
     else{
-      if(!data){
-        err=-2;
-        break;
+      if(!strcmp(tok,"scale")){
+        tok = strtok(NULL,delim);
+        tok2 = strtok(NULL,delim);
+        tok3 = strtok(NULL,delim);
+        if(!tok || !tok2 || !tok3){
+          err=-1;
+          break;
+        }
+        xscale = atof(tok);
+        yscale = atof(tok2);
+        zscale = atof(tok3);
+        this->scale = vec3(xscale, yscale, zscale);
+      } else {
+        if(!data){
+          err=-2;
+          break;
+        }
+        data[data_ind++] = atof(tok);
       }
-      data[data_ind++] = atof(tok);
     }
   }
   if(w==-1 || h==-1){
@@ -360,6 +376,8 @@ int HeightmapMesh::loadFile(std::string filename){
   }
   return 0;
 }
+
+vec3 HeightmapMesh::getScale() { return this->scale; }
 
 typedef struct{
   vec3 point;

@@ -17,12 +17,15 @@ public:
     const char* hmpfile);
     ~Terrain();
 
+    inline vec3 getScale() {return this->scale;}
+
     void initalizeVisualData();
 
 protected:
 
 	std::string hmpfile;
     vec3 color;
+    vec3 scale;
 
     void initalizeTextures(const char* texfile);
     void initalizeMeshes();
