@@ -2,7 +2,7 @@ HEIGHTMAPFILESPEC
 
 .hmp:
 
-start resl [dimx] [dimz]
+start resl [dimx] [dimz] scale [scalex] [scaley] [scalez]
 [v00] [v01] [v02] ... [v0n]
 [v10] [v11] [v12] ... [v1n]
 ..............................
