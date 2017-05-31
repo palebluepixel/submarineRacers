@@ -235,6 +235,11 @@ int main(int argc, char*argv[]){
 
     while (!glfwWindowShouldClose(world->window)){
 
+        /*Camera *cam = world->getView()->activeCamera();
+        vec3 pos = cam->position(); vec3 dir = cam->dirVec();
+        logln(LOGMEDIUM, "Camera at: %f %f %f ; facing: %f %f %f ",
+            pos[0], pos[1], pos[2], dir[0], dir[1], dir[2]);*/
+
         // timing across update operations.
         time_curr  = high_resolution_clock::now();
         time_span  = time_curr - time_prev;

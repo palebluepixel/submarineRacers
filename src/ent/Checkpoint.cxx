@@ -175,7 +175,7 @@ void SeekPoint::initalizeTextures(const char* texfile)
 
 vec3 SeekPoint::getCenter()
 {
-	return this->hex->center;
+	return this->getPosition() + this->hex->center;
 }
 
 

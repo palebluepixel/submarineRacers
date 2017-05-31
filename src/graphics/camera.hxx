@@ -29,8 +29,10 @@ class Camera {
 
   //! the current camera position.
     vec3 position () const { return this->_pos; }
-  //! the direction that the camera it looking at.
+  //! the point the camera is looking at
     vec3 direction () const { return this->_dir; }
+  //! the vector the camera is looking down
+    vec3 dirVec() const { return normalize(this->_pos - this->_dir); }
   //! the camera's current up vector
     vec3 up () const { return this->_up; }
 

@@ -147,8 +147,8 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck,
     Hexagon *hex;
     SeekPoint *seek;
     for(i=0; i<n; i++){
-        hex = new Hexagon(centers[i],r);
-        seek = new SeekPoint(cur_id++, vec3(0,0,0), quaternion(), "seek", TYPECHECK, SPAWNED, 0.1f, hex);
+        hex = new Hexagon(vec3(0,0,0),r);
+        seek = new SeekPoint(cur_id++, centers[i], angleAxis(1.0f,vec3(0,1,0)), "seek", TYPECHECK, SPAWNED, 0.1f, hex);
         seek->setMass(1);
         seek->setVelocity(vec3(0,0,0));
         track->addSeekPoint(seek);
@@ -157,8 +157,8 @@ void Level::generateDummyPath(float r, vec3 *centers, int n, vec3 *centersCheck,
 
     CheckPoint *check;
     for(i=0; i<nCheck; i++) {
-        hex = new Hexagon(centers[i],r*1.5);
-        check = new CheckPoint(cur_id++, vec3(0,0,0), quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex, i==nCheck-1);
+        hex = new Hexagon(vec3(0,0,0),r*1.5);
+        check = new CheckPoint(cur_id++, centers[i], quaternion(), "check", TYPECHECK, SPAWNED, 0.1f, hex, i==nCheck-1);
         check->setMass(1);
         check->setVelocity(vec3(0,0,0));
         track->addCheckPoint(check);
@@ -228,8 +228,9 @@ void Level::buildDemoLevel()
     /*int ncenters = 18;
     vec3 centers[ncenters] = {vec3(5,5,0),vec3(5,5,5),vec3(5,5,10),vec3(7,5,15),vec3(9,5,20),vec3(9,5,25), vec3(7, 5, 30), vec3(3, 5, 35), vec3(0, 5, 35),
         vec3(-2, 5, 32), vec3(-5, 5, 30), vec3(-5,5,25), vec3(-5,5,20),vec3(-5,5,15), vec3(-5,5,10), vec3(-3,5,7), vec3(-3,5,5), vec3(0,5,5)};*/
-    int ncenters = 3;
-    vec3 centers[ncenters] = {vec3(5,5,5),vec3(5,5,15),vec3(5,5,25)};
+    int ncenters = 10;
+    float y = 5;
+    vec3 centers[ncenters] = {vec3(33,y,33),vec3(37,y,47), vec3(63,y,53), vec3(66,y,66),vec3(50,y,85),vec3(33,y,66), vec3(37,y,53),vec3(63,y,47),vec3(66,y,33),vec3(50,y,15)};
     this->generateDummyPath(3, centers, ncenters, centers, ncenters, cur_id);
 
     Entity *cave = new Terrain(cur_id++, vec3(), quaternion(), "canyon", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/textures/galaxy.png", "../assets/heightmaps/bump_bump.hmp");
