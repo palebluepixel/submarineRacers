@@ -69,7 +69,7 @@ void SubmarineAI::accelerateBasedOn(float angle, float threshAny, float threshFu
 {
     Submarine *sub = this->getOurSub();
 
-    float accelerationSpeed = LERP_FLOAT(abs(angle), threshAny, threshFull, sub->getMaxAccel(), 0.1);
+    float accelerationSpeed = LERP_FLOAT(abs(angle), threshAny, threshFull, sub->getMaxAccel()/1.8, 0.1);
 
     this->getOurSubAct()->accelerate(accelerationSpeed);
 
