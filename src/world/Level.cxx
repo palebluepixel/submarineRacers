@@ -144,7 +144,7 @@ void Level::loadTrackFromJson(json raw_j, int& cur_id)
 {
     logln(LOGMEDIUM, "%s", "starting to load");
     vector<json> seeks = raw_j["seekpoints"];
-    //vector<json> checks = raw_j["checkpoints"];
+    vector<json> checks = raw_j["checkpoints"];
     vector<json> starts = raw_j["starts"];
 
     json hmpData = raw_j["hmpData"];
@@ -179,7 +179,7 @@ void Level::loadTrackFromJson(json raw_j, int& cur_id)
         this->addEntity(seek);
     }
 
-    for(auto it : seeks){
+    for(auto it : checks){
         json checkInfo = it;
         hex = new Hexagon(vec3(0,0,0),checkInfo["r"]);
         check = new CheckPoint(++cur_id, scale*convert::vec3FromSTDVec(checkInfo["center"]), 
