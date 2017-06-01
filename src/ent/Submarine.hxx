@@ -26,6 +26,10 @@ public:
     float getMaxRise();
     float getMaxDive();
 
+    /* Set movement parameters */
+    void setMovementParameters(float maxAccel, float maxTurn, float maxRise, 
+        float maxDive, float drag, float angularDrag);
+
     vec3 color;
     char *modelfile;
 

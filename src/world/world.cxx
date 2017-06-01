@@ -519,13 +519,14 @@ void World::initalizeSubsFromFile(const char* path)
         string n= curSub["name"];
         char *real_name = strdup(n.c_str());
         float mass = curSub["mass"];
-        float drag = curSub["drag"];
         float tick_interval = curSub["tick-interval"];
         Submarine * next = new Submarine(subid++, realpos, realOrientation, real_name, TYPESUB, SPAWNED, tick_interval, realcol, real_mf);
         next->setVolume(new CylinderVolume(Volume::Pos(next),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
         next->meshes.push_back(next->getVolume()->collisionMesh());
         next->setMass(mass);
-        next->dragCoef(drag);
+        next->setMovementParameters(curSub["maxAccel"], curSub["maxTurn"], curSub["maxRise"],
+            curSub["maxDive"], curSub["drag"], curSub["angularDrag"]);
+
         this->addSub(id++, next);
     }
 }

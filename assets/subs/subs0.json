@@ -5,20 +5,30 @@
             "position": [4, 5, -10],
             "orientation": [0, 0, -1, 0],
             "tick-interval": 0.1,
-            "color": [1.0, 1.0, 1.0],
+            "color": [1.0, 0.0, 0.0],
             "model": "../assets/models/sub_3.obj",
             "mass": 2.0,
-            "drag": 1.0
+            "drag": 0.5,
+            "angularDrag": 10.0,
+            "maxAccel": 6,
+            "maxTurn": 10,
+            "maxRise": 3,
+            "maxDive": 3
         },
         {
             "name": "sub2",
             "position": [6, 5, 0],
             "orientation": [0, 0, -1, 0],
             "tick-interval": 0.1,
-            "color": [1.0, 0.0, 0.0],
+            "color": [0.0, 0.0, 1.0],
             "model": "../assets/models/sub_3.obj",
             "mass": 2.0,
-            "drag": 1.0
+            "drag": 0.5,
+            "angularDrag": 10.0,
+            "maxAccel": 6,
+            "maxTurn": 10,
+            "maxRise": 3,
+            "maxDive": 3
         },
         {
             "name": "sub3",
@@ -28,17 +38,27 @@
             "color": [0.0, 1.0, 0.0],
             "model": "../assets/models/sub_3.obj",
             "mass": 2.0,
-            "drag": 1.0
+            "drag": 0.5,
+            "angularDrag": 10.0,
+            "maxAccel": 6,
+            "maxTurn": 10,
+            "maxRise": 3,
+            "maxDive": 3
         },
         {
             "name": "sub4",
             "position": [-5, 5, 0],
             "orientation": [0, 0, -1, 0],
             "tick-interval": 0.1,
-            "color": [0.0, 0.0, 1.0],
+            "color": [1.0, 1.0, 1.0],
             "model": "../assets/models/sub_3.obj",
             "mass": 2.0,
-            "drag": 1.0
+            "drag": 0.5,
+            "angularDrag": 10.0,
+            "maxAccel": 6,
+            "maxTurn": 10,
+            "maxRise": 3,
+            "maxDive": 3
         }
     ]
 }

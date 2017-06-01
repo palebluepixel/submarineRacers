@@ -17,7 +17,7 @@ Submarine::Submarine(int ID, vec3 initial_position, quaternion initial_orientati
     this->initalizeVisualData();
 
     this->actuator = new SubmarineActuator(this);
-    this->angularDragCoef = 20.f;
+    this->angularDragCoef = 10.f;
 
     this->maxAccel = 3;
     this->maxTurn = 10;
@@ -57,6 +57,18 @@ void Submarine::initalizeMeshes()
     mesh->loadOBJ(modelfile);
     mesh->data.tex = this->tex;
     meshes.push_back(Model(Model::FancyMesh(mesh, mat4(),Model::RenderState(vec4(color,1.f)))));
+}
+
+/* Set movement parameters */
+void Submarine::setMovementParameters(float maxAccel, float maxTurn, float maxRise, 
+    float maxDive, float drag, float angularDrag)
+{
+    this->maxAccel=maxAccel;
+    this->maxTurn=maxTurn;
+    this->maxRise=maxRise;
+    this->maxDive=maxDive;
+    this->dragCoef(drag);
+    this->angularDragCoef=angularDrag;
 }
 
 /* Return movement and handling parameters for this sub. These may eventually be

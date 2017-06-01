@@ -61,10 +61,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
     if(world->getState()==MENU1){
         if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && world->isClient())
-            world->getClient()->requestSub(1);
-
+            world->getClient()->requestSub(0);
         if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
+            world->getClient()->requestSub(1);
+        if(glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && world->isClient())
             world->getClient()->requestSub(2);
+        if(glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS && world->isClient())
+            world->getClient()->requestSub(3);
 
     } else if (world->getState()==MENU2){
 
