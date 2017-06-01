@@ -65,6 +65,8 @@ public:
     void broadcast(short len, uint8_t *msg);
     void broadcast(short code, short len, uint8_t *payload);
 
+    /* Unbinds all client racers from all submarines */
+    void unbindAll();
 
 
     /* Resets the LoadedLevel flag for all clients and sends them a message

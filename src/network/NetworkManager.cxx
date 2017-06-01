@@ -192,6 +192,7 @@ void NetworkManager::subSelectedCommand(COMMAND_PARAMS)
         Submarine *sub = world->getSub(n);
         world->getClient()->bindToSub(sub);
         world->getView()->getFirstPersonCam()->changeTether(sub);
+        world->handleEvent(ADVANCEMENU,0);
     }
 }
 

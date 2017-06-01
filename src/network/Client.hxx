@@ -26,6 +26,9 @@ public:
     /* Tell the server to load the current level */
     void loadLevel(int level);
 
+    /* Tell the server to bind us to the chosen submarine */
+    void requestSub(int sub);
+
     /* Tell the server we want to unload the current level. Server
     will reply with a confirmation, which is when we unload. */
     void exitLevel();

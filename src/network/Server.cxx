@@ -186,6 +186,15 @@ void Server::broadcast(short code, short len, uint8_t *payload)
     }
 }
 
+void Server::unbindAll()
+{
+    for(auto pair: this->clients)
+    {   
+        ServerNetworkManager *nm = pair.second;
+        nm->getRacer()->unbindFromSub();
+    }
+}
+
 /* Returns 0 if there is no client associated with the given address in our
 client list, 1 if a client with this address does exist. */
 int Server::clientExists(struct sockaddr_in clientAddr)
@@ -210,13 +219,10 @@ ServerNetworkManager* Server::addClient(struct sockaddr_in clientAddr)
 
     logln(LOGMEDIUM, "Added new client with ID %d, and address %s\n", client->getID(), inet_ntoa(client->getTargetAddr().sin_addr));
 
-    uint8_t ar[4] = { '\0', '\0', '\0', '\0' };
-    messageClient(client, 4, ar);
-
     /* TODO: change from hardcoding to clients requesting to bind to a specific submarine */
-    int id = client->getRacer()->getID();
-    client->getRacer()->bindToSub((Submarine*)world->getSub(id));
-    this->messageClient(client, createSubSelectedMessage(id,id));
+    //int id = client->getRacer()->getID();
+    //client->getRacer()->bindToSub((Submarine*)world->getSub(id));
+    //this->messageClient(client, createSubSelectedMessage(id,id));
 
     return client;
 }

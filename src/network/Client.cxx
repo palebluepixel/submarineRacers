@@ -119,6 +119,13 @@ void Client::loadLevel(int level)
     deleteMessage(msg);
 }
 
+void Client::requestSub(int sub)
+{
+    message *msg = createSubSelectMessage(sub);
+    this->messageServer(msg);
+    deleteMessage(msg);
+}
+
 void Client::exitLevel()
 {
     message *msg = createExitLevelMsg();

@@ -62,7 +62,7 @@ int World::handleEventSTARTCLIENT(HANDLER_PARAMS)
         case TITLE:
             this->state = CONNECTING;
             this->getClient()->connectServer();
-            this->state = MENU2;
+            this->state = MENU1;
             return ALL_GOOD;
         default:
             //disconnect, reset as client
@@ -87,11 +87,14 @@ int World::handleEventSTARTSERVER(HANDLER_PARAMS)
 
 int World::handleEventADVANCEMENU(HANDLER_PARAMS)
 {
-    /*switch(this->state)
+    switch(this->state)
     {
-
-    }*/
-        return 0;
+        case MENU1:
+            this->state = MENU2;
+            return ALL_GOOD;
+        default:
+            return this->state;
+    }
 }
 
 int World::handleEventBACKMENU(HANDLER_PARAMS)
@@ -151,13 +154,13 @@ int World::handleEventEXIT(HANDLER_PARAMS)
         case RACE_RUNNING:
         case RACE_START:
         case RACE_FINISH:
-            /* Might want to actually unload here too, currently
-            the level just gets unloaded automatically when a
-            new one is loaded up. */
             if(this->isClient())
-                this->state = MENU2;
-            else 
+                this->state = MENU1;
+            else {
+                /* Unbind all subs */
+                this->getServer()->unbindAll();
                 this->state = LISTEN;
+            }
             return ALL_GOOD;
         default:
             return this->state;
@@ -295,7 +298,6 @@ int World::handleGraphicsTick(float t, float dt)
     switch(this->state)
     {
         case MENU1:
-            logln(LOGMEDIUM, "%s", "in menu1");
             this->displayMenuSub();
             return 1;
         case MENU2:
@@ -359,6 +361,7 @@ void World::handleNetworksTickClient(float t, float dt, int mmax)
 {
     this->getClient()->ReadMessages(mmax);
     this->getClient()->sendControllerState();
+    this->getView()->getFirstPersonCam()->changeTether(this->getClient()->getOurSub());
 }
 
 /* Handle one tick of the physics system. If we are a server, we handle
@@ -464,7 +467,7 @@ void World::worldInitalizeDefault(int isServer)
     view->setColoring(1, vec3(1,1,1), vec3(0.2,0.2,0.2), oceanBrightColor, oceanColor,
         0.03f, -5.0f, -30.0f);
 
-    view->addCamera(camera);
+    //view->addCamera(camera);
     view->addCamera(camTeth);
     view->setFirstPersonCam(camTeth);
 

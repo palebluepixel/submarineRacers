@@ -59,14 +59,24 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
         world->getView()->nextCamera();
 
-    if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && world->isClient())
-        world->getClient()->loadLevel(1);
+    if(world->getState()==MENU1){
+        if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && world->isClient())
+            world->getClient()->requestSub(1);
 
-    if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
-        world->getClient()->loadLevel(2);
+        if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
+            world->getClient()->requestSub(2);
 
-    if(glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS && world->isClient())
-        world->getClient()->loadLevel(0);
+    } else if (world->getState()==MENU2){
+
+        if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && world->isClient())
+            world->getClient()->loadLevel(1);
+
+        if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
+            world->getClient()->loadLevel(2);
+
+        if(glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS && world->isClient())
+            world->getClient()->loadLevel(0);
+    }
 
     if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
         if(world->isClient())
@@ -238,10 +248,10 @@ int main(int argc, char*argv[]){
 
     while (!glfwWindowShouldClose(world->window)){
 
-        Camera *cam = world->getView()->activeCamera();
+        /*TetheredCamera *cam = (TetheredCamera*)world->getView()->activeCamera();
         vec3 pos = cam->position(); vec3 dir = cam->dirVec();
-        logln(LOGMEDIUM, "Camera at: %f %f %f ; facing: %f %f %f ",
-            pos[0], pos[1], pos[2], dir[0], dir[1], dir[2]);
+        logln(LOGMEDIUM, "World state %d Camera at: %f %f %f ; facing: %f %f %f tether: %p",
+            world->getState(), pos[0], pos[1], pos[2], dir[0], dir[1], dir[2], cam->getTether());*/
 
         // timing across update operations.
         time_curr  = high_resolution_clock::now();
