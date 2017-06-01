@@ -27,7 +27,7 @@
 class NetworkManager;
 
 typedef struct {
-    const short code;
+    short code;
     std::function<void(NetworkManager&, COMMAND_PARAMS)> func;
     //auto func;
 } handler;
