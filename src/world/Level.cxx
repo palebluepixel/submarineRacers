@@ -352,6 +352,13 @@ int Level::entityExists(int id)
 	return this->entities.find(id) != entities.end();
 }
 
+int Level::findFreeID(int start) {
+    while(entityExists(start)) {
+        ++start;
+    }
+    return start;
+}
+
 /* Add this entity to the entity list. This function checks that an entity
 with the current ID does not already exist. Returns 1 if the entity was
 added, 0 if it couldn't due to the ID already being taken. Since we

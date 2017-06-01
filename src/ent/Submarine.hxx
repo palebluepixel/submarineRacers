@@ -111,6 +111,9 @@ protected:
     Submarine *agent;
     SubmarineSteeringState state;
 
+    void spawnMissile();
+    void spawnMissile(int pos_flag, float vel_scalar);
+
     /* ServerNetworkManager node for the client that is bound to this actuator.
     This will be NULL if no client is bound to this actuator.*/
     //ServerNetworkManager *controllingClient;

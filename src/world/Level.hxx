@@ -67,6 +67,9 @@ public:
     0 otherwise */
     int entityExists(int id);
 
+    /* Returns a free id, starting the search at start. */
+    int findFreeID(int start);
+
     /* Add this entity to the entity list. This function checks that an entity
     with the current ID does not already exist. Returns 1 if the entity was
     added, 0 if it couldn't due to the ID already being taken. */

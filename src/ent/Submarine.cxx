@@ -4,6 +4,7 @@
 #include <ai/AI.hxx>
 #include <world/world.hxx>
 #include <network/ServerNetworkManager.hxx>
+#include "Torpedo.hxx"
 
 extern World *world;
 
@@ -223,9 +224,21 @@ void SubmarineActuator::doSteering(float dt) {
     agent->applyForce(state.acceleration * 20.f * agent->getDirection());
     agent->applyForce(vec3(0.0f, state.depthChange * 3, 0.0f));
     if(state.fireWeapon) {
-        //spawn(agent.weapon.missileType);
+        spawnMissile();
     }
     state.reset();
+}
+
+void SubmarineActuator::spawnMissile() {
+    spawnMissile(1, 5);
+}
+
+void SubmarineActuator::spawnMissile(int pos_flag, float vel_scalar) {
+    Level *level = world->getLevel();
+    vec3 pos = this->agent->getPosition() + this->agent->getDirection() * (5 * pos_flag);
+    Torpedo *torp = new Torpedo(level->findFreeID(800), pos, this->agent->getOrientation(), "torp", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/models/sub_3.obj");
+    torp->setVelocity(this->agent->getDirection() * vel_scalar);
+    level->addEntity(torp);
 }
 
 
