@@ -81,7 +81,7 @@ void SubmarineActuator::turnRight() {
     state.rotationChange -= 1;
 }
 void SubmarineActuator::accelerate() {
-    state.acceleration += 1;
+    state.acceleration += 3;
 }
 void SubmarineActuator::fire() {
     state.fireWeapon = true;

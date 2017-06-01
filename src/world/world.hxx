@@ -88,6 +88,7 @@ public:
     a client. */
     void worldInitalizeDefault(int isServer);
     void initializeSubsDefault();
+    void initalizeSubsFromFile(const char* path);
 
     //dispacth function for event handlers
     int handleEvent(EventType t, HANDLER_PARAMS);
