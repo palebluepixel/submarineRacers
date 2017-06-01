@@ -89,6 +89,12 @@ the appearance as the player draws closer, etc */
 void Track::clearCheckVis(int id)
 {
     this->clearCheckVis(this->getNextCheckPoint(id,0));
+    this->nextCheckVis(this->getNextCheckPoint(id,1));
+}
+
+void Track::nextCheckVis(CheckPoint *check)
+{
+    check->setMeshColor(0,NEXTCOLOR);
 }
 
 void Track::clearCheckVis(CheckPoint *check)
@@ -115,6 +121,7 @@ void Track::resetAllChecksVis()
 {
     for(CheckPoint *check : this->checks)
         this->resetCheckVis(check);
+    this->nextCheckVis(this->checks[0]);
 }
 
 

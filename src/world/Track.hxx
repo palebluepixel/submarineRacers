@@ -9,6 +9,7 @@
 #define UNCLEAREDCOLOR vec4(1.0, 0.5, 0.5, 1.0)
 #define CLEAREDCOLOR vec4(0.5,1.0,0.5,1.0)
 #define FINISHLINECOLOR vec4(1.0,1.0,1.0,1.0)
+#define NEXTCOLOR vec4(0.0, 0.0, 0.0, 1.0)
 
 class startInfo {
 public:
@@ -58,6 +59,7 @@ public:
     the appearance as the player draws closer, etc */
     void clearCheckVis(int id);
     void clearCheckVis(CheckPoint *check);
+    void nextCheckVis(CheckPoint *check);
 
     void resetCheckVis(int id);
     void resetCheckVis(CheckPoint *check);
