@@ -1,3 +1,19 @@
+Contributors:
+Graphics: Aidan Sadowski, Ashwin Chetty
+Networking: Aidan Sadowski, Conor Marco, Cody Silverman
+Physics: Ashwin Chetty, Conor Marco
+Collision Detection: Ashwin Chetty, Conor Marco
+Audio: Cody Silverman
+Level Loading: Cody Silverman
+Entities: Aidan Sadowski, Ashwin Chetty, Cody Silverman, Conor Marco, Eric Antley
+Input: Aidan Sadowski, Ashwin Chetty, Conor Marco
+AI: Eric Antley, Aidan Sadowski
+Player Control: Conor Marco
+Models: Eric Antley
+Maps: Eric Antley
+Compatibility: Cody Silverman, Ashwin Chetty, Aidan Sadowski
+
+
 World:
 Enum state:
 * Title
