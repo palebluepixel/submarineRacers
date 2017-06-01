@@ -94,6 +94,12 @@ void Submarine::unbindFromRacer()
 void Submarine::hitSeekPoint(int id)
 {
     ProgressTracker *pt = this->getPTSeek();
+
+    /* If this isn't the next point we expect to hit, don't count it
+    (avoids backtracking if we hit an old point)*/
+    if(pt->getCurPoint() != id)
+        return;
+
     pt->clearPoint(id);
     if(pt->isLapComplete()){
         pt->completeLap();
@@ -106,8 +112,12 @@ void Submarine::hitCheckPoint(int id, int isFinish)
     if(this->finishedRace == 1)
         return;
 
-    Track *track = world->getLevel()->getTrack();
+    /* If this isn't the next expected checkpoint, don't update */
     ProgressTracker *pt = this->getPTCheck();
+    if(pt->getCurPoint() != id)
+        return;
+
+    Track *track = world->getLevel()->getTrack();
     Racer *racer = this->getRacer();
 
     /* If our racer is NULL, we haven't been bound yet, so we shouldn't do anything */
