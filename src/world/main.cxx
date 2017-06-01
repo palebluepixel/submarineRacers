@@ -32,7 +32,7 @@
 /* Set this to -1 if you want to initate the game in the title-screen state 
 and have to step throigh using client-server messages. Otherwise, for example
 if you are testing something, set this to the desired test level. */
-#define QUICKSTART 1
+#define QUICKSTART -1
 
 //defined in util/log.hxx
 int loglevel_GLOBAL;
@@ -60,10 +60,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         world->getView()->nextCamera();
 
     if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && world->isClient())
-        world->getClient()->loadLevel(0);
+        world->getClient()->loadLevel(1);
 
     if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && world->isClient())
-        world->getClient()->loadLevel(1);
+        world->getClient()->loadLevel(2);
+
+    if(glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS && world->isClient())
+        world->getClient()->loadLevel(0);
 
     if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
         if(world->isClient())
@@ -235,10 +238,10 @@ int main(int argc, char*argv[]){
 
     while (!glfwWindowShouldClose(world->window)){
 
-        /*Camera *cam = world->getView()->activeCamera();
+        Camera *cam = world->getView()->activeCamera();
         vec3 pos = cam->position(); vec3 dir = cam->dirVec();
         logln(LOGMEDIUM, "Camera at: %f %f %f ; facing: %f %f %f ",
-            pos[0], pos[1], pos[2], dir[0], dir[1], dir[2]);*/
+            pos[0], pos[1], pos[2], dir[0], dir[1], dir[2]);
 
         // timing across update operations.
         time_curr  = high_resolution_clock::now();

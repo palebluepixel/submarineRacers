@@ -3,8 +3,6 @@
 #include <util/file.hxx>
 #include <util/conversion.hxx>
 
-#define SUBID_START (1 << 31)
-
 using json = nlohmann::json;
 
 World::World() 
@@ -64,7 +62,7 @@ int World::handleEventSTARTCLIENT(HANDLER_PARAMS)
         case TITLE:
             this->state = CONNECTING;
             this->getClient()->connectServer();
-            this->state = MENU1;
+            this->state = MENU2;
             return ALL_GOOD;
         default:
             //disconnect, reset as client
@@ -157,7 +155,7 @@ int World::handleEventEXIT(HANDLER_PARAMS)
             the level just gets unloaded automatically when a
             new one is loaded up. */
             if(this->isClient())
-                this->state = MENU1;
+                this->state = MENU2;
             else 
                 this->state = LISTEN;
             return ALL_GOOD;
@@ -296,6 +294,13 @@ int World::handleGraphicsTick(float t, float dt)
     Camera * curCam;
     switch(this->state)
     {
+        case MENU1:
+            logln(LOGMEDIUM, "%s", "in menu1");
+            this->displayMenuSub();
+            return 1;
+        case MENU2:
+            this->displayMenuLevel();
+            return 1;
         case RACE_RUNNING:
         case RACE_START:
         case RACE_FINISH:
@@ -391,6 +396,17 @@ void World::setEntData(posUpBuf* msg)
 }
 
 
+void World::displayMenu(Menu* menu)
+{
+    /* Move the camera to the defined menu-viewing location */
+    ((TetheredCamera*)this->getView()->activeCamera())->changeTether(NULL);
+    this->getView()->activeCamera()->move(CAMERAMENUPOSITION, CAMERALOOKPOSITION, CAMERAUP);
+
+    /* Render the menu */
+    this->getEntityRenderer()->enable();
+    this->getEntityRenderer()->render(this->getView(),menu->getDisplay());
+}
+
 
 void World::win(Submarine *sub)
 {
@@ -468,6 +484,14 @@ void World::worldInitalizeDefault(int isServer)
     // Bind first person camera to 0-th sub by default
     this->getView()->getFirstPersonCam()->changeTether(subs[0]);
 
+    this->initalizeMenus();
+
+}
+
+void World::initalizeMenus()
+{
+    this->menuSub = new Menu("../assets/textures/menu_sub.png");
+    this->menuLevel = new Menu("../assets/textures/menu_level.png");
 }
 
 void World::initalizeSubsFromFile(const char* path)

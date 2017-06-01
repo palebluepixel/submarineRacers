@@ -25,12 +25,16 @@
 #include <world/Level.hxx>
 #include <cstring>
 #include <util/InputManager.hxx>
+#include <world/Menu.hxx>
 
 using namespace glm;
 using namespace std;
 
 #define ALL_GOOD 0
 #define STATE_ENUM_START ALL_GOOD + 1
+
+#define SUBID_START (1 << 31)
+#define MENUID_START (1 << 28)
 
 #ifndef HANDLER_PARAMS
 #define HANDLER_PARAMS int i
@@ -177,6 +181,11 @@ public:
     void setEntData(posUpBuf* msg);
     Entity *moveable;
 
+    /* Menu functions */
+    void displayMenu(Menu *menu);
+    inline void displayMenuSub() {this->displayMenu(this->menuSub);}
+    inline void displayMenuLevel() {this->displayMenu(this->menuLevel);}
+
 
     /* End the race */
     void win(Submarine *sub);
@@ -206,7 +215,8 @@ private:
 
     void renderAll();
 
-    /* Uncomment stuff as it is implemented */
+    void initalizeMenus();
+
 
     Renderer *r;
     Renderer *rsky;
@@ -216,17 +226,16 @@ private:
     Client *client;
     int isServ;
 
-    //ActiveLevel: all entities in the world, world boundaries, etc
-    //ActiveLevel * activeLevel;
-        //GameEntities ** curentEntities; //this could be a sorted data struct to easily get drawables, collidables, etc
-        //Submarine ** subs;
-
     /* A vector of filenames for levels. Whenever we load a level, we build it from scratch from the file. */
     vector<const char*> levels;
     Level * curLevel;
 
     /* All playable submarines which are currently in the world. These will be bound to clients */
     map<int, Submarine *> subs;
+
+    /* Menus */
+    Menu *menuSub; //sub selection menu
+    Menu *menuLevel; //level select menu
 
 };
 

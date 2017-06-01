@@ -7,6 +7,7 @@
 #include <world/world.hxx>
 #include <physics/physics.hxx>
 #include <world/defines.hxx>
+#include <ent/ScreenQuad.hxx>
 
 extern World* world;
 

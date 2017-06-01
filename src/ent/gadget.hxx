@@ -41,8 +41,8 @@ protected:
     vec3 color;
     char *modelfile;
 
-    void initalizeTextures(const char* texfile);
-    void initalizeMeshes();
+    virtual void initalizeTextures(const char* texfile);
+    virtual void initalizeMeshes();
 };
 
 
