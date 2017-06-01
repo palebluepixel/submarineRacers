@@ -21,7 +21,8 @@ handler NetworkManager::table[18] = {{ CODE_PING,         &NetworkManager::pingC
                                     { CODE_LEVEL_START,   &NetworkManager::startLevelCommand },
                                     { CODE_CHECK_CLEAR,   &NetworkManager::checkClearCommand },
                                     { CODE_LAP_CLEAR,     &NetworkManager::lapClearCommand },
-                                    { CODE_PLAYER_FINISH, &NetworkManager::playerFinishCommand }};
+                                    { CODE_PLAYER_FINISH, &NetworkManager::playerFinishCommand },
+                                    { CODE_CREATE_TORPEDO, &NetworkManager::createTorpedoCommand}};
 
 NetworkManager::NetworkManager() 
 {}
@@ -351,4 +352,26 @@ void NetworkManager::playerFinishCommand(COMMAND_PARAMS)
     } else {
         logln(LOGMEDIUM, "player %d came in place %d", p, n);
     }
+}
+
+/* If we are a client, create a torpedo with the given id 
+spawned by the given sub*/
+void NetworkManager::createTorpedoCommand(COMMAND_PARAMS)
+{
+    if(world->isServer())
+        return;
+
+    int p;
+    int id;
+    memcpy(&p, mes, sizeof(int));
+    memcpy(&id, mes+sizeof(int), sizeof(int));
+
+    Submarine *sub = world->getSub(p);
+    Level *level = world->getLevel();
+    vec3 pos = sub->getPosition() + sub->getDirection() * 5;
+    Torpedo *torp = new Torpedo(id, pos, sub->getOrientation(), "torp", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/models/in_any_case_heres_wonderwhale.obj");
+    torp->setVelocity(sub->getDirection()*15);
+    torp->setVolume(new CylinderVolume(Volume::Pos(torp),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
+    level->addEntity(torp);
+
 }

@@ -27,6 +27,7 @@
 #define CODE_SUB_TAKEN 32
 #define CODE_LOAD_LEVEL 33
 #define CODE_LEVEL_START 34
+#define CODE_CREATE_TORPEDO 35
 
 //Race running and finishing
 #define CODE_EXIT_LEVEL 40

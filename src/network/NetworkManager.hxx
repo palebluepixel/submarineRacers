@@ -17,6 +17,7 @@
 #include <functional>
 #include <network/MessageProtocols.hxx>
 #include <world/Track.hxx>
+#include <ent/Torpedo.hxx>
 
 #include <network/CommandCodes.hxx>
 
@@ -67,6 +68,7 @@ protected:
     void checkClearCommand(COMMAND_PARAMS);
     void lapClearCommand(COMMAND_PARAMS);
     void playerFinishCommand(COMMAND_PARAMS);
+    void createTorpedoCommand(COMMAND_PARAMS);
 
     static handler table[18];
 

@@ -31,6 +31,8 @@ message * createMessage(short code, short len, uint8_t *msg);
 /* Create a message who's payload is the byte representation of an int */
 message *createMessageIntPayload(short code, int payload);
 
+message *createMessageTwoIntPayload(short code, int p1, int p2);
+
 /* Free the payload of a message after use */
 void deleteMessage(message *m);
 

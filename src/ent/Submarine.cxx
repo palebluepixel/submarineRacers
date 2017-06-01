@@ -230,15 +230,24 @@ void SubmarineActuator::doSteering(float dt) {
 }
 
 void SubmarineActuator::spawnMissile() {
-    spawnMissile(1, 5);
+    spawnMissile(1, 15);
 }
 
 void SubmarineActuator::spawnMissile(int pos_flag, float vel_scalar) {
     Level *level = world->getLevel();
     vec3 pos = this->agent->getPosition() + this->agent->getDirection() * (5 * pos_flag);
-    Torpedo *torp = new Torpedo(level->findFreeID(800), pos, this->agent->getOrientation(), "torp", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/models/sub_3.obj");
+    Torpedo *torp = new Torpedo(level->findFreeID(800), pos, this->agent->getOrientation(), "torp", TYPE1, SPAWNED, 1.f, vec3(1.f,0.8f,0.5f), "../assets/models/in_any_case_heres_wonderwhale.obj");
     torp->setVelocity(this->agent->getDirection() * vel_scalar);
+    torp->setVolume(new CylinderVolume(Volume::Pos(torp),1.f,9.f,glm::rotate(glm::mat4(1),3.14159265f/2.f,glm::vec3(1,0,0))));
     level->addEntity(torp);
+
+    /* Tell the client to make one too */
+    if(world->isClient())
+        return;
+
+    message *m = createMessageTwoIntPayload(CODE_CREATE_TORPEDO, this->agent->getRacer()->getID(), torp->getID());
+    world->getServer()->broadcast(m);
+    delete(m);
 }
 
 
