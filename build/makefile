@@ -5,6 +5,7 @@ SHELL = /bin/sh
 BUILD_DIR = $(shell pwd)
 SRC_DIR = $(BUILD_DIR)/../src
 
+ALUT = $(BUILD_DIR)/../lib/alut
 SDL = $(BUILD_DIR)/../lib/SDL2-2.0.5
 GLEW = $(BUILD_DIR)/../lib/glew-2.0.0
 GLFW = $(BUILD_DIR)/../lib/glfw
@@ -21,10 +22,10 @@ SRCS = $(wildcard $(SRC_DIR)/*/*.cxx)
 INCLUDES = $(wildcard $(SRC_DIR)/*/*.hxx)
 OBJS = $(notdir $(SRCS:.cxx=.o))
 
-RPATH = -Wl,-rpath,$(SDL)/build -Wl,-rpath,$(GLEW)/lib -Wl,-rpath,$(GLFW)/src -Wl,-rpath,$(PNG)/lib
+RPATH = -Wl,-rpath,$(SDL)/build -Wl,-rpath,$(GLEW)/lib -Wl,-rpath,$(GLFW)/src -Wl,-rpath,$(ALUT)/src -Wl,-rpath,$(PNG)/lib
 LIBS = -lGLEW -lglfw3 -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread -ldl -lpng
-LDFLAGS = -L$(BUILD_DIR)/../lib -L$(GLEW)/lib -L$(GLFW)/src -L$(PNG)/lib
-IPATH = -I../src -I../lib/glm -I$(GLEW)/include -I$(GLFW)/include -I$(BUILD_DIR)/../lib -I$(PNG)/include -I$(JSON)/
+LDFLAGS = -L$(BUILD_DIR)/../lib -L$(GLEW)/lib -L$(GLFW)/src -L$(ALUT)/src -L$(PNG)/lib
+IPATH = -I../src -I../lib/glm -I$(GLEW)/include -I$(GLFW)/include -I$(ALUT)/include -I$(BUILD_DIR)/../lib -I$(PNG)/include -I$(JSON)/
 
 $(TARGET): $(OBJS) .depend
 	$(CXX) $(OBJS) $(CXXFLAGS) $(IPATH) -o $(TARGET) $(LDFLAGS) $(RPATH) $(LIBS)
